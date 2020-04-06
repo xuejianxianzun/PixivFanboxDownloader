@@ -1,0 +1,45 @@
+{
+  "name": "Pixiv Fanbox Downloader",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Pixiv Fanbox 批量下载器。Pixiv Fanbox batch downloader.",
+  "icons": {
+    "16": "icon/logo16.png",
+    "32": "icon/logo32.png",
+    "48": "icon/logo48.png",
+    "128": "icon/logo128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "icon/logo16.png",
+      "32": "icon/logo32.png",
+      "48": "icon/logo48.png",
+      "128": "icon/logo128.png"
+    },
+    "default_title": "Pixiv Fanbox Downloader"
+  },
+  "content_scripts": [
+    {
+      "css": ["style/style.css"],
+      "js": ["js/content.js", "lib/zip.js"],
+      "matches": ["*://www.pixiv.net/fanbox*"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "scripts": ["js/background.js"]
+  },
+  "permissions": [
+    "tabs",
+    "downloads",
+    "*://www.pixiv.net/fanbox*",
+    "*://*.pximg.net/*"
+  ],
+  "web_accessible_resources": [
+    "lib/z-worker.js",
+    "images/github-logo.png",
+    "images/wiki.png",
+    "images/update.png",
+    "manifest.json"
+  ]
+}
