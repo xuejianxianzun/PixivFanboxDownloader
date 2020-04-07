@@ -27,7 +27,7 @@ class FileName {
     ['>', '＞'],
     ['\\*', '＊'],
     ['\\|', '｜'],
-    ['~', '～']
+    ['~', '～'],
   ]
 
   // 把一些特殊字符替换成全角字符
@@ -54,50 +54,50 @@ class FileName {
       '{p_title}': {
         value: store.pageInfo.pageTitle,
         prefix: '',
-        safe: false
+        safe: false,
       },
       '{p_tag}': {
         value: store.pageInfo.pageTag,
         prefix: '',
-        safe: false
+        safe: false,
       },
       '{id}': {
         value: data.id,
         prefix: '',
-        safe: true
+        safe: true,
       },
       '{id_num}': {
         value: data.idNum || parseInt(data.id),
         prefix: '',
-        safe: true
+        safe: true,
       },
       '{p_num}': {
         value: parseInt(/\d*$/.exec(data.id)![0]),
         prefix: '',
-        safe: true
+        safe: true,
       },
       '{rank}': {
         value: data.rank,
         prefix: '',
-        safe: true
+        safe: true,
       },
       '{title}': {
         value: data.title,
         prefix: 'title_',
-        safe: false
+        safe: false,
       },
       '{user}': {
         value: data.user,
         prefix: 'user_',
-        safe: false
+        safe: false,
       },
       '{uid}': {
         value: data.uid,
         prefix: 'uid_',
-        safe: true
+        safe: true,
       },
       '{px}': {
-        value: (function() {
+        value: (function () {
           if (result.includes('{px}') && data.fullWidth !== undefined) {
             return data.fullWidth + 'x' + data.fullHeight
           } else {
@@ -105,33 +105,33 @@ class FileName {
           }
         })(),
         prefix: '',
-        safe: true
+        safe: true,
       },
       '{tags}': {
         value: data.tags.join(','),
         prefix: 'tags_',
-        safe: false
+        safe: false,
       },
       '{tags_translate}': {
         value: data.tagsTranslated.join(','),
         prefix: 'tags_',
-        safe: false
+        safe: false,
       },
       '{bmk}': {
         value: data.bmk,
         prefix: 'bmk_',
-        safe: true
+        safe: true,
       },
       '{date}': {
         value: data.date,
         prefix: '',
-        safe: true
+        safe: true,
       },
       '{type}': {
         value: illustTypes[data.type],
         prefix: '',
-        safe: true
-      }
+        safe: true,
+      },
     }
 
     // 替换命名规则里的特殊字符
@@ -182,10 +182,7 @@ class FileName {
     tempArr.forEach((str, index, arr) => {
       // 替换路径首尾的空格
       // 把每层路径头尾的 . 变成全角的．因为 Chrome 不允许头尾使用 .
-      arr[index] = str
-        .trim()
-        .replace(/^\./g, '．')
-        .replace(/\.$/g, '．')
+      arr[index] = str.trim().replace(/^\./g, '．').replace(/\.$/g, '．')
     })
     result = tempArr.join('/')
 

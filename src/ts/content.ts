@@ -10,9 +10,11 @@
  * QQ group:  853021998
  */
 
+
+import './modules/PageType'
 import './modules/CenterPanel'
 import './modules/InitPage'
-import './modules/DownloadControl'
+// import './modules/DownloadControl'
 import './modules/RightIcon'
 import './modules/Tip'
 import './modules/Output'

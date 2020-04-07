@@ -1,3 +1,4 @@
+// 评论数据
 interface CommentData {
   id: string
   parentCommentId: string
@@ -15,25 +16,49 @@ interface CommentData {
   replies: CommentData[]
 }
 
-interface BlocksDataText {
-  type: 'p'
-  text: string
-  styles?: [{ type: 'bold'; offset: number; length: number }]
-  links?: [{ offset: number; length: number; url: string }]
+// 在所有投稿列表、投稿详情里都通用的数据
+interface CommonAllData {
+  id: string
+  title: string
+  coverImageUrl: string | null
+  feeRequired: number
+  publishedDatetime: string
+  updatedDatetime: string
+  tags: string[]
+  excerpt: string | null
+  isLiked: boolean
+  likeCount: number
+  commentCount: number
+  restrictedFor: number | null
+  user: {
+    userId: string
+    name: string
+    iconUrl: string
+  }
+  creatorId: string
+  status: 'published'
 }
 
-interface BlocksDataFile {
-  type: 'file'
-  fileId: string
+// 所有投稿详情里都存在的数据。列表里没有
+interface CommonPostData {
+  commentList: {
+    items: CommentData[]
+    nextUrl: string | null
+  }
+  nextPost: {
+    id: string
+    title: string
+    publishedDatetime: string
+  }
+  prevPost: {
+    id: string
+    title: string
+    publishedDatetime: string
+  }
+  imageForShare: string
 }
 
-interface BlocksDataImage {
-  type: 'image'
-  imageId: string
-}
-
-type Blocks = BlocksDataText | BlocksDataFile | BlocksDataImage
-
+// 通用的图片文件数据
 interface ImageData {
   id: string
   extension: string
@@ -43,20 +68,13 @@ interface ImageData {
   thumbnailUrl: string
 }
 
-type ImageMap = {
-  [key: string]: ImageData
-}
-
+// 通用的 file 文件数据
 interface FileData {
   id: string
   name: number
   extension: string
   size: number
   url: string
-}
-
-type FileMap = {
-  [key: string]: FileData
 }
 
 // serviceProvider 支持嵌入的所有数据来源如下：
@@ -72,247 +90,147 @@ type ServiceProvider =
   | 'gsuite'
   | 'gist'
 
-type EmbedMap = {
-  [key: string]: {
-    id: string
-    serviceProvider: ServiceProvider
-    contentId: string
+// article 投稿里的段落信息1
+interface BlocksDataText {
+  type: 'p'
+  text: string
+  styles?: [{ type: 'bold'; offset: number; length: number }]
+  links?: [{ offset: number; length: number; url: string }]
+}
+
+// article 投稿里的段落信息2
+interface BlocksDataFile {
+  type: 'file'
+  fileId: string
+}
+
+// article 投稿里的段落信息3
+interface BlocksDataImage {
+  type: 'image'
+  imageId: string
+}
+
+// article 投稿里的段落信息4
+interface BlocksDataEmbed {
+  type: 'embed'
+  embedId: string
+}
+
+// article 投稿里所有可能出现的段落信息
+type AllBlocks =
+  | BlocksDataText
+  | BlocksDataFile
+  | BlocksDataImage
+  | BlocksDataEmbed
+
+// article 投稿数据
+interface OnlyArticleData {
+  type: 'article'
+  body: null | {
+    blocks: AllBlocks[]
+    imageMap: {
+      [key: string]: ImageData
+    }
+    fileMap: {
+      [key: string]: FileData
+    }
+    embedMap: {
+      [key: string]: {
+        id: string
+        serviceProvider: ServiceProvider
+        contentId: string
+      }
+    }
   }
 }
 
 // article（博客类型）投稿的数据
 interface PostDataOfArticle {
-  body: {
-    id: string
-    title: string
-    coverImageUrl: string | null
-    feeRequired: number
-    publishedDatetime: string
-    updatedDatetime: string
-    type: 'article'
-    body: null | {
-      blocks: Blocks[]
-      imageMap: ImageMap
-      fileMap: FileMap
-      embedMap: EmbedMap
-    }
-    tags: string[]
-    excerpt: string | null
-    isLiked: boolean
-    likeCount: number
-    commentCount: number
-    restrictedFor: number | null
-    user: {
-      userId: string
-      name: string
-      iconUrl: string
-    }
-    creatorId: string
-    status: 'published'
-    commentList: {
-      items: CommentData[]
-      nextUrl: string | null
-    }
-    nextPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    prevPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    imageForShare: string
+  body: OnlyArticleData & CommonPostData & CommonAllData
+}
+
+// image 投稿数据
+interface OnlyImageData {
+  type: 'image'
+  body: null | {
+    text: string
+    images: ImageData[]
   }
 }
 
 // image（图片类型）投稿的数据
 interface PostDataOfImage {
-  body: {
-    id: string
-    title: string
-    coverImageUrl: string | null
-    feeRequired: number
-    publishedDatetime: string
-    updatedDatetime: string
-    type: 'image'
-    body: null | {
-      text: string
-      images: ImageData[]
-    }
-    tags: string[]
-    excerpt: string | null
-    isLiked: boolean
-    likeCount: number
-    commentCount: number
-    restrictedFor: number | null
-    user: {
-      userId: string
-      name: string
-      iconUrl: string
-    }
-    creatorId: string
-    status: 'published'
-    commentList: {
-      items: CommentData[]
-      nextUrl: string | null
-    }
-    nextPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    prevPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    imageForShare: string
+  body: OnlyImageData & CommonPostData & CommonAllData
+}
+
+// file 投稿数据
+interface OnlyFileData {
+  type: 'file'
+  body: null | {
+    text: string
+    files: FileData[]
   }
 }
 
 // file（文件类型）投稿的数据
 interface PostDataOfFile {
-  body: {
-    id: string
-    title: string
-    coverImageUrl: string | null
-    feeRequired: number
-    publishedDatetime: string
-    updatedDatetime: string
-    type: 'file'
-    body: null | {
-      text: string
-      files: FileData[]
-    }
-    tags: string[]
-    excerpt: string | null
-    isLiked: boolean
-    likeCount: number
-    commentCount: number
-    restrictedFor: number | null
-    user: {
-      userId: string
-      name: string
-      iconUrl: string
-    }
-    creatorId: string
-    status: 'published'
-    commentList: {
-      items: CommentData[]
-      nextUrl: string | null
-    }
-    nextPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    prevPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    imageForShare: string
+  body: OnlyFileData & CommonPostData & CommonAllData
+}
+
+// text 投稿数据
+interface OnlyTextData {
+  type: 'text'
+  body: null | {
+    text: string
   }
 }
 
 // text（文本类型）投稿的数据
 interface PostDataOfText {
-  body: {
-    id: string
-    title: string
-    coverImageUrl: string | null
-    feeRequired: number
-    publishedDatetime: string
-    updatedDatetime: string
-    type: 'text'
-    body: null | {
-      text: string
+  body: OnlyTextData & CommonPostData & CommonAllData
+}
+
+// video 投稿数据
+interface OnlyVideoData {
+  type: 'video'
+  body: null | {
+    text: string
+    video: {
+      serviceProvider: ServiceProvider
+      videoId: string
     }
-    tags: string[]
-    excerpt: string | null
-    isLiked: boolean
-    likeCount: number
-    commentCount: number
-    restrictedFor: number | null
-    user: {
-      userId: string
-      name: string
-      iconUrl: string
-    }
-    creatorId: string
-    status: 'published'
-    commentList: {
-      items: CommentData[]
-      nextUrl: string | null
-    }
-    nextPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    prevPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    imageForShare: string
   }
 }
 
 // video（视频/音乐类型）投稿的数据
 interface PostDataOfVideo {
+  body: OnlyVideoData & CommonPostData & CommonAllData
+}
+
+// 囊括所有类型的投稿详情数据
+type Post =
+  | PostDataOfArticle
+  | PostDataOfFile
+  | PostDataOfImage
+  | PostDataOfText
+  | PostDataOfVideo
+
+// 投稿列表里 items 的数据
+type PostListItem = (
+  | OnlyArticleData
+  | OnlyImageData
+  | OnlyFileData
+  | OnlyTextData
+  | OnlyVideoData
+) &
+  CommonAllData
+
+// 囊括所有类型的列表数据
+interface PostList {
   body: {
-    id: string
-    title: string
-    coverImageUrl: string | null
-    feeRequired: number
-    publishedDatetime: string
-    updatedDatetime: string
-    type: 'video'
-    body: null | {
-      text: string
-      video: {
-        serviceProvider: ServiceProvider
-        videoId: string
-      }
-    }
-    tags: string[]
-    excerpt: string | null
-    isLiked: boolean
-    likeCount: number
-    commentCount: number
-    restrictedFor: number | null
-    user: {
-      userId: string
-      name: string
-      iconUrl: string
-    }
-    creatorId: string
-    status: 'published'
-    commentList: {
-      items: CommentData[]
-      nextUrl: string | null
-    }
-    nextPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    prevPost: {
-      id: string
-      title: string
-      publishedDatetime: string
-    }
-    imageForShare: string
+    items: PostListItem[]
+    nextUrl: null | string
   }
 }
 
-export {
-  PostDataOfArticle,
-  PostDataOfFile,
-  PostDataOfImage,
-  PostDataOfText,
-  PostDataOfVideo
-}
+export { Post, PostList }

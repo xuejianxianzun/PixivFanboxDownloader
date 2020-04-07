@@ -1,1 +1,1 @@
-export interface A{}
+export interface A {}

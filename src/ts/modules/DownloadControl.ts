@@ -271,11 +271,6 @@ class DownloadControl {
 
     this.setDownloadThread()
 
-    // 检查 不自动开始下载 的标记
-    if (store.states.notAutoDownload) {
-      return
-    }
-
     const autoDownload: boolean = form.quietDownload.checked
 
     if (!autoDownload && !store.states.quickDownload) {

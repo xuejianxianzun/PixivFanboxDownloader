@@ -25,43 +25,43 @@ const formHtml = `<form class="settingForm">
       <p class="option" data-no="2">
       <span class="settingNameStyle1">${lang.transl('_文件类型')}</span>
 
-      <input type="checkbox" name="fileType" value="image" id="fileType1" class="need_beautify checkbox_common" checked>
+      <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
       <label for="fileType1"> ${lang.transl('_图片')}&nbsp;</label>
       
-      <input type="checkbox" name="fileType" value="video" id="fileType2" class="need_beautify checkbox_common" checked>
+      <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
       <label for="fileType2"> ${lang.transl('_音乐')}&nbsp;</label>
 
-      <input type="checkbox" name="fileType" value="video" id="fileType3" class="need_beautify checkbox_common" checked>
+      <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
       <label for="fileType2"> ${lang.transl('_视频')}&nbsp;</label>
       
-      <input type="checkbox" name="fileType" value="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
+      <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
       <label for="fileType3"> ${lang.transl('_压缩文件')}&nbsp;</label>
       
-      <input type="checkbox" name="fileType" value="ps" id="fileType5" class="need_beautify checkbox_common" checked>
+      <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
       <label for="fileType4"> ${lang.transl('_PS文件')}&nbsp;</label>
 
-      <input type="checkbox" name="fileType" value="other" id="fileType6" class="need_beautify checkbox_common" checked>
+      <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
       <label for="fileType5"> ${lang.transl('_其他')}&nbsp;</label>
       </p>
 
       <p class="option" data-no="21">
       <span class="settingNameStyle1">${lang.transl('_投稿类型')}</span>
-      <input type="checkbox" name="postType" id="postType1" class="need_beautify checkbox_common" checked>
+
+      <input type="checkbox" name="free" id="postType1" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
       <label for="postType1"> ${lang.transl('_免费投稿')}&nbsp;</label>
 
-      <input type="checkbox" name="postType" id="postType2" class="need_beautify checkbox_common" checked>
+      <input type="checkbox" name="pay" id="postType2" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
       <label for="postType2"> ${lang.transl('_付费投稿')}&nbsp;</label>
       </p>
 
-      
       
       <p class="option" data-no="9">
       <span class="settingNameStyle1">${lang.transl(
@@ -72,8 +72,8 @@ const formHtml = `<form class="settingForm">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="feeSwitch">
 
-      ${lang.transl('_大于')}
-      <input type="text" name="fee" class="setinput_style1 w100 blue" value=""> ${lang.transl(
+      ${lang.transl('_最小值')}
+      <input type="text" name="fee" class="setinput_style1 w100 blue" value="500"> ${lang.transl(
         '_日元'
       )}
       </span>
@@ -87,7 +87,7 @@ const formHtml = `<form class="settingForm">
       <span class="subOptionWrap" data-show="idRangeSwitch">
 
       ${lang.transl('_大于')}
-      <input type="text" name="idRangeInput" class="setinput_style1 w100 blue" value="">
+      <input type="text" name="idRangeInput" class="setinput_style1 w100 blue" value="0">
       </span>
       </p>
 
@@ -101,7 +101,7 @@ const formHtml = `<form class="settingForm">
       <span class="subOptionWrap" data-show="postDate">
       
       ${lang.transl('_晚于')}
-      <input type="datetime-local" name="postDateEnd" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+      <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
       </span>
       </p>
 
@@ -110,7 +110,7 @@ const formHtml = `<form class="settingForm">
         '_保存投稿中的外部链接'
       )}&nbsp;&nbsp; 
       <span class="gray1"> ? </span></span>
-      <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch">
+      <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
       <span class="beautify_switch"></span>
       </p>
       

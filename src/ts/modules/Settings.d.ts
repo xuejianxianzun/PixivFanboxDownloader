@@ -1,47 +1,22 @@
 export interface SettingsForm extends HTMLFormElement {
   setWantPage: HTMLInputElement
-  firstFewImages: HTMLInputElement
-  downType0: HTMLInputElement
-  downType1: HTMLInputElement
-  downType2: HTMLInputElement
-  downSingleImg: HTMLInputElement
-  downMultiImg: HTMLInputElement
-  firstFewImagesSwitch: HTMLInputElement
-  downColorImg: HTMLInputElement
-  downBlackWhiteImg: HTMLInputElement
-  ugoiraSaveAs: RadioNodeList
-  BMKNumMin: HTMLInputElement
-  BMKNumMax: HTMLInputElement
-  setOnlyBmk: HTMLInputElement
-  quickBookmarks: HTMLInputElement
-  setWHSwitch: HTMLInputElement
-  setWidth: HTMLInputElement
-  idRange: RadioNodeList
+  image: HTMLInputElement
+  music: HTMLInputElement
+  video: HTMLInputElement
+  compressed: HTMLInputElement
+  ps: HTMLInputElement
+  other: HTMLInputElement
+  free: HTMLInputElement
+  pay: HTMLInputElement
+  feeSwitch: HTMLInputElement
+  fee: HTMLInputElement
+  idRangeSwitch: HTMLInputElement
   idRangeInput: HTMLInputElement
-  setWidthAndOr: RadioNodeList
-  setHeight: HTMLInputElement
-  ratio: RadioNodeList
-  userRatio: HTMLInputElement
   postDate: HTMLInputElement
   postDateStart: HTMLInputElement
-  postDateEnd: HTMLInputElement
-  needTag: HTMLInputElement
-  notNeedTag: HTMLInputElement
-  quietDownload: HTMLInputElement
-  downloadThread: HTMLInputElement
+  saveLink: HTMLInputElement
   userSetName: HTMLInputElement
   fileNameSelect: HTMLSelectElement
-  tagNameToFileName: HTMLInputElement
-  noSerialNo: HTMLInputElement
-  alwaysFolder: HTMLInputElement
-  multipleImageDir: HTMLInputElement
-  multipleImageFolderName: RadioNodeList
-  debut: HTMLInputElement
-  previewResult: HTMLInputElement
-  BMKNumSwitch: HTMLInputElement
-  ratioSwitch: HTMLInputElement
-  idRangeSwitch: HTMLInputElement
-  needTagSwitch: HTMLInputElement
-  notNeedTagSwitch: HTMLInputElement
-  convertUgoiraThread: HTMLInputElement
+  quietDownload: HTMLInputElement
+  downloadThread: HTMLInputElement
 }

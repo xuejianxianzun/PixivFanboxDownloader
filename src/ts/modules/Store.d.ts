@@ -1,53 +1,31 @@
-import { UgoiraInfo } from './CrawlResult'
-
-// 保存每个要下载的图片的信息
-export interface WorkInfo {
-  idNum: number
+// 投稿数据里包含的文件
+interface FileResult {
+  type: 'image' | 'music' | 'video' | 'compressed' | 'ps' | 'other'
   id: string
+  name: string
+  ext: string
+  size: number | null
+  index: number
   url: string
-  thumb: string
-  pageCount: number
-  dlCount: number
+}
+
+// 从投稿文本里提取的文字
+interface textResult {
+  type: 'text'
+  body: string
+}
+
+type AllResult = FileResult | textResult
+
+// 保存每个要下载的作品的信息
+export interface Result {
+  id: number
+  type: 'file' | 'image' | 'article' | 'video' | 'text'
   title: string
-  tags: string[]
-  tagsTranslated: string[]
+  data: string
+  fee: number
   user: string
   uid: string
-  fullWidth: number
-  fullHeight: number
-  ext: string
-  bmk: number
-  bookmarked: boolean
-  date: string
-  type: 0 | 1 | 2
-  rank: string
-  ugoiraInfo: UgoiraInfo | null
-}
-
-export interface WorkInfoOptional {
-  idNum?: number
-  id?: string
-  url?: string
-  thumb?: string
-  pageCount?: number
-  dlCount?: number
-  title?: string
-  tags?: string[]
-  tagsTranslated?: string[]
-  user?: string
-  uid?: string
-  fullWidth?: number
-  fullHeight?: number
-  ext?: string
-  bmk?: number
-  bookmarked?: boolean
-  date?: string
-  type?: 0 | 1 | 2
-  rank?: string
-  ugoiraInfo?: UgoiraInfo | null
-}
-
-// 储存作品在排行榜中的排名
-export interface RankList {
-  [key: string]: string
+  tags: string[]
+  resources: AllResult[]
 }

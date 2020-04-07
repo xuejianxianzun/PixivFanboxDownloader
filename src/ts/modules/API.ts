@@ -1,10 +1,8 @@
 // api 类
 // 不依赖其他模块，可独立使用
-import {
-} from './CrawlResult.d'
+import { Post, PostList } from './CrawlResult.d'
 
-import {
-} from './CrawlArgument.d'
+import {} from './CrawlArgument.d'
 
 class API {
   // 检查给定的字符串解析为数字后，是否大于 0
@@ -36,44 +34,6 @@ class API {
     }
   }
 
-  // 更新 token
-  static updateToken() {
-    // 每隔一段时间更新 token，如果未达到指定时间间隔，则不检查
-    const interval = 300000 // 两次检查之间的间隔。目前设置为 5 分钟
-    const nowTime = new Date().getTime()
-    const lastTimeStr = localStorage.getItem('xzTokenTime')
-    if (lastTimeStr && nowTime - Number.parseInt(lastTimeStr) < interval) {
-      return
-    }
-
-    // 从网页源码里获取用户 token，并储存起来
-    fetch('https://www.pixiv.net/artworks/62751951')
-      .then((response) => {
-        return response.text()
-      })
-      .then((data) => {
-        let result = data.match(/token":"(\w+)"/)
-        if (result) {
-          localStorage.setItem('xzToken', result[1])
-          localStorage.setItem('xzTokenTime', new Date().getTime().toString())
-        } else {
-          console.warn('UpdateToken failed: no token found!')
-        }
-      })
-  }
-
-  // 获取 token
-  // 从本地存储里获取用户 token
-  static getToken() {
-    let result = localStorage.getItem('xzToken')
-    if (result) {
-      return result
-    } else {
-      this.updateToken()
-      return ''
-    }
-  }
-
   // 从 url 里获取作品 id
   // 可以传入 url，无参数则使用当前页面的 url
   static getIllustId(url?: string) {
@@ -96,7 +56,7 @@ class API {
     return new Promise((resolve, reject) => {
       fetch(url, {
         method: 'get',
-        credentials: 'same-origin',
+        credentials: 'include',
       })
         .then((response) => {
           if (response.ok) {
@@ -119,6 +79,26 @@ class API {
     })
   }
 
+  static async getlistSupporting(
+    limit = 10,
+    maxPublishedDatetime = '',
+    maxId = ''
+  ): Promise<PostList> {
+    const baseURL = 'https://fanbox.pixiv.net/api/post.listSupporting'
+    const temp = new URL(baseURL)
+    limit && temp.searchParams.append('limit', limit.toString())
+    maxPublishedDatetime &&
+      temp.searchParams.append('maxPublishedDatetime', maxPublishedDatetime)
+    maxId && temp.searchParams.append('maxId', maxId)
+    const url = temp.toString()
+    console.log(url)
+    return this.request(url)
+  }
+
+  static async getPost(postId: string): Promise<Post> {
+    const url = `https://fanbox.pixiv.net/api/post.info?postId=${postId}`
+    return this.request(url)
+  }
 }
 
 export { API }

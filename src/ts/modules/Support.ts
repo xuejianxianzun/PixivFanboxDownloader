@@ -13,12 +13,12 @@ class Support {
     API.updateToken()
   }
 
-  private newTag: langTextKeys = '_xzNew500'
+  private newTag: langTextKeys = '_fbNew500'
 
   // 检查新版本
   private async checkNew() {
     // 显示更新按钮
-    const show = function() {
+    const show = function () {
       const updateIco = document.querySelector(
         '.centerWrap_top_btn.update'
       )! as HTMLAnchorElement
@@ -26,7 +26,7 @@ class Support {
     }
 
     // 读取上一次检查的时间，如果超过一小时则检查 GitHub 上的信息
-    const lastTime = localStorage.getItem('xzUpdateTime')
+    const lastTime = localStorage.getItem('fbdlUpdateTime')
     if (
       !lastTime ||
       new Date().getTime() - parseInt(lastTime) > 60 * 60 * 1000
@@ -38,9 +38,9 @@ class Support {
       const latestJson = await latest.json()
       const latestVer = latestJson.name
       // 保存 GitHub 上的版本信息
-      localStorage.setItem('xzGithubVer', latestVer)
+      localStorage.setItem('fbdlGithubVer', latestVer)
       // 保存本次检查的时间戳
-      localStorage.setItem('xzUpdateTime', new Date().getTime().toString())
+      localStorage.setItem('fbdlUpdateTime', new Date().getTime().toString())
     }
 
     // 获取本地扩展的版本号
@@ -48,7 +48,7 @@ class Support {
     const manifestJson = await manifest.json()
     const manifestVer = manifestJson.version
     // 比较大小
-    const latestVer = localStorage.getItem('xzGithubVer')
+    const latestVer = localStorage.getItem('fbdlGithubVer')
     if (latestVer && manifestVer < latestVer) {
       show()
     }
@@ -61,13 +61,13 @@ class Support {
       !localStorage.getItem(this.newTag)
     ) {
       const whatIsNewHtml = `
-      <div class="xz_new">
+      <div class="fbdl_new">
         <p class="title">Pixiv Fanbox Downloader ${lang.transl('_最近更新')}</p>
         <p class="content">${lang.transl(this.newTag)}</p>
         <button class="btn">${lang.transl('_确定')}</button>
       </div>`
       document.body.insertAdjacentHTML('afterbegin', whatIsNewHtml)
-      const whatIsNewEl = document.querySelector('.xz_new')!
+      const whatIsNewEl = document.querySelector('.fbdl_new')!
       whatIsNewEl.querySelector('.btn')!.addEventListener('click', () => {
         localStorage.setItem(this.newTag, '1')
         whatIsNewEl.parentNode!.removeChild(whatIsNewEl)
@@ -101,7 +101,7 @@ class Support {
     // 绑定无刷新切换页面的事件，只绑定一次
     // pixiv 的后退使用 replaceState
     // pushState 判断从列表页进入作品页的情况，popstate 判断从作品页退回列表页的情况
-    ;['pushState', 'popstate', 'replaceState'].forEach(item => {
+    ;['pushState', 'popstate', 'replaceState'].forEach((item) => {
       window.addEventListener(item, () => {
         EVT.fire(EVT.events.pageSwitch)
       })
