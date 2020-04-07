@@ -76,8 +76,8 @@ class DOM {
     for (const [key, value] of attr) {
       e.setAttribute(key, value)
     }
-
     this.useSlot(slot, e)
+    
     return e
   }
 }

@@ -5,6 +5,10 @@ import { InitPageBase } from './InitPageBase'
 import { API } from './API'
 
 class InitHomePage extends InitPageBase {
+  constructor() {
+    super()
+    this.init()
+  }
   // 添加中间按钮
   protected appendCenterBtns() {
     DOM.addBtn(
