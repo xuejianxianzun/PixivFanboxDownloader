@@ -12,13 +12,9 @@ class DOM {
   layout-body 是在未登录时的搜索页使用的
   */
   static insertToHead<T extends Element>(el: T): T {
-    if (document.body) {
-      document.body.insertAdjacentElement('afterbegin', el)
-    } else {
-      ;(
-        document.querySelector('.newindex-inner')! ||
-        document.querySelector('.layout-body')!
-      ).insertAdjacentElement('beforebegin', el)
+    const insertPoint = document.body.querySelector('#root')
+    if (insertPoint) {
+      insertPoint.insertAdjacentElement('afterbegin', el)
     }
     return el
   }
@@ -77,7 +73,7 @@ class DOM {
       e.setAttribute(key, value)
     }
     this.useSlot(slot, e)
-    
+
     return e
   }
 }
