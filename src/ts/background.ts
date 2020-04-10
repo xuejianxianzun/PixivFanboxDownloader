@@ -1,10 +1,56 @@
 import { DonwloadListData, SendToBackEndData } from './modules/Download.d'
+// 设置 referer
+function removeHeader(header: chrome.webRequest.HttpHeader) {
+  if (
+    header.name.toLowerCase() === 'origin' &&
+    header.value &&
+    header.value.includes('https://www.pixiv.net')
+  ) {
+    return true
+  }
+
+  if (header.name.toLowerCase() === 'referer') {
+    return true
+  }
+
+  return false
+}
+
+// chrome.webRequest.onBeforeSendHeaders.addListener(
+//   (details) => {
+//     let headers = details.requestHeaders
+//     const url = details.url
+//     console.log(url)
+//     if (
+//       url.includes('https://fanbox.pixiv.net/images/') ||
+//       url.includes('https://fanbox.pixiv.net/files/')
+//     ) {
+//       headers = details.requestHeaders!.filter((x) => !removeHeader(x))
+//     }
+
+//     return {
+//       requestHeaders: headers,
+//     }
+//   },
+//   {
+//     urls: ['*://*.pixiv.net/*'],
+//   },
+//   ['blocking', 'requestHeaders']
+// )
 
 // 当点击扩展图标时，切换显示/隐藏下载面板
 chrome.browserAction.onClicked.addListener(function (tab) {
   // 打开下载面板
   chrome.tabs.sendMessage(tab.id!, {
     msg: 'click_icon',
+  })
+
+  chrome.downloads.download({
+    url:
+      'https://fanbox.pixiv.net/images/post/734221/fNjg2MlWp61C0eGIdyofC1Z7.jpeg',
+    filename: 'a.jpg',
+    conflictAction: 'overwrite',
+    saveAs: false,
   })
 })
 

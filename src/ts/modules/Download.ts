@@ -10,7 +10,6 @@ import {
   DonwloadSuccessData,
 } from './Download.d'
 import { progressBar } from './ProgressBar'
-import { filter } from './Filter'
 
 class Download {
   constructor(progressBarIndex: number, data: downloadArgument) {
@@ -25,7 +24,7 @@ class Download {
   private fileName = ''
   private stoped = false
   private retry = 0
-  private readonly retryMax = 50
+  private readonly retryMax = 1
 
   private listenEvents() {
     ;[EVT.events.downloadStop, EVT.events.downloadPause].forEach((event) => {
@@ -58,6 +57,7 @@ class Download {
     let xhr = new XMLHttpRequest()
     xhr.open('GET', arg.data.url, true)
     xhr.responseType = 'blob'
+    xhr.withCredentials = true
 
     // 显示下载进度
     xhr.addEventListener('progress', (event) => {
@@ -84,25 +84,21 @@ class Download {
 
         if (xhr.status === 404) {
           // 404 错误时
-          msg = lang.transl('_file404', arg.id)
+          msg = lang.transl('_file404', this.fileName)
         } else {
           // 无法处理的错误状态
-          msg = lang.transl('_文件下载失败', arg.id)
+          msg = lang.transl('_文件下载失败', this.fileName)
         }
 
         log.error(msg, 1)
 
-        // 创建 txt 文件，保存提示信息
-        file = new Blob([`${msg}`], {
-          type: 'text/plain',
-        })
-
-        this.fileName = this.fileName.replace(
-          /\.jpg$|\.png$|\.zip$|\.gif$|\.webm$/,
-          '.txt'
-        )
-
-        EVT.fire(EVT.events.downloadError)
+        const data: DonwloadSuccessData = {
+          url: '',
+          id: arg.id,
+          tabId: 0,
+          uuid: false,
+        }
+        EVT.fire(EVT.events.skipSaveFile, data)
       }
 
       if (xhr.status !== 200) {
@@ -112,7 +108,7 @@ class Download {
         this.retry++
         if (this.retry >= this.retryMax) {
           // 重试 retryMax 次依然错误，进行错误处理
-          HandleError()
+          return HandleError()
         } else {
           return this.download(arg)
         }

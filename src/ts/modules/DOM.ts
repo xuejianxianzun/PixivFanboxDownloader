@@ -19,6 +19,19 @@ class DOM {
     return el
   }
 
+  static getUserId() {
+    const Reg = /creator\/(\d*)?/
+    const testString = [location.href, document.head.innerHTML]
+    for (const string of testString) {
+      const result = Reg.exec(string)
+      if (result && result.length > 1) {
+        return result[1]
+      }
+    }
+
+    throw new Error('getUserId failed!')
+  }
+
   // 动态添加 css 样式
   static addStyle(css: string) {
     const e = document.createElement('style')

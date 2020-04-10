@@ -35,19 +35,19 @@ const formHtml = `<form class="settingForm">
 
       <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType2"> ${lang.transl('_视频')}&nbsp;</label>
+      <label for="fileType3"> ${lang.transl('_视频')}&nbsp;</label>
       
       <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType3"> ${lang.transl('_压缩文件')}&nbsp;</label>
+      <label for="fileType4"> ${lang.transl('_压缩文件')}&nbsp;</label>
       
       <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType4"> ${lang.transl('_PS文件')}&nbsp;</label>
+      <label for="fileType5"> ${lang.transl('_PS文件')}&nbsp;</label>
 
       <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType5"> ${lang.transl('_其他')}&nbsp;</label>
+      <label for="fileType6"> ${lang.transl('_其他')}&nbsp;</label>
       </p>
 
       <p class="option" data-no="21">

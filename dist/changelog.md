@@ -2,12 +2,14 @@
 
 ### 修改存储库相关的网址
 
-PixivBatchDownloader
-
 _newver 扩展的连接
 
 检查和修改文本
 
-修改 xzGithubVer xzUpdateTime 这类特有标志
+https://twitter.com/ 的前缀
+
+匹配文本链接的正则
+
+
 
 # 0.0.1

@@ -32,11 +32,12 @@
   "permissions": [
     "tabs",
     "downloads",
+    "webRequest",
+    "webRequestBlocking",
     "*://www.pixiv.net/fanbox*",
     "*://*.pximg.net/*"
   ],
   "web_accessible_resources": [
-    "lib/z-worker.js",
     "images/github-logo.png",
     "images/wiki.png",
     "images/update.png",

@@ -1,9 +1,15 @@
-import { FilterOption } from './Filter.d'
 import { form } from './Settings'
 import { lang } from './Lang'
 import { log } from './Log'
 import { API } from './API'
 import { EVT } from './EVT'
+
+interface FilterOption {
+  id?: number | string
+  date?: string
+  fee?: number
+  ext?: string
+}
 
 // 审查每个文件的数据，决定是否要下载它
 class Filter {
@@ -124,4 +130,4 @@ class Filter {
 }
 
 const filter = new Filter()
-export { filter }
+export { filter, FilterOption }

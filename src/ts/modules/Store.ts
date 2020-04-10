@@ -1,6 +1,6 @@
 // 仓库
 import { EVT } from './EVT'
-import { Result } from './Store.d'
+import { CommonResult, ResultMeta, Result } from './Store.d'
 
 // 存储抓取结果和状态
 class Store {
@@ -8,9 +8,8 @@ class Store {
     this.bindEvents()
   }
 
+  public resultMeta: ResultMeta[] = [] // 储存抓取结果的元数据
   public result: Result[] = [] // 储存抓取结果
-
-  public PostIdList: string[] = [] // 储存从列表中抓取到的作品的 id
 
   private bindEvents() {
     const allowWorkTrue = [
@@ -44,9 +43,39 @@ class Store {
     })
   }
 
+  private getCommonData(data: ResultMeta): CommonResult {
+    return {
+      id: data.id,
+      type: data.type,
+      title: data.title,
+      date: data.date,
+      fee: data.fee,
+      user: data.user,
+      uid: data.uid,
+      tags: data.tags,
+    }
+  }
+
   // 添加每个作品的信息。只需要传递有值的属性
-  public addResult(data: Result) {
-    this.result.push(data)
+  public addResult(data: ResultMeta) {
+    this.resultMeta.push(data)
+
+    // 为投稿里的每个 files 生成一份数据
+    const files = data.files
+    for (const fileData of files) {
+      const result = Object.assign(this.getCommonData(data), fileData)
+      this.result.push(result)
+    }
+    // 为投稿里的所有 text 生成一份数据
+    if (data.links.text.length > 0) {
+      const text = data.links.text.join('\r\n')
+      const blob = new Blob([text], {
+        type: 'text/plain',
+      })
+      data.links.url = URL.createObjectURL(blob)
+      const result = Object.assign(this.getCommonData(data), data.links)
+      this.result.push(result)
+    }
   }
 
   // 储存和下载有关的状态
@@ -56,8 +85,8 @@ class Store {
   }
 
   public resetResult() {
+    this.resultMeta = []
     this.result = []
-    this.PostIdList = []
   }
 
   public resetStates() {

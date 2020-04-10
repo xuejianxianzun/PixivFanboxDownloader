@@ -3,6 +3,10 @@ import { EVT } from './EVT'
 import { pageType } from './PageType'
 
 import { InitHomePage } from './InitHomePage'
+import { InitPostListPage } from './InitPostListPage'
+import { InitTagPage } from './InitTagPage'
+import { InitPostPage } from './InitPostPage'
+import { InitShopPage } from './InitShopPage'
 
 class InitPage {
   constructor() {
@@ -20,6 +24,13 @@ class InitPage {
       case 0:
       case 1:
         return new InitHomePage()
+      case 2:
+      case 3:
+        return new InitPostListPage()
+      case 4:
+        return new InitPostPage()
+      case 5:
+        return new InitTagPage()
       default:
         throw new Error('InitCrawlProcess error: Illegal pageType.')
     }

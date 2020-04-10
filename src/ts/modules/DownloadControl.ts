@@ -41,8 +41,6 @@ class DownloadControl {
 
   private downloaded: number = 0 // 已下载的任务数量
 
-  private convertText = ''
-
   private reTryTimer: number = 0 // 重试下载的定时器
 
   private downloadArea: HTMLDivElement = document.createElement('div') // 下载区域
@@ -50,8 +48,6 @@ class DownloadControl {
   private totalNumberEl: HTMLSpanElement = document.createElement('span')
 
   private downStatusEl: HTMLSpanElement = document.createElement('span')
-
-  private convertTipEL: HTMLDivElement = document.createElement('div') // 转换动图时显示提示的元素
 
   private downloadStop: boolean = false // 是否停止下载
 
@@ -76,17 +72,6 @@ class DownloadControl {
     window.addEventListener(EVT.events.skipSaveFile, (ev: CustomEventInit) => {
       const data = ev.detail.data as DonwloadSuccessData
       this.downloadSuccess(data)
-    })
-
-    window.addEventListener(EVT.events.convertChange, (ev: CustomEventInit) => {
-      const count = ev.detail.data
-      if (count > 0) {
-        this.convertText = lang.transl('_转换任务提示', count.toString())
-      } else {
-        this.convertText = ''
-      }
-      this.convertTipEL.innerHTML = this.convertText
-      this.LogDownloadStates()
     })
 
     // 监听浏览器下载文件后，返回的消息
@@ -200,7 +185,6 @@ class DownloadControl {
     <span class="down_status blue"><span>${lang.transl(
       '_未开始下载'
     )}</span></span>
-    <span class="convert_tip warn"></span>
     </p>
     </div>
     </div>`
@@ -208,7 +192,6 @@ class DownloadControl {
     const el = DOM.useSlot('downloadArea', html)
     this.downloadArea = el as HTMLDivElement
     this.downStatusEl = el.querySelector('.down_status ') as HTMLSpanElement
-    this.convertTipEL = el.querySelector('.convert_tip') as HTMLDivElement
     this.totalNumberEl = el.querySelector('.imgNum') as HTMLSpanElement
 
     document.querySelector('.startDownload')!.addEventListener('click', () => {
@@ -235,9 +218,9 @@ class DownloadControl {
     }
 
     let result = ''
-    result = store.result.reduce((total, now) => {
-      return (total += now.url + '<br>')
-    }, result)
+    for (const now of store.result) {
+      result += now.url + '<br>'
+    }
 
     EVT.fire(EVT.events.output, result)
   }
@@ -425,12 +408,6 @@ class DownloadControl {
   // 在日志上显示下载进度
   private LogDownloadStates() {
     let text = `${this.downloaded} / ${store.result.length}`
-
-    // 追加转换动图的提示
-    if (this.convertText) {
-      text += ', ' + this.convertText
-    }
-
     log.log(text, 2, false)
   }
 
@@ -449,17 +426,18 @@ class DownloadControl {
     if (index === undefined) {
       throw new Error('There are no data to download')
     } else {
-      const workData = store.result[index]
+      const result = store.result[index]
+      // 注意这里的 id 用的是 name 属性，因为 id 属性并不唯一。一个投稿里的所有资源的 id 是相同的，但是 name 唯一
       const data: downloadArgument = {
-        id: workData.id,
-        data: workData,
+        id: result.name,
+        data: result,
         index: index,
         progressBarIndex: progressBarIndex,
         taskBatch: this.taskBatch,
       }
 
       // 保存任务信息
-      this.taskList[workData.id] = {
+      this.taskList[result.id] = {
         index,
         progressBarIndex: progressBarIndex,
       }

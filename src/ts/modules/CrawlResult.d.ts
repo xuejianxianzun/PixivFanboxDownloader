@@ -71,7 +71,7 @@ interface ImageData {
 // 通用的 file 文件数据
 interface FileData {
   id: string
-  name: number
+  name: string
   extension: string
   size: number
   url: string
@@ -81,7 +81,6 @@ interface FileData {
 // pixivFANBOX, Twitter, YouTube, Vimeo, SoundCloud, Google Forms, GitHub Gist
 // Google Forms 叫什么名字还不确定，猜测为 gsuite
 type ServiceProvider =
-  | string
   | 'youtube'
   | 'fanbox'
   | 'twitter'
@@ -123,6 +122,12 @@ type AllBlocks =
   | BlocksDataImage
   | BlocksDataEmbed
 
+interface EmbedData {
+  id: string
+  serviceProvider: ServiceProvider
+  contentId: string
+}
+
 // article 投稿数据
 interface OnlyArticleData {
   type: 'article'
@@ -135,19 +140,13 @@ interface OnlyArticleData {
       [key: string]: FileData
     }
     embedMap: {
-      [key: string]: {
-        id: string
-        serviceProvider: ServiceProvider
-        contentId: string
-      }
+      [key: string]: EmbedData
     }
   }
 }
 
 // article（博客类型）投稿的数据
-interface PostDataOfArticle {
-  body: OnlyArticleData & CommonPostData & CommonAllData
-}
+type PostDataOfArticle = OnlyArticleData & CommonPostData & CommonAllData
 
 // image 投稿数据
 interface OnlyImageData {
@@ -159,9 +158,7 @@ interface OnlyImageData {
 }
 
 // image（图片类型）投稿的数据
-interface PostDataOfImage {
-  body: OnlyImageData & CommonPostData & CommonAllData
-}
+type PostDataOfImage = OnlyImageData & CommonPostData & CommonAllData
 
 // file 投稿数据
 interface OnlyFileData {
@@ -173,9 +170,7 @@ interface OnlyFileData {
 }
 
 // file（文件类型）投稿的数据
-interface PostDataOfFile {
-  body: OnlyFileData & CommonPostData & CommonAllData
-}
+type PostDataOfFile = OnlyFileData & CommonPostData & CommonAllData
 
 // text 投稿数据
 interface OnlyTextData {
@@ -186,8 +181,13 @@ interface OnlyTextData {
 }
 
 // text（文本类型）投稿的数据
-interface PostDataOfText {
-  body: OnlyTextData & CommonPostData & CommonAllData
+type PostDataOfText = OnlyTextData & CommonPostData & CommonAllData
+
+type VideoProvider = 'youtube' | 'vimeo' | 'soundcloud'
+
+interface VideoData {
+  serviceProvider: VideoProvider
+  videoId: string
 }
 
 // video 投稿数据
@@ -195,25 +195,24 @@ interface OnlyVideoData {
   type: 'video'
   body: null | {
     text: string
-    video: {
-      serviceProvider: ServiceProvider
-      videoId: string
-    }
+    video: VideoData
   }
 }
 
 // video（视频/音乐类型）投稿的数据
-interface PostDataOfVideo {
-  body: OnlyVideoData & CommonPostData & CommonAllData
-}
+type PostDataOfVideo = OnlyVideoData & CommonPostData & CommonAllData
 
 // 囊括所有类型的投稿详情数据
-type Post =
+type PostBody =
   | PostDataOfArticle
   | PostDataOfFile
   | PostDataOfImage
   | PostDataOfText
   | PostDataOfVideo
+
+interface Post {
+  body: PostBody
+}
 
 // 投稿列表里 items 的数据
 type PostListItem = (
@@ -233,4 +232,15 @@ interface PostList {
   }
 }
 
-export { Post, PostList }
+export {
+  PostBody,
+  Post,
+  PostListItem,
+  PostList,
+  ServiceProvider,
+  VideoProvider,
+  ImageData,
+  FileData,
+  EmbedData,
+  VideoData,
+}

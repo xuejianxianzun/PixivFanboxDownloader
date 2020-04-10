@@ -2,15 +2,15 @@ import { lang } from './Lang'
 import { Colors } from './Colors'
 import { DOM } from './DOM'
 import { InitPageBase } from './InitPageBase'
+import { PostList } from './CrawlResult.d'
 import { API } from './API'
-import { filter } from './Filter'
-import { store } from './Store'
 
 class InitHomePage extends InitPageBase {
   constructor() {
     super()
     this.init()
   }
+
   // 添加中间按钮
   protected appendCenterBtns() {
     DOM.addBtn(
@@ -22,21 +22,18 @@ class InitHomePage extends InitPageBase {
     })
   }
 
-  protected async getPostList() {
-    const data = await API.getlistSupporting(300)
-    console.log(data)
-    const items = data.body.items
-    for (const item of items) {
-      const id = item.id
-      const fee = item.feeRequired
-      const date = item.publishedDatetime
-
-      filter.check({})
+  protected async FetchPostList() {
+    let data: PostList
+    if (this.nextUrl) {
+      data = (await API.request(this.nextUrl)) as PostList
+    } else {
+      data = await API.getPostListSupporting(300)
     }
+    console.log(data)
+    this.afterFetchPostList(data)
   }
 
-  // getIdListFinished
-  protected resetGetIdListStatus() {}
+  protected async fetchPost() {}
 }
 
 export { InitHomePage }

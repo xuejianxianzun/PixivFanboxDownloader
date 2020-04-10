@@ -1,8 +1,8 @@
-import { WorkInfo } from './Store.d'
+import { Result } from './Store.d'
 
 export interface downloadArgument {
   id: string
-  data: WorkInfo
+  data: Result
   index: number
   progressBarIndex: number
   taskBatch: number
