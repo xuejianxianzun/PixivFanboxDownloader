@@ -57,16 +57,20 @@ class FileName {
         value: data.title,
         safe: false,
       },
-      '{tags}': {
-        value: data.tags,
-        safe: false,
-      },
       '{name}': {
         value: data.name,
         safe: false,
       },
       '{ext}': {
         value: data.ext,
+        safe: false,
+      },
+      '{index}': {
+        value: data.index,
+        safe: false,
+      },
+      '{tags}': {
+        value: data.tags,
         safe: false,
       },
       '{date}': {

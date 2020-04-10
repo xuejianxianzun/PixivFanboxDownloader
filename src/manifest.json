@@ -32,8 +32,6 @@
   "permissions": [
     "tabs",
     "downloads",
-    "webRequest",
-    "webRequestBlocking",
     "*://www.pixiv.net/fanbox*",
     "*://*.pximg.net/*"
   ],

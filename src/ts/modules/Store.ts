@@ -73,6 +73,7 @@ class Store {
         type: 'text/plain',
       })
       data.links.url = URL.createObjectURL(blob)
+      data.links.size = blob.size
       const result = Object.assign(this.getCommonData(data), data.links)
       this.result.push(result)
     }

@@ -28,7 +28,7 @@ interface FileResult {
 interface TextResult {
   name: string
   ext: 'txt'
-  size: null
+  size: number | null
   index: 0
   text: string[]
   url: string

@@ -4,7 +4,6 @@ import { lang } from './Lang'
 
 interface ProgressBarEl {
   name: HTMLSpanElement
-  loaded: HTMLSpanElement
   progress: HTMLDivElement
 }
 
@@ -57,9 +56,7 @@ class ProgressBar {
   <div class="progress progress2"></div>
   </div>
   <div class="progressTip progressTip2">
-  <span class="fileName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${lang.transl(
-    '_已下载'
-  )}&nbsp;&nbsp;<span class="loaded">0/0</span>KB
+  <span class="fileName"></span>
   </div>
   </li>`
 
@@ -86,7 +83,6 @@ class ProgressBar {
     for (const bar of allProgressBar) {
       const data: ProgressBarEl = {
         name: bar.querySelector('.fileName')! as HTMLSpanElement,
-        loaded: bar.querySelector('.loaded')! as HTMLSpanElement,
         progress: bar.querySelector('.progress')! as HTMLDivElement,
       }
 
@@ -106,10 +102,6 @@ class ProgressBar {
   public setProgress(index: number, data: ProgressData) {
     const bar = this.allProgressBar[index]
     bar.name.textContent = data.name
-
-    bar.loaded.textContent = `${Math.floor(data.loaded / 1024)}/${Math.floor(
-      data.total / 1024
-    )}`
 
     const progress = data.loaded / data.total || 0 // 若结果为 NaN 则设为 0
     bar.progress.style.width = progress * 100 + '%'

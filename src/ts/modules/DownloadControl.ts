@@ -29,7 +29,7 @@ class DownloadControl {
     this.listenEvents()
   }
 
-  private readonly downloadThreadMax: number = 5 // 同时下载的线程数的最大值，也是默认值
+  private readonly downloadThreadMax: number = 3 // 同时下载的线程数的最大值，也是默认值
 
   private downloadThread: number = this.downloadThreadMax // 同时下载的线程数
 
@@ -84,14 +84,12 @@ class DownloadControl {
         // 释放 BLOBURL
         URL.revokeObjectURL(msg.data.url)
 
-        EVT.fire(EVT.events.downloadSucccess)
+        EVT.fire(EVT.events.downloadSucccess, msg.data)
 
         this.downloadSuccess(msg.data)
       } else if (msg.msg === 'download_err') {
         // 浏览器把文件保存到本地时出错
-        log.error(
-          `${msg.data.id} download error! code: ${msg.err}. The downloader will try to download the file again `
-        )
+        log.error(`${msg.data.url} download error! code: ${msg.err}.`)
         EVT.fire(EVT.events.downloadError)
         // 重新下载这个文件
         this.downloadError(msg.data)
@@ -437,7 +435,7 @@ class DownloadControl {
       }
 
       // 保存任务信息
-      this.taskList[result.id] = {
+      this.taskList[data.data.name] = {
         index,
         progressBarIndex: progressBarIndex,
       }

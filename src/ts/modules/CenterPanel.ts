@@ -121,9 +121,7 @@ class CenterPanel {
 
     // 抓取完作品详细数据时，显示
     window.addEventListener(EVT.events.crawlFinish, () => {
-      if (!store.states.quickDownload) {
-        this.show()
-      }
+      this.show()
     })
 
     // 显示常见问题

@@ -127,9 +127,10 @@ const formHtml = `<form class="settingForm">
         <option value="default">…</option>
         <option value="{id}">{id}</option>
         <option value="{title}">{title}</option>
-        <option value="{tags}">{tags}</option>
         <option value="{name}">{name}</option>
         <option value="{ext}">{ext}</option>
+        <option value="{index}">{index}</option>
+        <option value="{tags}">{tags}</option>
         <option value="{date}">{date}</option>
         <option value="{fee}">{fee}</option>
         <option value="{user}">{user}</option>

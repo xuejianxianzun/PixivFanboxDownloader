@@ -14,6 +14,7 @@ import { progressBar } from './ProgressBar'
 class Download {
   constructor(progressBarIndex: number, data: downloadArgument) {
     this.progressBarIndex = progressBarIndex
+    this.arg = data
 
     this.download(data)
 
@@ -21,10 +22,10 @@ class Download {
   }
 
   private progressBarIndex: number
+  private arg: downloadArgument
+
   private fileName = ''
   private stoped = false
-  private retry = 0
-  private readonly retryMax = 1
 
   private listenEvents() {
     ;[EVT.events.downloadStop, EVT.events.downloadPause].forEach((event) => {
@@ -32,6 +33,17 @@ class Download {
         this.stoped = true
       })
     })
+
+    window.addEventListener(
+      EVT.events.downloadSucccess,
+      (event: CustomEventInit) => {
+        const donwloadSuccessData = event.detail.data as DonwloadSuccessData
+
+        if (donwloadSuccessData.url === this.arg.data.url) {
+          this.setProgressBar(1024, 1024)
+        }
+      }
+    )
   }
 
   // 设置进度条信息
@@ -54,83 +66,14 @@ class Download {
     this.setProgressBar(0, 0)
 
     // 下载图片
-    let xhr = new XMLHttpRequest()
-    xhr.open('GET', arg.data.url, true)
-    xhr.responseType = 'blob'
-    xhr.withCredentials = true
 
-    // 显示下载进度
-    xhr.addEventListener('progress', (event) => {
-      if (this.stoped) {
-        xhr.abort()
-        xhr = null as any
-        return
-      }
-      this.setProgressBar(event.loaded, event.total)
-    })
-
-    // 图片获取完毕（出错时也会进入 loadend）
-    xhr.addEventListener('loadend', async () => {
-      if (this.stoped) {
-        xhr = null as any
-        return
-      }
-
-      let file: Blob = xhr.response // 要下载的文件
-
-      // 错误处理
-      const HandleError = () => {
-        let msg = ''
-
-        if (xhr.status === 404) {
-          // 404 错误时
-          msg = lang.transl('_file404', this.fileName)
-        } else {
-          // 无法处理的错误状态
-          msg = lang.transl('_文件下载失败', this.fileName)
-        }
-
-        log.error(msg, 1)
-
-        const data: DonwloadSuccessData = {
-          url: '',
-          id: arg.id,
-          tabId: 0,
-          uuid: false,
-        }
-        EVT.fire(EVT.events.skipSaveFile, data)
-      }
-
-      if (xhr.status !== 200) {
-        // 状态码错误
-        // 正常下载完毕的状态码是 200
-        progressBar.showErrorColor(this.progressBarIndex, true)
-        this.retry++
-        if (this.retry >= this.retryMax) {
-          // 重试 retryMax 次依然错误，进行错误处理
-          return HandleError()
-        } else {
-          return this.download(arg)
-        }
-      } else {
-        // 状态码正常
-        progressBar.showErrorColor(this.progressBarIndex, false)
-      }
-
-      // 生成下载链接
-      const blobUrl = URL.createObjectURL(file)
-
-      // 向浏览器发送下载任务
-      this.browserDownload(blobUrl, this.fileName, arg.id, arg.taskBatch)
-      xhr = null as any
-      file = null as any
-    })
-    xhr.send()
+    // 向浏览器发送下载任务
+    this.browserDownload(arg.data.url, this.fileName, arg.id, arg.taskBatch)
   }
 
   // 向浏览器发送下载任务
   private browserDownload(
-    blobUrl: string,
+    url: string,
     fileName: string,
     id: string,
     taskBatch: number
@@ -138,13 +81,13 @@ class Download {
     // 如果任务已停止，不会向浏览器发送下载任务
     if (this.stoped) {
       // 释放 bloburl
-      URL.revokeObjectURL(blobUrl)
+      url.startsWith('blob') && URL.revokeObjectURL(url)
       return
     }
 
     const sendData: SendToBackEndData = {
       msg: 'send_download',
-      fileUrl: blobUrl,
+      fileUrl: url,
       fileName: fileName,
       id,
       taskBatch,
