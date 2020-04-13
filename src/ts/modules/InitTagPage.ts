@@ -32,7 +32,6 @@ class InitTagPage extends InitPageBase {
         API.getURLPathField('tag')
       )
     }
-    console.log(data)
     this.afterFetchPostList(data)
   }
 

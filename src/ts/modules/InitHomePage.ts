@@ -29,7 +29,6 @@ class InitHomePage extends InitPageBase {
     } else {
       data = await API.getPostListSupporting(300)
     }
-    console.log(data)
     this.afterFetchPostList(data)
   }
 

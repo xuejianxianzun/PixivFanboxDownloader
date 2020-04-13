@@ -1,4 +1,5 @@
 import { lang } from './Lang'
+import { store } from './Store'
 
 const formHtml = `<form class="settingForm">
   <div class="tabsTitle">
@@ -72,7 +73,7 @@ const formHtml = `<form class="settingForm">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="feeSwitch">
 
-      ${lang.transl('_最小值')}
+      ${lang.transl('_大于')}
       <input type="text" name="fee" class="setinput_style1 w100 blue" value="500"> ${lang.transl(
         '_日元'
       )}
@@ -85,8 +86,12 @@ const formHtml = `<form class="settingForm">
       <input type="checkbox" name="idRangeSwitch" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="idRangeSwitch">
-
-      ${lang.transl('_大于')}
+      <input type="radio" name="idRange" id="idRange2" class="need_beautify radio" value="2" checked>
+      <span class="beautify_radio"></span>
+      <label for="idRange2">  ${lang.transl('_小于')}&nbsp; </label>
+      <input type="radio" name="idRange" id="idRange1" class="need_beautify radio" value="1">
+      <span class="beautify_radio"></span>
+      <label for="idRange1">  ${lang.transl('_大于')}&nbsp; </label>
       <input type="text" name="idRangeInput" class="setinput_style1 w100 blue" value="0">
       </span>
       </p>
@@ -99,9 +104,13 @@ const formHtml = `<form class="settingForm">
       <input type="checkbox" name="postDate" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="postDate">
-      
-      ${lang.transl('_晚于')}
-      <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+      <input type="radio" name="postRange" id="postRange2" class="need_beautify radio" value="-1" checked>
+      <span class="beautify_radio"></span>
+      <label for="postRange2">  ${lang.transl('_早于')}&nbsp; </label>
+      <input type="radio" name="postRange" id="postRange1" class="need_beautify radio" value="1">
+      <span class="beautify_radio"></span>
+      <label for="postRange1">  ${lang.transl('_晚于')}&nbsp; </label>
+      <input type="datetime-local" name="postDateInput" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
       </span>
       </p>
 
@@ -121,20 +130,22 @@ const formHtml = `<form class="settingForm">
       <span class="has_tip settingNameStyle1" data-tip="${lang.transl(
         '_设置文件夹名的提示'
       )}">${lang.transl('_设置文件名')}<span class="gray1"> ? </span></span>
-      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="{id}">
+      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value=${
+        store.defaultFileName
+      }>
       &nbsp;
       <select name="fileNameSelect">
         <option value="default">…</option>
-        <option value="{id}">{id}</option>
-        <option value="{title}">{title}</option>
-        <option value="{name}">{name}</option>
-        <option value="{ext}">{ext}</option>
-        <option value="{index}">{index}</option>
-        <option value="{tags}">{tags}</option>
-        <option value="{date}">{date}</option>
-        <option value="{fee}">{fee}</option>
         <option value="{user}">{user}</option>
         <option value="{uid}">{uid}</option>
+        <option value="{title}">{title}</option>
+        <option value="{postid}">{postid}</option>
+        <option value="{date}">{date}</option>
+        <option value="{index}">{index}</option>
+        <option value="{name}">{name}</option>
+        <option value="{ext}">{ext}</option>
+        <option value="{fee}">{fee}</option>
+        <option value="{tags}">{tags}</option>
         </select>
       &nbsp;&nbsp;
       <span class="showFileNameTip">？</span>
@@ -143,9 +154,6 @@ const formHtml = `<form class="settingForm">
       <strong>${lang
         .transl('_设置文件夹名的提示')
         .replace('<br>', '. ')}</strong>
-      <br>
-      <span class="blue">{id}</span>
-      ${lang.transl('_命名标记id')}
       <br>
       <span class="blue">{user}</span>
       ${lang.transl('_命名标记user')}
@@ -156,11 +164,26 @@ const formHtml = `<form class="settingForm">
       <span class="blue">{title}</span>
       ${lang.transl('_命名标记title')}
       <br>
-      <span class="blue">{tags}</span>
-      ${lang.transl('_命名标记tags')}
+      <span class="blue">{postid}</span>
+      ${lang.transl('_命名标记postid')}
       <br>
       <span class="blue">{date}</span>
       ${lang.transl('_命名标记date')}
+      <br>
+      <span class="blue">{index}</span>
+      ${lang.transl('_命名标记index')}
+      <br>
+      <span class="blue">{name}</span>
+      ${lang.transl('_命名标记name')}
+      <br>
+      <span class="blue">{ext}</span>
+      ${lang.transl('_命名标记ext')}
+      <br>
+      <span class="blue">{fee}</span>
+      ${lang.transl('_命名标记fee')}
+      <br>
+      <span class="blue">{tags}</span>
+      ${lang.transl('_命名标记tags')}
       <br>
       ${lang.transl('_命名标记提醒')}
       </p>

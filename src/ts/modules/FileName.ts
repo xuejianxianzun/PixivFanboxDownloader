@@ -41,15 +41,27 @@ class FileName {
     return str
   }
 
+  private transDate(date: string) {
+    // 时间原数据如 "2019-12-18T22:23:37+00:00"
+    // 网页上显示的日期是转换成了本地时间的，如北京时区显示为 "2019-12-19"，不是显示原始日期 "2019-12-18"。所以这里转换成本地时区的日期，和网页上保持一致，以免用户困惑。
+    const date0 = new Date(date)
+    const y = date0.getFullYear()
+    const M = (date0.getMonth() + 1).toString().padStart(2, '0')
+    const d = date0.getDate().toString().padStart(2, '0')
+    const h = date0.getHours().toString().padStart(2, '0')
+    const m = date0.getMinutes().toString().padStart(2, '0')
+    return `${y}-${M}-${d} ${h}-${m}`
+  }
+
   // 生成文件名，传入参数为图片信息
   public getFileName(data: Result) {
     let result = form.userSetName.value
     // 为空时使用预设的命名规则
-    result = result || '{title}/{name}-{index}'
+    result = result || store.defaultFileName
 
     // 配置所有命名标记
     const cfg = {
-      '{id}': {
+      '{postid}': {
         value: data.id,
         safe: true,
       },
@@ -74,8 +86,8 @@ class FileName {
         safe: false,
       },
       '{date}': {
-        value: data.date,
-        safe: true,
+        value: this.transDate(data.date),
+        safe: false,
       },
       '{fee}': {
         value: data.fee,
@@ -148,9 +160,6 @@ class FileName {
     const length = store.result.length
     for (let i = 0; i < length; i++) {
       const data = store.result[i]
-      // 为默认文件名添加颜色。这里有两种处理方式，一种是取出用其他下载软件下载后的默认文件名，一种是取出本程序使用的默认文件名 data.id。这里使用前者，方便用户用其他下载软件下载后，再用生成的文件名重命名。
-      const defaultName = data.url.replace(/.*\//, '')
-      const defaultNameHtml = `<span class="color999">${defaultName}</span>`
       // 为生成的文件名添加颜色
       const fullName = this.getFileName(data)
       const part = fullName.split('/')
@@ -168,7 +177,7 @@ class FileName {
       const fullNameHtml = part.join('/')
 
       // 保存本条结果
-      const nowResult = `<p class="result">${defaultNameHtml}: ${fullNameHtml}</p>`
+      const nowResult = `<p class="result">${fullNameHtml}</p>`
       resultArr.push(nowResult)
     }
 

@@ -1,6 +1,7 @@
 import { filter } from './Filter'
 import { store } from './Store'
 import { FileResult, ResultMeta } from './Store.d'
+import { form } from './Settings'
 import {
   ServiceProvider,
   VideoProvider,
@@ -75,8 +76,27 @@ class SaveData {
 
     let index = 0 // 资源的序号
 
+    // 非 article 的投稿都有 text 字段，这这里统一提取里面的链接
+    // 提取文本中的链接有两种来源，一种是文章正文里的文本，一种是嵌入资源。先从正文提取链接，后提取嵌入资源的链接。这样链接保存下来的顺序比较合理。
+    if (data.type !== 'article') {
+      const links = this.getTextLinks(data.body.text, data.id)
+      result.links.text = result.links.text.concat(links)
+    }
+
     // 提取 article 投稿的资源
     if (data.type === 'article') {
+      // 从正文文本里提取链接
+      let texts = ''
+      for (const block of data.body.blocks) {
+        if (block.type === 'p') {
+          texts += block.text
+        }
+      }
+      if (texts) {
+        const links = this.getTextLinks(texts, data.id)
+        result.links.text = result.links.text.concat(links)
+      }
+
       // 保存图片资源
       for (const [id, imageData] of Object.entries(data.body.imageMap)) {
         index++
@@ -97,19 +117,7 @@ class SaveData {
         embedDataArr.push([embedData.serviceProvider, embedData.contentId])
       }
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
-      embedLinks !== null && result.links.text.concat(embedLinks)
-
-      // 从正文文本里提取链接
-      let texts = ''
-      for (const block of data.body.blocks) {
-        if (block.type === 'p') {
-          texts += block.text
-        }
-      }
-      if (texts) {
-        const links = this.getTextLinks(texts, data.id)
-        links !== null && result.links.text.concat(links)
-      }
+      result.links.text = result.links.text.concat(embedLinks)
     }
 
     // 提取 image 投稿的资源
@@ -140,16 +148,9 @@ class SaveData {
         [video.serviceProvider, video.videoId],
       ]
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
-      embedLinks !== null && result.links.text.concat(embedLinks)
+      result.links.text = result.links.text.concat(embedLinks)
     }
 
-    // 非 article 的投稿都有 text 字段，这这里统一提取里面的链接
-    if (data.type !== 'article') {
-      const links = this.getTextLinks(data.body.text, data.id)
-      links !== null && result.links.text.concat(links)
-    }
-
-    // 打印这一个作品里抓取到的资源
     store.addResult(result)
   }
 
@@ -192,6 +193,10 @@ class SaveData {
   // 从文本里提取链接
   private getTextLinks(text: string, postId: string) {
     const links: string[] = []
+
+    if (!form.saveLink.checked) {
+      return links
+    }
     const Reg = /https:\/\/[\w=\?\.\/&-]+/g
     const match = Reg.exec(text)
     if (match && match.length > 0) {
@@ -206,6 +211,10 @@ class SaveData {
   // 从嵌入的资源里，获取资源的原网址
   private getEmbedLinks(dataArr: EmbedDataArr, postId: string) {
     const links: string[] = []
+
+    if (!form.saveLink.checked) {
+      return links
+    }
 
     for (const data of dataArr) {
       const [serviceProvider, contentId] = data

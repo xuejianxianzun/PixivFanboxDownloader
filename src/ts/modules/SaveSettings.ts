@@ -1,6 +1,7 @@
 // 保存和初始化设置项
 // 只有部分设置会被保存
 import { EVT } from './EVT'
+import { store } from './Store'
 import { SettingsForm } from './Settings.d'
 
 interface fanboxSetting {
@@ -18,7 +19,7 @@ interface fanboxSetting {
   idRangeSwitch: boolean
   idRangeInput: number
   postDate: boolean
-  postDateStart: string
+  postDateInput: string
   saveLink: boolean
   userSetName: string
   quietDownload: boolean
@@ -74,9 +75,9 @@ class SaveSettings {
     idRangeSwitch: false,
     idRangeInput: 0,
     postDate: false,
-    postDateStart: '',
+    postDateInput: '',
     saveLink: true,
-    userSetName: '{id}',
+    userSetName: store.defaultFileName,
     quietDownload: true,
     downloadThread: 5,
   }
@@ -125,7 +126,7 @@ class SaveSettings {
     this.restoreString('setWantPage')
     this.restoreString('fee')
     this.restoreString('idRangeInput')
-    this.restoreString('postDateStart')
+    this.restoreString('postDateInput')
     this.restoreString('userSetName')
     this.restoreString('downloadThread')
 
@@ -177,7 +178,7 @@ class SaveSettings {
     this.saveTextInput('setWantPage')
     this.saveTextInput('fee')
     this.saveTextInput('idRangeInput')
-    this.saveTextInput('postDateStart')
+    this.saveTextInput('postDateInput')
     this.saveTextInput('downloadThread')
 
     this.saveCheckBox('image')
@@ -190,6 +191,8 @@ class SaveSettings {
     this.saveCheckBox('pay')
     this.saveCheckBox('feeSwitch')
     this.saveCheckBox('idRangeSwitch')
+    this.saveRadio('idRange')
+    this.saveRadio('postRange')
     this.saveCheckBox('postDate')
     this.saveCheckBox('saveLink')
     this.saveCheckBox('quietDownload')

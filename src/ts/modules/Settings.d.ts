@@ -11,9 +11,11 @@ export interface SettingsForm extends HTMLFormElement {
   feeSwitch: HTMLInputElement
   fee: HTMLInputElement
   idRangeSwitch: HTMLInputElement
+  idRange: RadioNodeList
   idRangeInput: HTMLInputElement
   postDate: HTMLInputElement
-  postDateStart: HTMLInputElement
+  postDateInput: HTMLInputElement
+  postRange: RadioNodeList
   saveLink: HTMLInputElement
   userSetName: HTMLInputElement
   fileNameSelect: HTMLSelectElement

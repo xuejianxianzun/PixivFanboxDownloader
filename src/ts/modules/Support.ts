@@ -10,7 +10,6 @@ class Support {
     this.listenPageSwitch()
     this.checkNew()
     this.showNew()
-    API.updateToken()
   }
 
   private newTag: langTextKeys = '_fbNew500'
@@ -99,8 +98,6 @@ class Support {
   // 监听页面的无刷新切换。某些页面可以无刷新切换，这时需要进行一些处理
   private listenPageSwitch() {
     // 绑定无刷新切换页面的事件，只绑定一次
-    // pixiv 的后退使用 replaceState
-    // pushState 判断从列表页进入作品页的情况，popstate 判断从作品页退回列表页的情况
     ;['pushState', 'popstate', 'replaceState'].forEach((item) => {
       window.addEventListener(item, () => {
         EVT.fire(EVT.events.pageSwitch)

@@ -1365,15 +1365,28 @@
             }
             return str
           }
+          transDate(date) {
+            // 时间原数据如 "2019-12-18T22:23:37+00:00"
+            // 网页上显示的日期是转换成了本地时间的，如北京时区显示为 "2019-12-19"，不是显示原始日期 "2019-12-18"。所以这里转换成本地时区的日期，和网页上保持一致，以免用户困惑。
+            const date0 = new Date(date)
+            const y = date0.getFullYear()
+            const M = (date0.getMonth() + 1).toString().padStart(2, '0')
+            const d = date0.getDate().toString().padStart(2, '0')
+            const h = date0.getHours().toString().padStart(2, '0')
+            const m = date0.getMinutes().toString().padStart(2, '0')
+            return `${y}-${M}-${d} ${h}-${m}`
+          }
           // 生成文件名，传入参数为图片信息
           getFileName(data) {
             let result =
               _Settings__WEBPACK_IMPORTED_MODULE_1__['form'].userSetName.value
             // 为空时使用预设的命名规则
-            result = result || '{title}/{name}-{index}'
+            result =
+              result ||
+              _Store__WEBPACK_IMPORTED_MODULE_2__['store'].defaultFileName
             // 配置所有命名标记
             const cfg = {
-              '{id}': {
+              '{postid}': {
                 value: data.id,
                 safe: true,
               },
@@ -1398,8 +1411,8 @@
                 safe: false,
               },
               '{date}': {
-                value: data.date,
-                safe: true,
+                value: this.transDate(data.date),
+                safe: false,
               },
               '{fee}': {
                 value: data.fee,
@@ -1476,9 +1489,6 @@
             for (let i = 0; i < length; i++) {
               const data =
                 _Store__WEBPACK_IMPORTED_MODULE_2__['store'].result[i]
-              // 为默认文件名添加颜色。这里有两种处理方式，一种是取出用其他下载软件下载后的默认文件名，一种是取出本程序使用的默认文件名 data.id。这里使用前者，方便用户用其他下载软件下载后，再用生成的文件名重命名。
-              const defaultName = data.url.replace(/.*\//, '')
-              const defaultNameHtml = `<span class="color999">${defaultName}</span>`
               // 为生成的文件名添加颜色
               const fullName = this.getFileName(data)
               const part = fullName.split('/')
@@ -1495,7 +1505,7 @@
               }
               const fullNameHtml = part.join('/')
               // 保存本条结果
-              const nowResult = `<p class="result">${defaultNameHtml}: ${fullNameHtml}</p>`
+              const nowResult = `<p class="result">${fullNameHtml}</p>`
               resultArr.push(nowResult)
             }
             // 拼接所有结果
@@ -1549,7 +1559,51 @@
               other: ['txt', 'pdf'],
             }
           }
-          init() {}
+          init() {
+            this.getIdRange()
+            this.getDateRange()
+          }
+          // 获取 id 范围设置
+          getIdRange() {
+            if (
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].idRangeSwitch
+                .checked
+            ) {
+              let id = parseInt(
+                _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].idRangeInput
+                  .value
+              )
+              if (isNaN(id)) {
+                _EVT__WEBPACK_IMPORTED_MODULE_2__['EVT'].fire(
+                  _EVT__WEBPACK_IMPORTED_MODULE_2__['EVT'].events.crawlError
+                )
+                const msg = 'id is not a number!'
+                window.alert(msg)
+                _Log__WEBPACK_IMPORTED_MODULE_1__['log'].error(msg)
+                throw new Error(msg)
+              }
+            }
+          }
+          getDateRange() {
+            if (
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDate.checked
+            ) {
+              const date = new Date(
+                _Settings__WEBPACK_IMPORTED_MODULE_0__[
+                  'form'
+                ].postDateInput.value
+              ).getTime()
+              if (isNaN(date)) {
+                _EVT__WEBPACK_IMPORTED_MODULE_2__['EVT'].fire(
+                  _EVT__WEBPACK_IMPORTED_MODULE_2__['EVT'].events.crawlError
+                )
+                const msg = 'Date format error!'
+                window.alert(msg)
+                _Log__WEBPACK_IMPORTED_MODULE_1__['log'].error(msg)
+                throw new Error(msg)
+              }
+            }
+          }
           // 检查作品是否符合过滤器的要求
           // 想要检查哪些数据就传递哪些数据，不需要传递 FilterOption 的所有选项
           check(option) {
@@ -1613,7 +1667,7 @@
               return true
             }
             return (
-              fee >
+              fee >=
               parseInt(_Settings__WEBPACK_IMPORTED_MODULE_0__['form'].fee.value)
             )
           }
@@ -1625,13 +1679,22 @@
             ) {
               return true
             }
+            const flag = parseInt(
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].idRange.value
+            )
             const nowId = parseInt(id.toString())
-            const setId =
-              parseInt(
-                _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].idRangeInput
-                  .value
-              ) || 0
-            return nowId > setId
+            const setId = parseInt(
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].idRangeInput.value
+            )
+            if (flag === 1) {
+              // 大于
+              return nowId > setId
+            } else if (flag === 2) {
+              // 小于
+              return nowId < setId
+            } else {
+              return true
+            }
           }
           checkPostDate(date) {
             if (
@@ -1640,18 +1703,22 @@
               date === undefined
             ) {
               return true
+            }
+            const flag = parseInt(
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postRange.value
+            )
+            const setDate = new Date(
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDateInput.value
+            )
+            const postDate = new Date(date)
+            if (flag === -1) {
+              // 小于
+              return postDate < setDate
+            } else if (flag === 1) {
+              // 大于
+              return postDate > setDate
             } else {
-              const nowDate = new Date(date)
-              const postDateStart = new Date(
-                _Settings__WEBPACK_IMPORTED_MODULE_0__[
-                  'form'
-                ].postDateStart.value
-              )
-              if (isNaN(postDateStart.getTime())) {
-                const msg = 'Date format error!'
-                this.throwError(msg)
-              }
-              return nowDate > postDateStart
+              return true
             }
           }
           // 当需要时抛出错误
@@ -2839,6 +2906,9 @@
         /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
           /*! ./Store */ './src/ts/modules/Store.ts'
         )
+        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+          /*! ./Settings */ './src/ts/modules/Settings.ts'
+        )
 
         class SaveData {
           constructor() {
@@ -2894,8 +2964,25 @@
             }
             // 提取它的资源文件，并对每个资源进行检查，决定是否保存
             let index = 0 // 资源的序号
+            // 非 article 的投稿都有 text 字段，这这里统一提取里面的链接
+            // 提取文本中的链接有两种来源，一种是文章正文里的文本，一种是嵌入资源。先从正文提取链接，后提取嵌入资源的链接。这样链接保存下来的顺序比较合理。
+            if (data.type !== 'article') {
+              const links = this.getTextLinks(data.body.text, data.id)
+              result.links.text = result.links.text.concat(links)
+            }
             // 提取 article 投稿的资源
             if (data.type === 'article') {
+              // 从正文文本里提取链接
+              let texts = ''
+              for (const block of data.body.blocks) {
+                if (block.type === 'p') {
+                  texts += block.text
+                }
+              }
+              if (texts) {
+                const links = this.getTextLinks(texts, data.id)
+                result.links.text = result.links.text.concat(links)
+              }
               // 保存图片资源
               for (const [id, imageData] of Object.entries(
                 data.body.imageMap
@@ -2921,18 +3008,7 @@
                 ])
               }
               const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
-              embedLinks !== null && result.links.text.concat(embedLinks)
-              // 从正文文本里提取链接
-              let texts = ''
-              for (const block of data.body.blocks) {
-                if (block.type === 'p') {
-                  texts += block.text
-                }
-              }
-              if (texts) {
-                const links = this.getTextLinks(texts, data.id)
-                links !== null && result.links.text.concat(links)
-              }
+              result.links.text = result.links.text.concat(embedLinks)
             }
             // 提取 image 投稿的资源
             if (data.type === 'image') {
@@ -2958,14 +3034,8 @@
               const video = data.body.video
               const embedDataArr = [[video.serviceProvider, video.videoId]]
               const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
-              embedLinks !== null && result.links.text.concat(embedLinks)
+              result.links.text = result.links.text.concat(embedLinks)
             }
-            // 非 article 的投稿都有 text 字段，这这里统一提取里面的链接
-            if (data.type !== 'article') {
-              const links = this.getTextLinks(data.body.text, data.id)
-              links !== null && result.links.text.concat(links)
-            }
-            // 打印这一个作品里抓取到的资源
             _Store__WEBPACK_IMPORTED_MODULE_1__['store'].addResult(result)
           }
           getImageData(imageData, index) {
@@ -3003,6 +3073,11 @@
           // 从文本里提取链接
           getTextLinks(text, postId) {
             const links = []
+            if (
+              !_Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveLink.checked
+            ) {
+              return links
+            }
             const Reg = /https:\/\/[\w=\?\.\/&-]+/g
             const match = Reg.exec(text)
             if (match && match.length > 0) {
@@ -3015,6 +3090,11 @@
           // 从嵌入的资源里，获取资源的原网址
           getEmbedLinks(dataArr, postId) {
             const links = []
+            if (
+              !_Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveLink.checked
+            ) {
+              return links
+            }
             for (const data of dataArr) {
               const [serviceProvider, contentId] = data
               links.push(this.providerDict[serviceProvider] + contentId)
@@ -3045,6 +3125,9 @@
         /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
           /*! ./EVT */ './src/ts/modules/EVT.ts'
         )
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+          /*! ./Store */ './src/ts/modules/Store.ts'
+        )
         // 保存和初始化设置项
         // 只有部分设置会被保存
 
@@ -3068,9 +3151,10 @@
               idRangeSwitch: false,
               idRangeInput: 0,
               postDate: false,
-              postDateStart: '',
+              postDateInput: '',
               saveLink: true,
-              userSetName: '{id}',
+              userSetName:
+                _Store__WEBPACK_IMPORTED_MODULE_1__['store'].defaultFileName,
               quietDownload: true,
               downloadThread: 5,
             }
@@ -3134,7 +3218,7 @@
             this.restoreString('setWantPage')
             this.restoreString('fee')
             this.restoreString('idRangeInput')
-            this.restoreString('postDateStart')
+            this.restoreString('postDateInput')
             this.restoreString('userSetName')
             this.restoreString('downloadThread')
             this.restoreBoolean('image')
@@ -3181,7 +3265,7 @@
             this.saveTextInput('setWantPage')
             this.saveTextInput('fee')
             this.saveTextInput('idRangeInput')
-            this.saveTextInput('postDateStart')
+            this.saveTextInput('postDateInput')
             this.saveTextInput('downloadThread')
             this.saveCheckBox('image')
             this.saveCheckBox('music')
@@ -3193,6 +3277,8 @@
             this.saveCheckBox('pay')
             this.saveCheckBox('feeSwitch')
             this.saveCheckBox('idRangeSwitch')
+            this.saveRadio('idRange')
+            this.saveRadio('postRange')
             this.saveCheckBox('postDate')
             this.saveCheckBox('saveLink')
             this.saveCheckBox('quietDownload')
@@ -3247,6 +3333,9 @@
         __webpack_require__.r(__webpack_exports__)
         /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
           /*! ./Lang */ './src/ts/modules/Lang.ts'
+        )
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+          /*! ./Store */ './src/ts/modules/Store.ts'
         )
 
         const formHtml = `<form class="settingForm">
@@ -3351,7 +3440,7 @@
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="feeSwitch">
 
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_最小值')}
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_大于')}
       <input type="text" name="fee" class="setinput_style1 w100 blue" value="500"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
         'lang'
       ].transl('_日元')}
@@ -3366,8 +3455,16 @@
       <input type="checkbox" name="idRangeSwitch" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="idRangeSwitch">
-
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_大于')}
+      <input type="radio" name="idRange" id="idRange2" class="need_beautify radio" value="2" checked>
+      <span class="beautify_radio"></span>
+      <label for="idRange2">  ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
+        'lang'
+      ].transl('_小于')}&nbsp; </label>
+      <input type="radio" name="idRange" id="idRange1" class="need_beautify radio" value="1">
+      <span class="beautify_radio"></span>
+      <label for="idRange1">  ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
+        'lang'
+      ].transl('_大于')}&nbsp; </label>
       <input type="text" name="idRangeInput" class="setinput_style1 w100 blue" value="0">
       </span>
       </p>
@@ -3382,9 +3479,17 @@
       <input type="checkbox" name="postDate" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="postDate">
-      
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_晚于')}
-      <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+      <input type="radio" name="postRange" id="postRange2" class="need_beautify radio" value="-1" checked>
+      <span class="beautify_radio"></span>
+      <label for="postRange2">  ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
+        'lang'
+      ].transl('_早于')}&nbsp; </label>
+      <input type="radio" name="postRange" id="postRange1" class="need_beautify radio" value="1">
+      <span class="beautify_radio"></span>
+      <label for="postRange1">  ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
+        'lang'
+      ].transl('_晚于')}&nbsp; </label>
+      <input type="datetime-local" name="postDateInput" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
       </span>
       </p>
 
@@ -3406,20 +3511,22 @@
       ].transl('_设置文件夹名的提示')}">${_Lang__WEBPACK_IMPORTED_MODULE_0__[
           'lang'
         ].transl('_设置文件名')}<span class="gray1"> ? </span></span>
-      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="{id}">
+      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value=${
+        _Store__WEBPACK_IMPORTED_MODULE_1__['store'].defaultFileName
+      }>
       &nbsp;
       <select name="fileNameSelect">
         <option value="default">…</option>
-        <option value="{id}">{id}</option>
-        <option value="{title}">{title}</option>
-        <option value="{name}">{name}</option>
-        <option value="{ext}">{ext}</option>
-        <option value="{index}">{index}</option>
-        <option value="{tags}">{tags}</option>
-        <option value="{date}">{date}</option>
-        <option value="{fee}">{fee}</option>
         <option value="{user}">{user}</option>
         <option value="{uid}">{uid}</option>
+        <option value="{title}">{title}</option>
+        <option value="{postid}">{postid}</option>
+        <option value="{date}">{date}</option>
+        <option value="{index}">{index}</option>
+        <option value="{name}">{name}</option>
+        <option value="{ext}">{ext}</option>
+        <option value="{fee}">{fee}</option>
+        <option value="{tags}">{tags}</option>
         </select>
       &nbsp;&nbsp;
       <span class="showFileNameTip">？</span>
@@ -3428,9 +3535,6 @@
       <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang']
         .transl('_设置文件夹名的提示')
         .replace('<br>', '. ')}</strong>
-      <br>
-      <span class="blue">{id}</span>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记id')}
       <br>
       <span class="blue">{user}</span>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记user')}
@@ -3441,11 +3545,26 @@
       <span class="blue">{title}</span>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记title')}
       <br>
-      <span class="blue">{tags}</span>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记tags')}
+      <span class="blue">{postid}</span>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记postid')}
       <br>
       <span class="blue">{date}</span>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记date')}
+      <br>
+      <span class="blue">{index}</span>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记index')}
+      <br>
+      <span class="blue">{name}</span>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记name')}
+      <br>
+      <span class="blue">{ext}</span>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记ext')}
+      <br>
+      <span class="blue">{fee}</span>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记fee')}
+      <br>
+      <span class="blue">{tags}</span>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记tags')}
       <br>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记提醒')}
       </p>
@@ -3760,6 +3879,7 @@
           constructor() {
             this.resultMeta = [] // 储存抓取结果的元数据
             this.result = [] // 储存抓取结果
+            this.defaultFileName = '{user}/{title}/{index}'
             // 储存和下载有关的状态
             this.states = {
               allowWork: true,
@@ -3817,12 +3937,7 @@
           // 添加每个作品的信息。只需要传递有值的属性
           addResult(data) {
             this.resultMeta.push(data)
-            // 为投稿里的每个 files 生成一份数据
-            const files = data.files
-            for (const fileData of files) {
-              const result = Object.assign(this.getCommonData(data), fileData)
-              this.result.push(result)
-            }
+            // 因为文本的体积小，所以首先生成文本数据，它会被最早下载。这样不用等待大文件下载完了才下载文本文件
             // 为投稿里的所有 text 生成一份数据
             if (data.links.text.length > 0) {
               const text = data.links.text.join('\r\n')
@@ -3832,6 +3947,12 @@
               data.links.url = URL.createObjectURL(blob)
               data.links.size = blob.size
               const result = Object.assign(this.getCommonData(data), data.links)
+              this.result.push(result)
+            }
+            // 为投稿里的每个 files 生成一份数据
+            const files = data.files
+            for (const fileData of files) {
+              const result = Object.assign(this.getCommonData(data), fileData)
               this.result.push(result)
             }
           }
@@ -4582,10 +4703,10 @@
             '設定命名規則',
           ],
           _设置文件夹名的提示: [
-            `可以使用 '/' 建立文件夹<br>示例：{p_title}/{user}/{id}`,
-            `フォルダーは '/' で作成できます<br>例：{p_title}/{user}/{id}`,
-            `You can create a directory with '/'<br>Example：{p_title}/{user}/{id}`,
-            `可以使用 '/' 建立資料夾<br>範例：{p_title}/{user}/{id}`,
+            `可以使用 '/' 建立文件夹<br>示例：{user}/{title}/{index}`,
+            `フォルダーは '/' で作成できます<br>例：{user}/{title}/{index}`,
+            `You can create a directory with '/'<br>Example：{user}/{title}/{index}`,
+            `可以使用 '/' 建立資料夾<br>範例：{user}/{title}/{index}`,
           ],
           _添加命名标记前缀: [
             '添加命名标记前缀',
@@ -4605,24 +4726,6 @@
             'View the meaning of the tag',
             '檢視標記的意義',
           ],
-          _命名标记id: [
-            '默认文件名，如 44920385_p0',
-            'デフォルトのファイル名，例 44920385_p0',
-            'Default file name, for example 44920385_p0',
-            '預設檔案名稱，如 44920385_p0',
-          ],
-          _命名标记title: [
-            '作品标题',
-            '作品のタイトル',
-            'works title',
-            '作品標題',
-          ],
-          _命名标记tags: [
-            '作品的 tag 列表',
-            '作品の tags',
-            'The tags of the work',
-            '作品的 tag 清單',
-          ],
           _命名标记user: [
             '画师名字',
             'アーティスト名',
@@ -4630,72 +4733,6 @@
             '畫師名稱',
           ],
           _命名标记uid: ['画师 id', 'アーティスト ID', 'Artist id', '畫師 id'],
-          _命名标记px: [
-            '宽度和高度',
-            '幅と高さ',
-            'width and height',
-            '寬度和高度',
-          ],
-          _命名标记bmk: [
-            'bookmark-count，作品的收藏数。把它放在最前面可以让文件按收藏数排序。',
-            'bookmark-count，作品のボックマークの数、前に追加することでボックマーク数で并べることができます。',
-            'bookmark-count, bookmarks number of works.',
-            'bookmark-count，作品的收藏數。將它放在最前面可以讓檔案依收藏數排序。',
-          ],
-          _命名标记9: [
-            '数字 id，如 44920385',
-            '44920385 などの番号 ID',
-            'Number id, for example 44920385',
-            '數字 id，如 44920385',
-          ],
-          _命名标记p_num: [
-            '图片在作品内的序号，如 0、1、2 …… 每个作品都会重新计数。',
-            '0、1、2 など、作品の画像のシリアル番号。各ピースは再集計されます。',
-            'The serial number of the picture in the work, such as 0, 1, 2 ... Each work will be recounted.',
-            '圖片在作品內的序號，如 0、1、2 …… 每個作品都將重新計數。',
-          ],
-          _命名标记tags_trans: [
-            '作品的 tag 列表，附带翻译后的 tag（如果有）',
-            '作品の tag リスト、翻訳付き tag (あれば)',
-            'The tags of the work, with the translated tag (if any)',
-            '作品的 tag 清單，附帶翻譯後的 tag（若有的話）',
-          ],
-          _命名标记date: [
-            '作品的创建日期，格式为 yyyy-MM-dd。如 2019-08-29',
-            '作品の作成日は yyyy-MM-dd の形式でした。 2019-08-29 など',
-            'The date the creation of the work was in the format yyyy-MM-dd. Such as 2019-08-29',
-            '作品的建立日期，格式為 yyyy-MM-dd。如 2019-08-29',
-          ],
-          _命名标记rank: [
-            '作品在排行榜中的排名。如 #1、#2 …… 只能在排行榜页面中使用。',
-            '作品のランキング。例え　#1、#2 …… ランキングページのみで使用できます。',
-            'The ranking of the work in the ranking pages. Such as #1, #2 ... Can only be used in ranking pages.',
-            '作品在排行榜中的排名。如 #1、#2 …… 只能在排行榜頁面中使用。',
-          ],
-          _命名标记type: [
-            '作品类型，分为 illustration、manga、ugoira',
-            '作品分類は、illustration、manga、ugoira',
-            'The type of work, divided into illustration, manga, ugoira',
-            '作品類型，分为 illustration、manga、ugoira',
-          ],
-          _命名标记提醒: [
-            '您可以使用多个标记；建议在不同标记之间添加分割用的字符。示例：{id}-{uid}<br>一定要包含 {id} 或者 {id_num}。<br>* 在某些情况下，会有一些标记不可用。',
-            '複数のタグを使用することができます；異なるタグ間の分割のために文字を追加することをお勧めします。例：{id}-{uid}<br>必ず{id}または{id_num}を含めてください。<br>* 場合によっては、一部の tag が利用できず。',
-            'You can use multiple tags, and you can add a separate character between different tags. Example: {id}-{uid}<br>Be sure to include {id} or {id_num}.<br>* In some cases, some tags will not be available.',
-            '您可以使用多個標記；建議在不同標記之間加入分隔用的字元。範例：{id}-{uid}<br>一定要包含 {id} 或者 {id_num}。<br>* 在某些情況下，會有一些標記不可用。',
-          ],
-          _文件夹标记PTag: [
-            '当前页面的 tag。当前页面没有 tag 时不可用。',
-            '現在のページの tag。現在のページの tag がないときは使用できません。',
-            'The tag of the current page. Not available if the current page has no tag.',
-            '目前頁面的 tag。目前頁面沒有 tag 時無法使用。',
-          ],
-          _文件夹标记PTitle: [
-            '当前页面的标题',
-            'ページのタイトル',
-            'The title of this page',
-            '目前頁面的標題',
-          ],
           _预览文件名: [
             '预览文件名',
             'ファイル名のプレビュー',
@@ -5266,11 +5303,24 @@
             'Get {} image URLs',
             '已取得 {} 個圖片網址',
           ],
+          _早于: ['早于'],
           _抓取赞助的所有用户的投稿: ['抓取赞助的所有用户的投稿'],
           _抓取该用户的投稿: ['抓取该用户的投稿'],
           _抓取该tag的投稿: ['抓取该 tag 的投稿'],
           _抓取这篇投稿: ['抓取这篇投稿'],
           _抓取商品的封面图: ['抓取商品的封面图'],
+          _命名标记提示: ['命名标记提示'],
+          _命名标记postid: ['投稿的 id'],
+          _命名标记title: ['投稿的标题'],
+          _命名标记tags: ['投稿的 tag 列表（可能为空）'],
+          _命名标记date: ['投稿的发布日期，如 2019-08-29 12-30'],
+          _命名标记fee: ['投稿的价格'],
+          _命名标记index: ['文件在它所属的投稿里的序号'],
+          _命名标记name: ['文件自身的文件名'],
+          _命名标记ext: ['文件的扩展名'],
+          _命名标记提醒: [
+            '您可以使用多个标记；建议在不同标记之间添加分割用的字符。示例：{title}-{postid}<br>建议在命名规则中包含 {postid} 和 {index}，防止文件名重复。',
+          ],
         }
 
         /***/
