@@ -15,7 +15,6 @@ class PageType {
 
   // 判断页面类型
   public getPageType(): number {
-    const url = window.location.href
     let type: number
 
     if (window.location.pathname === '/fanbox') {

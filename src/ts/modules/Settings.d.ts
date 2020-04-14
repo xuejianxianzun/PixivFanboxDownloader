@@ -1,5 +1,4 @@
 export interface SettingsForm extends HTMLFormElement {
-  setWantPage: HTMLInputElement
   image: HTMLInputElement
   music: HTMLInputElement
   video: HTMLInputElement

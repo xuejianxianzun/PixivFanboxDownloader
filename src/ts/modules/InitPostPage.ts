@@ -40,6 +40,14 @@ class InitPostPage extends InitPageBase {
     )
   }
 
+  protected destroy() {
+    DOM.clearSlot('crawlBtns')
+
+    // 删除快速下载按钮
+    const quickBtn = document.querySelector('#quick_down_btn')
+    quickBtn && quickBtn.remove()
+  }
+
   protected nextStep() {
     this.fetchPost()
   }

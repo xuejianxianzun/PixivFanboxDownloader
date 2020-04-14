@@ -89,7 +89,7 @@ class SaveData {
       let texts = ''
       for (const block of data.body.blocks) {
         if (block.type === 'p') {
-          texts += block.text
+          texts += block.text + ' ' // 不同文字之间用空格分开，防止匹配出现粘连
         }
       }
       if (texts) {

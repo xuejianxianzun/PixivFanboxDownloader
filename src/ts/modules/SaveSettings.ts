@@ -5,7 +5,6 @@ import { store } from './Store'
 import { SettingsForm } from './Settings.d'
 
 interface fanboxSetting {
-  setWantPage: number
   image: boolean
   music: boolean
   video: boolean
@@ -61,7 +60,6 @@ class SaveSettings {
 
   // 需要持久化保存的设置的默认值
   private readonly optionDefault: fanboxSetting = {
-    setWantPage: -1,
     image: true,
     music: true,
     video: true,
@@ -123,7 +121,6 @@ class SaveSettings {
       return
     }
 
-    this.restoreString('setWantPage')
     this.restoreString('fee')
     this.restoreString('idRangeInput')
     this.restoreString('postDateInput')
@@ -174,8 +171,6 @@ class SaveSettings {
   // 绑定所有选项的事件，当选项变动触发 settingChange 事件
   // 只可执行一次，否则事件会重复绑定
   private bindOptionEvent() {
-    // 保存下载的作品类型
-    this.saveTextInput('setWantPage')
     this.saveTextInput('fee')
     this.saveTextInput('idRangeInput')
     this.saveTextInput('postDateInput')

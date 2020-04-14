@@ -149,6 +149,9 @@
         /* harmony import */ var _modules_Output__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
           /*! ./modules/Output */ './src/ts/modules/Output.ts'
         )
+        /* harmony import */ var _modules_Support__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+          /*! ./modules/Support */ './src/ts/modules/Support.ts'
+        )
         /*
          * project: Pixiv Fanbox Downloader
          * author:  xuejianxianzun; 雪见仙尊
@@ -160,8 +163,6 @@
          * E-mail:  xuejianxianzun@gmail.com
          * QQ group:  853021998
          */
-
-        // import './modules/Support'
 
         /***/
       },
@@ -336,11 +337,6 @@
       <div class="centerWrap_head">
       <p class="centerWrap_title blue">Pixiv Fanbox Downloader</p>
       <div class="btns">
-      <a class="has_tip centerWrap_top_btn update" data-tip="${_Lang__WEBPACK_IMPORTED_MODULE_0__[
-        'lang'
-      ].transl('_newver')}" href="" target="_blank">
-      <svg t="1574401457339" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4736" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16"><defs><style type="text/css"></style></defs><path d="M894.72 795.477333l-85.418667-85.418667c0.128-0.170667 0.170667-0.341333 0.298667-0.512l-158.890667-158.890667c0.042667-0.597333 37.248-37.248 37.248-37.248l178.773333 0 1.706667-1.493333c-0.853333-196.736-160.426667-356.053333-357.418667-356.053333-72.704 0-140.202667 22.016-196.650667 59.306667L228.949333 129.664C307.968 71.466667 405.333333 36.650667 511.018667 36.650667c263.296 0 476.757333 213.461333 476.757333 476.714667C987.776 619.093333 952.96 716.416 894.72 795.477333zM369.493333 476.117333c-0.042667 0.597333-37.248 37.248-37.248 37.248l-178.773333 0c0 197.461333 160.085333 357.546667 357.546667 357.546667 72.192 0 139.093333-21.76 195.285333-58.538667l85.589333 85.589333c-78.848 57.685333-175.701333 92.117333-280.874667 92.117333-263.296 0-476.757333-213.461333-476.757333-476.757333 0-105.173333 34.474667-202.069333 92.16-280.874667l85.589333 85.589333C211.925333 318.208 211.882667 318.336 211.797333 318.464L369.493333 476.117333z" p-id="4737"></path></svg>
-      </a>
       <a class="has_tip centerWrap_top_btn" data-tip="${_Lang__WEBPACK_IMPORTED_MODULE_0__[
         'lang'
       ].transl(
@@ -1799,7 +1795,6 @@
                 'API'
               ].getPostListSupporting(300)
             }
-            console.log(data)
             this.afterFetchPostList(data)
           }
           async fetchPost() {}
@@ -1918,13 +1913,10 @@
         /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
           /*! ./EVT */ './src/ts/modules/EVT.ts'
         )
-        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
-          /*! ./Settings */ './src/ts/modules/Settings.ts'
-        )
-        /* harmony import */ var _TitleBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+        /* harmony import */ var _TitleBar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
           /*! ./TitleBar */ './src/ts/modules/TitleBar.ts'
         )
-        /* harmony import */ var _SaveData__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+        /* harmony import */ var _SaveData__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
           /*! ./SaveData */ './src/ts/modules/SaveData.ts'
         )
         // 初始化抓取页面的流程
@@ -1951,7 +1943,6 @@
           // 销毁初始化页面时添加的元素和事件，恢复设置项等
           destroy() {
             _DOM__WEBPACK_IMPORTED_MODULE_2__['DOM'].clearSlot('crawlBtns')
-            _DOM__WEBPACK_IMPORTED_MODULE_2__['DOM'].clearSlot('otherBtns')
           }
           // 添加中间按钮
           appendCenterBtns() {
@@ -1978,40 +1969,6 @@
             window.alert(msg)
             throw new Error(msg)
           }
-          // 检查用户输入的投稿数量设置，并返回提示信息
-          // 可以为 -1，或者大于 0
-          checkWantPageInput(crawlPartTip, crawlAllTip) {
-            const temp = parseInt(
-              _Settings__WEBPACK_IMPORTED_MODULE_7__['form'].setWantPage.value
-            )
-            // 如果比 1 小，并且不是 -1，则不通过
-            if ((temp < 1 && temp !== -1) || isNaN(temp)) {
-              // 比 1 小的数里，只允许 -1 , 0 也不行
-              this.getWantPageError()
-            }
-            if (temp >= 1) {
-              _Log__WEBPACK_IMPORTED_MODULE_5__['log'].warning(
-                crawlPartTip.replace('-num-', temp.toString())
-              )
-            } else if (temp === -1) {
-              _Log__WEBPACK_IMPORTED_MODULE_5__['log'].warning(crawlAllTip)
-            }
-            return temp
-          }
-          // 获取投稿数量设置
-          getWantPage() {
-            const wantPage = parseInt(
-              _Settings__WEBPACK_IMPORTED_MODULE_7__['form'].setWantPage.value
-            )
-            if (isNaN(wantPage)) {
-              this.getWantPageError()
-            }
-            if (wantPage > 0) {
-              this.crawlNumber = wantPage
-            } else {
-              this.crawlNumber = -1
-            }
-          }
           // 准备抓取，进行抓取之前的一些检查工作。必要时可以在子类中改写
           async readyCrawl() {
             if (
@@ -2031,8 +1988,7 @@
             _Log__WEBPACK_IMPORTED_MODULE_5__['log'].success(
               _Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_任务开始0')
             )
-            _TitleBar__WEBPACK_IMPORTED_MODULE_8__['titleBar'].change('↑')
-            this.getWantPage()
+            _TitleBar__WEBPACK_IMPORTED_MODULE_7__['titleBar'].change('↑')
             _Filter__WEBPACK_IMPORTED_MODULE_3__['filter'].init()
             // 进入第一个抓取方法
             this.nextStep()
@@ -2045,7 +2001,7 @@
             const items = data.body.items
             this.nextUrl = data.body.nextUrl
             for (const item of items) {
-              _SaveData__WEBPACK_IMPORTED_MODULE_9__['saveData'].receive(item)
+              _SaveData__WEBPACK_IMPORTED_MODULE_8__['saveData'].receive(item)
             }
             if (this.nextUrl) {
               this.FetchPostList()
@@ -2054,7 +2010,7 @@
             }
           }
           afterFetchPost(data) {
-            _SaveData__WEBPACK_IMPORTED_MODULE_9__['saveData'].receive(
+            _SaveData__WEBPACK_IMPORTED_MODULE_8__['saveData'].receive(
               data.body
             )
             this.crawlFinished()
@@ -2088,7 +2044,7 @@
             _EVT__WEBPACK_IMPORTED_MODULE_6__['EVT'].fire(
               _EVT__WEBPACK_IMPORTED_MODULE_6__['EVT'].events.crawlEmpty
             )
-            _TitleBar__WEBPACK_IMPORTED_MODULE_8__['titleBar'].reset()
+            _TitleBar__WEBPACK_IMPORTED_MODULE_7__['titleBar'].reset()
             _Log__WEBPACK_IMPORTED_MODULE_5__['log'].error(
               _Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
                 '_抓取结果为零'
@@ -2172,7 +2128,6 @@
                 300
               )
             }
-            console.log(data)
             this.afterFetchPostList(data)
           }
           async fetchPost() {}
@@ -2257,6 +2212,12 @@
               false
             )
           }
+          destroy() {
+            _DOM__WEBPACK_IMPORTED_MODULE_2__['DOM'].clearSlot('crawlBtns')
+            // 删除快速下载按钮
+            const quickBtn = document.querySelector('#quick_down_btn')
+            quickBtn && quickBtn.remove()
+          }
           nextStep() {
             this.fetchPost()
           }
@@ -2340,7 +2301,6 @@
                 _API__WEBPACK_IMPORTED_MODULE_4__['API'].getURLPathField('tag')
               )
             }
-            console.log(data)
             this.afterFetchPostList(data)
           }
           async fetchPost() {}
@@ -2657,7 +2617,6 @@
           }
           // 判断页面类型
           getPageType() {
-            const url = window.location.href
             let type
             if (window.location.pathname === '/fanbox') {
               // https://www.pixiv.net/fanbox
@@ -2976,7 +2935,7 @@
               let texts = ''
               for (const block of data.body.blocks) {
                 if (block.type === 'p') {
-                  texts += block.text
+                  texts += block.text + ' ' // 不同文字之间用空格分开，防止匹配出现粘连
                 }
               }
               if (texts) {
@@ -3137,7 +3096,6 @@
             this.storeName = 'fanboxSetting'
             // 需要持久化保存的设置的默认值
             this.optionDefault = {
-              setWantPage: -1,
               image: true,
               music: true,
               video: true,
@@ -3215,7 +3173,6 @@
               // 如果没有保存过，则不做处理
               return
             }
-            this.restoreString('setWantPage')
             this.restoreString('fee')
             this.restoreString('idRangeInput')
             this.restoreString('postDateInput')
@@ -3261,8 +3218,6 @@
           // 绑定所有选项的事件，当选项变动触发 settingChange 事件
           // 只可执行一次，否则事件会重复绑定
           bindOptionEvent() {
-            // 保存下载的作品类型
-            this.saveTextInput('setWantPage')
             this.saveTextInput('fee')
             this.saveTextInput('idRangeInput')
             this.saveTextInput('postDateInput')
@@ -3346,29 +3301,9 @@
     <div class="title">${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
       '_下载'
     )}</div>
-    <div class="title">${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
-      '_其他'
-    )}</div>
   </div>
   <div class="tabsContnet">
     <div class="con">
-
-      <p class="option" data-no="1">
-      <span class="setWantPageWrap">
-      <span class="has_tip settingNameStyle1 setWantPageTip1" data-tip="${_Lang__WEBPACK_IMPORTED_MODULE_0__[
-        'lang'
-      ].transl(
-        '_投稿数量说明'
-      )}" style="margin-right: 0px;">${_Lang__WEBPACK_IMPORTED_MODULE_0__[
-          'lang'
-        ].transl('_投稿数量')}</span>
-      <span class="gray1" style="margin-right: 10px;"> ? </span>
-      <input type="text" name="setWantPage" class="setinput_style1 blue setWantPage"
-      value = '-1'>
-      &nbsp;&nbsp;&nbsp;
-      <span class="setWantPageTip2 gray1">-1 或者大于 0 的数字</span>
-      </span>
-      </p>
 
       <p class="option" data-no="2">
       <span class="settingNameStyle1">${_Lang__WEBPACK_IMPORTED_MODULE_0__[
@@ -3440,7 +3375,7 @@
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="feeSwitch">
 
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_大于')}
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_最小值')}
       <input type="text" name="fee" class="setinput_style1 w100 blue" value="500"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
         'lang'
       ].transl('_日元')}
@@ -3592,10 +3527,6 @@
 
       <slot data-name="downloadArea"></slot>
       <slot data-name="progressBar"></slot>
-    </div>
-    <div class="con">
-      
-      <slot data-name="otherBtns" class="centerWrap_btns"></slot>
     </div>
   </div>
 </form>`
@@ -3970,6 +3901,61 @@
         /***/
       },
 
+    /***/ './src/ts/modules/Support.ts':
+      /*!***********************************!*\
+  !*** ./src/ts/modules/Support.ts ***!
+  \***********************************/
+      /*! no exports provided */
+      /***/ function (module, __webpack_exports__, __webpack_require__) {
+        'use strict'
+        __webpack_require__.r(__webpack_exports__)
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+          /*! ./EVT */ './src/ts/modules/EVT.ts'
+        )
+
+        // 辅助功能
+        class Support {
+          constructor() {
+            this.supportListenHistory()
+            this.listenPageSwitch()
+          }
+          // 使用无刷新加载的页面需要监听 url 的改变，这里为这些事件添加监听支持
+          supportListenHistory() {
+            const element = document.createElement('script')
+            element.setAttribute('type', 'text/javascript')
+            element.innerHTML = `
+    let _wr = function (type) {
+      let orig = history[type];
+      return function () {
+        let rv = orig.apply(this, arguments);
+        let e = new Event(type);
+        e.arguments = arguments;
+        window.dispatchEvent(e);
+        return rv;
+      };
+    };
+    history.pushState = _wr('pushState');
+    history.replaceState = _wr('replaceState');
+    `
+            document.head.appendChild(element)
+          }
+          // 监听页面的无刷新切换。某些页面可以无刷新切换，这时需要进行一些处理
+          listenPageSwitch() {
+            // 绑定无刷新切换页面的事件，只绑定一次
+            ;['pushState', 'popstate', 'replaceState'].forEach((item) => {
+              window.addEventListener(item, () => {
+                _EVT__WEBPACK_IMPORTED_MODULE_0__['EVT'].fire(
+                  _EVT__WEBPACK_IMPORTED_MODULE_0__['EVT'].events.pageSwitch
+                )
+              })
+            })
+          }
+        }
+        new Support()
+
+        /***/
+      },
+
     /***/ './src/ts/modules/Tip.ts':
       /*!*******************************!*\
   !*** ./src/ts/modules/Tip.ts ***!
@@ -4150,144 +4136,14 @@
           }
         )
         const langText = {
-          _只下载已收藏: [
-            '只下载已收藏',
-            'ブックマークのみをダウンロードする',
-            'Download only bookmarked works',
-            '只下載已收藏',
-          ],
-          _只下载已收藏的提示: [
-            '只下载已经收藏的作品',
-            'ブックマークした作品のみをダウンロードする',
-            'Download only bookmarked works',
-            '只下載已經收藏的作品',
-          ],
-          _下载作品类型: [
-            '下载作品类型',
-            'ダウンロード作品の種類',
-            'Download work type',
-            '下載作品類型',
-          ],
-          _下载作品类型的提示: [
-            '下载哪些类型的作品',
-            'どの種類の作品をダウンロードしますか',
-            'Which types of works to download',
-            '下載哪些類型的作品',
-          ],
-          _多p下载前几张: [
-            '设置作品张数',
-            '作品ごとにダウンロード画像の数',
-            'Number of images downloaded per work',
-            '設定作品張數',
-          ],
-          _多p下载前几张提示: [
-            '下载每个作品的前几张图片。默认值 0 表示全部下载。',
-            '各作品の画像が最初の何枚をダウンロードしますか？ デフォルト値の 0 は、すべてをダウンロードします。',
-            'Download the first few images of each piece. The default value of 0 means all downloads.',
-            '下載每個作品的前幾張圖片。預設值 0 表示全部下載。',
-          ],
-          _不能含有tag: [
-            '不能含有 tag&nbsp;',
-            '指定した tag を除外する',
-            'Exclude specified tag',
-            '不能含有 tag&nbsp;',
-          ],
-          _排除tag的提示文字: [
-            '您可在下载前设置要排除的tag，这样在下载时将不会下载含有这些tag的作品。不区分大小写；如需排除多个tag，请使用英文逗号分隔。请注意要排除的tag的优先级大于要包含的tag的优先级。',
-            'ダウンロード前に、除外する tag を設定できます。大文字と小文字を区別しない；複数の tag を設定する必要がある場合は、「,」で区切ってください。除外された tag は、必要な tag よりも優先されます',
-            "Before downloading, you can set the tag you want to exclude. Not case sensitive; If you need to set multiple tags, you can use ',' separated. The excluded tag takes precedence over the included tag",
-            '您可在下載前設定要排除的tag，這樣在下載時將不會下載含有這些tag的作品。不區分大小寫；如需排除多個tag，請使用英文逗號分隔。請注意要排除的tag的優先等級大於要包含的tag的優先等級。',
-          ],
-          _设置了排除tag之后的提示: [
-            '排除 tag：',
-            '以下の tag を除外：',
-            'Excludes tag: ',
-            '排除 tag：',
-          ],
-          _必须含有tag: [
-            '必须含有 tag&nbsp;',
-            '必要な tag&nbsp;',
-            'Must contain tag',
-            '必須含有 tag&nbsp;',
-          ],
-          _必须tag的提示文字: [
-            '您可在下载前设置作品里必须包含的tag，不区分大小写；如需包含多个tag，请使用英文逗号分隔。',
-            'ダウンロードする前に、必要な tag を設定することができます。大文字と小文字を区別しない；複数の tag を設定する必要がある場合は、「,」で区切ってください。',
-            "Before downloading, you can set the tag that must be included. Not case sensitive; If you need to set multiple tags, you can use ',' separated. ",
-            '您可在下載前設定作品裡必須包含的tag，不區分大小寫；如需包含多個tag，請使用英文逗號分隔。',
-          ],
-          _设置了必须tag之后的提示: [
-            '包含 tag：',
-            '以下の tag を含める：',
-            'Include tag: ',
-            '包含 tag：',
-          ],
-          _筛选宽高的按钮文字: [
-            '设置宽高条件',
-            '幅と高さの条件を設定する',
-            'Set the width and height',
-            '設定寬高條件',
-          ],
-          _筛选宽高的按钮Title: [
-            '在下载前，您可以设置要下载的图片的宽高条件。',
-            'ダウンロードする前に、画像の幅と高さの条件を設定できます。',
-            'Before downloading, you can set the width and height conditions of the images you want to download.',
-            '在下載前，您可以設定要下載的圖片的寬高條件。',
-          ],
-          _设置宽高比例: [
-            '设置宽高比例',
-            '縦横比を設定する',
-            'Set the aspect ratio',
-            '設定寬高比例',
-          ],
-          _设置宽高比例Title: [
-            '设置宽高比例，也可以手动输入宽高比',
-            '縦横比を設定する、手動で縦横比を入力することもできる',
-            'Set the aspect ratio, or manually type the aspect ratio',
-            '設定寬高比，也可以手動輸入寬高比',
-          ],
-          _不限制: ['不限制', '無制限', 'not limited', '不限制'],
-          _横图: ['横图', '横長', 'Horizontal', '橫圖'],
-          _竖图: ['竖图', '縦長', 'Vertical', '豎圖'],
-          _输入宽高比: [
-            '宽高比 >=',
-            '縦横比 >=',
-            'Aspect ratio >=',
-            '寬高比 >=',
-          ],
-          _设置了宽高比之后的提示: [
-            '宽高比：{}',
-            '縦横比：{}',
-            'Aspect ratio: {}',
-            '寬高比：{}',
-          ],
-          _宽高比必须是数字: [
-            '宽高比必须是数字',
-            '縦横比は数値でなければなりません',
-            'The aspect ratio must be a number',
-            '寬高比必須是數字',
-          ],
-          _筛选宽高的提示文字: [
-            '请输入最小宽度和最小高度，不会下载不符合要求的图片。',
-            '最小幅と最小高さを入力してください。要件を満たしていない画像はダウンロードされません。',
-            'Please type the minimum width and minimum height. Will not download images that do not meet the requirements',
-            '請輸入最小寬度和最小高度，不會下載不符合要求的圖片。',
-          ],
           _本次输入的数值无效: [
             '本次输入的数值无效',
             '無効な入力',
             'Invalid input',
             '本次輸入的數值無效',
           ],
-          _设置了筛选宽高之后的提示文字p1: [
-            '宽度 >= ',
-            '幅 >= ',
-            'Width >= ',
-            '寬度 >= ',
-          ],
           _或者: [' 或者 ', ' または ', ' or ', ' 或是 '],
           _并且: [' 并且 ', ' そして ', ' and ', ' 並且 '],
-          _高度设置: ['高度 >= ', '高さ >= ', 'height >= ', '高度 >= '],
           _个数: [
             '设置作品数量',
             '作品数を設定する',
@@ -4573,10 +4429,10 @@
             '清單頁面擷取完成，開始取得圖片網址',
           ],
           _抓取结果为零: [
-            '抓取完毕，但没有找到符合筛选条件的作品。',
-            'クロールは終了しましたが、フィルタ条件に一致する作品が見つかりませんでした。',
-            'Crawl finished but did not find works that match the filter criteria.',
-            '擷取完畢，但沒有找到符合篩選條件的作品。',
+            '抓取完毕，但没有找到符合筛选条件的文件。',
+            'クロールは終了しましたが、フィルタ条件に一致するファイルが見つかりませんでした。',
+            'Crawl finished but did not find files that match the filter criteria.',
+            '擷取完畢，但沒有找到符合篩選條件的檔案。',
           ],
           _当前任务尚未完成: [
             '当前任务尚未完成',
@@ -5297,12 +5153,7 @@
             'There are now {} post ',
             '目前有 {} 個投稿 ',
           ],
-          _抓取文件数量: [
-            '已获取 {} 个文件信息',
-            '{} つの画像 url を取得',
-            'Get {} image URLs',
-            '已取得 {} 個圖片網址',
-          ],
+          _抓取文件数量: ['已获取 {} 个文件信息'],
           _早于: ['早于'],
           _抓取赞助的所有用户的投稿: ['抓取赞助的所有用户的投稿'],
           _抓取该用户的投稿: ['抓取该用户的投稿'],

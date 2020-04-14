@@ -5,23 +5,9 @@ const formHtml = `<form class="settingForm">
   <div class="tabsTitle">
     <div class="title">${lang.transl('_抓取')}</div>
     <div class="title">${lang.transl('_下载')}</div>
-    <div class="title">${lang.transl('_其他')}</div>
   </div>
   <div class="tabsContnet">
     <div class="con">
-
-      <p class="option" data-no="1">
-      <span class="setWantPageWrap">
-      <span class="has_tip settingNameStyle1 setWantPageTip1" data-tip="${lang.transl(
-        '_投稿数量说明'
-      )}" style="margin-right: 0px;">${lang.transl('_投稿数量')}</span>
-      <span class="gray1" style="margin-right: 10px;"> ? </span>
-      <input type="text" name="setWantPage" class="setinput_style1 blue setWantPage"
-      value = '-1'>
-      &nbsp;&nbsp;&nbsp;
-      <span class="setWantPageTip2 gray1">-1 或者大于 0 的数字</span>
-      </span>
-      </p>
 
       <p class="option" data-no="2">
       <span class="settingNameStyle1">${lang.transl('_文件类型')}</span>
@@ -73,7 +59,7 @@ const formHtml = `<form class="settingForm">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="feeSwitch">
 
-      ${lang.transl('_大于')}
+      ${lang.transl('_最小值')}
       <input type="text" name="fee" class="setinput_style1 w100 blue" value="500"> ${lang.transl(
         '_日元'
       )}
@@ -207,10 +193,6 @@ const formHtml = `<form class="settingForm">
 
       <slot data-name="downloadArea"></slot>
       <slot data-name="progressBar"></slot>
-    </div>
-    <div class="con">
-      
-      <slot data-name="otherBtns" class="centerWrap_btns"></slot>
     </div>
   </div>
 </form>`

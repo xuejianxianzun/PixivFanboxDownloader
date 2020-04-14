@@ -31,7 +31,6 @@ abstract class InitPageBase {
   // 销毁初始化页面时添加的元素和事件，恢复设置项等
   protected destroy(): void {
     DOM.clearSlot('crawlBtns')
-    DOM.clearSlot('otherBtns')
   }
 
   // 添加中间按钮
@@ -59,40 +58,6 @@ abstract class InitPageBase {
     throw new Error(msg)
   }
 
-  // 检查用户输入的投稿数量设置，并返回提示信息
-  // 可以为 -1，或者大于 0
-  protected checkWantPageInput(crawlPartTip: string, crawlAllTip: string) {
-    const temp = parseInt(form.setWantPage.value)
-
-    // 如果比 1 小，并且不是 -1，则不通过
-    if ((temp < 1 && temp !== -1) || isNaN(temp)) {
-      // 比 1 小的数里，只允许 -1 , 0 也不行
-      this.getWantPageError()
-    }
-
-    if (temp >= 1) {
-      log.warning(crawlPartTip.replace('-num-', temp.toString()))
-    } else if (temp === -1) {
-      log.warning(crawlAllTip)
-    }
-
-    return temp
-  }
-
-  // 获取投稿数量设置
-  protected getWantPage() {
-    const wantPage = parseInt(form.setWantPage.value)
-    if (isNaN(wantPage)) {
-      this.getWantPageError()
-    }
-
-    if (wantPage > 0) {
-      this.crawlNumber = wantPage
-    } else {
-      this.crawlNumber = -1
-    }
-  }
-
   // 准备抓取，进行抓取之前的一些检查工作。必要时可以在子类中改写
   protected async readyCrawl() {
     if (!store.states.allowWork) {
@@ -107,8 +72,6 @@ abstract class InitPageBase {
     log.success(lang.transl('_任务开始0'))
 
     titleBar.change('↑')
-
-    this.getWantPage()
 
     filter.init()
 
@@ -127,7 +90,6 @@ abstract class InitPageBase {
   protected afterFetchPostList(data: PostList) {
     const items = data.body.items
     this.nextUrl = data.body.nextUrl
-
     for (const item of items) {
       saveData.receive(item)
     }

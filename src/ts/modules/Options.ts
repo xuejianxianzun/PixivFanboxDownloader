@@ -1,39 +1,12 @@
 import { form } from './Settings'
 
-interface WantPageArg {
-  text: string
-  tip: string
-  rangTip: string
-  value: string
-}
-
-interface WantPageEls {
-  text: HTMLSpanElement
-  rangTip: HTMLSpanElement
-  input: HTMLInputElement
-}
-
 // 操作 Setting 表单的选项区域
 class Options {
   constructor() {
     this.allOption = form.querySelectorAll('.option')
-
-    // 获取“投稿数量”设置的元素
-    const wantPageOption = this.getOption(1)!
-    this.wantPageEls = {
-      text: wantPageOption.querySelector(
-        '.setWantPageTip1'
-      )! as HTMLSpanElement,
-      rangTip: wantPageOption.querySelector(
-        '.setWantPageTip2'
-      )! as HTMLSpanElement,
-      input: wantPageOption.querySelector('.setWantPage')! as HTMLInputElement,
-    }
   }
 
   private allOption: NodeListOf<HTMLElement>
-
-  private wantPageEls: WantPageEls
 
   // 使用编号获取指定选项的元素
   private getOption(no: number) {
@@ -68,14 +41,6 @@ class Options {
   // 显示指定的选项。因为页面无刷新加载，所以一些选项被隐藏后，可能需要再次显示
   public showOption(no: number[]) {
     this.setOptionDisplay(no, 'block')
-  }
-
-  // 设置 “设置页面/作品数量” 选项的提示和预设值
-  public setWantPage(arg: WantPageArg) {
-    this.wantPageEls.text.textContent = arg.text
-    this.wantPageEls.text.dataset.tip = arg.tip
-    this.wantPageEls.rangTip.textContent = arg.rangTip
-    this.wantPageEls.input.value = arg.value
   }
 }
 
