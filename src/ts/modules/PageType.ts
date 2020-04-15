@@ -17,10 +17,7 @@ class PageType {
   public getPageType(): number {
     let type: number
     const path = window.location.pathname
-    if (
-      path === '/fanbox/' ||
-      path === '/fanbox'
-    ) {
+    if (path === '/fanbox/' || path === '/fanbox') {
       // https://www.pixiv.net/fanbox
       // 自己主页
       type = 0

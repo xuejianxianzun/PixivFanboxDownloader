@@ -204,9 +204,11 @@ class DownloadControl {
       this.stopDownload()
     })
 
-    document.querySelector('.previewFileName')!.addEventListener('click', () => {
-      EVT.fire(EVT.events.previewFileName)
-    })
+    document
+      .querySelector('.previewFileName')!
+      .addEventListener('click', () => {
+        EVT.fire(EVT.events.previewFileName)
+      })
   }
 
   // 下载线程设置

@@ -34,9 +34,7 @@ abstract class InitPageBase {
   }
 
   // 添加中间按钮
-  protected appendCenterBtns() {
-    
-  }
+  protected appendCenterBtns() {}
 
   // 添加其他元素（如果有）
   protected appendElseEl(): void {}

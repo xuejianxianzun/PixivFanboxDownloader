@@ -24,10 +24,6 @@ class Settings {
 
     this.allLabel = this.form.querySelectorAll('label')
 
-    this.allTabTitle = this.form.querySelectorAll('.tabsTitle .title')
-
-    this.allTabCon = this.form.querySelectorAll('.tabsContnet .con')
-
     this.bindEvents()
 
     new SaveSettings(this.form)
@@ -35,9 +31,6 @@ class Settings {
     // new SaveSettings 会初始化选项，但可能会有一些选项的值在初始化过程中没有发生改变，也就不会被监听到变化。所以这里需要直接初始化以下状态。
 
     this.initFormBueatiful()
-
-    // 激活第一个选项卡
-    this.activeTab(0)
   }
 
   // 设置表单上美化元素的状态
@@ -55,24 +48,9 @@ class Settings {
   private allRadio: NodeListOf<HTMLInputElement> // 单选按钮
   private allLabel: NodeListOf<HTMLLabelElement> // 所有 label 标签
 
-  private allTabTitle: NodeListOf<HTMLDivElement> // 选项卡的标题区域
-  private allTabCon: NodeListOf<HTMLDivElement> // 选项卡的内容区域
   private readonly activeClass = 'active'
 
   private readonly chooseKeys = ['Enter', 'NumpadEnter'] // 让回车键可以控制复选框（浏览器默认只支持空格键）
-
-  // 设置激活的选项卡
-  private activeTab(no = 0) {
-    for (const title of this.allTabTitle) {
-      title.classList.remove(this.activeClass)
-    }
-    this.allTabTitle[no].classList.add(this.activeClass)
-
-    for (const con of this.allTabCon) {
-      con.style.display = 'none'
-    }
-    this.allTabCon[no].style.display = 'block'
-  }
 
   private bindEvents() {
     // 给美化的复选框绑定功能
@@ -88,20 +66,6 @@ class Settings {
     // 处理 label 状态
     window.addEventListener(EVT.events.settingChange, () => {
       this.initFormBueatiful()
-    })
-
-    // 在选项卡的标题上触发事件时，激活对应的选项卡
-    for (let index = 0; index < this.allTabTitle.length; index++) {
-      ;['click', 'mouseenter'].forEach((name) => {
-        this.allTabTitle[index].addEventListener(name, () => {
-          this.activeTab(index)
-        })
-      })
-    }
-
-    // 当抓取完毕可以开始下载时，切换到“下载”选项卡
-    window.addEventListener(EVT.events.crawlFinish, () => {
-      this.activeTab(1)
     })
 
     // 显示命名字段提示

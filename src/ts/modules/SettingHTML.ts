@@ -2,13 +2,6 @@ import { lang } from './Lang'
 import { store } from './Store'
 
 const formHtml = `<form class="settingForm">
-  <div class="tabsTitle">
-    <div class="title">${lang.transl('_抓取')}</div>
-    <div class="title">${lang.transl('_下载')}</div>
-  </div>
-  <div class="tabsContnet">
-    <div class="con">
-
       <p class="option" data-no="2">
       <span class="settingNameStyle1">${lang.transl('_文件类型')}</span>
 
@@ -64,7 +57,9 @@ const formHtml = `<form class="settingForm">
       </p>
       
       <p class="option" data-no="9">
-      <span class="has_tip settingNameStyle1" data-tip="${lang.transl('_设置id范围提示')}">${lang.transl('_设置id范围')}&nbsp;&nbsp; 
+      <span class="has_tip settingNameStyle1" data-tip="${lang.transl(
+        '_设置id范围提示'
+      )}">${lang.transl('_设置id范围')}&nbsp;&nbsp; 
       <span class="gray1"> ? </span></span>
       <input type="checkbox" name="idRangeSwitch" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
@@ -105,10 +100,6 @@ const formHtml = `<form class="settingForm">
       <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
       <span class="beautify_switch"></span>
       </p>
-      
-      <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
-    </div>
-    <div class="con">
     <p class="option" data-no="13">
       <span class="has_tip settingNameStyle1" data-tip="${lang.transl(
         '_设置文件夹名的提示'
@@ -172,7 +163,9 @@ const formHtml = `<form class="settingForm">
       </p>
       
       <p class="option" data-no="16">
-      <span class="has_tip settingNameStyle1" data-tip="${lang.transl('_线程数字')}">${lang.transl('_设置下载线程')}<span class="gray1"> ? </span></span>
+      <span class="has_tip settingNameStyle1" data-tip="${lang.transl(
+        '_线程数字'
+      )}">${lang.transl('_设置下载线程')}<span class="gray1"> ? </span></span>
       <input type="text" name="downloadThread" class="setinput_style1 blue" value="5">
       </p>
 
@@ -183,11 +176,10 @@ const formHtml = `<form class="settingForm">
       <input type="checkbox" name="quietDownload" id="setQuietDownload" class="need_beautify checkbox_switch" checked>
       <span class="beautify_switch"></span>
       </p>
-
+      
+      <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
       <slot data-name="downloadArea"></slot>
       <slot data-name="progressBar"></slot>
-    </div>
-  </div>
 </form>`
 
 export default formHtml
