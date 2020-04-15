@@ -104,19 +104,6 @@ class Settings {
       this.activeTab(1)
     })
 
-    // 预览文件名
-    DOM.addBtn(
-      'namingBtns',
-      Colors.green,
-      lang.transl('_预览文件名')
-    ).addEventListener(
-      'click',
-      () => {
-        EVT.fire(EVT.events.previewFileName)
-      },
-      false
-    )
-
     // 显示命名字段提示
     this.form
       .querySelector('.showFileNameTip')!

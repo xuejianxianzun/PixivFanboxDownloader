@@ -35,13 +35,7 @@ abstract class InitPageBase {
 
   // 添加中间按钮
   protected appendCenterBtns() {
-    DOM.addBtn(
-      'crawlBtns',
-      Colors.blue,
-      lang.transl('_开始抓取')
-    ).addEventListener('click', () => {
-      this.readyCrawl()
-    })
+    
   }
 
   // 添加其他元素（如果有）
@@ -49,14 +43,6 @@ abstract class InitPageBase {
 
   protected crawlNumber: number = 0 // 要抓取的个数/页数
   protected nextUrl: null | string = null
-
-  // 作品个数/页数的输入不合法
-  private getWantPageError() {
-    EVT.fire(EVT.events.crawlError)
-    const msg = lang.transl('_参数不合法')
-    window.alert(msg)
-    throw new Error(msg)
-  }
 
   // 准备抓取，进行抓取之前的一些检查工作。必要时可以在子类中改写
   protected async readyCrawl() {

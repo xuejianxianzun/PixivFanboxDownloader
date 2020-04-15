@@ -159,7 +159,7 @@ class DownloadControl {
   private createDownloadArea() {
     const html = `<div class="download_area">
     <p> ${lang.transl(
-      '_共抓取到n个图片',
+      '_共抓取到n个文件',
       '<span class="fwb blue imgNum">0</span>'
     )}</p>
     
@@ -173,9 +173,9 @@ class DownloadControl {
     <button class="stopDownload" type="button" style="background:${
       Colors.red
     };"> ${lang.transl('_下载按钮3')}</button>
-    <button class="copyUrl" type="button" style="background:${
+    <button class="previewFileName" type="button" style="background:${
       Colors.green
-    };"> ${lang.transl('_下载按钮4')}</button>
+    };"> ${lang.transl('_预览文件名')}</button>
     </div>
     <div class="centerWrap_down_tips">
     <p>
@@ -204,23 +204,9 @@ class DownloadControl {
       this.stopDownload()
     })
 
-    document.querySelector('.copyUrl')!.addEventListener('click', () => {
-      this.showURLs()
+    document.querySelector('.previewFileName')!.addEventListener('click', () => {
+      EVT.fire(EVT.events.previewFileName)
     })
-  }
-
-  // 显示 url
-  private showURLs() {
-    if (store.result.length === 0) {
-      return alert(lang.transl('_没有数据可供使用'))
-    }
-
-    let result = ''
-    for (const now of store.result) {
-      result += now.url + '<br>'
-    }
-
-    EVT.fire(EVT.events.output, result)
   }
 
   // 下载线程设置

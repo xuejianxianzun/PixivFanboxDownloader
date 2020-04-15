@@ -16,32 +16,35 @@ class PageType {
   // 判断页面类型
   public getPageType(): number {
     let type: number
-
-    if (window.location.pathname === '/fanbox') {
+    const path = window.location.pathname
+    if (
+      path === '/fanbox/' ||
+      path === '/fanbox'
+    ) {
       // https://www.pixiv.net/fanbox
       // 自己主页
       type = 0
-    } else if (window.location.pathname === '/fanbox/supporting') {
+    } else if (path === '/fanbox/supporting') {
       // https://www.pixiv.net/fanbox/supporting
       // 正在赞助
       type = 1
-    } else if (/creator\/\d*$/.test(window.location.pathname)) {
+    } else if (/creator\/\d*$/.test(path)) {
       // https://www.pixiv.net/fanbox/creator/1499614
       // 画师主页
       type = 2
-    } else if (window.location.pathname.endsWith('/post')) {
+    } else if (path.endsWith('/post')) {
       // https://www.pixiv.net/fanbox/creator/1499614/post
       // 画师投稿列表页
       type = 3
-    } else if (/post\/\d*$/.test(window.location.pathname)) {
+    } else if (/post\/\d*$/.test(path)) {
       // https://www.pixiv.net/fanbox/creator/1499614/post/867418
       // 投稿内容页
       type = 4
-    } else if (window.location.pathname.includes('/tag/')) {
+    } else if (path.includes('/tag/')) {
       // https://www.pixiv.net/fanbox/creator/1082583/tag/%E5%8B%95%E7%94%BB
       // tag 页面
       type = 5
-    } else if (window.location.pathname.endsWith('/shop')) {
+    } else if (path.endsWith('/shop')) {
       // https://www.pixiv.net/fanbox/creator/6843920/shop
       // 商店页面
       type = 6

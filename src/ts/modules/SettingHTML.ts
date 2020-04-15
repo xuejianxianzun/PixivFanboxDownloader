@@ -54,20 +54,17 @@ const formHtml = `<form class="settingForm">
       <span class="settingNameStyle1">${lang.transl(
         '_设置价格范围'
       )}&nbsp;&nbsp; 
-      <span class="gray1"> ? </span></span>
+      </span>
       <input type="checkbox" name="feeSwitch" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="feeSwitch">
-
       ${lang.transl('_最小值')}
-      <input type="text" name="fee" class="setinput_style1 w100 blue" value="500"> ${lang.transl(
-        '_日元'
-      )}
+      <input type="text" name="fee" class="setinput_style1 w100 blue" value="500"> ¥
       </span>
       </p>
       
       <p class="option" data-no="9">
-      <span class="settingNameStyle1">${lang.transl('_设置id范围')}&nbsp;&nbsp; 
+      <span class="has_tip settingNameStyle1" data-tip="${lang.transl('_设置id范围提示')}">${lang.transl('_设置id范围')}&nbsp;&nbsp; 
       <span class="gray1"> ? </span></span>
       <input type="checkbox" name="idRangeSwitch" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
@@ -104,12 +101,12 @@ const formHtml = `<form class="settingForm">
       <span class="settingNameStyle1">${lang.transl(
         '_保存投稿中的外部链接'
       )}&nbsp;&nbsp; 
-      <span class="gray1"> ? </span></span>
+      </span>
       <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
       <span class="beautify_switch"></span>
       </p>
       
-      <slot data-name="crawlBtns" class="centerWrap_btns"></slot>
+      <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
     </div>
     <div class="con">
     <p class="option" data-no="13">
@@ -174,12 +171,8 @@ const formHtml = `<form class="settingForm">
       ${lang.transl('_命名标记提醒')}
       </p>
       
-      <slot data-name="namingBtns" class="centerWrap_btns"></slot>
-
       <p class="option" data-no="16">
-      <span class="has_tip settingNameStyle1" data-tip="${lang.transl(
-        '_线程数字'
-      )}">${lang.transl('_设置下载线程')}<span class="gray1"> ? </span></span>
+      <span class="has_tip settingNameStyle1" data-tip="${lang.transl('_线程数字')}">${lang.transl('_设置下载线程')}<span class="gray1"> ? </span></span>
       <input type="text" name="downloadThread" class="setinput_style1 blue" value="5">
       </p>
 

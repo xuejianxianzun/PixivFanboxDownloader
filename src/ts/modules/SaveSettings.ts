@@ -77,7 +77,7 @@ class SaveSettings {
     saveLink: true,
     userSetName: store.defaultFileName,
     quietDownload: true,
-    downloadThread: 5,
+    downloadThread: 3,
   }
 
   // 需要持久化保存的设置
