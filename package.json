@@ -1,8 +1,8 @@
 {
   "name": "pixiv-fanbox-downloader",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Pixiv Fanbox Downloader",
-  "repository": "https://github.com/xuejianxianzun/PixivBatchDownloader",
+  "repository": "https://github.com/xuejianxianzun/PixivFanboxDownloader",
   "author": "xuejianxianzun",
   "license": "GPL-3.0-or-later",
   "scripts": {
