@@ -98,17 +98,23 @@ class SaveData {
       }
 
       // 保存图片资源
-      for (const [id, imageData] of Object.entries(data.body.imageMap)) {
-        index++
-        const resource = this.getImageData(imageData, index)
-        resource !== null && result.files.push(resource)
+      for (const block of data.body.blocks) {
+        if (block.type === 'image') {
+          index++
+          const imageData = data.body.imageMap[block.imageId]
+          const resource = this.getImageData(imageData, index)
+          resource !== null && result.files.push(resource)
+        }
       }
 
       // 保存 file 资源
-      for (const [id, fileData] of Object.entries(data.body.fileMap)) {
-        index++
-        const resource = this.getFileData(fileData, index)
-        resource !== null && result.files.push(resource)
+      for (const block of data.body.blocks) {
+        if (block.type === 'file') {
+          index++
+          const fileData = data.body.fileMap[block.fileId]
+          const resource = this.getFileData(fileData, index)
+          resource !== null && result.files.push(resource)
+        }
       }
 
       // 嵌入的资源只能保存到文本
