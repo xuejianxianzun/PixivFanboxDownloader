@@ -1,7 +1,5 @@
 import { form } from './Settings'
-import { lang } from './Lang'
 import { log } from './Log'
-import { API } from './API'
 import { EVT } from './EVT'
 
 interface FilterOption {

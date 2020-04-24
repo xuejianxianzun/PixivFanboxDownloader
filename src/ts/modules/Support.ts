@@ -1,7 +1,4 @@
-import { lang } from './Lang'
 import { EVT } from './EVT'
-import { API } from './API'
-import { langTextKeys } from './langText'
 
 // 辅助功能
 class Support {

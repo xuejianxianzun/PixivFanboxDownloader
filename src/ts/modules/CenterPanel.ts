@@ -2,7 +2,6 @@
 import { lang } from './Lang'
 import { EVT } from './EVT'
 import { DOM } from './DOM'
-import { store } from './Store'
 
 // 中间面板
 class CenterPanel {

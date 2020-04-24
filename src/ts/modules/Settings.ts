@@ -1,8 +1,5 @@
 import { EVT } from './EVT'
 import { DOM } from './DOM'
-import { Colors } from './Colors'
-import { lang } from './Lang'
-import { store } from './Store'
 import { SaveSettings } from './SaveSettings'
 import { SettingsForm } from './Settings.d'
 import formHtml from './SettingHTML'

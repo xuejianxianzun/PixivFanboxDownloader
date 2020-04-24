@@ -1,7 +1,5 @@
 // 下载文件，并发送给浏览器下载
 import { EVT } from './EVT'
-import { log } from './Log'
-import { lang } from './Lang'
 import { titleBar } from './TitleBar'
 import { fileName } from './FileName'
 import {

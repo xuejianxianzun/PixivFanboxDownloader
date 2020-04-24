@@ -2875,23 +2875,29 @@
             }
             // 提取它的资源文件，并对每个资源进行检查，决定是否保存
             let index = 0 // 资源的序号
-            // 非 article 的投稿都有 text 字段，这这里统一提取里面的链接
+            // 非 article 投稿都有 text 字段，这这里统一提取里面的链接
+            // 但是因为正则没有分组，所以非 article 投稿如果有多个链接，只会提取第一个
             // 提取文本中的链接有两种来源，一种是文章正文里的文本，一种是嵌入资源。先从正文提取链接，后提取嵌入资源的链接。这样链接保存下来的顺序比较合理。
             if (data.type !== 'article') {
-              const links = this.getTextLinks(data.body.text, data.id)
+              const links = this.getTextLinks(data.body.text)
               result.links.text = result.links.text.concat(links)
             }
             // 提取 article 投稿的资源
             if (data.type === 'article') {
               // 从正文文本里提取链接
-              let texts = ''
+              let texts = []
               for (const block of data.body.blocks) {
                 if (block.type === 'p') {
-                  texts += block.text + ' ' // 不同文字之间用空格分开，防止匹配出现粘连
+                  texts.push(block.text)
+                  if (block.links && block.links.length > 0) {
+                    for (const links of block.links) {
+                      texts.push(links.url)
+                    }
+                  }
                 }
               }
-              if (texts) {
-                const links = this.getTextLinks(texts, data.id)
+              for (const text of texts) {
+                const links = this.getTextLinks(text)
                 result.links.text = result.links.text.concat(links)
               }
               // 保存图片资源
@@ -2986,14 +2992,14 @@
             return null
           }
           // 从文本里提取链接
-          getTextLinks(text, postId) {
+          getTextLinks(text) {
             const links = []
             if (
               !_Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveLink.checked
             ) {
               return links
             }
-            const Reg = /https:\/\/[\w=\?\.\/&-]+/g
+            const Reg = /http[s]*:\/\/[\w=\?\.\/&\-\#\!\%]+/g
             const match = Reg.exec(text)
             if (match && match.length > 0) {
               for (const link of match) {

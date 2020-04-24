@@ -2,8 +2,6 @@
 // 不依赖其他模块，可独立使用
 import { Post, PostList } from './CrawlResult.d'
 
-import {} from './CrawlArgument.d'
-
 class API {
   // 检查给定的字符串解析为数字后，是否大于 0
   static checkNumberGreater0(arg: string) {

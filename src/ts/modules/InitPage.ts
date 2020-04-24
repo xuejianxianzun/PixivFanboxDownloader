@@ -1,12 +1,10 @@
 // 初始化页面，初始化抓取流程
 import { EVT } from './EVT'
 import { pageType } from './PageType'
-
 import { InitHomePage } from './InitHomePage'
 import { InitPostListPage } from './InitPostListPage'
 import { InitTagPage } from './InitTagPage'
 import { InitPostPage } from './InitPostPage'
-import { InitShopPage } from './InitShopPage'
 
 class InitPage {
   constructor() {
