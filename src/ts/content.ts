@@ -5,7 +5,6 @@
  * Github： https://github.com/xuejianxianzun/PixivFanboxDownloader
  * Releases: https://github.com/xuejianxianzun/PixivFanboxDownloader/releases
  * Wiki:    https://github.com/xuejianxianzun/PixivFanboxDownloader/wiki
- * Website: https://pixiv.download/
  * E-mail:  xuejianxianzun@gmail.com
  * QQ group:  853021998
  */

@@ -28,8 +28,8 @@ class InitTagPage extends InitPageBase {
       data = (await API.request(this.nextUrl)) as PostList
     } else {
       data = await API.getTagPostListByUser(
-        API.getURLPathField('creator'),
-        API.getURLPathField('tag')
+        await API.getUserId(API.getCreatorId(location.href)),
+        API.getURLPathField('tags')
       )
     }
     this.afterFetchPostList(data)

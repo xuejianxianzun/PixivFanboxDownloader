@@ -232,6 +232,26 @@ interface PostList {
   }
 }
 
+interface CreatorData {
+  body: {
+    user: {
+      userId: string
+      name: string
+      iconUrl: string
+    }
+    creatorId: string
+    description: string
+    hasAdultContent: boolean
+    coverImageUrl: string | null
+    profileLinks: string[]
+    profileItems: []
+    isFollowed: boolean
+    isSupported: boolean
+    isStopped: boolean
+    hasBoothShop: boolean
+  }
+}
+
 export {
   PostBody,
   Post,
@@ -243,4 +263,5 @@ export {
   FileData,
   EmbedData,
   VideoData,
+  CreatorData,
 }

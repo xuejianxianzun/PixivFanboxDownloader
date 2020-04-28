@@ -16,33 +16,47 @@ class PageType {
   // 判断页面类型
   public getPageType(): number {
     let type: number
+    const host = window.location.hostname
     const path = window.location.pathname
-    if (path === '/fanbox/' || path === '/fanbox') {
-      // https://www.pixiv.net/fanbox
+    const userPage =
+      (!host.startsWith('www.') &&
+        !host.startsWith('api.') &&
+        !host.startsWith('downloads.')) ||
+      path.startsWith('/@')
+    if (host === 'www.fanbox.cc' && path === '/') {
+      // https://www.fanbox.cc/
       // 自己主页
       type = 0
-    } else if (path === '/fanbox/supporting') {
-      // https://www.pixiv.net/fanbox/supporting
+    } else if (path === '/home/supporting') {
+      // https://www.fanbox.cc/home/supporting
       // 正在赞助
       type = 1
-    } else if (/creator\/\d*$/.test(path)) {
-      // https://www.pixiv.net/fanbox/creator/1499614
+    } else if (
+      userPage &&
+      !path.includes('/posts') &&
+      !path.includes('/tags/') &&
+      !path.includes('/shop')
+    ) {
+      // https://kyomoneko.fanbox.cc/
+      // https://www.fanbox.cc/@official
       // 画师主页
       type = 2
-    } else if (path.endsWith('/post')) {
-      // https://www.pixiv.net/fanbox/creator/1499614/post
+    } else if (userPage && path.endsWith('/posts')) {
+      // https://kyomoneko.fanbox.cc/posts
+      // https://www.fanbox.cc/@official/posts
       // 画师投稿列表页
       type = 3
-    } else if (/post\/\d*$/.test(path)) {
-      // https://www.pixiv.net/fanbox/creator/1499614/post/867418
+    } else if (userPage && path.includes('/posts/')) {
+      // https://kyomoneko.fanbox.cc/posts/904593
+      // https://www.fanbox.cc/@official/posts/996286
       // 投稿内容页
       type = 4
-    } else if (path.includes('/tag/')) {
-      // https://www.pixiv.net/fanbox/creator/1082583/tag/%E5%8B%95%E7%94%BB
+    } else if (userPage && path.includes('/tags/')) {
+      // https://eto13.fanbox.cc/tags/%E5%8B%95%E7%94%BB
       // tag 页面
       type = 5
-    } else if (path.endsWith('/shop')) {
-      // https://www.pixiv.net/fanbox/creator/6843920/shop
+    } else if (userPage && path.endsWith('/shop')) {
+      // https://yajirushikey.fanbox.cc/shop
       // 商店页面
       type = 6
     } else {

@@ -159,7 +159,6 @@
          * Github： https://github.com/xuejianxianzun/PixivFanboxDownloader
          * Releases: https://github.com/xuejianxianzun/PixivFanboxDownloader/releases
          * Wiki:    https://github.com/xuejianxianzun/PixivFanboxDownloader/wiki
-         * Website: https://pixiv.download/
          * E-mail:  xuejianxianzun@gmail.com
          * QQ group:  853021998
          */
@@ -211,7 +210,7 @@
             }
           }
           // 从 URL 中获取指定路径名的值，适用于符合 RESTful API 风格的路径
-          // 如 https://www.pixiv.net/fanbox/creator/1499614/post/867418
+          // 如 https://kyomoneko.fanbox.cc/posts/904593
           // 把路径用 / 分割，查找 key 所在的位置，后面一项就是它的 value
           static getURLPathField(query) {
             const pathArr = location.pathname.split('/')
@@ -257,12 +256,35 @@
                 })
             })
           }
+          static getCreatorId(url) {
+            const split = url.split('/')
+            // 首先获取以 @ 开头的用户名
+            for (const str of split) {
+              if (str.startsWith('@')) {
+                return str.split('@')[1]
+              }
+            }
+            // 获取自定义的用户名
+            for (const str of split) {
+              // hostname
+              if (str.endsWith('.fanbox.cc')) {
+                return str.split('.')[0]
+              }
+            }
+            throw new Error('GetCreatorId error!')
+          }
+          // 用 creatorId（用户名） 获取 userId
+          static async getUserId(creatorId) {
+            const baseURL = `https://api.fanbox.cc/creator.get?creatorId=${creatorId}`
+            const res = await this.request(baseURL)
+            return res.body.user.userId
+          }
           static async getPostListSupporting(
             limit = 10,
             maxPublishedDatetime = '',
             maxId = ''
           ) {
-            const baseURL = 'https://fanbox.pixiv.net/api/post.listSupporting'
+            const baseURL = 'https://api.fanbox.cc/post.listSupporting'
             const url = this.assembleURL(baseURL, {
               limit,
               maxPublishedDatetime,
@@ -271,12 +293,12 @@
             return this.request(url)
           }
           static async getPostListByUser(
-            userId,
+            creatorId,
             limit = 10,
             maxPublishedDatetime = '',
             maxId = ''
           ) {
-            const baseURL = `https://fanbox.pixiv.net/api/post.listCreator?userId=${userId}`
+            const baseURL = `https://api.fanbox.cc/post.listCreator?creatorId=${creatorId}`
             const url = this.assembleURL(baseURL, {
               limit,
               maxPublishedDatetime,
@@ -285,11 +307,11 @@
             return this.request(url)
           }
           static async getTagPostListByUser(userId, tag) {
-            const url = `https://fanbox.pixiv.net/api/post.listTagged?tag=${tag}&userId=${userId}`
+            const url = `https://api.fanbox.cc/post.listTagged?tag=${tag}&userId=${userId}`
             return this.request(url)
           }
           static async getPost(postId) {
-            const url = `https://fanbox.pixiv.net/api/post.info?postId=${postId}`
+            const url = `https://api.fanbox.cc/post.info?postId=${postId}`
             return this.request(url)
           }
         }
@@ -2073,8 +2095,8 @@
               data = await _API__WEBPACK_IMPORTED_MODULE_4__[
                 'API'
               ].getPostListByUser(
-                _API__WEBPACK_IMPORTED_MODULE_4__['API'].getURLPathField(
-                  'creator'
+                _API__WEBPACK_IMPORTED_MODULE_4__['API'].getCreatorId(
+                  location.href
                 ),
                 300
               )
@@ -2175,7 +2197,7 @@
           async FetchPostList() {}
           async fetchPost() {
             const data = await _API__WEBPACK_IMPORTED_MODULE_4__['API'].getPost(
-              _API__WEBPACK_IMPORTED_MODULE_4__['API'].getURLPathField('post')
+              _API__WEBPACK_IMPORTED_MODULE_4__['API'].getURLPathField('posts')
             )
             this.afterFetchPost(data)
           }
@@ -2246,10 +2268,12 @@
               data = await _API__WEBPACK_IMPORTED_MODULE_4__[
                 'API'
               ].getTagPostListByUser(
-                _API__WEBPACK_IMPORTED_MODULE_4__['API'].getURLPathField(
-                  'creator'
+                await _API__WEBPACK_IMPORTED_MODULE_4__['API'].getUserId(
+                  _API__WEBPACK_IMPORTED_MODULE_4__['API'].getCreatorId(
+                    location.href
+                  )
                 ),
-                _API__WEBPACK_IMPORTED_MODULE_4__['API'].getURLPathField('tag')
+                _API__WEBPACK_IMPORTED_MODULE_4__['API'].getURLPathField('tags')
               )
             }
             this.afterFetchPostList(data)
@@ -2569,33 +2593,47 @@
           // 判断页面类型
           getPageType() {
             let type
+            const host = window.location.hostname
             const path = window.location.pathname
-            if (path === '/fanbox/' || path === '/fanbox') {
-              // https://www.pixiv.net/fanbox
+            const userPage =
+              (!host.startsWith('www.') &&
+                !host.startsWith('api.') &&
+                !host.startsWith('downloads.')) ||
+              path.startsWith('/@')
+            if (host === 'www.fanbox.cc' && path === '/') {
+              // https://www.fanbox.cc/
               // 自己主页
               type = 0
-            } else if (path === '/fanbox/supporting') {
-              // https://www.pixiv.net/fanbox/supporting
+            } else if (path === '/home/supporting') {
+              // https://www.fanbox.cc/home/supporting
               // 正在赞助
               type = 1
-            } else if (/creator\/\d*$/.test(path)) {
-              // https://www.pixiv.net/fanbox/creator/1499614
+            } else if (
+              userPage &&
+              !path.includes('/posts') &&
+              !path.includes('/tags/') &&
+              !path.includes('/shop')
+            ) {
+              // https://kyomoneko.fanbox.cc/
+              // https://www.fanbox.cc/@official
               // 画师主页
               type = 2
-            } else if (path.endsWith('/post')) {
-              // https://www.pixiv.net/fanbox/creator/1499614/post
+            } else if (userPage && path.endsWith('/posts')) {
+              // https://kyomoneko.fanbox.cc/posts
+              // https://www.fanbox.cc/@official/posts
               // 画师投稿列表页
               type = 3
-            } else if (/post\/\d*$/.test(path)) {
-              // https://www.pixiv.net/fanbox/creator/1499614/post/867418
+            } else if (userPage && path.includes('/posts/')) {
+              // https://kyomoneko.fanbox.cc/posts/904593
+              // https://www.fanbox.cc/@official/posts/993757
               // 投稿内容页
               type = 4
-            } else if (path.includes('/tag/')) {
-              // https://www.pixiv.net/fanbox/creator/1082583/tag/%E5%8B%95%E7%94%BB
+            } else if (userPage && path.includes('/tags/')) {
+              // https://eto13.fanbox.cc/tags/%E5%8B%95%E7%94%BB
               // tag 页面
               type = 5
-            } else if (path.endsWith('/shop')) {
-              // https://www.pixiv.net/fanbox/creator/6843920/shop
+            } else if (userPage && path.endsWith('/shop')) {
+              // https://yajirushikey.fanbox.cc/shop
               // 商店页面
               type = 6
             } else {
@@ -2826,7 +2864,7 @@
             // 嵌入的文件只支持指定的网站，每个网站有固定的前缀
             this.providerDict = {
               youtube: 'https://www.youtube.com/watch?v=',
-              fanbox: 'https://www.pixiv.net/fanbox/',
+              fanbox: 'https://www.fanbox.cc/',
               gist: 'https://gist.github.com/',
               soundcloud: 'https://soundcloud.com/',
               vimeo: 'https://vimeo.com/',

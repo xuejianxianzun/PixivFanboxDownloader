@@ -27,7 +27,7 @@ class InitPostListPage extends InitPageBase {
     if (this.nextUrl) {
       data = (await API.request(this.nextUrl)) as PostList
     } else {
-      data = await API.getPostListByUser(API.getURLPathField('creator'), 300)
+      data = await API.getPostListByUser(API.getCreatorId(location.href), 300)
     }
     this.afterFetchPostList(data)
   }

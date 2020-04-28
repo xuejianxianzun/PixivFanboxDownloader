@@ -21,7 +21,7 @@ class SaveData {
   // 嵌入的文件只支持指定的网站，每个网站有固定的前缀
   private readonly providerDict: Dict = {
     youtube: 'https://www.youtube.com/watch?v=',
-    fanbox: 'https://www.pixiv.net/fanbox/',
+    fanbox: 'https://www.fanbox.cc/',
     gist: 'https://gist.github.com/',
     soundcloud: 'https://soundcloud.com/',
     vimeo: 'https://vimeo.com/',

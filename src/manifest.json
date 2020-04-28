@@ -1,6 +1,6 @@
 {
   "name": "Pixiv Fanbox Downloader",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "manifest_version": 2,
   "description": "Pixiv Fanbox 批量下载器。Pixiv Fanbox batch downloader.",
   "icons": {
@@ -22,7 +22,7 @@
     {
       "css": ["style/style.css"],
       "js": ["js/content.js", "lib/zip.js"],
-      "matches": ["*://www.pixiv.net/fanbox*"],
+      "matches": ["*://*.fanbox.cc/*"],
       "run_at": "document_end"
     }
   ],
@@ -32,13 +32,8 @@
   "permissions": [
     "tabs",
     "downloads",
-    "*://www.pixiv.net/fanbox*",
-    "*://*.pximg.net/*"
-  ],
-  "web_accessible_resources": [
-    "images/github-logo.png",
-    "images/wiki.png",
-    "images/update.png",
-    "manifest.json"
+    "*://*.fanbox.cc/*",
+    "webRequest",
+    "webRequestBlocking"
   ]
 }
