@@ -2625,7 +2625,7 @@
               type = 3
             } else if (userPage && path.includes('/posts/')) {
               // https://kyomoneko.fanbox.cc/posts/904593
-              // https://www.fanbox.cc/@official/posts/993757
+              // https://www.fanbox.cc/@official/posts/996286
               // 投稿内容页
               type = 4
             } else if (userPage && path.includes('/tags/')) {
@@ -2868,7 +2868,7 @@
               gist: 'https://gist.github.com/',
               soundcloud: 'https://soundcloud.com/',
               vimeo: 'https://vimeo.com/',
-              twitter: 'https://twitter.com/',
+              twitter: 'https://twitter.com/i/web/status/',
               gsuite: 'https://gsuite.google.com/',
             }
           }

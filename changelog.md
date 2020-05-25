@@ -1,3 +1,9 @@
+# 1.1.1 2020/05/25
+
+### 找到了 Twitter 的前缀
+
+`https://twitter.com/i/web/status/` 加上推文的 id 
+
 # 1.1.0 2020/04/28
 
 ### 适应 url 改版
@@ -88,8 +94,6 @@ https://www.pixiv.net/fanbox/creator/236592/post/954377
 正式发布
 
 ### 已知问题
-
-https://twitter.com/ 的前缀无法确定
 
 如果因为某些异常导致下载卡住，那么暂停、再开始下载，没有反应
 

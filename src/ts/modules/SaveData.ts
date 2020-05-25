@@ -25,7 +25,7 @@ class SaveData {
     gist: 'https://gist.github.com/',
     soundcloud: 'https://soundcloud.com/',
     vimeo: 'https://vimeo.com/',
-    twitter: 'https://twitter.com/',
+    twitter: 'https://twitter.com/i/web/status/',
     gsuite: 'https://gsuite.google.com/',
   }
 
