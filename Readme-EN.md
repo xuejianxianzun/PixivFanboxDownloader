@@ -19,7 +19,7 @@ Supports filtering file types, custom file names, and multiple languages.
 
 # Install
 
-It is recommended to use the **Chrome** browser, or the new **Edge** browser.
+It is recommended to use the **Chrome** browser latest version or the new **Edge** browser.
 
 ## Install online
 
