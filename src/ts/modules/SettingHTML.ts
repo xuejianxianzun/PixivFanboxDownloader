@@ -7,27 +7,27 @@ const formHtml = `<form class="settingForm">
 
       <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType1"> ${lang.transl('_图片')}&nbsp;</label>
+      <label for="fileType1" title="${store.fileType.image.join(',')}"> ${lang.transl('_图片')}&nbsp;</label>
       
       <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType2"> ${lang.transl('_音乐')}&nbsp;</label>
+      <label for="fileType2" title="${store.fileType.music.join(',')}"> ${lang.transl('_音乐')}&nbsp;</label>
 
       <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType3"> ${lang.transl('_视频')}&nbsp;</label>
+      <label for="fileType3" title="${store.fileType.video.join(',')}"> ${lang.transl('_视频')}&nbsp;</label>
       
       <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType4"> ${lang.transl('_压缩文件')}&nbsp;</label>
+      <label for="fileType4" title="${store.fileType.compressed.join(',')}"> ${lang.transl('_压缩文件')}&nbsp;</label>
       
       <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType5"> ${lang.transl('_PS文件')}&nbsp;</label>
+      <label for="fileType5" title="${store.fileType.ps.join(',')}"> ${lang.transl('_PS文件')}&nbsp;</label>
 
       <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType6"> ${lang.transl('_其他')}&nbsp;</label>
+      <label for="fileType6" title="${store.fileType.other.join(',')}"> ${lang.transl('_其他')}&nbsp;</label>
       </p>
 
       <p class="option" data-no="21">

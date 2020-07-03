@@ -12,6 +12,16 @@ class Store {
   public result: Result[] = [] // 储存抓取结果
   public readonly defaultFileName = '{user}/{title}/{index}'
 
+  // 文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些
+  public readonly fileType = {
+    image: ['jpg', 'jpeg', 'png', 'gif'],
+    music: ['wav', 'mp3', 'flac'],
+    video: ['mp4', 'mov', 'avi'],
+    compressed: ['zip'],
+    ps: ['psd', 'clip'],
+    other: ['txt', 'pdf'],
+  }
+
   private bindEvents() {
     const allowWorkTrue = [
       EVT.events.crawlFinish,

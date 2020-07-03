@@ -1,6 +1,7 @@
 import { form } from './Settings'
 import { log } from './Log'
 import { EVT } from './EVT'
+import { store } from './Store'
 
 interface FilterOption {
   id?: number | string
@@ -11,16 +12,6 @@ interface FilterOption {
 
 // 审查每个文件的数据，决定是否要下载它
 class Filter {
-  // 文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些
-  private readonly fileType = {
-    image: ['jpg', 'jpeg', 'png', 'gif'],
-    music: ['wav', 'mp3', 'flac'],
-    video: ['mp4', 'mov', 'avi', 'clip'],
-    compressed: ['zip'],
-    ps: ['psd'],
-    other: ['txt', 'pdf'],
-  }
-
   public init() {
     this.getIdRange()
     this.getDateRange()
@@ -93,7 +84,7 @@ class Filter {
     }
 
     // 检查 ext 存在于哪种类型里，然后检查这个类型是否被选中
-    for (const [key, value] of Object.entries(this.fileType)) {
+    for (const [key, value] of Object.entries(store.fileType)) {
       if (value.includes(ext)) {
         return form[key].checked ? true : false
       }
