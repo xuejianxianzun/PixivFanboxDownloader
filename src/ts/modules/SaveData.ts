@@ -73,7 +73,7 @@ class SaveData {
     let index = 0 // 资源的序号
 
     // 非 article 投稿都有 text 字段，这这里统一提取里面的链接
-    // 但是因为正则没有分组，所以非 article 投稿如果有多个链接，只会提取第一个
+    // 但是因为正则没有分组，所以非 article 投稿中如果有多个链接，可能会有遗漏，待考
     // 提取文本中的链接有两种来源，一种是文章正文里的文本，一种是嵌入资源。先从正文提取链接，后提取嵌入资源的链接。这样链接保存下来的顺序比较合理。
     if (data.type !== 'article') {
       const links = this.getTextLinks(data.body.text)
@@ -205,11 +205,17 @@ class SaveData {
     if (!form.saveLink.checked) {
       return links
     }
+
+    // 一个段落里可能包含多个连接（啊好麻烦），所以用换行符来尝试分割一下
+    const textArray = text.split('\n')
     const Reg = /http[s]*:\/\/[\w=\?\.\/&\-\#\!\%]+/g
-    const match = Reg.exec(text)
-    if (match && match.length > 0) {
-      for (const link of match) {
-        links.push(link)
+    for (const str of textArray) {
+      const match = Reg.exec(str)
+      Reg.lastIndex = 0
+      if (match && match.length > 0) {
+        for (const link of match) {
+          links.push(link)
+        }
       }
     }
 

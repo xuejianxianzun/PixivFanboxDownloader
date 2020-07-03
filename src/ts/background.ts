@@ -30,23 +30,6 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
   ['blocking', 'requestHeaders', 'extraHeaders']
 )
 
-fetch('https://api.fanbox.cc/post.listSupporting?limit=10', {
-  method: 'get',
-  credentials: 'include',
-})
-  .then((response) => {
-    if (response.ok) {
-      return response.json()
-    }
-  })
-  .then((data) => {
-    console.log(data)
-  })
-  .catch((error) => {
-    // 第二种异常，请求失败
-    console.log(error)
-  })
-
 // 当点击扩展图标时，切换显示/隐藏下载面板
 chrome.browserAction.onClicked.addListener(function (tab) {
   // 打开下载面板
