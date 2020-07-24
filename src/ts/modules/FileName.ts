@@ -102,7 +102,7 @@ class FileName {
         safe: true,
       },
     }
-
+    console.log(data)
     // 替换命名规则里的特殊字符
     result = this.replaceUnsafeStr(result)
     // 上一步会把斜线 / 替换成全角的斜线 ／，这里再替换回来，否则就不能建立文件夹了

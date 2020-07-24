@@ -78,25 +78,38 @@ class SaveData {
     if (data.type !== 'article') {
       const links = this.getTextLinks(data.body.text)
       result.links.text = result.links.text.concat(links)
+
+      // 保存文章正文里的文字
+      if (form.saveText.checked) {
+        result.links.text.push(data.body.text)
+      }
     }
 
     // 提取 article 投稿的资源
     if (data.type === 'article') {
       // 从正文文本里提取链接
-      let texts: string[] = []
+      let linkTexts: string[] = []
+      let text = '' // 正文文本
       for (const block of data.body.blocks) {
         if (block.type === 'p') {
-          texts.push(block.text)
+          linkTexts.push(block.text)
           if (block.links && block.links.length > 0) {
             for (const links of block.links) {
-              texts.push(links.url)
+              linkTexts.push(links.url)
             }
           }
+
+          // 保存文章正文里的文字，每个段落后面添加换行
+          text += block.text + '\r\n\r\n'
         }
       }
-      for (const text of texts) {
-        const links = this.getTextLinks(text)
+      for (const link of linkTexts) {
+        const links = this.getTextLinks(link)
         result.links.text = result.links.text.concat(links)
+      }
+
+      if (form.saveText.checked) {
+        result.links.text.push(text)
       }
 
       // 保存图片资源

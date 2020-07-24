@@ -1420,6 +1420,7 @@
                 safe: true,
               },
             }
+            console.log(data)
             // 替换命名规则里的特殊字符
             result = this.replaceUnsafeStr(result)
             // 上一步会把斜线 / 替换成全角的斜线 ／，这里再替换回来，否则就不能建立文件夹了
@@ -2913,24 +2914,38 @@
             if (data.type !== 'article') {
               const links = this.getTextLinks(data.body.text)
               result.links.text = result.links.text.concat(links)
+              // 保存文章正文里的文字
+              if (
+                _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveText.checked
+              ) {
+                result.links.text.push(data.body.text)
+              }
             }
             // 提取 article 投稿的资源
             if (data.type === 'article') {
               // 从正文文本里提取链接
-              let texts = []
+              let linkTexts = []
+              let text = '' // 正文文本
               for (const block of data.body.blocks) {
                 if (block.type === 'p') {
-                  texts.push(block.text)
+                  linkTexts.push(block.text)
                   if (block.links && block.links.length > 0) {
                     for (const links of block.links) {
-                      texts.push(links.url)
+                      linkTexts.push(links.url)
                     }
                   }
+                  // 保存文章正文里的文字，每个段落后面添加换行
+                  text += block.text + '\r\n\r\n'
                 }
               }
-              for (const text of texts) {
-                const links = this.getTextLinks(text)
+              for (const link of linkTexts) {
+                const links = this.getTextLinks(link)
                 result.links.text = result.links.text.concat(links)
+              }
+              if (
+                _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveText.checked
+              ) {
+                result.links.text.push(text)
               }
               // 保存图片资源
               for (const block of data.body.blocks) {
@@ -3110,6 +3125,7 @@
               postDate: false,
               postDateInput: '',
               saveLink: true,
+              saveText: false,
               userSetName:
                 _Store__WEBPACK_IMPORTED_MODULE_1__['store'].defaultFileName,
               quietDownload: true,
@@ -3189,6 +3205,7 @@
             this.restoreBoolean('idRangeSwitch')
             this.restoreBoolean('postDate')
             this.restoreBoolean('saveLink')
+            this.restoreBoolean('saveText')
             this.restoreBoolean('quietDownload')
           }
           // 处理输入框： change 时直接保存 value
@@ -3235,6 +3252,7 @@
             this.saveRadio('postRange')
             this.saveCheckBox('postDate')
             this.saveCheckBox('saveLink')
+            this.saveCheckBox('saveText')
             this.saveCheckBox('quietDownload')
             // 保存命名规则
             const userSetNameInput = this.form.userSetName
@@ -3435,6 +3453,16 @@
       <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
       <span class="beautify_switch"></span>
       </p>
+      
+      <p class="option" data-no="20">
+      <span class="settingNameStyle1">${_Lang__WEBPACK_IMPORTED_MODULE_0__[
+        'lang'
+      ].transl('_保存投稿中的文字')}&nbsp;&nbsp; 
+      </span>
+      <input type="checkbox" name="saveText" class="need_beautify checkbox_switch">
+      <span class="beautify_switch"></span>
+      </p>
+
     <p class="option" data-no="13">
       <span class="has_tip settingNameStyle1" data-tip="${_Lang__WEBPACK_IMPORTED_MODULE_0__[
         'lang'
@@ -3817,7 +3845,7 @@
           addResult(data) {
             this.resultMeta.push(data)
             // 因为文本的体积小，所以首先生成文本数据，它会被最早下载。这样不用等待大文件下载完了才下载文本文件
-            // 为投稿里的所有 text 生成一份数据
+            // 为投稿里的所有的 文本内容 生成一份数据
             if (data.links.text.length > 0) {
               const text = data.links.text.join('\r\n')
               const blob = new Blob([text], {
@@ -3833,7 +3861,7 @@
             for (const fileData of files) {
               const result = Object.assign(this.getCommonData(data), fileData)
               // 检测 name 是否唯一，如果不唯一则在当前 name 后面添加随机字符
-              // 但是有时候 name 不唯一的情况如画师上传了一个 zip 一个 pdf，用了相同的文件名，那么 name 也不唯一了，所以要进行检测
+              // name 不唯一的情况如画师上传了一个 zip 一个 pdf，用了相同的文件名，那么 name 也不唯一了，所以要进行检测
               for (const item of this.result) {
                 if (item.name === result.name) {
                   result.name += Math.random().toString(16)
@@ -4358,8 +4386,14 @@
           _保存投稿中的外部链接: [
             '保存投稿中的外部链接',
             '記事に外部リンクを保存する',
-            'Save external links in articles',
+            'Save external links in the articles',
             '存儲投稿中的外部鏈接',
+          ],
+          _保存投稿中的文字: [
+            '保存投稿中的文字',
+            '記事のテキストを保存します',
+            'Save the text in the articles',
+            '存儲投稿中的文字',
           ],
           _抓取文件数量: [
             '已获取 {} 个文件',

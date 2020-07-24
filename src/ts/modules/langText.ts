@@ -231,8 +231,14 @@ const langText = {
   _保存投稿中的外部链接: [
     '保存投稿中的外部链接',
     '記事に外部リンクを保存する',
-    'Save external links in articles',
+    'Save external links in the articles',
     '存儲投稿中的外部鏈接',
+  ],
+  _保存投稿中的文字: [
+    '保存投稿中的文字',
+    '記事のテキストを保存します',
+    'Save the text in the articles',
+    '存儲投稿中的文字',
   ],
   _抓取文件数量: [
     '已获取 {} 个文件',

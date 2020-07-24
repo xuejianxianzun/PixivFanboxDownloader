@@ -20,6 +20,7 @@ interface fanboxSetting {
   postDate: boolean
   postDateInput: string
   saveLink: boolean
+  saveText: boolean
   userSetName: string
   quietDownload: boolean
   downloadThread: number
@@ -75,6 +76,7 @@ class SaveSettings {
     postDate: false,
     postDateInput: '',
     saveLink: true,
+    saveText: false,
     userSetName: store.defaultFileName,
     quietDownload: true,
     downloadThread: 3,
@@ -139,6 +141,7 @@ class SaveSettings {
     this.restoreBoolean('idRangeSwitch')
     this.restoreBoolean('postDate')
     this.restoreBoolean('saveLink')
+    this.restoreBoolean('saveText')
     this.restoreBoolean('quietDownload')
   }
 
@@ -190,6 +193,7 @@ class SaveSettings {
     this.saveRadio('postRange')
     this.saveCheckBox('postDate')
     this.saveCheckBox('saveLink')
+    this.saveCheckBox('saveText')
     this.saveCheckBox('quietDownload')
 
     // 保存命名规则

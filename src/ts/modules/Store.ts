@@ -71,7 +71,7 @@ class Store {
   public addResult(data: ResultMeta) {
     this.resultMeta.push(data)
     // 因为文本的体积小，所以首先生成文本数据，它会被最早下载。这样不用等待大文件下载完了才下载文本文件
-    // 为投稿里的所有 text 生成一份数据
+    // 为投稿里的所有的 文本内容 生成一份数据
     if (data.links.text.length > 0) {
       const text = data.links.text.join('\r\n')
       const blob = new Blob([text], {
@@ -88,7 +88,7 @@ class Store {
     for (const fileData of files) {
       const result = Object.assign(this.getCommonData(data), fileData)
       // 检测 name 是否唯一，如果不唯一则在当前 name 后面添加随机字符
-      // 但是有时候 name 不唯一的情况如画师上传了一个 zip 一个 pdf，用了相同的文件名，那么 name 也不唯一了，所以要进行检测
+      // name 不唯一的情况如画师上传了一个 zip 一个 pdf，用了相同的文件名，那么 name 也不唯一了，所以要进行检测
       for (const item of this.result) {
         if (item.name === result.name) {
           result.name += Math.random().toString(16)

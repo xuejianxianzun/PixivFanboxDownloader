@@ -112,6 +112,16 @@ const formHtml = `<form class="settingForm">
       <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
       <span class="beautify_switch"></span>
       </p>
+      
+      <p class="option" data-no="20">
+      <span class="settingNameStyle1">${lang.transl(
+        '_保存投稿中的文字'
+      )}&nbsp;&nbsp; 
+      </span>
+      <input type="checkbox" name="saveText" class="need_beautify checkbox_switch">
+      <span class="beautify_switch"></span>
+      </p>
+
     <p class="option" data-no="13">
       <span class="has_tip settingNameStyle1" data-tip="${lang.transl(
         '_设置文件夹名的提示'
