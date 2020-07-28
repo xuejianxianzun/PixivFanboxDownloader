@@ -202,6 +202,17 @@ interface OnlyVideoData {
 // video（视频/音乐类型）投稿的数据
 type PostDataOfVideo = OnlyVideoData & CommonPostData & CommonAllData
 
+// entry 投稿数据
+interface OnlyEntryData {
+  type: 'entry'
+  body: null | {
+    html: string
+  }
+}
+
+// entry 投稿的数据
+type PostDataOfEntry = OnlyEntryData & CommonPostData & CommonAllData
+
 // 囊括所有类型的投稿详情数据
 type PostBody =
   | PostDataOfArticle
@@ -209,6 +220,7 @@ type PostBody =
   | PostDataOfImage
   | PostDataOfText
   | PostDataOfVideo
+  | PostDataOfEntry
 
 interface Post {
   body: PostBody
@@ -221,6 +233,7 @@ type PostListItem = (
   | OnlyFileData
   | OnlyTextData
   | OnlyVideoData
+  | OnlyEntryData
 ) &
   CommonAllData
 

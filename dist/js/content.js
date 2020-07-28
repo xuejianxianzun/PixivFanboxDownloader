@@ -1420,7 +1420,6 @@
                 safe: true,
               },
             }
-            console.log(data)
             // 替换命名规则里的特殊字符
             result = this.replaceUnsafeStr(result)
             // 上一步会把斜线 / 替换成全角的斜线 ／，这里再替换回来，否则就不能建立文件夹了
@@ -2866,6 +2865,7 @@
               twitter: 'https://twitter.com/i/web/status/',
               gsuite: 'https://gsuite.google.com/',
             }
+            this.extractTextReg = new RegExp(/<[^<>]+>/g)
           }
           receive(data) {
             this.parsePost(data)
@@ -2912,13 +2912,19 @@
             // 但是因为正则没有分组，所以非 article 投稿中如果有多个链接，可能会有遗漏，待考
             // 提取文本中的链接有两种来源，一种是文章正文里的文本，一种是嵌入资源。先从正文提取链接，后提取嵌入资源的链接。这样链接保存下来的顺序比较合理。
             if (data.type !== 'article') {
-              const links = this.getTextLinks(data.body.text)
+              let text = ''
+              if (data.type === 'entry') {
+                text = data.body.html.replace(this.extractTextReg, '')
+              } else {
+                text = data.body.text
+              }
+              const links = this.getTextLinks(text)
               result.links.text = result.links.text.concat(links)
               // 保存文章正文里的文字
               if (
                 _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveText.checked
               ) {
-                result.links.text.push(data.body.text)
+                result.links.text.push(text)
               }
             }
             // 提取 article 投稿的资源

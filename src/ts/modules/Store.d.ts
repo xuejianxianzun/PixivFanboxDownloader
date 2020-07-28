@@ -2,7 +2,7 @@
 // 不涉及文件和文本
 interface CommonResult {
   id: string
-  type: 'file' | 'image' | 'article' | 'video' | 'text'
+  type: 'file' | 'image' | 'article' | 'video' | 'text' | 'entry'
   title: string
   date: string
   fee: number
