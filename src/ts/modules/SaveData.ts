@@ -31,6 +31,10 @@ class SaveData {
 
   private readonly extractTextReg = new RegExp(/<[^<>]+>/g)
 
+  protected readonly matchImgSrc = new RegExp(
+    /(?<=src=")https.*?(jpeg|jpg|png|gif|bmp)/g
+  )
+
   public receive(data: PostBody | PostListItem) {
     this.parsePost(data)
   }
@@ -154,6 +158,56 @@ class SaveData {
       // 保存图片资源
       for (const imageData of data.body.images) {
         index++
+        const resource = this.getImageData(imageData, index)
+        resource !== null && result.files.push(resource)
+      }
+    }
+
+    // 提取 entry 投稿的图片资源
+    // 不知道此类型投稿中是否有其他类型的资源
+    if (data.type === 'entry') {
+      const imgList = data.body.html.match(/<img.*?>/g)
+      // img 标签如下：
+      // `<img class="image-medium" src="https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg" width="600" height="557">`
+      if (!imgList) {
+        return
+      }
+      for (const img of imgList) {
+        const matchUrl = img.match('https.*(jpeg|jpg|png|gif|bmp)')
+        if (!matchUrl) {
+          return
+        }
+        // 组合出 imageData，添加到结果中
+        index++
+        const url = matchUrl[0]
+        // url 如下:
+        // "https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg"
+        const split = url.split('/')
+        const fileName = split[split.length - 1]
+        const name = fileName.split('.')[0]
+        const ext = fileName.split('.')[1]
+
+        let width = 0
+        const widthMatch = img.match(/width="(\d*?)"/)
+        if (widthMatch && widthMatch.length > 1) {
+          width = parseInt(widthMatch[1])
+        }
+
+        let height = 0
+        const heightMatch = img.match(/height="(\d*?)"/)
+        if (heightMatch && heightMatch.length > 1) {
+          height = parseInt(heightMatch[1])
+        }
+
+        const imageData: ImageData = {
+          id: name,
+          extension: ext,
+          originalUrl: url,
+          thumbnailUrl: url,
+          width: width,
+          height: height,
+        }
+
         const resource = this.getImageData(imageData, index)
         resource !== null && result.files.push(resource)
       }

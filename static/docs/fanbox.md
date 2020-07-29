@@ -241,7 +241,7 @@ items 是个数组，保存每一篇投稿的信息。获取的投稿顺序总�
 | feeRequired       | number                                                      | 需要的赞助金额（日元）                |
 | publishedDatetime | string，如  "2020-02-29T19:27:19+09:00"                     | 发布时间                              |
 | updatedDatetime   | string 如 "2020-03-04T21:53:44+09:00"                       | 更新时间                              |
-| type              | 'file' 或者 'image' 或者 'article' 或者 'video' 或者 'text' | 投稿的类型                            |
+| type              | 'file' or 'image' or 'article' or 'video' or 'text' or 'entry' | 投稿的类型                            |
 | body              | object 或者 null (下面详细说明)                             | 付费的内容，未解锁的话是null          |
 | tags              | string[]                                                    | tags，但是大部分都是空的 []           |
 | excerpt           | string 或者 null                                            | body 里 text 字段的摘要，未解锁是null |
@@ -264,6 +264,7 @@ items 是个数组，保存每一篇投稿的信息。获取的投稿顺序总�
 - text 页面，只有 text 字段。
 - file 页面，必然有 text 字段、files 字段。files 必然有内容。可以有多个内容。
 - video 页面，必然有 text 字段、video 字段。video 必然有内容，而且只会有一个 video。
+- entry 页面，必然有 html 字段。文章所有内容都保存在 html 文本里。不知道是否有其他字段。
 
 未解锁时（没有赞助或者赞助金额不够），是 `null`。
 

@@ -1,6 +1,6 @@
-# 1.2.1 2020/07/28
+# 1.2.2 2020/07/29
 
-### 处理了作品类型为 entry 的情况
+### 处理了投稿类型为 entry 的情况
 
 [issues 3](https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/3) 报告早期一些作品抓取出错，一看确实，早期有种投稿类型是“entry”，它的所有内容都保存在一整段 html 里，存放在 `body.html` 字段。现在对这个问题进行了修复。
 
