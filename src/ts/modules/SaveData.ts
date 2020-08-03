@@ -127,8 +127,11 @@ class SaveData {
       // 保存图片资源
       for (const block of data.body.blocks) {
         if (block.type === 'image') {
-          index++
           const imageData = data.body.imageMap[block.imageId]
+          if (!imageData) {
+            continue
+          }
+          index++
           const resource = this.getImageData(imageData, index)
           resource !== null && result.files.push(resource)
         }
@@ -137,8 +140,11 @@ class SaveData {
       // 保存 file 资源
       for (const block of data.body.blocks) {
         if (block.type === 'file') {
-          index++
           const fileData = data.body.fileMap[block.fileId]
+          if (!fileData) {
+            continue
+          }
+          index++
           const resource = this.getFileData(fileData, index)
           resource !== null && result.files.push(resource)
         }
@@ -157,6 +163,9 @@ class SaveData {
     if (data.type === 'image') {
       // 保存图片资源
       for (const imageData of data.body.images) {
+        if (!imageData) {
+          continue
+        }
         index++
         const resource = this.getImageData(imageData, index)
         resource !== null && result.files.push(resource)
@@ -217,6 +226,9 @@ class SaveData {
     if (data.type === 'file') {
       // 保存 file 资源
       for (const fileData of data.body.files) {
+        if (!fileData) {
+          continue
+        }
         index++
         const resource = this.getFileData(fileData, index)
         resource !== null && result.files.push(resource)
