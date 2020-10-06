@@ -23,7 +23,10 @@ It is recommended to use the **Chrome** browser latest version or the new **Edge
 
 ## Install online
 
-You can install this extension from the Chrome Web Store. (Not yet released)
+You can install this extension from the Chrome Web Store. 
+
+[Chrome Web Store page](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
+
 
 ## Offline installation
 

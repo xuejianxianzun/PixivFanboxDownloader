@@ -29,7 +29,7 @@ class DownloadControl {
     this.listenEvents()
   }
 
-  private readonly downloadThreadMax: number = 3 // 同时下载的线程数的最大值，也是默认值
+  private readonly downloadThreadMax: number = 10 // 同时下载的线程数的最大值，也是默认值
 
   private downloadThread: number = this.downloadThreadMax // 同时下载的线程数
 

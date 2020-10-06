@@ -27,7 +27,9 @@ QQ 群：853021998
 
 ## 在线安装
 
-您可以从 Chrome Web Store 安装本扩展。（尚未发布）
+您可以从 Chrome Web Store 安装本扩展。
+
+[Chrome Web Store 页面](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
 
 ## 离线安装
 

@@ -772,7 +772,7 @@
 
         class DownloadControl {
           constructor() {
-            this.downloadThreadMax = 3 // 同时下载的线程数的最大值，也是默认值
+            this.downloadThreadMax = 10 // 同时下载的线程数的最大值，也是默认值
             this.downloadThread = this.downloadThreadMax // 同时下载的线程数
             this.taskBatch = 0 // 标记任务批次，每次重新下载时改变它的值，传递给后台使其知道这是一次新的下载
             this.statesList = [] // 下载状态列表，保存每个下载任务的状态
@@ -4281,10 +4281,10 @@
             '設定下載執行緒',
           ],
           _线程数字: [
-            '可以输入 1-3 之间的数字，设置同时下载的数量',
-            '同時ダウンロード数を設定、1-3 の数値を入力してください',
-            'You can type a number between 1-3 to set the number of concurrent downloads',
-            '可以輸入 1-3 之間的數字，設定同時下載的數量',
+            '可以输入 1-10 之间的数字，设置同时下载的数量',
+            '同時ダウンロード数を設定、1-10 の数値を入力してください',
+            'You can type a number between 1-10 to set the number of concurrent downloads',
+            '可以輸入 1-10 之間的數字，設定同時下載的數量',
           ],
           _下载按钮1: [
             '开始下载',
