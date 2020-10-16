@@ -773,7 +773,7 @@
         class DownloadControl {
           constructor() {
             this.downloadThreadMax = 10 // 同时下载的线程数的最大值，也是默认值
-            this.downloadThread = this.downloadThreadMax // 同时下载的线程数
+            this.downloadThread = 3 // 同时下载的线程数
             this.taskBatch = 0 // 标记任务批次，每次重新下载时改变它的值，传递给后台使其知道这是一次新的下载
             this.statesList = [] // 下载状态列表，保存每个下载任务的状态
             this.taskList = {} // 下载任务列表，使用下载的文件的 id 做 key，保存下载栏编号和它在下载状态列表中的索引
@@ -4335,7 +4335,7 @@
             "下载的文件保存在浏览器的下载目录里。<br>请不要在浏览器的下载选项里选中'总是询问每个文件的保存位置'。<br><b>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。</b><br>QQ群：853021998",
             'ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><b>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。</b>',
             'The downloaded file is saved in the browser`s download directory. <br><b>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.</b>',
-            "下載的檔案儲存在瀏覽器的下載目錄裡。<br>請不要在瀏覽器的下載選項裡選取'總是詢問每個檔案的儲存位置'。<br><b>如果下載後的檔案名稱異常，請停用其他有下載功能的瀏覽器擴充功能。</b><br>QQ群：853021998",
+            '下載的檔案儲存在瀏覽器的下載目錄裡。<br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><b>如果下載後的檔案名稱異常，請停用其他有下載功能的瀏覽器擴充功能。</b><br>QQ群：853021998',
           ],
           _正在下载中: [
             '正在下载中',
@@ -4373,13 +4373,13 @@
             '自动开始下载',
             'ダウンロードは自動的に開始されます',
             'Download starts automatically',
-            '自動开始下載',
+            '自動開始下載',
           ],
           _自动下载的提示: [
             '当“开始下载”状态可用时，自动开始下载，不需要点击下载按钮。',
             '「ダウンロードを開始する」ステータスが利用可能になると、ダウンロードは自動的に開始され、ダウンロードボタンをクリックする必要はありません。',
             'When the &quot;Start Downloa&quot; status is available, the download starts automatically and no need to click the download button.',
-            '當“開始下載”狀態可用時，自動開始下載，不需要點選下載按鈕。',
+            '當可下載時自動開始下載，不需要點選下載按鈕。',
           ],
           _文件下载失败: [
             '文件 {} 下载失败',
@@ -4431,15 +4431,10 @@
           _最大值: ['最大值', '最大値', 'maximum value', '最大值'],
           _文件类型: ['文件类型', 'ファイルタイプ', 'File type', '檔案類型'],
           _图片: ['图片', '画像', 'Image', '圖片'],
-          _视频: ['视频', 'ビデオ', 'Video', '視頻'],
-          _音乐: ['音频', '音声', 'Audio', '音頻'],
-          _压缩文件: [
-            '压缩文件',
-            '圧縮ファイル',
-            'Compressed file',
-            '壓縮檔案',
-          ],
-          _PS文件: ['源文件', 'ソースファイル', 'Source File', '源文件psd'],
+          _视频: ['视频', 'ビデオ', 'Video', '影片'],
+          _音乐: ['音频', '音声', 'Audio', '音訊'],
+          _压缩文件: ['压缩文件', '圧縮ファイル', 'Compressed file', '壓縮檔'],
+          _PS文件: ['源文件', 'ソースファイル', 'Source File', '原始檔'],
           _投稿类型: ['投稿类型', '記事タイプ', 'Article type', '投稿類型'],
           _免费投稿: ['免费投稿', '無料記事', 'Free article', '免費投稿'],
           _付费投稿: ['付费投稿', '有償記事', 'Paid article', '付費投稿'],
@@ -4447,19 +4442,19 @@
             '设置价格范围',
             '価格帯を設定',
             'Set price range',
-            '設置價格範圍',
+            '設定價格範圍',
           ],
           _保存投稿中的外部链接: [
             '保存投稿中的外部链接',
             '記事に外部リンクを保存する',
             'Save external links in the articles',
-            '存儲投稿中的外部鏈接',
+            '儲存投稿中的外部連結',
           ],
           _保存投稿中的文字: [
             '保存投稿中的文字',
             '記事のテキストを保存します',
             'Save the text in the articles',
-            '存儲投稿中的文字',
+            '儲存投稿中的文字',
           ],
           _抓取文件数量: [
             '已获取 {} 个文件',
@@ -4473,31 +4468,31 @@
             '抓取赞助的所有用户的投稿',
             'スポンサー記事をすべてクロールする',
             'Crawl all sponsored articles',
-            '抓取贊助的所有用戶的投稿',
+            '擷取所有贊助用戶的投稿',
           ],
           _抓取该用户的投稿: [
             '抓取该用户的投稿',
             'ユーザーの記事をクロールする',
             "Crawl this user's articles",
-            '抓取該用戶的投稿',
+            '擷取該用戶的投稿',
           ],
           _抓取该tag的投稿: [
             '抓取该 tag 的投稿',
             'このタグで記事をクロールする',
             'Crawl articles with this tag',
-            '抓取該 tag 的投稿',
+            '擷取該 tag 的投稿',
           ],
           _抓取这篇投稿: [
             '抓取这篇投稿',
             'この記事をつかむ',
             'Crawl this article',
-            '抓取這篇投稿',
+            '擷取這篇投稿',
           ],
           _抓取商品的封面图: [
             '抓取商品的封面图',
             '製品のカバー画像をつかむ',
             'Crawl the cover image of the product',
-            '抓取商品的封面圖',
+            '擷取商品的封面圖',
           ],
           _命名标记postid: ['投稿 id', '記事ID', 'Article id', '投稿 id'],
           _命名标记title: [
@@ -4534,19 +4529,19 @@
             '文件在投稿里的文件名',
             '記事内のファイル名',
             'File name in the article',
-            '檔案在投稿裡的名称',
+            '檔案在投稿裡的名稱',
           ],
           _命名标记ext: [
             '文件的扩展名',
             'ファイル拡張子',
             'File extension',
-            '檔案的擴展名',
+            '檔案的副檔名',
           ],
           _命名标记提醒: [
             '您可以使用多个标记；建议在不同标记之间添加分割用的字符。示例：{title}-{postid}<br>建议在命名规则中包含 {postid} 和 {index}，防止文件名重复。',
             '複数のタグを使用できます。異なるタグを区切るために文字を追加することをお勧めします。 例：{title}-{postid} <br>ファイル名の重複を防ぐために、命名規則に{postid}と{index}を含めることをお勧めします。',
             'You can use multiple tags; it is recommended to add characters to separate between different tags. Example: {title}-{postid} <br> It is recommended to include {postid} and {index} in the naming rules to prevent duplicate file names.',
-            '您可以使用多個標記；建議在不同標記之間添加分割用的字符。示例：{title}-{postid}<br>建議在命名規則中包含 {postid} 和 {index}，防止檔案名重複。',
+            '您可以使用多個標記；建議在不同標記之間加入分隔用的字元。範例：{title}-{postid}<br>建議在命名規則中包含 {postid} 和 {index}，防止檔名重複。',
           ],
         }
 

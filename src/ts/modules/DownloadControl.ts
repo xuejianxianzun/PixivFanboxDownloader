@@ -31,7 +31,7 @@ class DownloadControl {
 
   private readonly downloadThreadMax: number = 10 // 同时下载的线程数的最大值，也是默认值
 
-  private downloadThread: number = this.downloadThreadMax // 同时下载的线程数
+  private downloadThread: number = 3 // 同时下载的线程数
 
   private taskBatch = 0 // 标记任务批次，每次重新下载时改变它的值，传递给后台使其知道这是一次新的下载
 

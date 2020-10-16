@@ -1,3 +1,11 @@
+# 1.2.5 2020/10/16
+
+### 优化繁体中文文本
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/pull/4
+
+感谢 VHlqg 提交的繁体中文优化，以及 readme。
+
 # 1.2.4 2020/10/06
 
 ### 加大下载线程数量限制

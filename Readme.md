@@ -11,6 +11,8 @@
 
 [View English introduction](Readme-EN.md)
 
+[查看繁体中文介绍](Readme-ZH-TW.md)
+
 # 简介
 
 这是一个 Chrome 浏览器扩展程序，用于批量下载 Pixiv Fanbox 上的文件。
