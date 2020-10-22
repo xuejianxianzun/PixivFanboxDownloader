@@ -96,6 +96,8 @@ abstract class InitPageBase {
 
     this.nextUrl = null
 
+    store.crawlCompleteTime = new Date()
+
     log.log(lang.transl('_抓取文件数量', store.result.length.toString()))
 
     log.log(lang.transl('_抓取完毕'), 2)

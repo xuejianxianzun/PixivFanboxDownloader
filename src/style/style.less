@@ -15,15 +15,18 @@
   position: fixed;
   z-index: 1000;
   font-size: 14px;
+
   &:hover {
     opacity: 0.8;
   }
 }
+
 #rightButton {
   top: 15%;
   background: #80b9f7;
   background: -webkit-linear-gradient(top, #bce4ff 0%, #35adfd 100%);
 }
+
 #quick_down_btn {
   top: 21%;
   background: #0096fa;
@@ -54,6 +57,7 @@
   box-shadow: 0 0 25px #2ca6df;
   max-height: 94vh;
   overflow: auto;
+
   p,
   div,
   span,
@@ -63,22 +67,27 @@
     padding: 0;
     margin: 0;
   }
+
   p {
     line-height: 26px;
     min-height: 26px;
     height: auto;
     margin: 0;
   }
+
   .tip {
     color: #999;
   }
+
   .blue {
     color: @themeBlue !important;
   }
+
   .has_tip:hover,
   label:hover {
     color: @themeBlue !important;
   }
+
   .settingForm {
     select {
       width: 80px;
@@ -87,10 +96,12 @@
       border-radius: 4px;
       border: 1px solid rgb(204, 204, 204);
     }
+
     option {
       font-size: 14px !important;
       line-height: 24px;
     }
+
     p * {
       vertical-align: middle;
       line-height: 1;
@@ -111,6 +122,7 @@
       display: flex;
       border-bottom: 1px solid #eee;
       margin-bottom: 10px;
+
       .title {
         text-align: center;
         width: 100%;
@@ -121,8 +133,10 @@
         line-height: 30px;
         position: relative;
       }
+
       .title.active {
         color: @themeBlue;
+
         &::after {
           content: '';
           width: 100%;
@@ -134,6 +148,7 @@
           z-index: 1000;
         }
       }
+
       .title:hover {
         color: @themeBlue;
       }
@@ -280,10 +295,12 @@
     background: #fff;
     padding-top: @contentPadding;
     margin-bottom: 10px;
+
     img {
       width: 16px;
       vertical-align: inherit;
     }
+
     .centerWrap_title {
       line-height: 30px;
       text-align: center;
@@ -296,6 +313,7 @@
       padding-top: @contentPadding;
       right: 0;
       top: 0;
+
       .centerWrap_top_btn {
         font-size: 20px;
         width: 30px;
@@ -347,6 +365,7 @@
   .right1 {
     position: relative;
   }
+
   .setinput_style1 {
     width: 50px;
     min-width: 50px;
@@ -360,44 +379,55 @@
     outline: 0;
     padding: 0 !important;
     transition: all 0.3s;
+
     &:focus,
     &:hover {
       border-bottom: 1px solid #0096fa !important;
       background: 0 0 !important;
     }
+
     &.w100 {
       width: 100px;
     }
+
     &.postDate {
       width: 190px;
     }
+
     &.bmkNum {
       width: 60px;
     }
   }
+
   .progressBar1,
   .right1 {
     width: 100%;
   }
+
   .fileNameRule {
     min-width: 350px;
   }
+
   .setinput_tag {
     min-width: 300px;
   }
+
   .showFileNameResult,
   .showFileNameTip {
     cursor: pointer;
   }
+
   .fileNameTip {
     display: none;
     padding-top: 5px;
   }
+
   .centerWrap_btns {
     padding: 10px 0 0;
     font-size: 0;
     display: flex;
     flex-wrap: wrap;
+
     & > * {
       box-sizing: border-box;
       border: none;
@@ -413,38 +443,47 @@
       cursor: pointer;
       margin-bottom: 10px;
       vertical-align: top;
+
       &:hover,
       &:focus {
         opacity: 0.8;
       }
     }
+
     &.crawlBtns button {
       width: auto !important;
       display: inline-block;
     }
   }
+
   .centerWrap_btns > *,
   .progressTip {
     color: #fff;
     font-size: 14px;
   }
+
   .progressBarWrap {
     display: none;
+
     .total {
       display: flex;
+
       .text {
         margin-right: 10px;
       }
+
       .right1 {
         flex: 1;
       }
     }
+
     .progress,
     .progressBar {
       border-radius: 11px;
       height: 22px;
       overflow: hidden;
     }
+
     .centerWrap_down_tips {
       line-height: 28px;
     }
@@ -452,26 +491,32 @@
     .down_status {
       vertical-align: text-top;
     }
+
     .right1 {
       display: inline-block;
       height: 22px;
       vertical-align: middle;
     }
+
     .progressBar {
       position: absolute;
       background: #6792a2;
     }
+
     .progress {
       background: #0eb3f3;
       transition: 0.15s;
     }
+
     .progressTip {
       position: absolute;
       line-height: 22px;
     }
+
     .progress1 {
       width: 0;
     }
+
     .progressTip1 {
       width: 100%;
       text-align: center;
@@ -489,15 +534,19 @@
         height: 22px;
         box-sizing: content-box;
       }
+
       .progressBar2 {
         width: 100%;
       }
+
       .progress2 {
         width: 0;
       }
+
       .progressTip2 {
         width: 100%;
       }
+
       .fileName {
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -508,19 +557,23 @@
       }
     }
   }
+
   .downTip,
   .download_a,
   .download_area {
     display: none;
   }
+
   .settingNameStyle1 {
     width: 100px;
     cursor: pointer;
     margin-right: 10px;
   }
+
   .fwb {
     font-weight: 700;
   }
+
   .gray1 {
     color: #999;
   }
@@ -551,6 +604,7 @@
   top: 15%;
   margin-left: -300px;
   left: 50%;
+
   .outputTitle {
     height: 20px;
     line-height: 20px;
@@ -558,6 +612,7 @@
     font-size: 18px;
     color: @themeBlue;
   }
+
   .outputContent {
     border: 1px solid #ccc;
     transition: 0.3s;
@@ -567,27 +622,34 @@
     overflow: auto;
     max-height: 350px;
     line-height: 20px;
+
     &::selection {
       background: @themeBlue;
       color: #fff;
     }
+
     p.result {
       margin-bottom: 10px;
     }
+
     .color999 {
       color: #999;
     }
+
     .color666 {
       color: #666;
     }
+
     .color000 {
       color: #000;
     }
   }
+
   .outputFooter {
     height: 60px;
     text-align: center;
   }
+
   .outputClose {
     cursor: pointer;
     position: absolute;
@@ -598,10 +660,12 @@
     z-index: 9999;
     font-size: 18px;
     text-align: center;
+
     &:hover {
       color: @themeBlue;
     }
   }
+
   .outputCopy {
     height: 34px;
     line-height: 34px;
@@ -624,6 +688,7 @@
   padding: 10px;
   font-size: 14px;
   width: 950px;
+
   br {
     display: inline;
   }
@@ -641,19 +706,23 @@
   top: 5%;
   left: 50%;
   transform: translate(-50%);
+
   p {
     margin: 0;
   }
+
   .title {
     font-size: 18px;
     color: @themeBlue;
   }
+
   .content {
     padding: 15px 0 0;
     font-size: 14px;
     line-height: 1.7;
     color: #555;
   }
+
   .btn {
     cursor: pointer;
     background: @themeBlue;
@@ -688,13 +757,29 @@
 .warn {
   color: #d27e00;
 }
+
 .red {
   color: #f00;
 }
+
 .downloadError {
   color: rgb(255, 160, 160);
 }
 
 .patronText {
   display: none;
+}
+
+.textButton {
+  border: none;
+  background: none;
+  outline: none;
+  padding: 1px 6px;
+  cursor: pointer;
+}
+
+.textButton:hover,
+.textButton:focus {
+  color: @themeBlue !important;
+  fill: @themeBlue !important;
 }

@@ -623,6 +623,97 @@
         /***/
       },
 
+    /***/ './src/ts/modules/DateFormat.ts':
+      /*!**************************************!*\
+  !*** ./src/ts/modules/DateFormat.ts ***!
+  \**************************************/
+      /*! exports provided: DateFormat */
+      /***/ function (module, __webpack_exports__, __webpack_require__) {
+        'use strict'
+        __webpack_require__.r(__webpack_exports__)
+        /* harmony export (binding) */ __webpack_require__.d(
+          __webpack_exports__,
+          'DateFormat',
+          function () {
+            return DateFormat
+          }
+        )
+        // 格式化日期（和时间）
+        class DateFormat {
+          // format 参数可以由以下格式组合：
+          /*
+    YYYY
+    YY
+    MM
+    MMM
+    MMMM
+    DD
+    hh
+    mm
+    ss
+    */
+          // 区分大小写；可以添加空格或其他符号；不要使用上面未包含的格式。
+          // 参考资料：
+          // https://www.w3.org/TR/NOTE-datetime
+          // https://en.wikipedia.org/wiki/Date_format_by_country
+          static format(date, format = 'YYYY-MM-DD') {
+            // 生成年、月、日、时、分、秒
+            const _date = new Date(date)
+            const YYYY = _date.getFullYear().toString()
+            const YY = YYYY.substring(YYYY.length - 2, YYYY.length)
+            const MM = (_date.getMonth() + 1).toString().padStart(2, '0')
+            const MMM = this.months[_date.getMonth()]
+            const MMMM = this.Months[_date.getMonth()]
+            const DD = _date.getDate().toString().padStart(2, '0')
+            const hh = _date.getHours().toString().padStart(2, '0')
+            const mm = _date.getMinutes().toString().padStart(2, '0')
+            const ss = _date.getSeconds().toString().padStart(2, '0')
+            // 对格式字符串进行替换
+            let r = format
+            r = r.replace('YYYY', YYYY)
+            r = r.replace('YY', YY)
+            r = r.replace('MMMM', MMMM)
+            r = r.replace('MMM', MMM)
+            r = r.replace('MM', MM)
+            r = r.replace('DD', DD)
+            r = r.replace('hh', hh)
+            r = r.replace('mm', mm)
+            r = r.replace('ss', ss)
+            return r
+          }
+        }
+        DateFormat.months = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sept',
+          'Oct',
+          'Nov',
+          'Dec',
+        ]
+        DateFormat.Months = [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ]
+
+        /***/
+      },
+
     /***/ './src/ts/modules/Download.ts':
       /*!************************************!*\
   !*** ./src/ts/modules/Download.ts ***!
@@ -1320,6 +1411,9 @@
         /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
           /*! ./Lang */ './src/ts/modules/Lang.ts'
         )
+        /* harmony import */ var _DateFormat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+          /*! ./DateFormat */ './src/ts/modules/DateFormat.ts'
+        )
 
         class FileName {
           constructor() {
@@ -1404,7 +1498,25 @@
                 safe: false,
               },
               '{date}': {
-                value: this.transDate(data.date),
+                value: _DateFormat__WEBPACK_IMPORTED_MODULE_4__[
+                  'DateFormat'
+                ].format(
+                  data.date,
+                  _Settings__WEBPACK_IMPORTED_MODULE_1__['form'].dateFormat
+                    .value
+                ),
+                safe: false,
+              },
+              '{task_date}': {
+                value: _DateFormat__WEBPACK_IMPORTED_MODULE_4__[
+                  'DateFormat'
+                ].format(
+                  _Store__WEBPACK_IMPORTED_MODULE_2__['store']
+                    .crawlCompleteTime,
+                  _Settings__WEBPACK_IMPORTED_MODULE_1__['form'].dateFormat
+                    .value
+                ),
+                prefix: '',
                 safe: false,
               },
               '{fee}': {
@@ -1990,6 +2102,9 @@
               return this.noResult()
             }
             this.nextUrl = null
+            _Store__WEBPACK_IMPORTED_MODULE_3__[
+              'store'
+            ].crawlCompleteTime = new Date()
             _Log__WEBPACK_IMPORTED_MODULE_4__['log'].log(
               _Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
                 '_抓取文件数量',
@@ -3196,6 +3311,7 @@
                 _Store__WEBPACK_IMPORTED_MODULE_1__['store'].defaultFileName,
               quietDownload: true,
               downloadThread: 3,
+              dateFormat: 'YYYY-MM-DD hh-mm',
             }
             // 需要持久化保存的设置
             this.options = this.optionDefault
@@ -3273,6 +3389,7 @@
             this.restoreBoolean('saveLink')
             this.restoreBoolean('saveText')
             this.restoreBoolean('quietDownload')
+            this.restoreString('dateFormat')
           }
           // 处理输入框： change 时直接保存 value
           saveTextInput(name) {
@@ -3320,6 +3437,7 @@
             this.saveCheckBox('saveLink')
             this.saveCheckBox('saveText')
             this.saveCheckBox('quietDownload')
+            this.saveTextInput('dateFormat')
             // 保存命名规则
             const userSetNameInput = this.form.userSetName
             ;['change', 'focus'].forEach((ev) => {
@@ -3546,6 +3664,7 @@
         <option value="{title}">{title}</option>
         <option value="{postid}">{postid}</option>
         <option value="{date}">{date}</option>
+        <option value="{task_date}">{task_date}</option>
         <option value="{index}">{index}</option>
         <option value="{name}">{name}</option>
         <option value="{ext}">{ext}</option>
@@ -3575,6 +3694,9 @@
       <span class="blue">{date}</span>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记date')}
       <br>
+      <span class="blue">{task_date}</span>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记taskDate')}
+      <br>
       <span class="blue">{index}</span>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记index')}
       <br>
@@ -3591,6 +3713,40 @@
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记tags')}
       <br>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl('_命名标记提醒')}
+      </p>
+
+      <p class="option" data-no="31">
+      <span class="settingNameStyle1">${_Lang__WEBPACK_IMPORTED_MODULE_0__[
+        'lang'
+      ].transl('_日期格式')}</span>
+      <input type="text" name="dateFormat" class="setinput_style1 blue" style="width:250px;" value="YYYY-MM-DD">
+      <button type="button" class="gray1 textButton showDateTip">${_Lang__WEBPACK_IMPORTED_MODULE_0__[
+        'lang'
+      ].transl('_提示')}</button>
+      </p>
+      <p class="dateFormatTip tip" style="display:none">
+      <span>${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
+        '_日期格式提示'
+      )}</span>
+      <br>
+      <span class="blue">YYYY</span> <span>2021</span>
+      <br>
+      <span class="blue">YY</span> <span>21</span>
+      <br>
+      <span class="blue">MM</span> <span>04</span>
+      <br>
+      <span class="blue">MMM</span> <span>Apr</span>
+      <br>
+      <span class="blue">MMMM</span> <span>April</span>
+      <br>
+      <span class="blue">DD</span> <span>30</span>
+      <br>
+      <span class="blue">hh</span> <span>06</span>
+      <br>
+      <span class="blue">mm</span> <span>40</span>
+      <br>
+      <span class="blue">ss</span> <span>08</span>
+      <br>
       </p>
       
       <p class="option" data-no="16">
@@ -3700,6 +3856,14 @@
               .addEventListener('click', () =>
                 _DOM__WEBPACK_IMPORTED_MODULE_1__['DOM'].toggleEl(
                   document.querySelector('.fileNameTip')
+                )
+              )
+            // 显示日期格式提示
+            this.form
+              .querySelector('.showDateTip')
+              .addEventListener('click', () =>
+                _DOM__WEBPACK_IMPORTED_MODULE_1__['DOM'].toggleEl(
+                  document.querySelector('.dateFormatTip')
                 )
               )
             // 输入框获得焦点时自动选择文本（文件名输入框例外）
@@ -3844,6 +4008,7 @@
             this.resultMeta = [] // 储存抓取结果的元数据
             this.result = [] // 储存抓取结果
             this.defaultFileName = '{user}/{title}/{index}'
+            this.crawlCompleteTime = new Date()
             // 文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些
             this.fileType = {
               image: ['jpg', 'jpeg', 'png', 'gif'],
@@ -4543,6 +4708,25 @@
             'You can use multiple tags; it is recommended to add characters to separate between different tags. Example: {title}-{postid} <br> It is recommended to include {postid} and {index} in the naming rules to prevent duplicate file names.',
             '您可以使用多個標記；建議在不同標記之間加入分隔用的字元。範例：{title}-{postid}<br>建議在命名規則中包含 {postid} 和 {index}，防止檔名重複。',
           ],
+          _日期格式: [
+            '日期和时间格式',
+            '日付と時刻の書式',
+            'Date and time format',
+            '日期和時間格式',
+          ],
+          _日期格式提示: [
+            '你可以使用以下标记来设置日期和时间格式。这会影响命名规则里的 {date} 和 {task_date}。<br>对于时间如 2021-04-30T06:40:08',
+            '以下のタグを使用して日時と時刻の書式を設定することができます。 これは命名規則の {date} と {task_date} に影響します。 <br> 例：2021-04-30T06:40:08',
+            'You can use the following notation to set the date and time format. This will affect {date} and {task_date} in the naming rules. <br>For time such as 2021-04-30T06:40:08',
+            '你可以使用以下標記來設定日期和時間格式。這會影響命名規則裡的 {date} 和 {task_date}。<br>對於資料如：2021-04-30T06:40:08。',
+          ],
+          _命名标记taskDate: [
+            '本次任务抓取完成时的时间。例如：2020-10-21',
+            'このタスクのクロールが完了した時刻です。 例：2020-10-21',
+            'The time when the task was crawl completed. For example: 2020-10-21',
+            '本次工作擷取完成時的時間。例如：2020-10-21。',
+          ],
+          _提示: ['提示', 'ヒント', 'tip', '提示'],
         }
 
         /***/

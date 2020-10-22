@@ -24,6 +24,7 @@ interface fanboxSetting {
   userSetName: string
   quietDownload: boolean
   downloadThread: number
+  dateFormat: string
 }
 
 interface SettingChangeData {
@@ -80,6 +81,7 @@ class SaveSettings {
     userSetName: store.defaultFileName,
     quietDownload: true,
     downloadThread: 3,
+    dateFormat: 'YYYY-MM-DD hh-mm',
   }
 
   // 需要持久化保存的设置
@@ -143,6 +145,7 @@ class SaveSettings {
     this.restoreBoolean('saveLink')
     this.restoreBoolean('saveText')
     this.restoreBoolean('quietDownload')
+    this.restoreString('dateFormat')
   }
 
   // 处理输入框： change 时直接保存 value
@@ -195,6 +198,7 @@ class SaveSettings {
     this.saveCheckBox('saveLink')
     this.saveCheckBox('saveText')
     this.saveCheckBox('quietDownload')
+    this.saveTextInput('dateFormat')
 
     // 保存命名规则
     const userSetNameInput = this.form.userSetName

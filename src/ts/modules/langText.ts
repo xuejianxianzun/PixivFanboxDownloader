@@ -317,6 +317,25 @@ const langText = {
     'You can use multiple tags; it is recommended to add characters to separate between different tags. Example: {title}-{postid} <br> It is recommended to include {postid} and {index} in the naming rules to prevent duplicate file names.',
     '您可以使用多個標記；建議在不同標記之間加入分隔用的字元。範例：{title}-{postid}<br>建議在命名規則中包含 {postid} 和 {index}，防止檔名重複。',
   ],
+  _日期格式: [
+    '日期和时间格式',
+    '日付と時刻の書式',
+    'Date and time format',
+    '日期和時間格式',
+  ],
+  _日期格式提示: [
+    '你可以使用以下标记来设置日期和时间格式。这会影响命名规则里的 {date} 和 {task_date}。<br>对于时间如 2021-04-30T06:40:08',
+    '以下のタグを使用して日時と時刻の書式を設定することができます。 これは命名規則の {date} と {task_date} に影響します。 <br> 例：2021-04-30T06:40:08',
+    'You can use the following notation to set the date and time format. This will affect {date} and {task_date} in the naming rules. <br>For time such as 2021-04-30T06:40:08',
+    '你可以使用以下標記來設定日期和時間格式。這會影響命名規則裡的 {date} 和 {task_date}。<br>對於資料如：2021-04-30T06:40:08。',
+  ],
+  _命名标记taskDate: [
+    '本次任务抓取完成时的时间。例如：2020-10-21',
+    'このタスクのクロールが完了した時刻です。 例：2020-10-21',
+    'The time when the task was crawl completed. For example: 2020-10-21',
+    '本次工作擷取完成時的時間。例如：2020-10-21。',
+  ],
+  _提示: ['提示', 'ヒント', 'tip', '提示'],
 }
 
 export { langText, langTextKeys }

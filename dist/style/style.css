@@ -635,3 +635,15 @@
 .patronText {
   display: none;
 }
+.textButton {
+  border: none;
+  background: none;
+  outline: none;
+  padding: 1px 6px;
+  cursor: pointer;
+}
+.textButton:hover,
+.textButton:focus {
+  color: #0ea8ef !important;
+  fill: #0ea8ef !important;
+}

@@ -1,5 +1,8 @@
 # 1.2.5 2020/10/16
 
+
+# 1.2.5 2020/10/16
+
 ### 优化繁体中文文本
 
 https://github.com/xuejianxianzun/PixivFanboxDownloader/pull/4

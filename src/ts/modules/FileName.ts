@@ -4,6 +4,7 @@ import { EVT } from './EVT'
 import { form } from './Settings'
 import { store } from './Store'
 import { lang } from './Lang'
+import { DateFormat } from './DateFormat'
 
 class FileName {
   constructor() {
@@ -86,7 +87,15 @@ class FileName {
         safe: false,
       },
       '{date}': {
-        value: this.transDate(data.date),
+        value: DateFormat.format(data.date, form.dateFormat.value),
+        safe: false,
+      },
+      '{task_date}': {
+        value: DateFormat.format(
+          store.crawlCompleteTime,
+          form.dateFormat.value
+        ),
+        prefix: '',
         safe: false,
       },
       '{fee}': {

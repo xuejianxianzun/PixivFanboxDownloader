@@ -21,4 +21,5 @@ export interface SettingsForm extends HTMLFormElement {
   fileNameSelect: HTMLSelectElement
   quietDownload: HTMLInputElement
   downloadThread: HTMLInputElement
+  dateFormat: HTMLInputElement
 }

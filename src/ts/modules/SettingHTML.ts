@@ -137,6 +137,7 @@ const formHtml = `<form class="settingForm">
         <option value="{title}">{title}</option>
         <option value="{postid}">{postid}</option>
         <option value="{date}">{date}</option>
+        <option value="{task_date}">{task_date}</option>
         <option value="{index}">{index}</option>
         <option value="{name}">{name}</option>
         <option value="{ext}">{ext}</option>
@@ -166,6 +167,9 @@ const formHtml = `<form class="settingForm">
       <span class="blue">{date}</span>
       ${lang.transl('_命名标记date')}
       <br>
+      <span class="blue">{task_date}</span>
+      ${lang.transl('_命名标记taskDate')}
+      <br>
       <span class="blue">{index}</span>
       ${lang.transl('_命名标记index')}
       <br>
@@ -182,6 +186,36 @@ const formHtml = `<form class="settingForm">
       ${lang.transl('_命名标记tags')}
       <br>
       ${lang.transl('_命名标记提醒')}
+      </p>
+
+      <p class="option" data-no="31">
+      <span class="settingNameStyle1">${lang.transl('_日期格式')}</span>
+      <input type="text" name="dateFormat" class="setinput_style1 blue" style="width:250px;" value="YYYY-MM-DD">
+      <button type="button" class="gray1 textButton showDateTip">${lang.transl(
+        '_提示'
+      )}</button>
+      </p>
+      <p class="dateFormatTip tip" style="display:none">
+      <span>${lang.transl('_日期格式提示')}</span>
+      <br>
+      <span class="blue">YYYY</span> <span>2021</span>
+      <br>
+      <span class="blue">YY</span> <span>21</span>
+      <br>
+      <span class="blue">MM</span> <span>04</span>
+      <br>
+      <span class="blue">MMM</span> <span>Apr</span>
+      <br>
+      <span class="blue">MMMM</span> <span>April</span>
+      <br>
+      <span class="blue">DD</span> <span>30</span>
+      <br>
+      <span class="blue">hh</span> <span>06</span>
+      <br>
+      <span class="blue">mm</span> <span>40</span>
+      <br>
+      <span class="blue">ss</span> <span>08</span>
+      <br>
       </p>
       
       <p class="option" data-no="16">
