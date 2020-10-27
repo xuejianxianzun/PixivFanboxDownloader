@@ -93,7 +93,8 @@ class Store {
       // name 不唯一的情况如画师上传了一个 zip 一个 pdf，用了相同的文件名，那么 name 也不唯一了，所以要进行检测
       for (const item of this.result) {
         if (item.name === result.name) {
-          result.name += Math.random().toString(16)
+          const str = Math.random().toString(16)
+          result.name += str.substring(0, 8)
           break
         }
       }
