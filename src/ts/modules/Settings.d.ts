@@ -13,8 +13,8 @@ export interface SettingsForm extends HTMLFormElement {
   idRange: RadioNodeList
   idRangeInput: HTMLInputElement
   postDate: HTMLInputElement
-  postDateInput: HTMLInputElement
-  postRange: RadioNodeList
+  postDateStart: HTMLInputElement
+  postDateEnd: HTMLInputElement
   saveLink: HTMLInputElement
   saveText: HTMLInputElement
   userSetName: HTMLInputElement

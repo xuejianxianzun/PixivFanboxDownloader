@@ -94,13 +94,9 @@ const formHtml = `<form class="settingForm">
       <input type="checkbox" name="postDate" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="postDate">
-      <input type="radio" name="postRange" id="postRange2" class="need_beautify radio" value="-1" checked>
-      <span class="beautify_radio"></span>
-      <label for="postRange2">  ${lang.transl('_早于')}&nbsp; </label>
-      <input type="radio" name="postRange" id="postRange1" class="need_beautify radio" value="1">
-      <span class="beautify_radio"></span>
-      <label for="postRange1">  ${lang.transl('_晚于')}&nbsp; </label>
-      <input type="datetime-local" name="postDateInput" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+      <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+      &nbsp;-&nbsp;
+      <input type="datetime-local" name="postDateEnd" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
       </span>
       </p>
 

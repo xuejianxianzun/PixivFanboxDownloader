@@ -1656,6 +1656,10 @@
 
         // 审查每个文件的数据，决定是否要下载它
         class Filter {
+          constructor() {
+            this._postDateStart = 0
+            this._postDateEnd = 0
+          }
           init() {
             this.getIdRange()
             this.getDateRange()
@@ -1683,22 +1687,34 @@
           }
           getDateRange() {
             if (
-              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDate.checked
+              !_Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDate
+                .checked ||
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDateStart
+                .value === '' ||
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDateEnd
+                .value === ''
             ) {
-              const date = new Date(
-                _Settings__WEBPACK_IMPORTED_MODULE_0__[
-                  'form'
-                ].postDateInput.value
-              ).getTime()
-              if (isNaN(date)) {
-                _EVT__WEBPACK_IMPORTED_MODULE_2__['EVT'].fire(
-                  _EVT__WEBPACK_IMPORTED_MODULE_2__['EVT'].events.crawlError
-                )
-                const msg = 'Date format error!'
-                window.alert(msg)
-                _Log__WEBPACK_IMPORTED_MODULE_1__['log'].error(msg)
-                throw new Error(msg)
-              }
+              return
+            }
+            // 判断是否是有效的时间格式
+            const postDateStart = new Date(
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDateStart.value
+            )
+            const postDateEnd = new Date(
+              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDateEnd.value
+            )
+            // 如果输入的时间可以被转换成有效的时间，则启用
+            // 转换时间失败时，值是 Invalid Date，不能转换成数字
+            if (
+              isNaN(postDateStart.getTime()) ||
+              isNaN(postDateEnd.getTime())
+            ) {
+              const msg = 'Date format error!'
+              this.throwError(msg)
+            } else {
+              // 转换时间成功
+              this._postDateStart = postDateStart.getTime()
+              this._postDateEnd = postDateEnd.getTime()
             }
           }
           // 检查作品是否符合过滤器的要求
@@ -1799,26 +1815,17 @@
             if (
               !_Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDate
                 .checked ||
-              date === undefined
+              date === undefined ||
+              !this._postDateStart ||
+              !this._postDateEnd
             ) {
               return true
             }
-            const flag = parseInt(
-              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postRange.value
+            const nowDate = new Date(date)
+            return (
+              nowDate.getTime() >= this._postDateStart &&
+              nowDate.getTime() <= this._postDateEnd
             )
-            const setDate = new Date(
-              _Settings__WEBPACK_IMPORTED_MODULE_0__['form'].postDateInput.value
-            )
-            const postDate = new Date(date)
-            if (flag === -1) {
-              // 小于
-              return postDate < setDate
-            } else if (flag === 1) {
-              // 大于
-              return postDate > setDate
-            } else {
-              return true
-            }
           }
           // 当需要时抛出错误
           throwError(msg) {
@@ -3304,7 +3311,8 @@
               idRangeSwitch: false,
               idRangeInput: 0,
               postDate: false,
-              postDateInput: '',
+              postDateStart: '',
+              postDateEnd: '',
               saveLink: true,
               saveText: false,
               userSetName:
@@ -3372,7 +3380,8 @@
             }
             this.restoreString('fee')
             this.restoreString('idRangeInput')
-            this.restoreString('postDateInput')
+            this.restoreString('postDateStart')
+            this.restoreString('postDateEnd')
             this.restoreString('userSetName')
             this.restoreString('downloadThread')
             this.restoreBoolean('image')
@@ -3419,7 +3428,8 @@
           bindOptionEvent() {
             this.saveTextInput('fee')
             this.saveTextInput('idRangeInput')
-            this.saveTextInput('postDateInput')
+            this.saveTextInput('postDateStart')
+            this.saveTextInput('postDateEnd')
             this.saveTextInput('downloadThread')
             this.saveCheckBox('image')
             this.saveCheckBox('music')
@@ -3432,7 +3442,6 @@
             this.saveCheckBox('feeSwitch')
             this.saveCheckBox('idRangeSwitch')
             this.saveRadio('idRange')
-            this.saveRadio('postRange')
             this.saveCheckBox('postDate')
             this.saveCheckBox('saveLink')
             this.saveCheckBox('saveText')
@@ -3615,17 +3624,9 @@
       <input type="checkbox" name="postDate" class="need_beautify checkbox_switch">
       <span class="beautify_switch"></span>
       <span class="subOptionWrap" data-show="postDate">
-      <input type="radio" name="postRange" id="postRange2" class="need_beautify radio" value="-1" checked>
-      <span class="beautify_radio"></span>
-      <label for="postRange2">  ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
-        'lang'
-      ].transl('_早于')}&nbsp; </label>
-      <input type="radio" name="postRange" id="postRange1" class="need_beautify radio" value="1">
-      <span class="beautify_radio"></span>
-      <label for="postRange1">  ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
-        'lang'
-      ].transl('_晚于')}&nbsp; </label>
-      <input type="datetime-local" name="postDateInput" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+      <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+      &nbsp;-&nbsp;
+      <input type="datetime-local" name="postDateEnd" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
       </span>
       </p>
 

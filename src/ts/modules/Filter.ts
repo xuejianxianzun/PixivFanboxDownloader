@@ -17,6 +17,9 @@ class Filter {
     this.getDateRange()
   }
 
+  private _postDateStart = 0
+  private _postDateEnd = 0
+
   // 获取 id 范围设置
   private getIdRange() {
     if (form.idRangeSwitch.checked) {
@@ -33,16 +36,26 @@ class Filter {
   }
 
   private getDateRange() {
-    if (form.postDate.checked) {
-      const date = new Date(form.postDateInput.value).getTime()
-      if (isNaN(date)) {
-        EVT.fire(EVT.events.crawlError)
+    if (
+      !form.postDate.checked ||
+      form.postDateStart.value === '' ||
+      form.postDateEnd.value === ''
+    ) {
+      return
+    }
 
-        const msg = 'Date format error!'
-        window.alert(msg)
-        log.error(msg)
-        throw new Error(msg)
-      }
+    // 判断是否是有效的时间格式
+    const postDateStart = new Date(form.postDateStart.value)
+    const postDateEnd = new Date(form.postDateEnd.value)
+    // 如果输入的时间可以被转换成有效的时间，则启用
+    // 转换时间失败时，值是 Invalid Date，不能转换成数字
+    if (isNaN(postDateStart.getTime()) || isNaN(postDateEnd.getTime())) {
+      const msg = 'Date format error!'
+      this.throwError(msg)
+    } else {
+      // 转换时间成功
+      this._postDateStart = postDateStart.getTime()
+      this._postDateEnd = postDateEnd.getTime()
     }
   }
 
@@ -135,23 +148,20 @@ class Filter {
   }
 
   private checkPostDate(date: FilterOption['date']) {
-    if (!form.postDate.checked || date === undefined) {
+    if (
+      !form.postDate.checked ||
+      date === undefined ||
+      !this._postDateStart ||
+      !this._postDateEnd
+    ) {
       return true
     }
 
-    const flag = parseInt(form.postRange.value)
-    const setDate = new Date(form.postDateInput.value)
-    const postDate = new Date(date)
-
-    if (flag === -1) {
-      // 小于
-      return postDate < setDate
-    } else if (flag === 1) {
-      // 大于
-      return postDate > setDate
-    } else {
-      return true
-    }
+    const nowDate = new Date(date)
+    return (
+      nowDate.getTime() >= this._postDateStart &&
+      nowDate.getTime() <= this._postDateEnd
+    )
   }
 
   // 当需要时抛出错误

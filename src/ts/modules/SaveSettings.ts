@@ -18,7 +18,8 @@ interface fanboxSetting {
   idRangeSwitch: boolean
   idRangeInput: number
   postDate: boolean
-  postDateInput: string
+  postDateStart: string
+  postDateEnd: string
   saveLink: boolean
   saveText: boolean
   userSetName: string
@@ -75,7 +76,8 @@ class SaveSettings {
     idRangeSwitch: false,
     idRangeInput: 0,
     postDate: false,
-    postDateInput: '',
+    postDateStart: '',
+    postDateEnd: '',
     saveLink: true,
     saveText: false,
     userSetName: store.defaultFileName,
@@ -127,7 +129,8 @@ class SaveSettings {
 
     this.restoreString('fee')
     this.restoreString('idRangeInput')
-    this.restoreString('postDateInput')
+    this.restoreString('postDateStart')
+    this.restoreString('postDateEnd')
     this.restoreString('userSetName')
     this.restoreString('downloadThread')
 
@@ -179,7 +182,8 @@ class SaveSettings {
   private bindOptionEvent() {
     this.saveTextInput('fee')
     this.saveTextInput('idRangeInput')
-    this.saveTextInput('postDateInput')
+    this.saveTextInput('postDateStart')
+    this.saveTextInput('postDateEnd')
     this.saveTextInput('downloadThread')
 
     this.saveCheckBox('image')
@@ -193,7 +197,6 @@ class SaveSettings {
     this.saveCheckBox('feeSwitch')
     this.saveCheckBox('idRangeSwitch')
     this.saveRadio('idRange')
-    this.saveRadio('postRange')
     this.saveCheckBox('postDate')
     this.saveCheckBox('saveLink')
     this.saveCheckBox('saveText')
