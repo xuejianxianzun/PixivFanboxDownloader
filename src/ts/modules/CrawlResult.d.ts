@@ -79,14 +79,13 @@ interface FileData {
 
 // serviceProvider 支持嵌入的所有数据来源如下：
 // pixivFANBOX, Twitter, YouTube, Vimeo, SoundCloud, Google Forms, GitHub Gist
-// Google Forms 叫什么名字还不确定，猜测为 gsuite
 type ServiceProvider =
   | 'youtube'
   | 'fanbox'
   | 'twitter'
   | 'vimeo'
   | 'soundcloud'
-  | 'gsuite'
+  | 'google_forms'
   | 'gist'
 
 // article 投稿里的段落信息1

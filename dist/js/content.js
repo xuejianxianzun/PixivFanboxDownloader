@@ -2985,7 +2985,7 @@
               soundcloud: 'https://soundcloud.com/',
               vimeo: 'https://vimeo.com/',
               twitter: 'https://twitter.com/i/web/status/',
-              gsuite: 'https://gsuite.google.com/',
+              google_forms: 'https://docs.google.com/forms/d/e/',
             }
             this.extractTextReg = new RegExp(/<[^<>]+>/g)
             this.matchImgSrc = new RegExp(
@@ -3258,7 +3258,12 @@
             }
             for (const data of dataArr) {
               const [serviceProvider, contentId] = data
-              links.push(this.providerDict[serviceProvider] + contentId)
+              let link = this.providerDict[serviceProvider] + contentId
+              // 谷歌表单需要在链接后面添加特定后缀
+              if (serviceProvider === 'google_forms') {
+                link = link + '/viewform'
+              }
+              links.push(link)
             }
             return links
           }

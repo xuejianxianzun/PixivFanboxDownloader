@@ -1,3 +1,13 @@
+# 1.4.1 2020/12/30
+
+### 可以抓取 Google Froms 的嵌入链接了
+
+Fanbox 文章的嵌入来源里有个 Google Froms，但由于没有见到画师使用，所以之前对它是有一些猜测的成分的，导致不能正确提取它的链接。现在进行修复。
+
+附一个 Google Froms：
+
+https://docs.google.com/forms/d/e/1FAIpQLSe6yLe2XKQnVH221WLffUeRJUpx1NALNGqkdcddWsh4tSMesw/viewform
+
 # 1.4.0 2020/12/24
 
 ### 投稿日期设置改为日期范围
