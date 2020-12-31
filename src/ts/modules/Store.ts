@@ -58,7 +58,7 @@ class Store {
 
   private getCommonData(data: ResultMeta): CommonResult {
     return {
-      id: data.id,
+      postId: data.postId,
       type: data.type,
       title: data.title,
       date: data.date,
@@ -89,16 +89,6 @@ class Store {
     const files = data.files
     for (const fileData of files) {
       const result = Object.assign(this.getCommonData(data), fileData)
-      // 检测 name 是否唯一，如果不唯一则在当前 name 后面添加随机字符
-      // name 不唯一的情况如画师上传了一个 zip 一个 pdf，用了相同的文件名，那么 name 也不唯一了，所以要进行检测
-      for (const item of this.result) {
-        if (item.name === result.name) {
-          const str = Math.random().toString(16)
-          result.name += str.substring(0, 8)
-          break
-        }
-      }
-
       this.result.push(result)
     }
   }

@@ -77,11 +77,11 @@ class Download {
     taskBatch: number
   ) {
     // 如果任务已停止，不会向浏览器发送下载任务
-    if (this.stoped) {
-      // 释放 bloburl
-      url.startsWith('blob') && URL.revokeObjectURL(url)
-      return
-    }
+    // if (this.stoped) {
+    //   // 释放 bloburl
+    //   url.startsWith('blob') && URL.revokeObjectURL(url)
+    //   return
+    // }
 
     const sendData: SendToBackEndData = {
       msg: 'send_download',

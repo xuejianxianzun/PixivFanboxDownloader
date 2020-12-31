@@ -82,7 +82,7 @@ class DownloadControl {
       // 文件下载成功
       if (msg.msg === 'downloaded') {
         // 释放 BLOBURL
-        URL.revokeObjectURL(msg.data.url)
+        // URL.revokeObjectURL(msg.data.url)
 
         EVT.fire(EVT.events.downloadSucccess, msg.data)
 
@@ -415,7 +415,7 @@ class DownloadControl {
       const result = store.result[index]
       // 注意这里的 id 用的是 name 属性，因为 id 属性并不唯一。一个投稿里的所有资源的 id 是相同的，但是 name 唯一
       const data: downloadArgument = {
-        id: result.name,
+        id: result.fileId,
         data: result,
         index: index,
         progressBarIndex: progressBarIndex,
@@ -423,7 +423,7 @@ class DownloadControl {
       }
 
       // 保存任务信息
-      this.taskList[data.data.name] = {
+      this.taskList[data.data.fileId] = {
         index,
         progressBarIndex: progressBarIndex,
       }

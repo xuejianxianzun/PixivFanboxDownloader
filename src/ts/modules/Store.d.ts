@@ -1,7 +1,7 @@
 // 通用的结果数据
 // 不涉及文件和文本
 interface CommonResult {
-  id: string
+  postId: string
   type: 'file' | 'image' | 'article' | 'video' | 'text' | 'entry'
   title: string
   date: string
@@ -14,6 +14,7 @@ interface CommonResult {
 // 文件的数据
 // 当这个文件是直接上传到 fanbox 时，才会有 size（通过外链插入的文件没有 size）
 interface FileResult {
+  fileId: string
   name: string
   ext: string
   size: number | null
@@ -27,6 +28,7 @@ interface FileResult {
 // 如果一个作品有多个要保存的文本，添加到 links 数组里
 interface TextResult {
   name: string
+  fileId: string
   ext: 'txt'
   size: number | null
   index: 0

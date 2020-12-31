@@ -55,7 +55,7 @@ class SaveData {
 
     // 如果投稿检查通过，保存投稿信息
     const result: ResultMeta = {
-      id: data.id,
+      postId: data.id,
       type: data.type,
       title: data.title,
       date,
@@ -65,6 +65,7 @@ class SaveData {
       tags: data.tags.join(','),
       files: [],
       links: {
+        fileId: '',
         name: 'links-' + data.id,
         ext: 'txt',
         size: null,
@@ -90,6 +91,7 @@ class SaveData {
       }
       const links = this.getTextLinks(text)
       result.links.text = result.links.text.concat(links)
+      result.links.fileId = new Date().getTime().toString()
 
       // 保存文章正文里的文字
       if (form.saveText.checked) {
@@ -118,6 +120,7 @@ class SaveData {
       for (const link of linkTexts) {
         const links = this.getTextLinks(link)
         result.links.text = result.links.text.concat(links)
+        result.links.fileId = new Date().getTime().toString()
       }
 
       if (form.saveText.checked) {
@@ -157,6 +160,7 @@ class SaveData {
       }
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
       result.links.text = result.links.text.concat(embedLinks)
+      result.links.fileId = new Date().getTime().toString()
     }
 
     // 提取 image 投稿的资源
@@ -244,6 +248,7 @@ class SaveData {
       ]
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
       result.links.text = result.links.text.concat(embedLinks)
+      result.links.fileId = new Date().getTime().toString()
     }
 
     store.addResult(result)
@@ -256,6 +261,7 @@ class SaveData {
       })
     ) {
       return {
+        fileId: imageData.id,
         name: imageData.id,
         ext: imageData.extension,
         size: null,
@@ -274,6 +280,7 @@ class SaveData {
       })
     ) {
       return {
+        fileId: fileData.id,
         name: fileData.name,
         ext: fileData.extension,
         size: fileData.size,

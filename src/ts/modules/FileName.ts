@@ -63,7 +63,7 @@ class FileName {
     // 配置所有命名标记
     const cfg = {
       '{postid}': {
-        value: data.id,
+        value: data.postId,
         safe: true,
       },
       '{title}': {

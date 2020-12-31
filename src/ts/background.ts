@@ -66,7 +66,7 @@ chrome.runtime.onMessage.addListener(function (msg: SendToBackEndData, sender) {
         {
           url: msg.fileUrl,
           filename: msg.fileName,
-          conflictAction: 'overwrite',
+          conflictAction: 'uniquify',
           saveAs: false,
         },
         (id) => {
