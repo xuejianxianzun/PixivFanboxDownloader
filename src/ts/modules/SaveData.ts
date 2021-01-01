@@ -91,7 +91,7 @@ class SaveData {
       }
       const links = this.getTextLinks(text)
       result.links.text = result.links.text.concat(links)
-      result.links.fileId = new Date().getTime().toString()
+      result.links.fileId = this.createFileId()
 
       // 保存文章正文里的文字
       if (form.saveText.checked) {
@@ -120,7 +120,7 @@ class SaveData {
       for (const link of linkTexts) {
         const links = this.getTextLinks(link)
         result.links.text = result.links.text.concat(links)
-        result.links.fileId = new Date().getTime().toString()
+        result.links.fileId = this.createFileId()
       }
 
       if (form.saveText.checked) {
@@ -160,7 +160,7 @@ class SaveData {
       }
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
       result.links.text = result.links.text.concat(embedLinks)
-      result.links.fileId = new Date().getTime().toString()
+      result.links.fileId = this.createFileId()
     }
 
     // 提取 image 投稿的资源
@@ -248,7 +248,7 @@ class SaveData {
       ]
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
       result.links.text = result.links.text.concat(embedLinks)
-      result.links.fileId = new Date().getTime().toString()
+      result.links.fileId = this.createFileId()
     }
 
     store.addResult(result)
@@ -335,6 +335,15 @@ class SaveData {
     }
 
     return links
+  }
+
+  // 下载器自己生成的 txt 文件没有 id，所以这里需要自己给它生成一个 id
+  // 使用时间戳并不保险，因为有时候代码执行太快，会生成重复的时间戳。所以后面加上随机字符
+  private createFileId() {
+    return (
+      new Date().getTime().toString() +
+      Math.random().toString(16).replace('.', '')
+    )
   }
 }
 

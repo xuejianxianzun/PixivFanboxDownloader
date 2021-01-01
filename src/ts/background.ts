@@ -1,25 +1,28 @@
 import { DonwloadListData, SendToBackEndData } from './modules/Download.d'
 
-// 设置 referer
+// 设置 Origin 和 Referer
 chrome.webRequest.onBeforeSendHeaders.addListener(
   function (details) {
-    let hasOrigin = false
-    for (const HttpHeader of details.requestHeaders!) {
-      if (HttpHeader.name === 'Origin') {
-        hasOrigin = true
-        break
+    if (details.url.includes('api.fanbox.cc/')) {
+      let hasOrigin = false
+      for (const HttpHeader of details.requestHeaders!) {
+        if (HttpHeader.name === 'Origin') {
+          hasOrigin = true
+          break
+        }
+      }
+      if (!hasOrigin) {
+        details.requestHeaders!.push({
+          name: 'Origin',
+          value: details.initiator,
+        })
+        details.requestHeaders!.push({
+          name: 'Referer',
+          value: details.initiator + '/',
+        })
       }
     }
-    if (!hasOrigin) {
-      details.requestHeaders!.push({
-        name: 'Origin',
-        value: details.initiator,
-      })
-      details.requestHeaders!.push({
-        name: 'Referer',
-        value: details.initiator + '/',
-      })
-    }
+
     return {
       requestHeaders: details.requestHeaders,
     }
@@ -57,6 +60,7 @@ chrome.runtime.onMessage.addListener(function (msg: SendToBackEndData, sender) {
       dlBatch[tabId] = msg.taskBatch
       dlIndex[tabId] = []
     }
+
     // 检查任务是否重复，不重复则下载
     if (!dlIndex[tabId].includes(msg.id)) {
       // 储存该任务的索引
