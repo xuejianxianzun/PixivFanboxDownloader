@@ -89,7 +89,7 @@ class SaveSettings {
   }
 
   // 需要持久化保存的设置
-  private options: fanboxSetting = this.optionDefault
+  private options: fanboxSetting = Object.assign({}, this.optionDefault)
 
   // 恢复值是 Boolean 的设置项
   // 给复选框使用
@@ -229,7 +229,7 @@ class SaveSettings {
   // 重设选项
   private reset() {
     // 将保存的选项恢复为默认值
-    this.options = this.optionDefault
+    Object.assign(this.options, this.optionDefault)
     // 覆写本地存储里的设置为默认值
     localStorage.setItem(this.storeName, JSON.stringify(this.options))
     // 重设选项
