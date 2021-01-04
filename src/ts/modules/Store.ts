@@ -75,6 +75,7 @@ class Store {
     // 因为文本的体积小，所以首先生成文本数据，它会被最早下载。这样不用等待大文件下载完了才下载文本文件
     // 为投稿里的所有的 文本内容 生成一份数据
     if (data.links.text.length > 0) {
+      console.log(data.links.text)
       const text = data.links.text.join('\r\n')
       const blob = new Blob([text], {
         type: 'text/plain',

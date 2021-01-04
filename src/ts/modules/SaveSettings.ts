@@ -26,6 +26,7 @@ interface fanboxSetting {
   quietDownload: boolean
   downloadThread: number
   dateFormat: string
+  savePostCover: boolean
 }
 
 interface SettingChangeData {
@@ -84,6 +85,7 @@ class SaveSettings {
     quietDownload: true,
     downloadThread: 3,
     dateFormat: 'YYYY-MM-DD hh-mm',
+    savePostCover: false,
   }
 
   // 需要持久化保存的设置
@@ -121,7 +123,7 @@ class SaveSettings {
     const savedOption = localStorage.getItem(this.storeName)
     // 读取保存的设置
     if (savedOption) {
-      this.options = JSON.parse(savedOption)
+      Object.assign(this.options, JSON.parse(savedOption))
     } else {
       // 如果没有保存过，则不做处理
       return
@@ -149,6 +151,8 @@ class SaveSettings {
     this.restoreBoolean('saveText')
     this.restoreBoolean('quietDownload')
     this.restoreString('dateFormat')
+
+    this.restoreBoolean('savePostCover')
   }
 
   // 处理输入框： change 时直接保存 value
@@ -202,6 +206,7 @@ class SaveSettings {
     this.saveCheckBox('saveText')
     this.saveCheckBox('quietDownload')
     this.saveTextInput('dateFormat')
+    this.saveCheckBox('savePostCover')
 
     // 保存命名规则
     const userSetNameInput = this.form.userSetName

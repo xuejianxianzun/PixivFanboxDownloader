@@ -1,6 +1,6 @@
 {
   "name": "Pixiv Fanbox Downloader",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "manifest_version": 2,
   "description": "Pixiv Fanbox 批量下载器。Pixiv Fanbox batch downloader.",
   "icons": {
@@ -21,7 +21,7 @@
   "content_scripts": [
     {
       "css": ["style/style.css"],
-      "js": ["js/content.js", "lib/zip.js"],
+      "js": ["js/content.js"],
       "matches": ["*://*.fanbox.cc/*"],
       "run_at": "document_end"
     }

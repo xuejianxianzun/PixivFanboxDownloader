@@ -25,7 +25,8 @@ interface FileResult {
 // fileType: 'image' | 'music' | 'video' | 'compressed' | 'ps' | 'other'
 
 // 文本的数据
-// 如果一个作品有多个要保存的文本，添加到 links 数组里
+// 序号总是 0
+// 如果一个作品有多个要保存的文本数据，添加到 links 数组里，最后会合并起来生成一个文件
 interface TextResult {
   name: string
   fileId: string

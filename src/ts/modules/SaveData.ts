@@ -78,6 +78,25 @@ class SaveData {
     // 提取它的资源文件，并对每个资源进行检查，决定是否保存
 
     let index = 0 // 资源的序号
+    // 封面图和文本资源的序号是 0，其他文件的序号自增
+
+    // 提取投稿的封面图片
+    // 封面图片的序号设置为 0，所以它里面不需要对 index 进行操作
+    if (form.savePostCover.checked) {
+      const cover = data.coverImageUrl
+      if (cover) {
+        const { name, ext } = this.getUrlNameAndExt(cover)
+        const r: FileResult = {
+          fileId: this.createFileId(),
+          name,
+          ext,
+          size: null,
+          index,
+          url: cover,
+        }
+        result.files.push(r)
+      }
+    }
 
     // 非 article 投稿都有 text 字段，这这里统一提取里面的链接
     // 但是因为正则没有分组，所以非 article 投稿中如果有多个链接，可能会有遗漏，待考
@@ -89,13 +108,15 @@ class SaveData {
       } else {
         text = data.body.text
       }
-      const links = this.getTextLinks(text)
-      result.links.text = result.links.text.concat(links)
-      result.links.fileId = this.createFileId()
+      if (text) {
+        const links = this.getTextLinks(text)
+        result.links.text = result.links.text.concat(links)
+        result.links.fileId = this.createFileId()
 
-      // 保存文章正文里的文字
-      if (form.saveText.checked) {
-        result.links.text.push(text)
+        // 保存文章正文里的文字
+        if (form.saveText.checked) {
+          result.links.text.push(text)
+        }
       }
     }
 
@@ -195,10 +216,7 @@ class SaveData {
         const url = matchUrl[0]
         // url 如下:
         // "https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg"
-        const split = url.split('/')
-        const fileName = split[split.length - 1]
-        const name = fileName.split('.')[0]
-        const ext = fileName.split('.')[1]
+        const { name, ext } = this.getUrlNameAndExt(url)
 
         let width = 0
         const widthMatch = img.match(/width="(\d*?)"/)
@@ -344,6 +362,23 @@ class SaveData {
       new Date().getTime().toString() +
       Math.random().toString(16).replace('.', '')
     )
+  }
+
+  // 传入文件 url，提取文件名和扩展名
+  private getUrlNameAndExt(
+    url: string
+  ): {
+    name: string
+    ext: string
+  } {
+    const split = url.split('/')
+    const fileName = split[split.length - 1]
+    const name = fileName.split('.')[0]
+    const ext = fileName.split('.')[1]
+    return {
+      name,
+      ext,
+    }
   }
 }
 

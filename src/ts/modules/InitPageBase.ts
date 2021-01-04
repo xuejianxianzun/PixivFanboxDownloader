@@ -65,7 +65,7 @@ abstract class InitPageBase {
   }
 
   // 获取投稿列表
-  protected abstract async FetchPostList(): Promise<void>
+  protected abstract FetchPostList(): Promise<void>
 
   protected afterFetchPostList(data: PostList) {
     const items = data.body.items
@@ -81,7 +81,7 @@ abstract class InitPageBase {
     }
   }
 
-  protected abstract async fetchPost(): Promise<void>
+  protected abstract fetchPost(): Promise<void>
 
   protected afterFetchPost(data: Post) {
     saveData.receive(data.body)

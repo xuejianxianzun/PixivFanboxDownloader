@@ -3031,6 +3031,27 @@
             }
             // 提取它的资源文件，并对每个资源进行检查，决定是否保存
             let index = 0 // 资源的序号
+            // 封面图和文本资源的序号是 0，其他文件的序号自增
+            // 提取投稿的封面图片
+            // 封面图片的序号设置为 0，所以它里面不需要对 index 进行操作
+            if (
+              _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].savePostCover
+                .checked
+            ) {
+              const cover = data.coverImageUrl
+              if (cover) {
+                const { name, ext } = this.getUrlNameAndExt(cover)
+                const r = {
+                  fileId: this.createFileId(),
+                  name,
+                  ext,
+                  size: null,
+                  index,
+                  url: cover,
+                }
+                result.files.push(r)
+              }
+            }
             // 非 article 投稿都有 text 字段，这这里统一提取里面的链接
             // 但是因为正则没有分组，所以非 article 投稿中如果有多个链接，可能会有遗漏，待考
             // 提取文本中的链接有两种来源，一种是文章正文里的文本，一种是嵌入资源。先从正文提取链接，后提取嵌入资源的链接。这样链接保存下来的顺序比较合理。
@@ -3041,14 +3062,17 @@
               } else {
                 text = data.body.text
               }
-              const links = this.getTextLinks(text)
-              result.links.text = result.links.text.concat(links)
-              result.links.fileId = this.createFileId()
-              // 保存文章正文里的文字
-              if (
-                _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveText.checked
-              ) {
-                result.links.text.push(text)
+              if (text) {
+                const links = this.getTextLinks(text)
+                result.links.text = result.links.text.concat(links)
+                result.links.fileId = this.createFileId()
+                // 保存文章正文里的文字
+                if (
+                  _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveText
+                    .checked
+                ) {
+                  result.links.text.push(text)
+                }
               }
             }
             // 提取 article 投稿的资源
@@ -3147,10 +3171,7 @@
                 const url = matchUrl[0]
                 // url 如下:
                 // "https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg"
-                const split = url.split('/')
-                const fileName = split[split.length - 1]
-                const name = fileName.split('.')[0]
-                const ext = fileName.split('.')[1]
+                const { name, ext } = this.getUrlNameAndExt(url)
                 let width = 0
                 const widthMatch = img.match(/width="(\d*?)"/)
                 if (widthMatch && widthMatch.length > 1) {
@@ -3279,6 +3300,17 @@
               Math.random().toString(16).replace('.', '')
             )
           }
+          // 传入文件 url，提取文件名和扩展名
+          getUrlNameAndExt(url) {
+            const split = url.split('/')
+            const fileName = split[split.length - 1]
+            const name = fileName.split('.')[0]
+            const ext = fileName.split('.')[1]
+            return {
+              name,
+              ext,
+            }
+          }
         }
         const saveData = new SaveData()
 
@@ -3337,6 +3369,7 @@
               quietDownload: true,
               downloadThread: 3,
               dateFormat: 'YYYY-MM-DD hh-mm',
+              savePostCover: false,
             }
             // 需要持久化保存的设置
             this.options = this.optionDefault
@@ -3390,7 +3423,7 @@
             const savedOption = localStorage.getItem(this.storeName)
             // 读取保存的设置
             if (savedOption) {
-              this.options = JSON.parse(savedOption)
+              Object.assign(this.options, JSON.parse(savedOption))
             } else {
               // 如果没有保存过，则不做处理
               return
@@ -3416,6 +3449,7 @@
             this.restoreBoolean('saveText')
             this.restoreBoolean('quietDownload')
             this.restoreString('dateFormat')
+            this.restoreBoolean('savePostCover')
           }
           // 处理输入框： change 时直接保存 value
           saveTextInput(name) {
@@ -3464,6 +3498,7 @@
             this.saveCheckBox('saveText')
             this.saveCheckBox('quietDownload')
             this.saveTextInput('dateFormat')
+            this.saveCheckBox('savePostCover')
             // 保存命名规则
             const userSetNameInput = this.form.userSetName
             ;['change', 'focus'].forEach((ev) => {
@@ -3528,7 +3563,7 @@
 
       <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType1" title="${_Store__WEBPACK_IMPORTED_MODULE_1__[
+      <label for="fileType1" class="has_tip" data-tip="${_Store__WEBPACK_IMPORTED_MODULE_1__[
         'store'
       ].fileType.image.join(',')}"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
           'lang'
@@ -3536,7 +3571,7 @@
       
       <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType2" title="${_Store__WEBPACK_IMPORTED_MODULE_1__[
+      <label for="fileType2" class="has_tip" data-tip="${_Store__WEBPACK_IMPORTED_MODULE_1__[
         'store'
       ].fileType.music.join(',')}"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
           'lang'
@@ -3544,7 +3579,7 @@
 
       <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType3" title="${_Store__WEBPACK_IMPORTED_MODULE_1__[
+      <label for="fileType3" class="has_tip" data-tip="${_Store__WEBPACK_IMPORTED_MODULE_1__[
         'store'
       ].fileType.video.join(',')}"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
           'lang'
@@ -3552,7 +3587,7 @@
       
       <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType4" title="${_Store__WEBPACK_IMPORTED_MODULE_1__[
+      <label for="fileType4" class="has_tip" data-tip="${_Store__WEBPACK_IMPORTED_MODULE_1__[
         'store'
       ].fileType.compressed.join(',')}"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
           'lang'
@@ -3560,7 +3595,7 @@
       
       <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType5" title="${_Store__WEBPACK_IMPORTED_MODULE_1__[
+      <label for="fileType5" class="has_tip" data-tip="${_Store__WEBPACK_IMPORTED_MODULE_1__[
         'store'
       ].fileType.ps.join(',')}"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
           'lang'
@@ -3568,7 +3603,7 @@
 
       <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType6" title="${_Store__WEBPACK_IMPORTED_MODULE_1__[
+      <label for="fileType6" class="has_tip" data-tip="${_Store__WEBPACK_IMPORTED_MODULE_1__[
         'store'
       ].fileType.other.join(',')}"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__[
           'lang'
@@ -3656,6 +3691,15 @@
       <span class="beautify_switch"></span>
       </p>
       
+      <p class="option" data-no="22">
+      <span class="settingNameStyle1">${_Lang__WEBPACK_IMPORTED_MODULE_0__[
+        'lang'
+      ].transl('_保存投稿中的封面图片')}&nbsp;&nbsp; 
+      </span>
+      <input type="checkbox" name="savePostCover" class="need_beautify checkbox_switch" checked>
+      <span class="beautify_switch"></span>
+      </p>
+
       <p class="option" data-no="20">
       <span class="settingNameStyle1">${_Lang__WEBPACK_IMPORTED_MODULE_0__[
         'lang'
@@ -4096,6 +4140,7 @@
             // 因为文本的体积小，所以首先生成文本数据，它会被最早下载。这样不用等待大文件下载完了才下载文本文件
             // 为投稿里的所有的 文本内容 生成一份数据
             if (data.links.text.length > 0) {
+              console.log(data.links.text)
               const text = data.links.text.join('\r\n')
               const blob = new Blob([text], {
                 type: 'text/plain',
@@ -4577,7 +4622,7 @@
           ],
           _设置id范围提示: [
             '您可以输入一个投稿 id，抓取比它新或者比它旧的投稿',
-            '1 つの記事 id を入力することで、それより新しいあるいは古い記事をクロールことができます',
+            '1 つの投稿 id を入力することで、それより新しいあるいは古い投稿をクロールことができます',
             'You can enter a work id and crawl articles that are newer or older than it',
             '您可以輸入一個投稿 id，擷取比它新或者比它舊的投稿。',
           ],
@@ -4591,7 +4636,7 @@
           ],
           _设置投稿时间提示: [
             '您可以下载指定时间内发布的投稿',
-            '指定時間内に公開された記事をダウンロードできます',
+            '指定時間内に公開された投稿をダウンロードできます',
             'You can download articles published within a specified time',
             '您可以下載指定時間内發佈的投稿',
           ],
@@ -4610,9 +4655,9 @@
           _音乐: ['音频', '音声', 'Audio', '音訊'],
           _压缩文件: ['压缩文件', '圧縮ファイル', 'Compressed file', '壓縮檔'],
           _PS文件: ['源文件', 'ソースファイル', 'Source File', '原始檔'],
-          _投稿类型: ['投稿类型', '記事タイプ', 'Article type', '投稿類型'],
-          _免费投稿: ['免费投稿', '無料記事', 'Free article', '免費投稿'],
-          _付费投稿: ['付费投稿', '有償記事', 'Paid article', '付費投稿'],
+          _投稿类型: ['投稿类型', '投稿タイプ', 'Article type', '投稿類型'],
+          _免费投稿: ['免费投稿', '無料投稿', 'Free article', '免費投稿'],
+          _付费投稿: ['付费投稿', '有償投稿', 'Paid article', '付費投稿'],
           _设置价格范围: [
             '设置价格范围',
             '価格帯を設定',
@@ -4621,13 +4666,13 @@
           ],
           _保存投稿中的外部链接: [
             '保存投稿中的外部链接',
-            '記事に外部リンクを保存する',
+            '投稿に外部リンクを保存する',
             'Save external links in the articles',
             '儲存投稿中的外部連結',
           ],
           _保存投稿中的文字: [
             '保存投稿中的文字',
-            '記事のテキストを保存します',
+            '投稿のテキストを保存',
             'Save the text in the articles',
             '儲存投稿中的文字',
           ],
@@ -4641,25 +4686,25 @@
           _晚于: ['晚于', 'より後', 'Later than', '晚於'],
           _抓取赞助的所有用户的投稿: [
             '抓取赞助的所有用户的投稿',
-            'スポンサー記事をすべてクロールする',
+            'スポンサー投稿をすべてクロールする',
             'Crawl all sponsored articles',
             '擷取所有贊助用戶的投稿',
           ],
           _抓取该用户的投稿: [
             '抓取该用户的投稿',
-            'ユーザーの記事をクロールする',
+            'ユーザーの投稿をクロールする',
             "Crawl this user's articles",
             '擷取該用戶的投稿',
           ],
           _抓取该tag的投稿: [
             '抓取该 tag 的投稿',
-            'このタグで記事をクロールする',
+            'このタグで投稿をクロールする',
             'Crawl articles with this tag',
             '擷取該 tag 的投稿',
           ],
           _抓取这篇投稿: [
             '抓取这篇投稿',
-            'この記事をつかむ',
+            'この投稿をつかむ',
             'Crawl this article',
             '擷取這篇投稿',
           ],
@@ -4669,40 +4714,40 @@
             'Crawl the cover image of the product',
             '擷取商品的封面圖',
           ],
-          _命名标记postid: ['投稿 id', '記事ID', 'Article id', '投稿 id'],
+          _命名标记postid: ['投稿 id', '投稿ID', 'Article id', '投稿 id'],
           _命名标记title: [
             '投稿标题',
-            '記事のタイトル',
+            '投稿のタイトル',
             'Article title',
             '投稿標題',
           ],
           _命名标记tags: [
             '投稿的 tag 列表（可能为空）',
-            '記事のタグリスト（空の場合があります）',
+            '投稿のタグリスト（空の場合があります）',
             "Article's tag list (may be empty)",
             '投稿的 tag 列表（可能為空）',
           ],
           _命名标记date: [
             '投稿的发布日期，如 2019-08-29 12-30',
-            '記事の発行日など，例 2019-08-29 12-30',
+            '投稿の発行日など，例 2019-08-29 12-30',
             'The publication date of the article, such as 2019-08-29 12-30',
             '投稿的發布日期，如 2019-08-29 12-30',
           ],
           _命名标记fee: [
             '投稿的价格',
-            '記事価格',
+            '投稿価格',
             'Article price',
             '投稿的價格',
           ],
           _命名标记index: [
             '文件在它所属的投稿里的序号',
-            '記事内のファイルのシリアル番号',
+            '投稿内のファイルのシリアル番号',
             'The serial number of the file in the article it belongs to',
             '檔案在它所屬的投稿裡的序號',
           ],
           _命名标记name: [
             '文件在投稿里的文件名',
-            '記事内のファイル名',
+            '投稿内のファイル名',
             'File name in the article',
             '檔案在投稿裡的名稱',
           ],
@@ -4737,6 +4782,12 @@
             '本次工作擷取完成時的時間。例如：2020-10-21。',
           ],
           _提示: ['提示', 'ヒント', 'tip', '提示'],
+          _保存投稿中的封面图片: [
+            '保存投稿中的封面图片',
+            '投稿の表紙画像を保存',
+            'Save the cover image in the articles',
+            '儲存投稿中的封面圖片',
+          ],
         }
 
         /***/

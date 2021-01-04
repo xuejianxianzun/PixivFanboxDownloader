@@ -7,37 +7,37 @@ const formHtml = `<form class="settingForm">
 
       <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType1" title="${store.fileType.image.join(
+      <label for="fileType1" class="has_tip" data-tip="${store.fileType.image.join(
         ','
       )}"> ${lang.transl('_图片')}&nbsp;</label>
       
       <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType2" title="${store.fileType.music.join(
+      <label for="fileType2" class="has_tip" data-tip="${store.fileType.music.join(
         ','
       )}"> ${lang.transl('_音乐')}&nbsp;</label>
 
       <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType3" title="${store.fileType.video.join(
+      <label for="fileType3" class="has_tip" data-tip="${store.fileType.video.join(
         ','
       )}"> ${lang.transl('_视频')}&nbsp;</label>
       
       <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType4" title="${store.fileType.compressed.join(
+      <label for="fileType4" class="has_tip" data-tip="${store.fileType.compressed.join(
         ','
       )}"> ${lang.transl('_压缩文件')}&nbsp;</label>
       
       <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType5" title="${store.fileType.ps.join(
+      <label for="fileType5" class="has_tip" data-tip="${store.fileType.ps.join(
         ','
       )}"> ${lang.transl('_PS文件')}&nbsp;</label>
 
       <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
-      <label for="fileType6" title="${store.fileType.other.join(
+      <label for="fileType6" class="has_tip" data-tip="${store.fileType.other.join(
         ','
       )}"> ${lang.transl('_其他')}&nbsp;</label>
       </p>
@@ -109,6 +109,15 @@ const formHtml = `<form class="settingForm">
       <span class="beautify_switch"></span>
       </p>
       
+      <p class="option" data-no="22">
+      <span class="settingNameStyle1">${lang.transl(
+        '_保存投稿中的封面图片'
+      )}&nbsp;&nbsp; 
+      </span>
+      <input type="checkbox" name="savePostCover" class="need_beautify checkbox_switch" checked>
+      <span class="beautify_switch"></span>
+      </p>
+
       <p class="option" data-no="20">
       <span class="settingNameStyle1">${lang.transl(
         '_保存投稿中的文字'

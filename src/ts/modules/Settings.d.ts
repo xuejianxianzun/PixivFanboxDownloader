@@ -22,4 +22,5 @@ export interface SettingsForm extends HTMLFormElement {
   quietDownload: HTMLInputElement
   downloadThread: HTMLInputElement
   dateFormat: HTMLInputElement
+  savePostCover: HTMLInputElement
 }
