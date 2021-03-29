@@ -17,9 +17,9 @@ class Tip {
     document.body.insertAdjacentHTML('beforeend', tipHTML)
     this.tipEl = document.getElementById('tip') as HTMLDivElement
 
-    const tips = document.querySelectorAll('.has_tip') as NodeListOf<
-      HTMLElement
-    >
+    const tips = document.querySelectorAll(
+      '.has_tip'
+    ) as NodeListOf<HTMLElement>
     for (const el of tips) {
       for (const ev of ['mouseenter', 'mouseleave']) {
         el.addEventListener(ev, (event) => {

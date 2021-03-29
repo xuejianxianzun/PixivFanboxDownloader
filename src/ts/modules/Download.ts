@@ -63,8 +63,6 @@ class Download {
     // 重设当前下载栏的信息
     this.setProgressBar(0, 0)
 
-    // 下载图片
-
     // 向浏览器发送下载任务
     this.browserDownload(arg.data.url, this.fileName, arg.id, arg.taskBatch)
   }

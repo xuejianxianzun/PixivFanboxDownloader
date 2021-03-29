@@ -86,7 +86,9 @@ class DownloadControl {
         this.downloadSuccess(msg.data)
       } else if (msg.msg === 'download_err') {
         // 浏览器把文件保存到本地时出错
-        log.error(`${msg.data.url} download error! code: ${msg.err}.`)
+        log.error(
+          `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`
+        )
         EVT.fire(EVT.events.downloadError)
         // 重新下载这个文件
         this.downloadError(msg.data)
