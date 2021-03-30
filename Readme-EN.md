@@ -4,7 +4,7 @@
 - [Install](#install)
   - [Install online](#install-online)
   - [Offline installation](#offline-installation)
-- [Remind](#remind)
+- [How to use](#how-to-use)
 - [Patreon](#patreon)
 
 <!-- /TOC -->
@@ -14,6 +14,8 @@
 This is a Chrome browser extension for batch downloading files on Pixiv Fanbox.
 
 Supports filtering file types, custom file names, and multiple languages.
+
+Note: This program cannot directly unlock paid content on Fanbox. If you want to download paid content, you must first purchase it.
 
 ![screenshot](screenshot/ui2.png)
 
@@ -39,16 +41,12 @@ If you cannot install this extension from the Chrome Web Store, you can install 
 
 Note: The offline installation method will not be automatically updated. When you want to update, you need to delete this extension first, and then install the new version.
 
-# Remind
+# How to use
 
--This program cannot directly unlock paid content on Fanbox. If you want to download paid content, you must first purchase it.
-
--The downloaded file will be saved in the download directory of the browser.
-
--Please turn off the "Ask where to save each file before downloading" option in the browser settings to avoid pop-up windows when downloading.
-
--If the file name after downloading is abnormal, please disable other browser extensions with download function.
-
+- After installing this extension, refresh the fanbox page, you can see a blue download button on the right side of the page, click this button to start using it.
+- The downloaded file will be saved in the download directory of the browser.
+- Please turn off the "Ask where to save each file before downloading" option in the browser settings to avoid pop-up windows when downloading.
+- If the file name after downloading is abnormal, please disable other browser extensions with download function.
 
 # Patreon
 
