@@ -4,7 +4,7 @@
 
 Fanbox 中有些图片无法以原图打开，图片会回传一个 status 500 的 response 而内容是 `failed to thumbnailing`。
 
-现在下载失败时改成 originalUrl 和 thumbnailUrl 交替重试。
+现在下载失败的错误代码是 SERVER_FAILED 时改成 originalUrl 和 thumbnailUrl 交替重试。
 
 # 1.8.0 2021/03/29
 

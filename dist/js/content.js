@@ -769,7 +769,7 @@ class DownloadControl {
                 _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`);
                 _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].events.downloadError);
                 // 重新下载这个文件
-                this.downloadError(msg.data);
+                this.downloadError(msg.data, msg.err);
             }
             // UUID 的情况
             if (msg.data && msg.data.uuid) {
@@ -967,7 +967,7 @@ class DownloadControl {
         _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_已停止'), 2);
         this.downloadPause = false;
     }
-    downloadError(data) {
+    downloadError(data, err) {
         if (this.downloadPause || this.downloadStop) {
             return false;
         }
@@ -975,7 +975,7 @@ class DownloadControl {
         // 复位这个任务的状态
         this.setDownloadedIndex(task.index, -1);
         // 建立下载任务，再次下载它
-        this.createDownload(task.progressBarIndex, true);
+        this.createDownload(task.progressBarIndex, err == "SERVER_FAILED");
     }
     downloadSuccess(data) {
         const task = this.taskList[data.id];
