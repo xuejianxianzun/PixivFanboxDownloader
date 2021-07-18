@@ -91,7 +91,7 @@ class DownloadControl {
         )
         EVT.fire(EVT.events.downloadError)
         // 重新下载这个文件
-        this.downloadError(msg.data)
+        this.downloadError(msg.data, msg.err)
       }
 
       // UUID 的情况
@@ -342,7 +342,7 @@ class DownloadControl {
     this.downloadPause = false
   }
 
-  private downloadError(data: DonwloadSuccessData) {
+  private downloadError(data: DonwloadSuccessData, err?: string) {
     if (this.downloadPause || this.downloadStop) {
       return false
     }
@@ -350,7 +350,7 @@ class DownloadControl {
     // 复位这个任务的状态
     this.setDownloadedIndex(task.index, -1)
     // 建立下载任务，再次下载它
-    this.createDownload(task.progressBarIndex)
+    this.createDownload(task.progressBarIndex, err == "SERVER_FAILED")
   }
 
   private downloadSuccess(data: DonwloadSuccessData) {
@@ -397,7 +397,7 @@ class DownloadControl {
   }
 
   // 查找需要进行下载的作品，建立下载
-  private createDownload(progressBarIndex: number) {
+  private createDownload(progressBarIndex: number, hasFailed: boolean = false) {
     let length = this.statesList.length
     let index: number | undefined
     for (let i = 0; i < length; i++) {
@@ -411,7 +411,10 @@ class DownloadControl {
     if (index === undefined) {
       throw new Error('There are no data to download')
     } else {
-      const result = store.result[index]
+      let result = store.result[index]
+      if (hasFailed && result.retryUrl) {
+        [result.url, result.retryUrl] = [result.retryUrl, result.url]
+      }
       const data: downloadArgument = {
         id: result.fileId,
         data: result,

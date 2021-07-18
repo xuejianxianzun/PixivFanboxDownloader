@@ -20,6 +20,7 @@ interface FileResult {
   size: number | null
   index: number
   url: string
+  retryUrl: string | null
 }
 
 // fileType: 'image' | 'music' | 'video' | 'compressed' | 'ps' | 'other'
@@ -35,6 +36,7 @@ interface TextResult {
   index: 0
   text: string[]
   url: string
+  retryUrl: string | null
 }
 
 // 以投稿为单位，保存要下载的资源
