@@ -1,3 +1,11 @@
+# 1.8.1 2021/07/18
+
+### 修复下载無限重试的問題
+
+Fanbox 中有些图片无法以原图打开，图片会回传一个 status 500 的 response 而内容是 `failed to thumbnailing`。
+
+现在下载失败时改成 originalUrl 和 thumbnailUrl 交替重试。
+
 # 1.8.0 2021/03/29
 
 ### 修复下载卡住无法重试的问题
