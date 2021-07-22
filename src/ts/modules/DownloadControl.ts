@@ -350,7 +350,8 @@ class DownloadControl {
     // 复位这个任务的状态
     this.setDownloadedIndex(task.index, -1)
     // 建立下载任务，再次下载它
-    this.createDownload(task.progressBarIndex, err == "SERVER_FAILED")
+    // 如果出现了服务端错误，可能是获取原图时出现错误，改为使用缩略图进行下载
+    this.createDownload(task.progressBarIndex, err === 'SERVER_FAILED')
   }
 
   private downloadSuccess(data: DonwloadSuccessData) {
@@ -397,7 +398,8 @@ class DownloadControl {
   }
 
   // 查找需要进行下载的作品，建立下载
-  private createDownload(progressBarIndex: number, hasFailed: boolean = false) {
+  // 可选第二个参数：使用缩略图 url 而不是原图 url 进行下载
+  private createDownload(progressBarIndex: number, useThumb: boolean = false) {
     let length = this.statesList.length
     let index: number | undefined
     for (let i = 0; i < length; i++) {
@@ -412,8 +414,8 @@ class DownloadControl {
       throw new Error('There are no data to download')
     } else {
       let result = store.result[index]
-      if (hasFailed && result.retryUrl) {
-        [result.url, result.retryUrl] = [result.retryUrl, result.url]
+      if (useThumb && result.retryUrl) {
+        ;[result.url, result.retryUrl] = [result.retryUrl, result.url]
       }
       const data: downloadArgument = {
         id: result.fileId,

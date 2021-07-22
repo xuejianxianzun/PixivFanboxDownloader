@@ -72,7 +72,7 @@ class SaveData {
         index: 0,
         text: [],
         url: '',
-        retryUrl: null
+        retryUrl: null,
       },
     }
 
@@ -94,7 +94,7 @@ class SaveData {
           size: null,
           index,
           url: cover,
-          retryUrl: null
+          retryUrl: null,
         }
         result.files.push(r)
       }
@@ -307,7 +307,7 @@ class SaveData {
         size: fileData.size,
         index,
         url: fileData.url,
-        retryUrl: null
+        retryUrl: null,
       }
     }
 

@@ -1,10 +1,29 @@
 # 1.8.1 2021/07/18
 
-### 修复下载無限重试的問題
+### 修复下载原图时因为 500 错误而导致無限重试的問題
+
+[issues 16](https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/16)
 
 Fanbox 中有些图片无法以原图打开，图片会回传一个 status 500 的 response 而内容是 `failed to thumbnailing`。
 
-现在下载失败的错误代码是 SERVER_FAILED 时改成 originalUrl 和 thumbnailUrl 交替重试。
+现在下载文件失败时，如果 Chrome 返回的错误代码是 `SERVER_FAILED`，则把这个文件的 URL 从 originalUrl 改为 thumbnailUrl 进行重试。
+
+出现此问题的页面网址： https://takuya-yoshimura.fanbox.cc/posts/1237796
+
+---------
+
+Fanbox 官方对此问题的回复：
+
+```
+谢谢你的兴趣。
+我们是pixivFANBOX办公室。
+
+请注意，pixivFANBOX不允许上传高度和宽度都大于16,000px的图片。
+就你发给我们的网页而言，你所提交的图片有可能超过上述尺寸。
+如果你想查看更大的尺寸，请联系创作者。
+```
+
+据此推测，可能无法下载的几张图片是宽高都太大了。如果改为上传文件的方式或许就好了。
 
 # 1.8.0 2021/03/29
 
