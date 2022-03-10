@@ -22,8 +22,6 @@ class InitShopPage extends InitPageBase {
   }
 
   protected async FetchPostList() {}
-
-  protected async fetchPost() {}
 }
 
 export { InitShopPage }

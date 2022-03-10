@@ -34,8 +34,6 @@ class InitTagPage extends InitPageBase {
     }
     this.afterFetchPostList(data)
   }
-
-  protected async fetchPost() {}
 }
 
 export { InitTagPage }

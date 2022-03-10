@@ -30,7 +30,7 @@ class InitPage {
       case 5:
         return new InitTagPage()
       default:
-        throw new Error('InitCrawlProcess error: Illegal pageType.')
+        console.error('Illegal pageType')
     }
   }
 }

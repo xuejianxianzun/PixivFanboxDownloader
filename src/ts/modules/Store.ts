@@ -8,6 +8,8 @@ class Store {
     this.bindEvents()
   }
 
+  public postIdList: string[] = []
+
   public resultMeta: ResultMeta[] = [] // 储存抓取结果的元数据
   public result: Result[] = [] // 储存抓取结果
   public readonly defaultFileName = '{user}/{title}/{index}'
@@ -101,6 +103,7 @@ class Store {
   }
 
   public resetResult() {
+    this.postIdList = []
     this.resultMeta = []
     this.result = []
   }

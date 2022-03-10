@@ -58,14 +58,12 @@ class Output {
       document.execCommand('copy')
 
       // 改变提示文字
-      document.querySelector('.outputCopy')!.textContent = lang.transl(
-        '_已复制到剪贴板'
-      )
+      document.querySelector('.outputCopy')!.textContent =
+        lang.transl('_已复制到剪贴板')
       setTimeout(() => {
         window.getSelection()!.removeAllRanges()
-        document.querySelector('.outputCopy')!.textContent = lang.transl(
-          '_复制'
-        )
+        document.querySelector('.outputCopy')!.textContent =
+          lang.transl('_复制')
       }, 1000)
     })
 

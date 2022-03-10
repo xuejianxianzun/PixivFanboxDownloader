@@ -6,7 +6,6 @@ import {
   ServiceProvider,
   VideoProvider,
   PostBody,
-  PostListItem,
   ImageData,
   FileData,
 } from './CrawlResult'
@@ -35,11 +34,11 @@ class SaveData {
     /(?<=src=")https.*?(jpeg|jpg|png|gif|bmp)/g
   )
 
-  public receive(data: PostBody | PostListItem) {
+  public receive(data: PostBody) {
     this.parsePost(data)
   }
 
-  private parsePost(data: PostBody | PostListItem) {
+  private parsePost(data: PostBody) {
     if (data.body === null) {
       return
     }
@@ -369,9 +368,7 @@ class SaveData {
   }
 
   // 传入文件 url，提取文件名和扩展名
-  private getUrlNameAndExt(
-    url: string
-  ): {
+  private getUrlNameAndExt(url: string): {
     name: string
     ext: string
   } {

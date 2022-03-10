@@ -31,8 +31,6 @@ class InitHomePage extends InitPageBase {
     }
     this.afterFetchPostList(data)
   }
-
-  protected async fetchPost() {}
 }
 
 export { InitHomePage }

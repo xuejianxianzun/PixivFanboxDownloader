@@ -31,8 +31,6 @@ class InitPostListPage extends InitPageBase {
     }
     this.afterFetchPostList(data)
   }
-
-  protected async fetchPost() {}
 }
 
 export { InitPostListPage }

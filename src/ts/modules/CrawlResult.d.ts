@@ -24,19 +24,20 @@ interface CommonAllData {
   feeRequired: number
   publishedDatetime: string
   updatedDatetime: string
+  cover: string | null
   tags: string[]
   excerpt: string | null
   isLiked: boolean
   likeCount: number
   commentCount: number
-  restrictedFor: number | null
+  isRestricted: boolean
   user: {
     userId: string
     name: string
     iconUrl: string
   }
   creatorId: string
-  status: 'published'
+  hasAdultContent: boolean
 }
 
 // 所有投稿详情里都存在的数据。列表里没有
@@ -56,6 +57,7 @@ interface CommonPostData {
     publishedDatetime: string
   }
   imageForShare: string
+  restrictedFor: number | null
 }
 
 // 通用的图片文件数据

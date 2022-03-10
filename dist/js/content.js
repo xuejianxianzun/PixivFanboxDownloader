@@ -1,41 +1,49 @@
 /******/ ;(function (modules) {
   // webpackBootstrap
   /******/ // The module cache
-  /******/ var installedModules = {} // The require function
+  /******/ var installedModules = {}
   /******/
-  /******/ /******/ function __webpack_require__(moduleId) {
+  /******/ // The require function
+  /******/ function __webpack_require__(moduleId) {
     /******/
     /******/ // Check if module is in cache
     /******/ if (installedModules[moduleId]) {
       /******/ return installedModules[moduleId].exports
       /******/
-    } // Create a new module (and put it into the cache)
-    /******/ /******/ var module = (installedModules[moduleId] = {
+    }
+    /******/ // Create a new module (and put it into the cache)
+    /******/ var module = (installedModules[moduleId] = {
       /******/ i: moduleId,
       /******/ l: false,
       /******/ exports: {},
       /******/
-    }) // Execute the module function
+    })
     /******/
-    /******/ /******/ modules[moduleId].call(
+    /******/ // Execute the module function
+    /******/ modules[moduleId].call(
       module.exports,
       module,
       module.exports,
       __webpack_require__
-    ) // Flag the module as loaded
+    )
     /******/
-    /******/ /******/ module.l = true // Return the exports of the module
+    /******/ // Flag the module as loaded
+    /******/ module.l = true
     /******/
-    /******/ /******/ return module.exports
+    /******/ // Return the exports of the module
+    /******/ return module.exports
     /******/
-  } // expose the modules object (__webpack_modules__)
+  }
   /******/
   /******/
-  /******/ /******/ __webpack_require__.m = modules // expose the module cache
+  /******/ // expose the modules object (__webpack_modules__)
+  /******/ __webpack_require__.m = modules
   /******/
-  /******/ /******/ __webpack_require__.c = installedModules // define getter function for harmony exports
+  /******/ // expose the module cache
+  /******/ __webpack_require__.c = installedModules
   /******/
-  /******/ /******/ __webpack_require__.d = function (exports, name, getter) {
+  /******/ // define getter function for harmony exports
+  /******/ __webpack_require__.d = function (exports, name, getter) {
     /******/ if (!__webpack_require__.o(exports, name)) {
       /******/ Object.defineProperty(exports, name, {
         enumerable: true,
@@ -44,9 +52,10 @@
       /******/
     }
     /******/
-  } // define __esModule on exports
+  }
   /******/
-  /******/ /******/ __webpack_require__.r = function (exports) {
+  /******/ // define __esModule on exports
+  /******/ __webpack_require__.r = function (exports) {
     /******/ if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
       /******/ Object.defineProperty(exports, Symbol.toStringTag, {
         value: 'Module',
@@ -55,12 +64,14 @@
     }
     /******/ Object.defineProperty(exports, '__esModule', { value: true })
     /******/
-  } // create a fake namespace object // mode & 1: value is a module id, require it // mode & 2: merge all properties of value into the ns // mode & 4: return value when already ns object // mode & 8|1: behave like require
+  }
   /******/
-  /******/ /******/ /******/ /******/ /******/ /******/ __webpack_require__.t = function (
-    value,
-    mode
-  ) {
+  /******/ // create a fake namespace object
+  /******/ // mode & 1: value is a module id, require it
+  /******/ // mode & 2: merge all properties of value into the ns
+  /******/ // mode & 4: return value when already ns object
+  /******/ // mode & 8|1: behave like require
+  /******/ __webpack_require__.t = function (value, mode) {
     /******/ if (mode & 1) value = __webpack_require__(value)
     /******/ if (mode & 8) return value
     /******/ if (
@@ -87,9 +98,10 @@
         )
     /******/ return ns
     /******/
-  } // getDefaultExport function for compatibility with non-harmony modules
+  }
   /******/
-  /******/ /******/ __webpack_require__.n = function (module) {
+  /******/ // getDefaultExport function for compatibility with non-harmony modules
+  /******/ __webpack_require__.n = function (module) {
     /******/ var getter =
       module && module.__esModule
         ? /******/ function getDefault() {
@@ -101,16 +113,19 @@
     /******/ __webpack_require__.d(getter, 'a', getter)
     /******/ return getter
     /******/
-  } // Object.prototype.hasOwnProperty.call
+  }
   /******/
-  /******/ /******/ __webpack_require__.o = function (object, property) {
+  /******/ // Object.prototype.hasOwnProperty.call
+  /******/ __webpack_require__.o = function (object, property) {
     return Object.prototype.hasOwnProperty.call(object, property)
-  } // __webpack_public_path__
+  }
   /******/
-  /******/ /******/ __webpack_require__.p = '' // Load entry module and return exports
+  /******/ // __webpack_public_path__
+  /******/ __webpack_require__.p = ''
   /******/
   /******/
-  /******/ /******/ return __webpack_require__(
+  /******/ // Load entry module and return exports
+  /******/ return __webpack_require__(
     (__webpack_require__.s = './src/ts/content.ts')
   )
   /******/
@@ -125,33 +140,40 @@
       /***/ function (module, __webpack_exports__, __webpack_require__) {
         'use strict'
         __webpack_require__.r(__webpack_exports__)
-        /* harmony import */ var _modules_PageType__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./modules/PageType */ './src/ts/modules/PageType.ts'
-        )
-        /* harmony import */ var _modules_CenterPanel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./modules/CenterPanel */ './src/ts/modules/CenterPanel.ts'
-        )
-        /* harmony import */ var _modules_InitPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./modules/InitPage */ './src/ts/modules/InitPage.ts'
-        )
-        /* harmony import */ var _modules_DownloadControl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./modules/DownloadControl */ './src/ts/modules/DownloadControl.ts'
-        )
-        /* harmony import */ var _modules_RightIcon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./modules/RightIcon */ './src/ts/modules/RightIcon.ts'
-        )
-        /* harmony import */ var _modules_Tip__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-          /*! ./modules/Tip */ './src/ts/modules/Tip.ts'
-        )
-        /* harmony import */ var _modules_Tip__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/ __webpack_require__.n(
-          _modules_Tip__WEBPACK_IMPORTED_MODULE_5__
-        )
-        /* harmony import */ var _modules_Output__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
-          /*! ./modules/Output */ './src/ts/modules/Output.ts'
-        )
-        /* harmony import */ var _modules_Support__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
-          /*! ./modules/Support */ './src/ts/modules/Support.ts'
-        )
+        /* harmony import */ var _modules_PageType__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(
+            /*! ./modules/PageType */ './src/ts/modules/PageType.ts'
+          )
+        /* harmony import */ var _modules_CenterPanel__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(
+            /*! ./modules/CenterPanel */ './src/ts/modules/CenterPanel.ts'
+          )
+        /* harmony import */ var _modules_InitPage__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(
+            /*! ./modules/InitPage */ './src/ts/modules/InitPage.ts'
+          )
+        /* harmony import */ var _modules_DownloadControl__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(
+            /*! ./modules/DownloadControl */ './src/ts/modules/DownloadControl.ts'
+          )
+        /* harmony import */ var _modules_RightIcon__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(
+            /*! ./modules/RightIcon */ './src/ts/modules/RightIcon.ts'
+          )
+        /* harmony import */ var _modules_Tip__WEBPACK_IMPORTED_MODULE_5__ =
+          __webpack_require__(/*! ./modules/Tip */ './src/ts/modules/Tip.ts')
+        /* harmony import */ var _modules_Tip__WEBPACK_IMPORTED_MODULE_5___default =
+          /*#__PURE__*/ __webpack_require__.n(
+            _modules_Tip__WEBPACK_IMPORTED_MODULE_5__
+          )
+        /* harmony import */ var _modules_Output__WEBPACK_IMPORTED_MODULE_6__ =
+          __webpack_require__(
+            /*! ./modules/Output */ './src/ts/modules/Output.ts'
+          )
+        /* harmony import */ var _modules_Support__WEBPACK_IMPORTED_MODULE_7__ =
+          __webpack_require__(
+            /*! ./modules/Support */ './src/ts/modules/Support.ts'
+          )
         /*
          * project: Pixiv Fanbox Downloader
          * author:  xuejianxianzun; 雪见仙尊
@@ -334,15 +356,12 @@
             return centerPanel
           }
         )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
         // 用户界面
 
         // 中间面板
@@ -729,18 +748,16 @@
             return Download
           }
         )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _TitleBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./TitleBar */ './src/ts/modules/TitleBar.ts'
-        )
-        /* harmony import */ var _FileName__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./FileName */ './src/ts/modules/FileName.ts'
-        )
-        /* harmony import */ var _ProgressBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./ProgressBar */ './src/ts/modules/ProgressBar.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _TitleBar__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./TitleBar */ './src/ts/modules/TitleBar.ts')
+        /* harmony import */ var _FileName__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./FileName */ './src/ts/modules/FileName.ts')
+        /* harmony import */ var _ProgressBar__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(
+            /*! ./ProgressBar */ './src/ts/modules/ProgressBar.ts'
+          )
         // 下载文件，并发送给浏览器下载
 
         class Download {
@@ -828,36 +845,28 @@
       /***/ function (module, __webpack_exports__, __webpack_require__) {
         'use strict'
         __webpack_require__.r(__webpack_exports__)
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
-        /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./Log */ './src/ts/modules/Log.ts'
-        )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _TitleBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-          /*! ./TitleBar */ './src/ts/modules/TitleBar.ts'
-        )
-        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
-          /*! ./Colors */ './src/ts/modules/Colors.ts'
-        )
-        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
-          /*! ./Settings */ './src/ts/modules/Settings.ts'
-        )
-        /* harmony import */ var _Download__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
-          /*! ./Download */ './src/ts/modules/Download.ts'
-        )
-        /* harmony import */ var _ProgressBar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
-          /*! ./ProgressBar */ './src/ts/modules/ProgressBar.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
+        /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(/*! ./Log */ './src/ts/modules/Log.ts')
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _TitleBar__WEBPACK_IMPORTED_MODULE_5__ =
+          __webpack_require__(/*! ./TitleBar */ './src/ts/modules/TitleBar.ts')
+        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_6__ =
+          __webpack_require__(/*! ./Colors */ './src/ts/modules/Colors.ts')
+        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_7__ =
+          __webpack_require__(/*! ./Settings */ './src/ts/modules/Settings.ts')
+        /* harmony import */ var _Download__WEBPACK_IMPORTED_MODULE_8__ =
+          __webpack_require__(/*! ./Download */ './src/ts/modules/Download.ts')
+        /* harmony import */ var _ProgressBar__WEBPACK_IMPORTED_MODULE_9__ =
+          __webpack_require__(
+            /*! ./ProgressBar */ './src/ts/modules/ProgressBar.ts'
+          )
         // 下载控制
 
         class DownloadControl {
@@ -939,9 +948,10 @@
             this.downloaded = val
             this.LogDownloadStates()
             // 设置下载进度信息
-            this.totalNumberEl.textContent = _Store__WEBPACK_IMPORTED_MODULE_2__[
-              'store'
-            ].result.length.toString()
+            this.totalNumberEl.textContent =
+              _Store__WEBPACK_IMPORTED_MODULE_2__[
+                'store'
+              ].result.length.toString()
             _ProgressBar__WEBPACK_IMPORTED_MODULE_9__[
               'progressBar'
             ].setTotalProgress(this.downloaded)
@@ -1400,21 +1410,18 @@
             return fileName
           }
         )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Settings */ './src/ts/modules/Settings.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _DateFormat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./DateFormat */ './src/ts/modules/DateFormat.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Settings */ './src/ts/modules/Settings.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _DateFormat__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(
+            /*! ./DateFormat */ './src/ts/modules/DateFormat.ts'
+          )
 
         class FileName {
           constructor() {
@@ -1642,18 +1649,14 @@
             return filter
           }
         )
-        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Settings */ './src/ts/modules/Settings.ts'
-        )
-        /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Log */ './src/ts/modules/Log.ts'
-        )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
+        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Settings */ './src/ts/modules/Settings.ts')
+        /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Log */ './src/ts/modules/Log.ts')
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
 
         // 审查每个文件的数据，决定是否要下载它
         class Filter {
@@ -1858,21 +1861,18 @@
             return InitHomePage
           }
         )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Colors */ './src/ts/modules/Colors.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./InitPageBase */ './src/ts/modules/InitPageBase.ts'
-        )
-        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./API */ './src/ts/modules/API.ts'
-        )
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Colors */ './src/ts/modules/Colors.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(
+            /*! ./InitPageBase */ './src/ts/modules/InitPageBase.ts'
+          )
+        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(/*! ./API */ './src/ts/modules/API.ts')
 
         class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__[
           'InitPageBase'
@@ -1908,7 +1908,6 @@
             }
             this.afterFetchPostList(data)
           }
-          async fetchPost() {}
         }
 
         /***/
@@ -1922,24 +1921,26 @@
       /***/ function (module, __webpack_exports__, __webpack_require__) {
         'use strict'
         __webpack_require__.r(__webpack_exports__)
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./PageType */ './src/ts/modules/PageType.ts'
-        )
-        /* harmony import */ var _InitHomePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./InitHomePage */ './src/ts/modules/InitHomePage.ts'
-        )
-        /* harmony import */ var _InitPostListPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./InitPostListPage */ './src/ts/modules/InitPostListPage.ts'
-        )
-        /* harmony import */ var _InitTagPage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./InitTagPage */ './src/ts/modules/InitTagPage.ts'
-        )
-        /* harmony import */ var _InitPostPage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-          /*! ./InitPostPage */ './src/ts/modules/InitPostPage.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./PageType */ './src/ts/modules/PageType.ts')
+        /* harmony import */ var _InitHomePage__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(
+            /*! ./InitHomePage */ './src/ts/modules/InitHomePage.ts'
+          )
+        /* harmony import */ var _InitPostListPage__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(
+            /*! ./InitPostListPage */ './src/ts/modules/InitPostListPage.ts'
+          )
+        /* harmony import */ var _InitTagPage__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(
+            /*! ./InitTagPage */ './src/ts/modules/InitTagPage.ts'
+          )
+        /* harmony import */ var _InitPostPage__WEBPACK_IMPORTED_MODULE_5__ =
+          __webpack_require__(
+            /*! ./InitPostPage */ './src/ts/modules/InitPostPage.ts'
+          )
         // 初始化页面，初始化抓取流程
 
         class InitPage {
@@ -1979,7 +1980,7 @@
                   'InitTagPage'
                 ]()
               default:
-                throw new Error('InitCrawlProcess error: Illegal pageType.')
+                console.error('Illegal pageType')
             }
           }
         }
@@ -2003,36 +2004,33 @@
             return InitPageBase
           }
         )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./Filter */ './src/ts/modules/Filter.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
-        /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./Log */ './src/ts/modules/Log.ts'
-        )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _TitleBar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
-          /*! ./TitleBar */ './src/ts/modules/TitleBar.ts'
-        )
-        /* harmony import */ var _SaveData__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
-          /*! ./SaveData */ './src/ts/modules/SaveData.ts'
-        )
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./Filter */ './src/ts/modules/Filter.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
+        /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(/*! ./Log */ './src/ts/modules/Log.ts')
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_5__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _TitleBar__WEBPACK_IMPORTED_MODULE_6__ =
+          __webpack_require__(/*! ./TitleBar */ './src/ts/modules/TitleBar.ts')
+        /* harmony import */ var _SaveData__WEBPACK_IMPORTED_MODULE_7__ =
+          __webpack_require__(/*! ./SaveData */ './src/ts/modules/SaveData.ts')
+        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_8__ =
+          __webpack_require__(/*! ./API */ './src/ts/modules/API.ts')
         // 初始化抓取页面的流程
 
         class InitPageBase {
           constructor() {
             this.crawlNumber = 0 // 要抓取的个数/页数
             this.nextUrl = null
+            this.getPostDataConcurrencyNumMax = 6
+            this.getPostDataThreadNum = 0
+            this.getPostDatafinished = 0
           }
           // 初始化
           init() {
@@ -2077,6 +2075,9 @@
             )
             _TitleBar__WEBPACK_IMPORTED_MODULE_6__['titleBar'].change('↑')
             _Filter__WEBPACK_IMPORTED_MODULE_2__['filter'].init()
+            this.getPostDataThreadNum = 0
+            this.getPostDatafinished = 0
+            this.nextUrl = null
             // 进入第一个抓取方法
             this.nextStep()
           }
@@ -2085,22 +2086,94 @@
             this.FetchPostList()
           }
           afterFetchPostList(data) {
+            if (data.body.items.length === 0) {
+              return this.noResult()
+            }
             const items = data.body.items
             this.nextUrl = data.body.nextUrl
             for (const item of items) {
-              _SaveData__WEBPACK_IMPORTED_MODULE_7__['saveData'].receive(item)
+              if (item.body === null) {
+                continue
+              }
+              // 针对投稿进行检查，决定是否保留它
+              const id = item.id
+              const fee = item.feeRequired
+              const date = item.publishedDatetime
+              const check = _Filter__WEBPACK_IMPORTED_MODULE_2__[
+                'filter'
+              ].check({ id, fee, date })
+              if (check) {
+                _Store__WEBPACK_IMPORTED_MODULE_3__['store'].postIdList.push(id)
+              }
             }
             if (this.nextUrl) {
               this.FetchPostList()
             } else {
-              this.crawlFinished()
+              this.FetchPostListFinished()
             }
+          }
+          // 抓取文章列表之后，建立并发抓取线程，逐个获取文章数据
+          FetchPostListFinished() {
+            _Log__WEBPACK_IMPORTED_MODULE_4__['log'].log(
+              _Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
+                '_列表页抓取完成'
+              )
+            )
+            _Log__WEBPACK_IMPORTED_MODULE_4__['log'].log(
+              _Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
+                '_当前作品个数',
+                _Store__WEBPACK_IMPORTED_MODULE_3__[
+                  'store'
+                ].postIdList.length.toString()
+              )
+            )
+            _Log__WEBPACK_IMPORTED_MODULE_4__['log'].log(
+              _Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
+                '_开始获取作品信息'
+              )
+            )
+            for (let i = 0; i < this.getPostDataConcurrencyNumMax; i++) {
+              const postId =
+                _Store__WEBPACK_IMPORTED_MODULE_3__['store'].postIdList.shift()
+              if (postId) {
+                this.getPostDataThreadNum++
+                this.fetchPost(postId)
+              } else {
+                break
+              }
+            }
+          }
+          async fetchPost(postId) {
+            const data = await _API__WEBPACK_IMPORTED_MODULE_8__['API'].getPost(
+              postId
+            )
+            this.afterFetchPost(data)
           }
           afterFetchPost(data) {
             _SaveData__WEBPACK_IMPORTED_MODULE_7__['saveData'].receive(
               data.body
             )
-            this.crawlFinished()
+            _Log__WEBPACK_IMPORTED_MODULE_4__['log'].log(
+              `${_Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
+                '_待处理'
+              )} ${
+                _Store__WEBPACK_IMPORTED_MODULE_3__['store'].postIdList.length
+              }`,
+              1,
+              false
+            )
+            // 当抓取完一个文章之后，如果还有等待抓取的文章就继续抓取
+            // 否则当前抓取线程结束。等待所有抓取线程完成之后，文章数据就全部获取了
+            const postId =
+              _Store__WEBPACK_IMPORTED_MODULE_3__['store'].postIdList.shift()
+            if (postId) {
+              this.fetchPost(postId)
+            } else {
+              this.getPostDatafinished++
+              if (this.getPostDatafinished == this.getPostDataThreadNum) {
+                this.crawlFinished()
+              }
+            }
           }
           // 抓取完毕
           crawlFinished() {
@@ -2109,10 +2182,8 @@
             ) {
               return this.noResult()
             }
-            this.nextUrl = null
-            _Store__WEBPACK_IMPORTED_MODULE_3__[
-              'store'
-            ].crawlCompleteTime = new Date()
+            _Store__WEBPACK_IMPORTED_MODULE_3__['store'].crawlCompleteTime =
+              new Date()
             _Log__WEBPACK_IMPORTED_MODULE_4__['log'].log(
               _Lang__WEBPACK_IMPORTED_MODULE_0__['lang'].transl(
                 '_抓取文件数量',
@@ -2165,21 +2236,18 @@
             return InitPostListPage
           }
         )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Colors */ './src/ts/modules/Colors.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./InitPageBase */ './src/ts/modules/InitPageBase.ts'
-        )
-        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./API */ './src/ts/modules/API.ts'
-        )
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Colors */ './src/ts/modules/Colors.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(
+            /*! ./InitPageBase */ './src/ts/modules/InitPageBase.ts'
+          )
+        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(/*! ./API */ './src/ts/modules/API.ts')
 
         class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__[
           'InitPageBase'
@@ -2220,7 +2288,6 @@
             }
             this.afterFetchPostList(data)
           }
-          async fetchPost() {}
         }
 
         /***/
@@ -2241,24 +2308,20 @@
             return InitPostPage
           }
         )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Colors */ './src/ts/modules/Colors.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./InitPageBase */ './src/ts/modules/InitPageBase.ts'
-        )
-        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./API */ './src/ts/modules/API.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Colors */ './src/ts/modules/Colors.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(
+            /*! ./InitPageBase */ './src/ts/modules/InitPageBase.ts'
+          )
+        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(/*! ./API */ './src/ts/modules/API.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_5__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
 
         class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__[
           'InitPageBase'
@@ -2309,6 +2372,7 @@
             quickBtn && quickBtn.remove()
           }
           nextStep() {
+            this.getPostDataThreadNum = 1
             this.fetchPost()
           }
           async FetchPostList() {}
@@ -2338,21 +2402,18 @@
             return InitTagPage
           }
         )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Colors */ './src/ts/modules/Colors.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./InitPageBase */ './src/ts/modules/InitPageBase.ts'
-        )
-        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-          /*! ./API */ './src/ts/modules/API.ts'
-        )
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Colors */ './src/ts/modules/Colors.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(
+            /*! ./InitPageBase */ './src/ts/modules/InitPageBase.ts'
+          )
+        /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ =
+          __webpack_require__(/*! ./API */ './src/ts/modules/API.ts')
 
         class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__[
           'InitPageBase'
@@ -2395,7 +2456,6 @@
             }
             this.afterFetchPostList(data)
           }
-          async fetchPost() {}
         }
 
         /***/
@@ -2416,9 +2476,8 @@
             return lang
           }
         )
-        /* harmony import */ var _langText__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./langText */ './src/ts/modules/langText.ts'
-        )
+        /* harmony import */ var _langText__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./langText */ './src/ts/modules/langText.ts')
 
         // 语言类
         class Lang {
@@ -2478,15 +2537,12 @@
             return log
           }
         )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
 
         // 日志类
         class Log {
@@ -2577,12 +2633,10 @@
       /***/ function (module, __webpack_exports__, __webpack_require__) {
         'use strict'
         __webpack_require__.r(__webpack_exports__)
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
         // 输出传递的文本
 
         class Output {
@@ -2641,18 +2695,14 @@
                 window.getSelection().addRange(range)
                 document.execCommand('copy')
                 // 改变提示文字
-                document.querySelector(
-                  '.outputCopy'
-                ).textContent = _Lang__WEBPACK_IMPORTED_MODULE_1__[
-                  'lang'
-                ].transl('_已复制到剪贴板')
+                document.querySelector('.outputCopy').textContent =
+                  _Lang__WEBPACK_IMPORTED_MODULE_1__['lang'].transl(
+                    '_已复制到剪贴板'
+                  )
                 setTimeout(() => {
                   window.getSelection().removeAllRanges()
-                  document.querySelector(
-                    '.outputCopy'
-                  ).textContent = _Lang__WEBPACK_IMPORTED_MODULE_1__[
-                    'lang'
-                  ].transl('_复制')
+                  document.querySelector('.outputCopy').textContent =
+                    _Lang__WEBPACK_IMPORTED_MODULE_1__['lang'].transl('_复制')
                 }, 1000)
               })
             window.addEventListener(
@@ -2690,9 +2740,8 @@
             return pageType
           }
         )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
         // 获取页面类型
 
         class PageType {
@@ -2792,15 +2841,12 @@
             return progressBar
           }
         )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
 
         // 进度条
         class ProgressBar {
@@ -2848,16 +2894,16 @@
           reset(num, downloaded = 0) {
             // 重置总进度条
             this.setTotalProgress(downloaded)
-            this.totalNumberEl.textContent = _Store__WEBPACK_IMPORTED_MODULE_0__[
-              'store'
-            ].result.length.toString()
+            this.totalNumberEl.textContent =
+              _Store__WEBPACK_IMPORTED_MODULE_0__[
+                'store'
+              ].result.length.toString()
             // 重置子进度条
             this.listWrap.innerHTML = this.barHTML.repeat(num)
             this.wrap.style.display = 'block'
             // 保存子进度条上需要使用到的元素
-            const allProgressBar = this.listWrap.querySelectorAll(
-              '.downloadBar'
-            )
+            const allProgressBar =
+              this.listWrap.querySelectorAll('.downloadBar')
             this.allProgressBar = []
             for (const bar of allProgressBar) {
               const data = {
@@ -2902,9 +2948,8 @@
       /***/ function (module, __webpack_exports__, __webpack_require__) {
         'use strict'
         __webpack_require__.r(__webpack_exports__)
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
 
         // 右侧的下载图标
         class RightIcon {
@@ -2966,15 +3011,12 @@
             return saveData
           }
         )
-        /* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Filter */ './src/ts/modules/Filter.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
-        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./Settings */ './src/ts/modules/Settings.ts'
-        )
+        /* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Filter */ './src/ts/modules/Filter.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
+        /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(/*! ./Settings */ './src/ts/modules/Settings.ts')
 
         class SaveData {
           constructor() {
@@ -3340,12 +3382,10 @@
             return SaveSettings
           }
         )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
         // 保存和初始化设置项
         // 只有部分设置会被保存
 
@@ -3523,9 +3563,7 @@
             )
           }
           emitChange(name, value) {
-            _EVT__WEBPACK_IMPORTED_MODULE_0__[
-              'EVT'
-            ].fire(
+            _EVT__WEBPACK_IMPORTED_MODULE_0__['EVT'].fire(
               _EVT__WEBPACK_IMPORTED_MODULE_0__['EVT'].events.settingChange,
               { name: name, value: value }
             )
@@ -3556,12 +3594,10 @@
       /***/ function (module, __webpack_exports__, __webpack_require__) {
         'use strict'
         __webpack_require__.r(__webpack_exports__)
-        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./Lang */ './src/ts/modules/Lang.ts'
-        )
-        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./Store */ './src/ts/modules/Store.ts'
-        )
+        /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./Lang */ './src/ts/modules/Lang.ts')
+        /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./Store */ './src/ts/modules/Store.ts')
 
         const formHtml = `<form class="settingForm">
       <p class="option" data-no="2">
@@ -3862,18 +3898,18 @@
             return form
           }
         )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
-        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-          /*! ./DOM */ './src/ts/modules/DOM.ts'
-        )
-        /* harmony import */ var _SaveSettings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-          /*! ./SaveSettings */ './src/ts/modules/SaveSettings.ts'
-        )
-        /* harmony import */ var _SettingHTML__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-          /*! ./SettingHTML */ './src/ts/modules/SettingHTML.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
+        /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ =
+          __webpack_require__(/*! ./DOM */ './src/ts/modules/DOM.ts')
+        /* harmony import */ var _SaveSettings__WEBPACK_IMPORTED_MODULE_2__ =
+          __webpack_require__(
+            /*! ./SaveSettings */ './src/ts/modules/SaveSettings.ts'
+          )
+        /* harmony import */ var _SettingHTML__WEBPACK_IMPORTED_MODULE_3__ =
+          __webpack_require__(
+            /*! ./SettingHTML */ './src/ts/modules/SettingHTML.ts'
+          )
 
         // 设置表单
         class Settings {
@@ -4008,9 +4044,7 @@
           }
           // 当选项的值被改变时，触发 settingChange 事件
           emitChange(name, value) {
-            _EVT__WEBPACK_IMPORTED_MODULE_0__[
-              'EVT'
-            ].fire(
+            _EVT__WEBPACK_IMPORTED_MODULE_0__['EVT'].fire(
               _EVT__WEBPACK_IMPORTED_MODULE_0__['EVT'].events.settingChange,
               { name: name, value: value }
             )
@@ -4067,14 +4101,14 @@
             return store
           }
         )
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
         // 仓库
 
         // 存储抓取结果和状态
         class Store {
           constructor() {
+            this.postIdList = []
             this.resultMeta = [] // 储存抓取结果的元数据
             this.result = [] // 储存抓取结果
             this.defaultFileName = '{user}/{title}/{index}'
@@ -4166,6 +4200,7 @@
             }
           }
           resetResult() {
+            this.postIdList = []
             this.resultMeta = []
             this.result = []
           }
@@ -4187,9 +4222,8 @@
       /***/ function (module, __webpack_exports__, __webpack_require__) {
         'use strict'
         __webpack_require__.r(__webpack_exports__)
-        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./EVT */ './src/ts/modules/EVT.ts'
-        )
+        /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./EVT */ './src/ts/modules/EVT.ts')
 
         // 辅助功能
         class Support {
@@ -4301,9 +4335,8 @@
             return titleBar
           }
         )
-        /* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ./PageType */ './src/ts/modules/PageType.ts'
-        )
+        /* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_0__ =
+          __webpack_require__(/*! ./PageType */ './src/ts/modules/PageType.ts')
         // 在标题栏上显示下载器工作状态
 
         class TitleBar {
@@ -4342,9 +4375,8 @@
           }
           // 重设 title
           reset() {
-            const type = _PageType__WEBPACK_IMPORTED_MODULE_0__[
-              'pageType'
-            ].getPageType()
+            const type =
+              _PageType__WEBPACK_IMPORTED_MODULE_0__['pageType'].getPageType()
             clearInterval(this.timer)
             // 储存标题的 mete 元素。在某些页面不存在，有时也与实际上的标题不一致。
             const ogTitle = document.querySelector('meta[property="og:title"]')
@@ -4586,7 +4618,12 @@
             'Crawl finished!',
             '擷取完畢！',
           ],
-          _快速下载本页: ['快速下载这个投稿'],
+          _快速下载本页: [
+            '快速下载',
+            'この作品をすばやくダウンロードする',
+            '快速下載',
+            'Download quickly',
+          ],
           _自动开始下载: [
             '自动开始下载',
             'ダウンロードを自動で開始',
@@ -4781,6 +4818,33 @@
             'Save the cover image in the articles',
             '儲存投稿中的封面圖片',
           ],
+          _列表页抓取完成: [
+            '列表页面抓取完成',
+            'リストページがクロールされ',
+            'The list page is crawled',
+            '清單頁面擷取完成',
+          ],
+          _当前作品个数: [
+            '当前有 {} 个投稿 ',
+            '今は　{}　枚の投稿があります ',
+            'There are now {} posts',
+            '目前有 {} 個投稿 ',
+          ],
+          _开始获取作品信息: [
+            '开始获取投稿信息',
+            '投稿情報の取得を開始します',
+            'Start getting post data',
+            '開始取得投稿資訊',
+          ],
+          _待处理: ['待处理', '処理待ち', 'Pending', '待處理'],
+          _共抓取到n个作品: [
+            '共抓取到 {} 个投稿',
+            '合計 {} つの投稿があります',
+            'Crawl a total of {} posts',
+            '共擷取到 {} 個投稿',
+          ],
+          _最近更新: ['最近更新', '最近更新する', 'What`s new', '最近更新'],
+          _我知道了: ['我知道了', '分かりました', 'OK', '我知道了'],
         }
 
         /***/

@@ -1,3 +1,13 @@
+# 1.9.0 2022/03/12
+
+### 修复了在画师主页抓取时出现错误的问题
+
+因为 Fanbox API 的变化，在画师主页抓取时，返回的数据变了，没有 type 字段，也缺少了文章里的附件、多媒体资源，导致抓取出错。
+
+现在修复了，先获取作品 id 列表，然后逐个作品进行抓取。但是这样抓取花的时间比以前要多很多。
+
+相关 issues: https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/23
+
 # 1.8.1 2021/07/18
 
 ### 修复下载原图时因为 500 错误而导致無限重试的問題
@@ -305,3 +315,19 @@ https://www.pixiv.net/fanbox/creator/236592/post/954377
 如果因为某些异常导致下载卡住，那么暂停、再开始下载，没有反应
 
 下载的问题，大批量下载可能到最后一两个卡住
+
+---------
+
+## 测试页面
+
+我的主页：
+
+https://xuejianxianzun.fanbox.cc/
+
+这个画师的免费投稿比较多：
+
+https://www.fanbox.cc/@f62
+
+这个画师有一些免费的大图：
+
+https://www.fanbox.cc/@itsuwa0815

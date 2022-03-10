@@ -49,6 +49,7 @@ class InitPostPage extends InitPageBase {
   }
 
   protected nextStep() {
+    this.getPostDataThreadNum = 1
     this.fetchPost()
   }
 
