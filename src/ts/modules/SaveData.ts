@@ -127,7 +127,7 @@ class SaveData {
       let linkTexts: string[] = []
       let text = '' // 正文文本
       for (const block of data.body.blocks) {
-        if (block.type === 'p') {
+        if (block.type === 'p' && block.text) {
           linkTexts.push(block.text)
           if (block.links && block.links.length > 0) {
             for (const links of block.links) {
@@ -145,7 +145,7 @@ class SaveData {
         result.links.fileId = this.createFileId()
       }
 
-      if (form.saveText.checked) {
+      if (form.saveText.checked && text) {
         result.links.text.push(text)
       }
 

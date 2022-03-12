@@ -3129,7 +3129,7 @@
               let linkTexts = []
               let text = '' // 正文文本
               for (const block of data.body.blocks) {
-                if (block.type === 'p') {
+                if (block.type === 'p' && block.text) {
                   linkTexts.push(block.text)
                   if (block.links && block.links.length > 0) {
                     for (const links of block.links) {
@@ -3146,7 +3146,9 @@
                 result.links.fileId = this.createFileId()
               }
               if (
-                _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveText.checked
+                _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveText
+                  .checked &&
+                text
               ) {
                 result.links.text.push(text)
               }
@@ -4182,7 +4184,6 @@
             // 因为文本的体积小，所以首先生成文本数据，它会被最早下载。这样不用等待大文件下载完了才下载文本文件
             // 为投稿里的所有的 文本内容 生成一份数据
             if (data.links.text.length > 0) {
-              console.log(data.links.text)
               const text = data.links.text.join('\r\n')
               const blob = new Blob([text], {
                 type: 'text/plain',
