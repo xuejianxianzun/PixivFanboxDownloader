@@ -19,6 +19,7 @@
   - [获取指定投稿](#获取指定投稿)
     - [url](#url-5)
     - [body 里的字段](#body-里的字段-2)
+    - [entry 类型](#entry-类型)
     - [body 字段](#body-字段)
       - [body 里 files 的类型](#body-里-files-的类型)
     - [投稿为 article 类型时的 body 字段](#投稿为-article-类型时的-body-字段)
@@ -69,10 +70,6 @@
   - [设置命名规则](#设置命名规则)
 - [存储结果的数据结构](#存储结果的数据结构)
 - [抓取按钮](#抓取按钮)
-- [测试用的网址](#测试用的网址)
-  - [测试的画师](#测试的画师)
-    - [1](#1)
-    - [2](#2)
 
 <!-- /TOC -->
 
@@ -233,29 +230,84 @@ items 是个数组，保存每一篇投稿的信息。获取的投稿顺序总�
 
 ### body 里的字段
 
-| 字段              | 值                                                          | 说明                                  |
-| ----------------- | :---------------------------------------------------------- | :------------------------------------ |
-| id                | string                                                      | id                                    |
-| title             | string                                                      | title                                 |
-| coverImageUrl     | string 或者 null                                            | 封面图 URL，无则为 null               |
-| feeRequired       | number                                                      | 需要的赞助金额（日元）                |
-| publishedDatetime | string，如  "2020-02-29T19:27:19+09:00"                     | 发布时间                              |
-| updatedDatetime   | string 如 "2020-03-04T21:53:44+09:00"                       | 更新时间                              |
+| 字段              | 值                                                             | 说明                                  |
+| ----------------- | :------------------------------------------------------------- | :------------------------------------ |
+| id                | string                                                         | id                                    |
+| title             | string                                                         | title                                 |
+| coverImageUrl     | string 或者 null                                               | 封面图 URL，无则为 null               |
+| feeRequired       | number                                                         | 需要的赞助金额（日元）                |
+| publishedDatetime | string，如  "2020-02-29T19:27:19+09:00"                        | 发布时间                              |
+| updatedDatetime   | string 如 "2020-03-04T21:53:44+09:00"                          | 更新时间                              |
 | type              | 'file' or 'image' or 'article' or 'video' or 'text' or 'entry' | 投稿的类型                            |
-| body              | object 或者 null (下面详细说明)                             | 付费的内容，未解锁的话是null          |
-| tags              | string[]                                                    | tags，但是大部分都是空的 []           |
-| excerpt           | string 或者 null                                            | body 里 text 字段的摘要，未解锁是null |
-| isLiked           | boolean                                                     | 是否已点赞                            |
-| likeCount         | number                                                      | 点赞数                                |
-| commentCount      | number                                                      | 评论数                                |
-| restrictedFor     | number 或者 null                                            | 限制？不清楚。赞助过的话为 null       |
-| user              | object                                                      | 作者信息，见下                        |
-| status            | "published" 或者还有其他状态，但没遇到                      | 该投稿的状态                          |
-| commentList       | object                                                      | 所有评论的详细信息                    |
-| nextPost          | object  或者 null                                           | 下一个投稿的简略信息，见下            |
-| prevPost          | object  或者 null                                           | 上一个投稿的简略信息，见下            |
-| imageForShare     | string                                                      | 分享用的图片的 URL                    |
+| body              | object 或者 null (下面详细说明)                                | 付费的内容，未解锁的话是null          |
+| tags              | string[]                                                       | tags，但是大部分都是空的 []           |
+| excerpt           | string 或者 null                                               | body 里 text 字段的摘要，未解锁是null |
+| isLiked           | boolean                                                        | 是否已点赞                            |
+| likeCount         | number                                                         | 点赞数                                |
+| commentCount      | number                                                         | 评论数                                |
+| restrictedFor     | number 或者 null                                               | 限制？不清楚。赞助过的话为 null       |
+| user              | object                                                         | 作者信息，见下                        |
+| status            | "published" 或者还有其他状态，但没遇到                         | 该投稿的状态                          |
+| commentList       | object                                                         | 所有评论的详细信息                    |
+| nextPost          | object  或者 null                                              | 下一个投稿的简略信息，见下            |
+| prevPost          | object  或者 null                                              | 上一个投稿的简略信息，见下            |
+| imageForShare     | string                                                         | 分享用的图片的 URL                    |
 
+### entry 类型
+
+`entry` 类型比较特殊，现在在 fanbox 新建投稿，只有除它之外的 5 种类型，没有 entry 类型。可能是以前可以建立的类型，现在不能建立了。
+
+不知道 entry 类型到底是怎么定义的。它的 body 里面有 html 代码，直接把 html 代码渲染到页面上。
+
+需要注意的是，它 html 里的图片 src 不是原图，在图片外面的 a 标签的 href 才是原图。
+
+一份 entry 的数据：
+
+```json
+{
+  "body": {
+      "id": "917",
+      "title": "【SAYORI FAN CLUB】NO.002 みんな脱いじゃお",
+      "coverImageUrl": "https://pixiv.pximg.net/c/1200x630_90_a2_g5/fanbox/public/images/post/917/cover/4lu0kfigcnwg0owsw0wo0sok.jpeg",
+      "feeRequired": 540,
+      "publishedDatetime": "2016-12-08T18:00:00+09:00",
+      "updatedDatetime": "2018-03-30T13:28:52+09:00",
+      "type": "entry",
+      "body": {
+          "html": "<a href=\"https://downloads.fanbox.cc/images/post/917/52ba2rvpjbk8w880wows84sg.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/52ba2rvpjbk8w880wows84sg.jpeg\" width=\"1200\" height=\"630\"></a>\n<p>こんにちは、さよりです。</p>\n<p>NO.002記事、無事生まれました。今回も2次創作とネコぱら壁紙とネコぱらvol.3開発画像をお届けします。折角のR-18記事だし今回はすべてえっちな壁紙にしたよ〜</p>\n<p>今回の二次創作は艦これの鹿島さんを描きました！鹿島さんエロすぎる・・・特に目つきがたまらないですね・・・描いてるうちにテンション上がてて思わず徹夜しちゃったぜ・・・もちろん原寸ですので、みんなポスターに出力して使いましょう！何枚でも刷れるから、穴をあけたり、肌に落書きしたりしてもいいですぞ。</p><a href=\"https://downloads.fanbox.cc/images/post/917/19f38voxtq74kggwoock8swo.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/19f38voxtq74kggwoock8swo.jpeg\" width=\"1200\" height=\"1694\"></a>\n<p>またこの2次創作コーナーは絵の練習目的も兼ねていますので、普段とは違う塗り方を使ったりしてます。アニメ風とかもやってみたいですね〜</p>\n<p>次はえっちな壁紙です！縦長絵がベースなので、スマホのロック画面に似合うかもしれないですね。</p>\n<a href=\"https://downloads.fanbox.cc/images/post/917/2c6o1fboobk0ss08s4k4ccww.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/2c6o1fboobk0ss08s4k4ccww.jpeg\" width=\"1200\" height=\"750\"></a><a href=\"https://downloads.fanbox.cc/images/post/917/4107ur90fz8k0co4wcwo04w4.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/4107ur90fz8k0co4wcwo04w4.jpeg\" width=\"1200\" height=\"750\"></a><a href=\"https://downloads.fanbox.cc/images/post/917/1o3gbupa4280ww0wco48gkco.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/1o3gbupa4280ww0wco48gkco.jpeg\" width=\"1200\" height=\"750\"></a><p>  </p>\n<p>しかしショコラとバニラばかりですね（汗・・・つ、次はちゃんとほかのキャラの壁紙も用意しますので！</p>\n<p>最後は「ネコぱらvol.3ネコたちのアロマティゼ」の最新情報になります！まずは先週のラフの線画版ですね。</p>\n<a href=\"https://downloads.fanbox.cc/images/post/917/6c2cc72sf4004wkwoco8s4kk.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/6c2cc72sf4004wkwoco8s4kk.jpeg\" width=\"1200\" height=\"1255\"></a><a href=\"https://downloads.fanbox.cc/images/post/917/1izou2h582zo0g4gc0o4g004.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/1izou2h582zo0g4gc0o4g004.jpeg\" width=\"1200\" height=\"1255\"></a><a href=\"https://downloads.fanbox.cc/images/post/917/34obj5rtm7accgo8kso0w8sg.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/34obj5rtm7accgo8kso0w8sg.jpeg\" width=\"1200\" height=\"774\"></a><a href=\"https://downloads.fanbox.cc/images/post/917/1aib2m2wpbb4s804c0skcw8o.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/1aib2m2wpbb4s804c0skcw8o.jpeg\" width=\"1200\" height=\"774\"></a><p>   </p>\n<p>実はこんな感じの差分があります、どんなシチュエーションなのか少し想像できるかな？ドレスは結局我慢できず全部描くことになりました、ゲーム上では映らないのですが、ムービーには使えるということで・・・orz</p>\n<p>さて、さらに新しいラフ2枚をお見せしますよ</p>\n<a href=\"https://downloads.fanbox.cc/images/post/917/6lt3vdj0hsg8w8cckko4wckg.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/6lt3vdj0hsg8w8cckko4wckg.jpeg\" width=\"1200\" height=\"1154\"></a><a href=\"https://downloads.fanbox.cc/images/post/917/5dka8uw68wkckw80wo0c8wo4.jpeg\"><img src=\"https://downloads.fanbox.cc/images/post/917/w/1200/5dka8uw68wkckw80wo0c8wo4.jpeg\" width=\"1200\" height=\"774\"></a><p> </p>\n<p>パソコンとギターはクリスタの3D素材を使ってますね、線を引きなおす必要はありますけども。</p>\n<p>そしてこれまでのラフを見れば、vol.3は音楽に関係する物語ってことは分かりますね。vol.3の正式情報はコミックマーケット91で先行発表する予定ですので、来れる方は「企業ブースN0.3222 NEKO WORKs&amp;KOINEKO SHOP」にぜひお越しください！来れない方は<a href=\"http://nekopara.com/\" target=\"_blank\">HP</a>のチェックをどうぞよろしくお願いします！</p>\n<p>ではでは、また来週〜</p>"
+      },
+      "tags": [],
+      "excerpt": "こんにちは、さよりです。\nNO.002記事、無事生まれました。今回も2次創作とネコぱら壁紙とネコぱらvol.3開発画像をお届けします。折角のR-18記事だし今回はすべてえっちな壁紙にしたよ〜\n今回の二次創作は艦これの鹿島さんを描きました！鹿島さんエロすぎる・・・特に目つきがたまらないですね・・・描いてるうちにテン...",
+      "isLiked": false,
+      "likeCount": 47,
+      "commentCount": 0,
+      "restrictedFor": null,
+      "isRestricted": false,
+      "user": {
+          "userId": "104409",
+          "name": "さより＠ネコぱらゲーム製作中",
+          "iconUrl": "https://pixiv.pximg.net/c/160x160_90_a2_g5/fanbox/public/images/user/104409/icon/B7aTv2LrwhMYs1d3Eawk07ZR.jpeg"
+      },
+      "creatorId": "nekoworks",
+      "hasAdultContent": true,
+      "commentList": {
+          "items": [],
+          "nextUrl": null
+      },
+      "nextPost": {
+          "id": "918",
+          "title": "【SAYORI FAN CLUB】NO.003 双子っていいよね",
+          "publishedDatetime": "2016-12-15 18:00:00"
+      },
+      "prevPost": {
+          "id": "916",
+          "title": "【SAYORI FAN CLUB】NO.001 PIXIV FANBOX開始しました！",
+          "publishedDatetime": "2016-12-01 09:00:00"
+      },
+      "imageForShare": "https://pixiv.pximg.net/c/1200x630_90_a2_g5/fanbox/public/images/post/917/cover/4lu0kfigcnwg0owsw0wo0sok.jpeg"
+  }
+}
+```
 
 ### body 字段
 
@@ -629,28 +681,3 @@ https://www.pixiv.net/fanbox/creator/6843920/shop
 - 抓取该 tag 的投稿
 - 抓取这篇投稿
 - 抓取商品的封面图
-
-# 测试用的网址
-
-## 测试的画师
-
-### 1
-
-[omutatsu/おむたつ](https://www.pixiv.net/fanbox/creator/1499614)
-
-有 100 和 500 两档赞助，并且都有对应价格的资源
-
-有对所有人公开的投稿
-
-有图片
-
-有 psd
-
--没有视频
--没有 zip
-
-### 2
-
-[さき千鈴](https://www.pixiv.net/fanbox/creator/236592/post)
-
-测试视频用

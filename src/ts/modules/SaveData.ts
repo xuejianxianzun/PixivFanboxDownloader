@@ -204,6 +204,7 @@ class SaveData {
       const imgList = data.body.html.match(/<img.*?>/g)
       // img 标签如下：
       // `<img class="image-medium" src="https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg" width="600" height="557">`
+      // 注意：图片的 URL 中含有 /w/1200，这不是原图尺寸。在后面的代码中，我会移除 /w/1200 以获取原图尺寸
       if (!imgList) {
         return
       }
@@ -234,7 +235,7 @@ class SaveData {
         const imageData: ImageData = {
           id: name,
           extension: ext,
-          originalUrl: url,
+          originalUrl: url.replace('/w/1200', ''),
           thumbnailUrl: url,
           width: width,
           height: height,
@@ -321,7 +322,7 @@ class SaveData {
       return links
     }
 
-    // 一个段落里可能包含多个连接（啊好麻烦），所以用换行符来尝试分割一下
+    // 一个段落里可能包含多个链接（啊好麻烦），所以用换行符来尝试分割一下
     const textArray = text.split('\n')
     const Reg = /http[s]*:\/\/[\w=\?\.\/&\-\#\!\%]+/g
     for (const str of textArray) {

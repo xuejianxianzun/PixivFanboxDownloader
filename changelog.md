@@ -1,3 +1,13 @@
+# 1.9.2 2022/06/02
+
+### 修复了一些早期投稿中下载的图片不是原图的问题
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/28
+
+在早期的一些 entry 类型的投稿里，图片的网址是缩略图，不是原图，现在对此进行了修复。
+
+PS：现在似乎没有 entry 类型了。
+
 # 1.9.1 2022/03/11
 
 ### 修复了文章中可能下载到空的 txt 文件的问题
@@ -341,3 +351,24 @@ https://www.fanbox.cc/@f62
 这个画师有一些免费的大图：
 
 https://www.fanbox.cc/@itsuwa0815
+
+--------------
+
+[omutatsu/おむたつ](https://www.pixiv.net/fanbox/creator/1499614)
+
+有 100 和 500 两档赞助，并且都有对应价格的资源
+
+有对所有人公开的投稿
+
+有图片
+
+有 psd
+
+-没有视频
+-没有 zip
+
+--------------
+
+[さき千鈴](https://www.pixiv.net/fanbox/creator/236592/post)
+
+测试视频用
