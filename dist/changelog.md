@@ -1,3 +1,29 @@
+# 1.9.3 2022/06/02
+
+### 修复了文件 404 时下载器无限重试的问题
+
+Chrome 浏览器下载一个文件时，如果返回了错误代码 `SERVER_BAD_CONTENT` 就说明是 404 错误，文件不存在。
+
+之前下载器没有检测这个错误，会一直重试下载。现在对于 404 错误不会再重试下载。
+
+### 修复抓取 entry 类型投稿时可能出现的错误
+
+上个版本修复的方式不彻底，某些情况下仍会出问题，例如：
+
+https://nekoworks.fanbox.cc/posts/935
+
+里面有个图片的代码是这样的：
+
+```html
+<a href="https://downloads.fanbox.cc/images/post/935/2s2e082blxescogs0wo4g4oo.png"><img class="image-large" src="https://downloads.fanbox.cc/images/post/935/w/1200/2s2e082blxescogs0wo4g4oo.jpeg" width="790" height="510"></a>
+```
+
+问题在于图片后缀是 jpeg，但是超链接后缀是 png。这个情况很少见。
+
+之前下载器取 entry 类型投稿时提取的是图片 src，但是在这种情况中就会出错。
+
+现在改为提取 a 标签的 href，解决此类错误。
+
 # 1.9.2 2022/06/02
 
 ### 修复了一些早期投稿中下载的图片不是原图的问题
@@ -6,7 +32,7 @@ https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/28
 
 在早期的一些 entry 类型的投稿里，图片的网址是缩略图，不是原图，现在对此进行了修复。
 
-现在似乎没有 entry 类型了。
+PS：现在似乎没有 entry 类型了。
 
 # 1.9.1 2022/03/11
 
@@ -351,3 +377,36 @@ https://www.fanbox.cc/@f62
 这个画师有一些免费的大图：
 
 https://www.fanbox.cc/@itsuwa0815
+
+--------------
+
+[omutatsu/おむたつ](https://www.pixiv.net/fanbox/creator/1499614)
+
+有 100 和 500 两档赞助，并且都有对应价格的资源
+
+有对所有人公开的投稿
+
+有图片
+
+有 psd
+
+-没有视频
+-没有 zip
+
+--------------
+
+[さき千鈴](https://www.pixiv.net/fanbox/creator/236592/post)
+
+测试视频用
+
+## 下载时的错误代码
+
+### SERVER_BAD_CONTENT
+
+下载文件时可能遇到 SERVER_BAD_CONTENT 错误：
+
+```
+https://downloads.fanbox.cc/images/post/935/2s2e082blxescogs0wo4g4oo.jpeg Download error! Code: SERVER_BAD_CONTENT. Will try again later.
+```
+
+SERVER_BAD_CONTENT 就是 404 错误。请求的文件不存在。

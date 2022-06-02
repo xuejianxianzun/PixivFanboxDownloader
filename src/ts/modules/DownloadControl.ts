@@ -86,12 +86,20 @@ class DownloadControl {
         this.downloadSuccess(msg.data)
       } else if (msg.msg === 'download_err') {
         // 浏览器把文件保存到本地时出错
-        log.error(
-          `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`
-        )
+        if (msg.err === 'SERVER_BAD_CONTENT') {
+          log.error(
+            `${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`
+          )
+          // 404 错误不重试下载
+        } else {
+          log.error(
+            `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`
+          )
+
+          // 重新下载这个文件
+          this.downloadError(msg.data, msg.err)
+        }
         EVT.fire(EVT.events.downloadError)
-        // 重新下载这个文件
-        this.downloadError(msg.data, msg.err)
       }
 
       // UUID 的情况

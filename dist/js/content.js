@@ -927,14 +927,20 @@
                 this.downloadSuccess(msg.data)
               } else if (msg.msg === 'download_err') {
                 // 浏览器把文件保存到本地时出错
-                _Log__WEBPACK_IMPORTED_MODULE_3__['log'].error(
-                  `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`
-                )
+                if (msg.err === 'SERVER_BAD_CONTENT') {
+                  _Log__WEBPACK_IMPORTED_MODULE_3__['log'].error(
+                    `${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`
+                  )
+                } else {
+                  _Log__WEBPACK_IMPORTED_MODULE_3__['log'].error(
+                    `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`
+                  )
+                  // 重新下载这个文件
+                  this.downloadError(msg.data, msg.err)
+                }
                 _EVT__WEBPACK_IMPORTED_MODULE_0__['EVT'].fire(
                   _EVT__WEBPACK_IMPORTED_MODULE_0__['EVT'].events.downloadError
                 )
-                // 重新下载这个文件
-                this.downloadError(msg.data, msg.err)
               }
               // UUID 的情况
               if (msg.data && msg.data.uuid) {
@@ -3205,38 +3211,33 @@
             // 提取 entry 投稿的图片资源
             // 不知道此类型投稿中是否有其他类型的资源
             if (data.type === 'entry') {
-              const imgList = data.body.html.match(/<img.*?>/g)
-              // img 标签如下：
-              // `<img class="image-medium" src="https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg" width="600" height="557">`
-              // 注意：图片的 URL 中含有 /w/1200，这不是原图尺寸。在后面的代码中，我会移除 /w/1200 以获取原图尺寸
-              if (!imgList) {
+              const LinkList = data.body.html.match(/<a.*?>/g)
+              if (!LinkList) {
                 return
               }
-              for (const img of imgList) {
-                const matchUrl = img.match('https.*(jpeg|jpg|png|gif|bmp)')
+              for (const a of LinkList) {
+                const matchUrl = a.match('https.*(jpeg|jpg|png|gif|bmp)')
                 if (!matchUrl) {
                   return
                 }
                 // 组合出 imageData，添加到结果中
                 index++
                 const url = matchUrl[0]
-                // url 如下:
-                // "https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg"
                 const { name, ext } = this.getUrlNameAndExt(url)
                 let width = 0
-                const widthMatch = img.match(/width="(\d*?)"/)
+                const widthMatch = a.match(/width="(\d*?)"/)
                 if (widthMatch && widthMatch.length > 1) {
                   width = parseInt(widthMatch[1])
                 }
                 let height = 0
-                const heightMatch = img.match(/height="(\d*?)"/)
+                const heightMatch = a.match(/height="(\d*?)"/)
                 if (heightMatch && heightMatch.length > 1) {
                   height = parseInt(heightMatch[1])
                 }
                 const imageData = {
                   id: name,
                   extension: ext,
-                  originalUrl: url.replace('/w/1200', ''),
+                  originalUrl: url,
                   thumbnailUrl: url,
                   width: width,
                   height: height,

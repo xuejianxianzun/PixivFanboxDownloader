@@ -201,33 +201,28 @@ class SaveData {
     // 提取 entry 投稿的图片资源
     // 不知道此类型投稿中是否有其他类型的资源
     if (data.type === 'entry') {
-      const imgList = data.body.html.match(/<img.*?>/g)
-      // img 标签如下：
-      // `<img class="image-medium" src="https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg" width="600" height="557">`
-      // 注意：图片的 URL 中含有 /w/1200，这不是原图尺寸。在后面的代码中，我会移除 /w/1200 以获取原图尺寸
-      if (!imgList) {
+      const LinkList = data.body.html.match(/<a.*?>/g)
+      if (!LinkList) {
         return
       }
-      for (const img of imgList) {
-        const matchUrl = img.match('https.*(jpeg|jpg|png|gif|bmp)')
+      for (const a of LinkList) {
+        const matchUrl = a.match('https.*(jpeg|jpg|png|gif|bmp)')
         if (!matchUrl) {
           return
         }
         // 组合出 imageData，添加到结果中
         index++
         const url = matchUrl[0]
-        // url 如下:
-        // "https://downloads.fanbox.cc/images/post/1446/w/1200/63gmqe3ls50ccc88sogk4gwo.jpeg"
         const { name, ext } = this.getUrlNameAndExt(url)
 
         let width = 0
-        const widthMatch = img.match(/width="(\d*?)"/)
+        const widthMatch = a.match(/width="(\d*?)"/)
         if (widthMatch && widthMatch.length > 1) {
           width = parseInt(widthMatch[1])
         }
 
         let height = 0
-        const heightMatch = img.match(/height="(\d*?)"/)
+        const heightMatch = a.match(/height="(\d*?)"/)
         if (heightMatch && heightMatch.length > 1) {
           height = parseInt(heightMatch[1])
         }
@@ -235,7 +230,7 @@ class SaveData {
         const imageData: ImageData = {
           id: name,
           extension: ext,
-          originalUrl: url.replace('/w/1200', ''),
+          originalUrl: url,
           thumbnailUrl: url,
           width: width,
           height: height,
