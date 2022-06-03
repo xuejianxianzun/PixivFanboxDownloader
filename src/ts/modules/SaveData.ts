@@ -202,42 +202,41 @@ class SaveData {
     // 不知道此类型投稿中是否有其他类型的资源
     if (data.type === 'entry') {
       const LinkList = data.body.html.match(/<a.*?>/g)
-      if (!LinkList) {
-        return
-      }
-      for (const a of LinkList) {
-        const matchUrl = a.match('https.*(jpeg|jpg|png|gif|bmp)')
-        if (!matchUrl) {
-          return
-        }
-        // 组合出 imageData，添加到结果中
-        index++
-        const url = matchUrl[0]
-        const { name, ext } = this.getUrlNameAndExt(url)
+      if (LinkList) {
+        for (const a of LinkList) {
+          const matchUrl = a.match('https.*(jpeg|jpg|png|gif|bmp)')
+          if (!matchUrl) {
+            continue
+          }
+          // 组合出 imageData，添加到结果中
+          index++
+          const url = matchUrl[0]
+          const { name, ext } = this.getUrlNameAndExt(url)
 
-        let width = 0
-        const widthMatch = a.match(/width="(\d*?)"/)
-        if (widthMatch && widthMatch.length > 1) {
-          width = parseInt(widthMatch[1])
-        }
+          let width = 0
+          const widthMatch = a.match(/width="(\d*?)"/)
+          if (widthMatch && widthMatch.length > 1) {
+            width = parseInt(widthMatch[1])
+          }
 
-        let height = 0
-        const heightMatch = a.match(/height="(\d*?)"/)
-        if (heightMatch && heightMatch.length > 1) {
-          height = parseInt(heightMatch[1])
-        }
+          let height = 0
+          const heightMatch = a.match(/height="(\d*?)"/)
+          if (heightMatch && heightMatch.length > 1) {
+            height = parseInt(heightMatch[1])
+          }
 
-        const imageData: ImageData = {
-          id: name,
-          extension: ext,
-          originalUrl: url,
-          thumbnailUrl: url,
-          width: width,
-          height: height,
-        }
+          const imageData: ImageData = {
+            id: name,
+            extension: ext,
+            originalUrl: url,
+            thumbnailUrl: url,
+            width: width,
+            height: height,
+          }
 
-        const resource = this.getImageData(imageData, index)
-        resource !== null && result.files.push(resource)
+          const resource = this.getImageData(imageData, index)
+          resource !== null && result.files.push(resource)
+        }
       }
     }
 

@@ -931,6 +931,7 @@
                   _Log__WEBPACK_IMPORTED_MODULE_3__['log'].error(
                     `${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`
                   )
+                  // 404 错误不重试下载
                 } else {
                   _Log__WEBPACK_IMPORTED_MODULE_3__['log'].error(
                     `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`
@@ -3212,38 +3213,37 @@
             // 不知道此类型投稿中是否有其他类型的资源
             if (data.type === 'entry') {
               const LinkList = data.body.html.match(/<a.*?>/g)
-              if (!LinkList) {
-                return
-              }
-              for (const a of LinkList) {
-                const matchUrl = a.match('https.*(jpeg|jpg|png|gif|bmp)')
-                if (!matchUrl) {
-                  return
+              if (LinkList) {
+                for (const a of LinkList) {
+                  const matchUrl = a.match('https.*(jpeg|jpg|png|gif|bmp)')
+                  if (!matchUrl) {
+                    continue
+                  }
+                  // 组合出 imageData，添加到结果中
+                  index++
+                  const url = matchUrl[0]
+                  const { name, ext } = this.getUrlNameAndExt(url)
+                  let width = 0
+                  const widthMatch = a.match(/width="(\d*?)"/)
+                  if (widthMatch && widthMatch.length > 1) {
+                    width = parseInt(widthMatch[1])
+                  }
+                  let height = 0
+                  const heightMatch = a.match(/height="(\d*?)"/)
+                  if (heightMatch && heightMatch.length > 1) {
+                    height = parseInt(heightMatch[1])
+                  }
+                  const imageData = {
+                    id: name,
+                    extension: ext,
+                    originalUrl: url,
+                    thumbnailUrl: url,
+                    width: width,
+                    height: height,
+                  }
+                  const resource = this.getImageData(imageData, index)
+                  resource !== null && result.files.push(resource)
                 }
-                // 组合出 imageData，添加到结果中
-                index++
-                const url = matchUrl[0]
-                const { name, ext } = this.getUrlNameAndExt(url)
-                let width = 0
-                const widthMatch = a.match(/width="(\d*?)"/)
-                if (widthMatch && widthMatch.length > 1) {
-                  width = parseInt(widthMatch[1])
-                }
-                let height = 0
-                const heightMatch = a.match(/height="(\d*?)"/)
-                if (heightMatch && heightMatch.length > 1) {
-                  height = parseInt(heightMatch[1])
-                }
-                const imageData = {
-                  id: name,
-                  extension: ext,
-                  originalUrl: url,
-                  thumbnailUrl: url,
-                  width: width,
-                  height: height,
-                }
-                const resource = this.getImageData(imageData, index)
-                resource !== null && result.files.push(resource)
               }
             }
             // 提取 file 投稿的资源
@@ -4119,7 +4119,7 @@
             this.crawlCompleteTime = new Date()
             // 文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些
             this.fileType = {
-              image: ['jpg', 'jpeg', 'png', 'gif'],
+              image: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
               music: ['wav', 'mp3', 'flac'],
               video: ['mp4', 'mov', 'avi'],
               compressed: ['zip'],

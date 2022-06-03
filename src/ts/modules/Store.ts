@@ -18,7 +18,7 @@ class Store {
 
   // 文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些
   public readonly fileType = {
-    image: ['jpg', 'jpeg', 'png', 'gif'],
+    image: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
     music: ['wav', 'mp3', 'flac'],
     video: ['mp4', 'mov', 'avi'],
     compressed: ['zip'],
