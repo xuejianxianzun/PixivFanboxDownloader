@@ -1,3 +1,13 @@
+# 1.9.4 2022/06/23
+
+### 支持保存嵌入的 url
+
+文章类型投稿不知何时增加了 `urlEmbedMap` 字段，它可以把插入的 url 地址直接转换成卡片或者内嵌的 html 代码。
+
+现在下载器支持提取此类链接。
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/31
+
 # 1.9.3 2022/06/02
 
 ### 文件 404 时不再重试下载它

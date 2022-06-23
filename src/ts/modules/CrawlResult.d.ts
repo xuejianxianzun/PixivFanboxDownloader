@@ -129,6 +129,19 @@ interface EmbedData {
   contentId: string
 }
 
+interface URLEmbedDataDefault {
+  id: string
+  type: 'default'
+  url: string
+  host: string
+}
+
+interface URLEmbedDataHtml {
+  id: string
+  type: 'html'
+  html: string
+}
+
 // article 投稿数据
 interface OnlyArticleData {
   type: 'article'
@@ -142,6 +155,9 @@ interface OnlyArticleData {
     }
     embedMap: {
       [key: string]: EmbedData
+    }
+    urlEmbedMap: {
+      [key: string]: URLEmbedDataDefault | URLEmbedDataHtml
     }
   }
 }

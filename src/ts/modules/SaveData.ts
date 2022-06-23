@@ -175,13 +175,31 @@ class SaveData {
         }
       }
 
-      // 嵌入的资源只能保存到文本
+      // 保存嵌入的资源，只能保存到文本
       const embedDataArr: EmbedDataArr = []
       for (const [id, embedData] of Object.entries(data.body.embedMap)) {
         embedDataArr.push([embedData.serviceProvider, embedData.contentId])
       }
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
       result.links.text = result.links.text.concat(embedLinks)
+      result.links.fileId = this.createFileId()
+
+      // 保存嵌入的 URL，只能保存到文本
+      const urlArr: string[] = []
+      for (const val of Object.values(data.body.urlEmbedMap)) {
+        if (val.type === 'default') {
+          urlArr.push(val.url)
+        } else {
+          // 尝试从 html 代码中提取 url
+          const testURL = val.html.match('iframe src="(http.*)"')
+          if (testURL && testURL.length > 1) {
+            urlArr.push(testURL[1])
+          } else {
+            urlArr.push(val.html)
+          }
+        }
+      }
+      result.links.text = result.links.text.concat(urlArr.join('\n\n'))
       result.links.fileId = this.createFileId()
     }
 

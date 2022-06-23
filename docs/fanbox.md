@@ -388,7 +388,7 @@ fanbox 所允许上传到投稿里的 file，是有类型限制的，全部类�
 
 对所有人公开的投稿， `feeRequired` 为 `0`.
 
-```
+```json
 "blocks": [
     {
         "type": "p",
@@ -410,10 +410,23 @@ fanbox 所允许上传到投稿里的 file，是有类型限制的，全部类�
     }
 },
 "fileMap": {},
-"embedMap": {}
+"embedMap": {},
+"urlEmbedMap": {
+    "hJcbheoeWTVTcA5V8VvFWZ2g": {
+        "id": "hJcbheoeWTVTcA5V8VvFWZ2g",
+        "type": "html",
+        "html": "<div class=\"iframely-drive-google iframely-app iframely-embed\"><div class=\"iframely-responsive\" style=\"height: 400px; padding-bottom: 0;\"><iframe src=\"https://drive.google.com/embeddedfolderview?id=1wNGsGALwmRxVRdHWBs3iJ3se9kojVkYU#list\" allowfullscreen></iframe></div></div>"
+    },
+    "1VI24Q2jfAofXPJ7Fvq4iU8u": {
+        "id": "1VI24Q2jfAofXPJ7Fvq4iU8u",
+        "type": "default",
+        "url": "https://drive.google.com/file/d/1G952LsuTESyDjn9oq9hjTxkxoLVvqigX",
+        "host": "drive.google.com"
+    }
+}
 ```
 
-当出现 `blocks` 时，后面三个资源 map 对象必定都存在。如果资源为空，则是空对象 `{}`，不会是 `null`。
+当出现 `blocks` 时，后面 4 个资源 map 对象必定都存在。如果资源为空，则是空对象 `{}`，而不是 `null`。
 
 带有视频的免费文章如：
 
