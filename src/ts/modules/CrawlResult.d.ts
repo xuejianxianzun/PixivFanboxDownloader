@@ -142,6 +142,26 @@ interface URLEmbedDataHtml {
   html: string
 }
 
+interface URLEmbedDataPost {
+  id: string
+  type: 'fanbox.post'
+  postInfo: {
+    id: string
+    title: string
+    feeRequired: string
+    hasAdultContent: boolean
+    creatorId: string
+    user: {
+      userId: string
+      name: string
+      iconUrl: string
+    }
+    coverImageUrl: string
+    excerpt: '' | string
+    publishedDatetime: string
+  }
+}
+
 // article 投稿数据
 interface OnlyArticleData {
   type: 'article'
@@ -157,7 +177,7 @@ interface OnlyArticleData {
       [key: string]: EmbedData
     }
     urlEmbedMap: {
-      [key: string]: URLEmbedDataDefault | URLEmbedDataHtml
+      [key: string]: URLEmbedDataDefault | URLEmbedDataHtml | URLEmbedDataPost
     }
   }
 }

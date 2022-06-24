@@ -1,3 +1,13 @@
+# 1.9.5 2022/06/24
+
+### 修复 bug
+
+https://www.fanbox.cc/@singlecask/posts/4012918
+
+这篇文章里的 `urlEmbedMap` 字段类型之前没见过，导致了抓取出错，现在修复。
+
+目前对于 `"type": "fanbox.post"` 的内容不进行处理和保存。
+
 # 1.9.4 2022/06/23
 
 ### 支持保存嵌入的 url

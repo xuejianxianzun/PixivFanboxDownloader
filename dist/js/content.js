@@ -3201,7 +3201,7 @@
               for (const val of Object.values(data.body.urlEmbedMap)) {
                 if (val.type === 'default') {
                   urlArr.push(val.url)
-                } else {
+                } else if (val.type === 'html') {
                   // 尝试从 html 代码中提取 url
                   const testURL = val.html.match('iframe src="(http.*)"')
                   if (testURL && testURL.length > 1) {
@@ -3211,8 +3211,12 @@
                   }
                 }
               }
-              result.links.text = result.links.text.concat(urlArr.join('\n\n'))
-              result.links.fileId = this.createFileId()
+              if (urlArr.length > 0) {
+                result.links.text = result.links.text.concat(
+                  urlArr.join('\n\n')
+                )
+                result.links.fileId = this.createFileId()
+              }
             }
             // 提取 image 投稿的资源
             if (data.type === 'image') {

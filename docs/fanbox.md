@@ -422,6 +422,25 @@ fanbox 所允许上传到投稿里的 file，是有类型限制的，全部类�
         "type": "default",
         "url": "https://drive.google.com/file/d/1G952LsuTESyDjn9oq9hjTxkxoLVvqigX",
         "host": "drive.google.com"
+    },
+    "SwQufnahqlm2w1HQPBO4Gop5": {
+        "id": "SwQufnahqlm2w1HQPBO4Gop5",
+        "type": "fanbox.post",
+        "postInfo": {
+            "id": "3964681",
+            "title": "【先行公開】バニーガール円香（差分有）",
+            "feeRequired": "500",
+            "hasAdultContent": true,
+            "creatorId": "singlecask",
+            "user": {
+                "userId": "31699812",
+                "name": "ぷりけつコーギー",
+                "iconUrl": "https://pixiv.pximg.net/c/160x160_90_a2_g5/fanbox/public/images/user/31699812/icon/yiMj9sZ7ZNqmAisF5gQhbxnU.jpeg"
+            },
+            "coverImageUrl": "https://pixiv.pximg.net/c/1200x630_90_a2_g5/fanbox/public/images/post/3964681/cover/ggUQmQO1rcNnsHDVfMgk08I7.jpeg",
+            "excerpt": "",
+            "publishedDatetime": "2022-06-10T19:00:00+09:00"
+        }
     }
 }
 ```
