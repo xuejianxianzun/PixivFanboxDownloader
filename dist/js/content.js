@@ -3197,25 +3197,29 @@
               result.links.text = result.links.text.concat(embedLinks)
               result.links.fileId = this.createFileId()
               // 保存嵌入的 URL，只能保存到文本
-              const urlArr = []
-              for (const val of Object.values(data.body.urlEmbedMap)) {
-                if (val.type === 'default') {
-                  urlArr.push(val.url)
-                } else if (val.type === 'html') {
-                  // 尝试从 html 代码中提取 url
-                  const testURL = val.html.match('iframe src="(http.*)"')
-                  if (testURL && testURL.length > 1) {
-                    urlArr.push(testURL[1])
-                  } else {
-                    urlArr.push(val.html)
+              if (
+                _Settings__WEBPACK_IMPORTED_MODULE_2__['form'].saveLink.checked
+              ) {
+                const urlArr = []
+                for (const val of Object.values(data.body.urlEmbedMap)) {
+                  if (val.type === 'default') {
+                    urlArr.push(val.url)
+                  } else if (val.type === 'html') {
+                    // 尝试从 html 代码中提取 url
+                    const testURL = val.html.match('iframe src="(http.*)"')
+                    if (testURL && testURL.length > 1) {
+                      urlArr.push(testURL[1])
+                    } else {
+                      urlArr.push(val.html)
+                    }
                   }
                 }
-              }
-              if (urlArr.length > 0) {
-                result.links.text = result.links.text.concat(
-                  urlArr.join('\n\n')
-                )
-                result.links.fileId = this.createFileId()
+                if (urlArr.length > 0) {
+                  result.links.text = result.links.text.concat(
+                    urlArr.join('\n\n')
+                  )
+                  result.links.fileId = this.createFileId()
+                }
               }
             }
             // 提取 image 投稿的资源
