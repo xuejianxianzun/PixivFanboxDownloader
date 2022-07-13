@@ -29,8 +29,12 @@ class Lang {
         this.langType = 3 // 设置为繁体中文
         break
 
-      default:
-        this.langType = 2 // 设置为英语
+      case 'ko':
+        this.langType = 4 // 设置为韩国语
+        break
+
+      default: // 设置为英语
+        this.langType = 2
         break
     }
   }

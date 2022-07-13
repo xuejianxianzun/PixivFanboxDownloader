@@ -155,7 +155,7 @@ const formHtml = `<form class="settingForm">
       <p class="fileNameTip tip">
       <strong>${lang
         .transl('_设置文件夹名的提示')
-        .replace('<br>', '. ')}</strong>
+        .replace('<br>', ' ')}</strong>
       <br>
       <span class="blue">{user}</span>
       ${lang.transl('_命名标记user')}
