@@ -2,9 +2,9 @@
 
 ### 添加了韩语文本
 
-https://github.com/xuejianxianzun/PixivFanboxDownloader/pull/35
-
 感谢 KOZ39 添加的韩语翻译！
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/pull/35
 
 # 1.9.6 2022/07/10
 

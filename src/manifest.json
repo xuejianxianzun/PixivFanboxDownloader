@@ -34,5 +34,7 @@
     "*://*.fanbox.cc/*",
     "webRequest",
     "webRequestBlocking"
-  ]
+  ],
+  "incognito": "split",
+  "homepage_url": "https://github.com/xuejianxianzun/PixivFanboxDownloader"
 }
