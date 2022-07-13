@@ -33,7 +33,7 @@
 
 만약 당신이 Chrome 웹 스토어에서 이 확장 프로그램을 설치할 수 없는 경우 오프라인으로 설치할 수 있습니다.
 
-1. [Release](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases)에서 설치 패키지의 최신 버전을 다운로드하고, 디렉토리에 압축을 해제합니다.
+1. [Releases](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases)에서 설치 패키지의 최신 버전을 다운로드하고, 디렉토리에 압축을 해제합니다.
 2. 확장 프로그램으로 접근합니다. Chrome 브라우저는 메뉴에서 "도구 더보기"-"확장 프로그램"을 클릭하고, Edge 브라우저는 메뉴에서 "확장"을 클릭합니다.
 3. 확장 프로그램에서 "개발자 모드"를 활성화합니다.
 4. "압축해제된 확장 프로그램을 로드합니다." 버튼을 클릭하고, 설치 패키지가 압축 해제된 디렉토리를 선택합니다.
@@ -49,6 +49,6 @@
 
 # Patreon
 
-Patreon 에서 저를 지원할 수 있습니다. 감사합니다!
+Patreon에서 저를 지원할 수 있습니다. 감사합니다!
 
 <a href='https://www.patreon.com/xuejianxianzun'><img src='https://c5.patreon.com/external/logo/become_a_patron_button.png' alt='Become a patron' width='140px' /></a>

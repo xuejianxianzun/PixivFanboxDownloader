@@ -33,7 +33,7 @@
 
 如果您無法從 Chrome Web Store 安裝本擴充功能，您可以離線安裝。
 
-1. 從 [release 頁面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 下載最新版本的安裝包，並解壓縮到資料夾。
+1. 從 [Releases 頁面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 下載最新版本的安裝包，並解壓縮到資料夾。
 2. 進入擴充功能。Chrome 點擊選單的「更多工具」 - 「擴充功能」；Edge 點擊選單的 「擴充功能」。
 3. 在擴充功能頁面，啟用「開發人員模式」。
 4. 點擊按鈕 「載入未封裝項目」，選擇安裝包解壓縮後的資料夾。
