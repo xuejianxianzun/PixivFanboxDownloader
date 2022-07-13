@@ -2512,7 +2512,8 @@
               case 'ko':
                 this.langType = 4 // 设置为韩国语
                 break
-              default: // 设置为英语
+              default:
+                // 设置为英语
                 this.langType = 2
                 break
             }

@@ -1,3 +1,11 @@
+# 2.0.0 2022/07/13
+
+### 添加了韩语文本
+
+感谢 KOZ39 添加的韩语翻译！
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/pull/35
+
 # 1.9.6 2022/07/10
 
 ### 修复 bug

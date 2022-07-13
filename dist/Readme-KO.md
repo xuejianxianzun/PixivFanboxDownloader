@@ -17,7 +17,7 @@
 
 참고: 이 프로그램은 Fanbox의 유료 콘텐츠를 직접 잠금 해제할 수 없습니다. 유료 콘텐츠를 다운로드하려면 먼저 구매해야 합니다.
 
-![screenshot](screenshot/ui5.png)
+![screenshot](screenshot/ui2.png)
 
 # 설치
 
