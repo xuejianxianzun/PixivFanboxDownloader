@@ -34,7 +34,7 @@ You can install this extension from the Chrome Web Store.
 
 If you cannot install this extension from the Chrome Web Store, you can install it offline.
 
-1. Download the latest version of the installation package from [release page](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) and unzip it to a folder.
+1. Download the latest version of the installation package from [Releases page](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) and unzip it to a folder.
 2. Enter the extension management. Chrome clicks "More Tools"-"Extensions Management" in the menu; Edge clicks "Extensions" in the menu.
 3. On the extension management page, enable "Developer Mode".
 4. Click the button "Load unpacked" and select the folder where the installation package is unzipped.

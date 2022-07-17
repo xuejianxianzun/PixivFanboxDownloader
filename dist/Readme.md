@@ -43,7 +43,7 @@ QQ 群：853021998
 
 1. 进入扩展程序管理。Chrome 点击菜单的“更多工具” - “扩展管理”；Edge 点击菜单的 “扩展”。
 2. 如果你之前已经安装了这个扩展，就先停止它，或者删除它。
-3. 下载最新版本的安装包，并解压出来，里面是一个文件夹。你可以从 [release 页面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 下载安装包。
+3. 下载最新版本的安装包，并解压出来，里面是一个文件夹。你可以从 [Releases 页面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 下载安装包。
 4. 在扩展管理页面，启用“开发者模式"。
 5. 点击按钮 “加载已解压的扩展程序”，选择刚才解压得到的文件夹。
 6. 你应该已经成功的离线安装了这个扩展程序。
