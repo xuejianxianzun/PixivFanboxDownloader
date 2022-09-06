@@ -9,11 +9,11 @@
  * QQ group:  853021998
  */
 
-import './modules/PageType'
-import './modules/CenterPanel'
-import './modules/InitPage'
-import './modules/DownloadControl'
-import './modules/RightIcon'
-import './modules/Tip'
-import './modules/Output'
-import './modules/Support'
+import './PageType'
+import './CenterPanel'
+import './InitPage'
+import './DownloadControl'
+import './RightIcon'
+import './Tip'
+import './setting/Output'
+import './Support'
