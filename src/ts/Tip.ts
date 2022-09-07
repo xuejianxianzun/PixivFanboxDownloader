@@ -25,6 +25,9 @@ class Tip {
         el.addEventListener(ev, (event) => {
           const e = (event || window.event) as MouseEvent
           const text = el.dataset.tip
+          if (!text) {
+            console.log(el)
+          }
           this.showTip(text, {
             type: ev === 'mouseenter' ? 1 : 0,
             x: e.clientX,

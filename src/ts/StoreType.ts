@@ -12,18 +12,16 @@ interface CommonResult {
 }
 
 // 文件的数据
-// 当这个文件是直接上传到 fanbox 时，才会有 size（通过外链插入的文件没有 size）
 interface FileResult {
   fileId: string
   name: string
   ext: string
+  /**当这个文件是直接上传到 fanbox 时，才会有 size（通过外链插入的文件没有 size） */
   size: number | null
   index: number
   url: string
   retryUrl: string | null
 }
-
-// fileType: 'image' | 'music' | 'video' | 'compressed' | 'ps' | 'other'
 
 // 文本的数据
 // 序号总是 0

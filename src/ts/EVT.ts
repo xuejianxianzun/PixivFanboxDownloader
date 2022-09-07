@@ -2,6 +2,21 @@ type eventNames = keyof typeof EVT.list
 
 // 管理自定义事件
 class EVENT {
+  private bindOnceFlagList: string[] = []
+
+  // 只绑定某个事件一次，用于防止事件重复绑定
+  // 通过 flag 确认是否是同一个事件
+  // 可以执行多次，不会自动解绑
+  public bindOnce(flag: string, targetEvt: string, evtFun: Function) {
+    const query = this.bindOnceFlagList.includes(flag)
+    if (!query) {
+      this.bindOnceFlagList.push(flag)
+      window.addEventListener(targetEvt, function (ev) {
+        evtFun(ev)
+      })
+    }
+  }
+
   public readonly list = {
     crawlStart: 'crawlStart',
     crawlFinish: 'crawlFinish',
@@ -12,7 +27,7 @@ class EVENT {
     downloadPause: 'downloadPause',
     downloadStop: 'downloadStop',
     download: 'download',
-    downloadSucccess: 'downloadSucccess',
+    downloadSuccess: 'downloadSuccess',
     downloadError: 'downloadError',
     downloadComplete: 'downloadComplete',
     pageSwitch: 'pageSwitch',
@@ -29,16 +44,29 @@ class EVENT {
     worksUpdate: 'worksUpdate',
     settingChange: 'settingChange',
     clickRightIcon: 'clickRightIcon',
-    destroy: 'destroy',
     convertError: 'convertError',
-    skipSaveFile: 'skipSaveFile',
+    skipDownload: 'skipDownload',
     resetSettings: 'resetSettings',
     exportSettings: 'exportSettings',
     importSettings: 'importSettings',
     settingInitialized: 'settingInitialized',
     resetSettingsEnd: 'resetSettingsEnd',
-    pageSwitchedTypeChange:'pageSwitchedTypeChange',
-    pageSwitchedTypeNotChange:'pageSwitchedTypeNotChange',
+    pageSwitchedTypeChange: 'pageSwitchedTypeChange',
+    pageSwitchedTypeNotChange: 'pageSwitchedTypeNotChange',
+    openCenterPanel: 'openCenterPanel',
+    closeCenterPanel: 'closeCenterPanel',
+    centerPanelOpened: 'centerPanelOpened',
+    centerPanelClosed: 'centerPanelClosed',
+    showMsg: 'showMsg',
+    langChange: 'langChange',
+    selectBG: 'selectBG',
+    clearBG: 'clearBG',
+    wrongSetting: 'wrongSetting',
+    clearLog: 'clearLog',
+    quickCrawl: 'quickCrawl',
+    importDownloadRecord: 'importDownloadRecord',
+    exportDownloadRecord: 'exportDownloadRecord',
+    clearDownloadRecord: 'clearDownloadRecord',
   }
 
   public fire(type: eventNames, data: object | string | number | boolean = '') {

@@ -1,6 +1,6 @@
-import { EVT } from './EVT'
-import { lang } from './Lang'
-import { settings } from './setting/Settings'
+import { EVT } from '../EVT'
+import { lang } from '../Lang'
+import { settings } from './Settings'
 
 interface WantPageArg {
   text: string
@@ -21,21 +21,6 @@ class Options {
   public init(allOption: NodeListOf<HTMLElement>) {
     this.allOption = allOption
 
-    // 获取“页数/个数”设置的元素
-    const wantPageOption = this.getOption(1)!
-    this.wantPageEls = {
-      wrap: wantPageOption.querySelector(
-        '.setWantPageWrap'
-      )! as HTMLSpanElement,
-      text: wantPageOption.querySelector(
-        '.setWantPageTip1'
-      )! as HTMLSpanElement,
-      rangTip: wantPageOption.querySelector(
-        '.setWantPageTip2'
-      )! as HTMLSpanElement,
-      input: wantPageOption.querySelector('.setWantPage')! as HTMLInputElement,
-    }
-
     this.handleShowAdvancedSettings()
     this.bindEvents()
   }
@@ -45,7 +30,7 @@ class Options {
   private wantPageEls!: WantPageEls
 
   // 保持显示的选项的 id
-  private readonly whiteList: number[] = []
+  private readonly whiteList: number[] = [2, 21, 51, 13, 16, 17]
 
   // 某些页面类型需要隐藏某些选项。当调用 hideOption 方法时，把选项 id 保存起来
   // 优先级高于 whiteList

@@ -57,6 +57,10 @@
 
 [https://afdian.net/@xuejianxianzun](https://afdian.net/@xuejianxianzun)
 
-2. 可透過微信和支付寶掃碼轉帳
+2. Patreon
+
+<a href='https://www.patreon.com/xuejianxianzun'><img src='https://c5.patreon.com/external/logo/become_a_patron_button.png' alt='Become a patron' width='140px' /></a>
+
+3. 可透過微信和支付寶掃碼轉帳
 
 ![支付寶](https://i.loli.net/2019/04/04/5ca5627614396.png) ![微信](https://i.loli.net/2019/04/04/5ca5627630bb4.png)

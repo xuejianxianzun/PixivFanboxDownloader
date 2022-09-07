@@ -1,10 +1,11 @@
 // 生成文件名
-import { Result } from './Store.d'
+import { Result } from './StoreType'
 import { EVT } from './EVT'
-import { form } from './setting/Settings'
 import { store } from './Store'
 import { lang } from './Lang'
 import { DateFormat } from './utils/DateFormat'
+import { settings } from './setting/Settings'
+import { Config } from './Config'
 
 class FileName {
   constructor() {
@@ -42,23 +43,20 @@ class FileName {
     return str
   }
 
-  private transDate(date: string) {
-    // 时间原数据如 "2019-12-18T22:23:37+00:00"
-    // 网页上显示的日期是转换成了本地时间的，如北京时区显示为 "2019-12-19"，不是显示原始日期 "2019-12-18"。所以这里转换成本地时区的日期，和网页上保持一致，以免用户困惑。
-    const date0 = new Date(date)
-    const y = date0.getFullYear()
-    const M = (date0.getMonth() + 1).toString().padStart(2, '0')
-    const d = date0.getDate().toString().padStart(2, '0')
-    const h = date0.getHours().toString().padStart(2, '0')
-    const m = date0.getMinutes().toString().padStart(2, '0')
-    return `${y}-${M}-${d} ${h}-${m}`
+  // 生成 {index} 标记的值
+  private createIndex(data: Result) {
+    let index = data.index.toString()
+    // 处理在前面填充 0 的情况
+    return settings.zeroPadding
+      ? index.padStart(settings.zeroPaddingLength, '0')
+      : index
   }
 
   // 生成文件名，传入参数为图片信息
   public getFileName(data: Result) {
-    let result = form.userSetName.value
+    let result = settings.userSetName
     // 为空时使用预设的命名规则
-    result = result || store.defaultFileName
+    result = result || Config.defaultNameRule
 
     // 配置所有命名标记
     const cfg = {
@@ -79,7 +77,7 @@ class FileName {
         safe: false,
       },
       '{index}': {
-        value: data.index,
+        value: this.createIndex(data),
         safe: false,
       },
       '{tags}': {
@@ -87,14 +85,11 @@ class FileName {
         safe: false,
       },
       '{date}': {
-        value: DateFormat.format(data.date, form.dateFormat.value),
+        value: DateFormat.format(data.date, settings.dateFormat),
         safe: false,
       },
       '{task_date}': {
-        value: DateFormat.format(
-          store.crawlCompleteTime,
-          form.dateFormat.value
-        ),
+        value: DateFormat.format(store.crawlCompleteTime, settings.dateFormat),
         prefix: '',
         safe: false,
       },
@@ -158,7 +153,7 @@ class FileName {
   }
 
   // 预览文件名
-  previewFileName() {
+  private previewFileName() {
     if (store.result.length === 0) {
       return alert(lang.transl('_没有数据可供使用'))
     }
@@ -192,7 +187,10 @@ class FileName {
 
     // 拼接所有结果
     const result = resultArr.join('')
-    EVT.fire(EVT.list.output, result)
+    EVT.fire('output', {
+      content: result,
+      title: '_预览文件名',
+    })
   }
 }
 

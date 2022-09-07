@@ -1,19 +1,22 @@
 // 下载控制
-import { EVT } from './EVT'
-import { DOM } from './DOM'
+import { EVT } from '../EVT'
+import { Tools } from '../Tools'
 import {
   downloadArgument,
   DonwloadSuccessData,
   DownloadedMsg,
-} from './Download.d'
-import { store } from './Store'
-import { log } from './Log'
-import { lang } from './Lang'
-import { titleBar } from './TitleBar'
-import { Colors } from './Colors'
-import { form } from './setting/Settings'
+} from './DownloadType'
+import { store } from '../Store'
+import { log } from '../Log'
+import { lang } from '../Lang'
+import { titleBar } from '../TitleBar'
+import { Colors } from '../Colors'
 import { Download } from './Download'
-import { progressBar } from './ProgressBar'
+import { progressBar } from '../ProgressBar'
+import { settings } from '../setting/Settings'
+import { states } from '../States'
+import { ShowSkipCount } from './ShowSkipCount'
+import { msgBox } from '../MsgBox'
 
 interface TaskList {
   [id: string]: {
@@ -26,10 +29,15 @@ class DownloadControl {
   constructor() {
     this.createDownloadArea()
 
-    this.listenEvents()
+    this.bindEvents()
+
+    const skipTipWrap = this.wrapper.querySelector(
+      '.skip_tip'
+    ) as HTMLSpanElement
+    new ShowSkipCount(skipTipWrap)
   }
 
-  private readonly downloadThreadMax: number = 10 // 同时下载的线程数的最大值，也是默认值
+  private readonly downloadThreadMax: number = 6 // 同时下载的线程数的最大值，也是默认值
 
   private downloadThread: number = 3 // 同时下载的线程数
 
@@ -43,7 +51,7 @@ class DownloadControl {
 
   private reTryTimer: number = 0 // 重试下载的定时器
 
-  private downloadArea: HTMLDivElement = document.createElement('div') // 下载区域
+  private wrapper: HTMLDivElement = document.createElement('div')
 
   private totalNumberEl: HTMLSpanElement = document.createElement('span')
 
@@ -53,23 +61,25 @@ class DownloadControl {
 
   private downloadPause: boolean = false // 是否暂停下载
 
-  // 返回任务停止状态。暂停和停止都视为停止下载
-  public get downloadStopped() {
-    return this.downloadPause || this.downloadStop
-  }
+  private readonly msgFlag = 'uuidTip'
 
-  private listenEvents() {
+  private bindEvents() {
     window.addEventListener(EVT.list.crawlStart, () => {
       this.hideDownloadArea()
       this.reset()
     })
 
     window.addEventListener(EVT.list.crawlFinish, () => {
+      if (store.result.length === 0) {
+        return progressBar.reset(0)
+      }
+
       this.showDownloadArea()
       this.beforeDownload()
     })
 
-    window.addEventListener(EVT.list.skipSaveFile, (ev: CustomEventInit) => {
+    window.addEventListener(EVT.list.skipDownload, (ev: CustomEventInit) => {
+      // 跳过下载的文件不会触发 downloadSuccess 事件
       const data = ev.detail.data as DonwloadSuccessData
       this.downloadSuccess(data)
     })
@@ -79,9 +89,16 @@ class DownloadControl {
       if (!this.taskBatch) {
         return
       }
+
+      // UUID 的情况
+      if (msg.data?.uuid) {
+        log.error(lang.transl('_uuid'))
+        msgBox.once(this.msgFlag, lang.transl('_uuid'), 'error')
+      }
+
       // 文件下载成功
       if (msg.msg === 'downloaded') {
-        EVT.fire(EVT.list.downloadSucccess, msg.data)
+        EVT.fire('downloadSuccess', msg.data)
 
         this.downloadSuccess(msg.data)
       } else if (msg.msg === 'download_err') {
@@ -99,7 +116,7 @@ class DownloadControl {
           // 重新下载这个文件
           this.downloadError(msg.data, msg.err)
         }
-        EVT.fire(EVT.list.downloadError)
+        EVT.fire('downloadError')
       }
 
       // UUID 的情况
@@ -124,7 +141,7 @@ class DownloadControl {
 
     // 下载完毕
     if (this.downloaded === store.result.length) {
-      EVT.fire(EVT.list.downloadComplete)
+      EVT.fire('downloadComplete')
       this.reset()
       this.setDownStateText(lang.transl('_下载完毕'))
       log.success(lang.transl('_下载完毕'), 2)
@@ -138,11 +155,11 @@ class DownloadControl {
 
   // 显示或隐藏下载区域
   private showDownloadArea() {
-    this.downloadArea.style.display = 'block'
+    this.wrapper.style.display = 'block'
   }
 
   private hideDownloadArea() {
-    this.downloadArea.style.display = 'none'
+    this.wrapper.style.display = 'none'
   }
 
   // 设置下载状态文本，默认颜色为主题蓝色
@@ -165,59 +182,54 @@ class DownloadControl {
 
   private createDownloadArea() {
     const html = `<div class="download_area">
-    <p> ${lang.transl(
-      '_共抓取到n个文件',
-      '<span class="fwb blue imgNum">0</span>'
-    )}</p>
-    
     <div class="centerWrap_btns">
-    <button class="startDownload" type="button" style="background:${Colors.bgBlue
-      };"> ${lang.transl('_下载按钮1')}</button>
-    <button class="pauseDownload" type="button" style="background:#e49d00;"> ${lang.transl(
-        '_下载按钮2'
-      )}</button>
-    <button class="stopDownload" type="button" style="background:${Colors.bgRed
-      };"> ${lang.transl('_下载按钮3')}</button>
-    <button class="previewFileName" type="button" style="background:${Colors.bgGreen
-      };"> ${lang.transl('_预览文件名')}</button>
+    <button class="startDownload" type="button" style="background:${Colors.bgBlue};" data-xztext="_开始下载"></button>
+    <button class="pauseDownload" type="button" style="background:${Colors.bgYellow};" data-xztext="_暂停下载"></button>
+    <button class="stopDownload" type="button" style="background:${Colors.bgRed};" data-xztext="_停止下载"></button>
+    <button class="previewFileName" type="button" style="background:${Colors.bgGreen};" data-xztext="_预览文件名"></button>
     </div>
-    <div class="centerWrap_down_tips">
-    <p>
-    ${lang.transl('_当前状态')}
-    <span class="down_status blue"><span>${lang.transl(
-        '_未开始下载'
-      )}</span></span>
-    </p>
+    <div class="download_status_text_wrap">
+    <span data-xztext="_当前状态"></span>
+    <span class="down_status" data-xztext="_未开始下载"></span>
+    <span class="skip_tip warn"></span>
     </div>
     </div>`
 
-    const el = DOM.useSlot('downloadArea', html)
-    this.downloadArea = el as HTMLDivElement
-    this.downStatusEl = el.querySelector('.down_status ') as HTMLSpanElement
-    this.totalNumberEl = el.querySelector('.imgNum') as HTMLSpanElement
+    this.wrapper = Tools.useSlot('downloadArea', html) as HTMLDivElement
+    lang.register(this.wrapper)
 
-    document.querySelector('.startDownload')!.addEventListener('click', () => {
-      this.startDownload()
-    })
+    this.downStatusEl = this.wrapper.querySelector(
+      '.down_status'
+    ) as HTMLSpanElement
 
-    document.querySelector('.pauseDownload')!.addEventListener('click', () => {
-      this.pauseDownload()
-    })
+    this.wrapper
+      .querySelector('.startDownload')!
+      .addEventListener('click', () => {
+        this.startDownload()
+      })
 
-    document.querySelector('.stopDownload')!.addEventListener('click', () => {
-      this.stopDownload()
-    })
+    this.wrapper
+      .querySelector('.pauseDownload')!
+      .addEventListener('click', () => {
+        this.pauseDownload()
+      })
 
-    document
+    this.wrapper
+      .querySelector('.stopDownload')!
+      .addEventListener('click', () => {
+        this.stopDownload()
+      })
+
+    this.wrapper
       .querySelector('.previewFileName')!
       .addEventListener('click', () => {
-        EVT.fire(EVT.list.previewFileName)
+        EVT.fire('previewFileName')
       })
   }
 
   // 下载线程设置
   private setDownloadThread() {
-    const setThread = parseInt(form.downloadThread.value)
+    const setThread = settings.downloadThread
     if (
       setThread < 1 ||
       setThread > this.downloadThreadMax ||
@@ -244,14 +256,12 @@ class DownloadControl {
 
     this.setDownloadThread()
 
-    const autoDownload: boolean = form.quietDownload.checked
-
-    if (!autoDownload && !store.states.quickDownload) {
+    if (!settings.autoStartDownload && !states.quickCrawl) {
       titleBar.change('▶')
     }
 
     // 视情况自动开始下载
-    if (autoDownload || store.states.quickDownload) {
+    if (settings.autoStartDownload || states.quickCrawl) {
       this.startDownload()
     }
   }
@@ -259,7 +269,7 @@ class DownloadControl {
   // 开始下载
   private startDownload() {
     // 如果正在下载中，或无图片，则不予处理
-    if (!store.states.allowWork || store.result.length === 0) {
+    if (states.busy || store.result.length === 0) {
       return
     }
 
@@ -289,7 +299,7 @@ class DownloadControl {
     clearTimeout(this.reTryTimer)
     this.setDownloadThread()
 
-    EVT.fire(EVT.list.downloadStart)
+    EVT.fire('downloadStart')
 
     // 启动或继续下载，建立并发下载线程
     for (let i = 0; i < this.downloadThread; i++) {
@@ -316,9 +326,9 @@ class DownloadControl {
 
     if (this.downloadPause === false) {
       // 如果正在下载中
-      if (!store.states.allowWork) {
+      if (states.busy) {
         this.downloadPause = true // 发出暂停信号
-        EVT.fire(EVT.list.downloadPause)
+        EVT.fire('downloadPause')
 
         titleBar.change('║')
         this.setDownStateText(lang.transl('_已暂停'), '#f00')
@@ -339,7 +349,7 @@ class DownloadControl {
     }
 
     this.downloadStop = true
-    EVT.fire(EVT.list.downloadStop)
+    EVT.fire('downloadStop')
 
     titleBar.change('■')
     this.setDownStateText(lang.transl('_已停止'), '#f00')
@@ -437,6 +447,7 @@ class DownloadControl {
       }
 
       // 建立下载
+      console.log('name', result.name)
       new Download(progressBarIndex, data)
     }
   }

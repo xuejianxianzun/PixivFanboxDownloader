@@ -1,24 +1,4 @@
-// DOM 操作类
-// 保存公用的 DOM 操作方法，以及从 DOM 中获取数据的 API
-class DOM {
-  // 切换 DOM 元素的可见性
-  static toggleEl(el: HTMLElement) {
-    el.style.display = el.style.display === 'block' ? 'none' : 'block'
-  }
-
-  // 将元素插入到页面顶部
-  /*
-  newindex-inner 是在未登录时的用户投稿列表页面使用的
-  layout-body 是在未登录时的搜索页使用的
-  */
-  static insertToHead<T extends Element>(el: T): T {
-    const insertPoint = document.body.querySelector('#root')
-    if (insertPoint) {
-      insertPoint.insertAdjacentElement('afterbegin', el)
-    }
-    return el
-  }
-
+class Tools {
   static getUserId() {
     const Reg = /creator\/(\d*)?/
     const testString = [location.href, document.head.innerHTML]
@@ -89,6 +69,21 @@ class DOM {
 
     return e
   }
+
+  /**获取页面标题 */
+  // 删除了下载器在标题上添加的状态
+  static getPageTitle() {
+    let result = document.title
+      .replace(/\[(↑|→|▶|↓|║|■|✓| )\]/, '')
+      .replace(/^ (\d+) /, '')
+
+    // 如果开头有空格则去掉空格
+    if (result.startsWith(' ')) {
+      result = result.replace(/ */, '')
+    }
+
+    return result
+  }
 }
 
-export { DOM }
+export { Tools }

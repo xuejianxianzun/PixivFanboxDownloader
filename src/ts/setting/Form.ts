@@ -1,14 +1,20 @@
 import { EVT } from '../EVT'
-import { DOM } from '../DOM'
-import { FormSettings } from './FormSettings'
+import { Tools } from '../Tools'
+import { formHtml } from '../FormHTML'
 import { SettingsForm } from './SettingsForm'
-import { formHtml } from '../SettingHTML'
-import { options } from '../Options'
+import { settings, setSetting, SettingKeys } from '../setting/Settings'
+import { SaveNamingRule } from './SaveNamingRule'
+import { FormSettings } from './FormSettings'
+import { Utils } from '../utils/Utils'
+import { lang } from '../Lang'
+import { options } from './Options'
 
 // 设置表单
-class Settings {
+class Form {
   constructor() {
-    this.form = DOM.useSlot('form', formHtml) as SettingsForm
+    this.form = Tools.useSlot('form', formHtml) as SettingsForm
+
+    lang.register(this.form)
 
     this.getElements()
 
@@ -17,20 +23,10 @@ class Settings {
     ) as NodeListOf<HTMLElement>
     options.init(allOptions)
 
-    new FormSettings(this.form.userSetName)
-
+    new SaveNamingRule(this.form.userSetName)
     new FormSettings(this.form)
 
     this.bindEvents()
-  }
-
-  // 设置表单上美化元素的状态
-  private initFormBueatiful() {
-    // 设置改变时，重设 label 激活状态
-    this.resetLabelActive()
-
-    // 重设该选项的子选项的显示/隐藏
-    this.resetSubOptionDisplay()
   }
 
   public form: SettingsForm
@@ -253,16 +249,9 @@ class Settings {
   // 是否显示提示
   private showTips() {
     for (const item of this.tips) {
-      if (!Utils.isPixiv()) {
-        item.wrap.style.display = 'none'
-      } else {
-        item.wrap.style.display = settings[item.settingName] ? 'block' : 'none'
-      }
+      item.wrap.style.display = settings[item.settingName] ? 'block' : 'none'
     }
   }
 }
 
-const settings = new Settings()
-const form = settings.form
-
-export { form }
+new Form()

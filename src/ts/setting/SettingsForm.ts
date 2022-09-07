@@ -19,8 +19,20 @@ export interface SettingsForm extends HTMLFormElement {
   saveText: HTMLInputElement
   userSetName: HTMLInputElement
   fileNameSelect: HTMLSelectElement
-  quietDownload: HTMLInputElement
+  autoStartDownload: HTMLInputElement
   downloadThread: HTMLInputElement
   dateFormat: HTMLInputElement
   savePostCover: HTMLInputElement
+  userSetLang: HTMLInputElement
+  tipCreateFolder: HTMLInputElement
+  showAdvancedSettings: HTMLInputElement
+  bgDisplay: HTMLInputElement
+  bgOpacity: HTMLInputElement
+  bgPositionY: HTMLInputElement
+  namingRuleList: HTMLElement
+  boldKeywords: HTMLElement
+  showNotificationAfterDownloadComplete: HTMLInputElement
+  zeroPadding: HTMLInputElement
+  zeroPaddingLength: HTMLInputElement
+  deduplication: HTMLInputElement
 }

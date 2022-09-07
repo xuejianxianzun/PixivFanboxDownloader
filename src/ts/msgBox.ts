@@ -1,6 +1,5 @@
 import { EVT } from './EVT'
-import { Colors } from './config/Colors'
-import { theme } from './Theme'
+import { Colors } from './Colors'
 import { lang } from './Lang'
 import { bg } from './BG'
 
@@ -121,7 +120,6 @@ class MsgBox {
         }</button>
       `
 
-    theme.register(wrap)
     lang.register(wrap)
 
     const btn = wrap.querySelector('.btn') as HTMLButtonElement

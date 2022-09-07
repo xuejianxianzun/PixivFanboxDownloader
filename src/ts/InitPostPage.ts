@@ -1,9 +1,11 @@
 import { lang } from './Lang'
 import { Colors } from './Colors'
-import { DOM } from './DOM'
+import { Tools } from './Tools'
 import { InitPageBase } from './InitPageBase'
 import { API } from './API'
-import { store } from './Store'
+import { Utils } from './utils/Utils'
+import { EVT } from './EVT'
+import { states } from './States'
 
 class InitPostPage extends InitPageBase {
   constructor() {
@@ -11,11 +13,9 @@ class InitPostPage extends InitPageBase {
     this.init()
   }
 
-  private quickDownBtn = document.createElement('div')
-
   // 添加中间按钮
-  protected appendCenterBtns() {
-    DOM.addBtn(
+  protected addCrawlBtns() {
+    Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
       lang.transl('_抓取这篇投稿')
@@ -24,28 +24,16 @@ class InitPostPage extends InitPageBase {
     })
   }
 
-  protected appendElseEl() {
-    // 在右侧创建快速下载按钮
-    this.quickDownBtn.id = 'quick_down_btn'
-    this.quickDownBtn.textContent = '↓'
-    this.quickDownBtn.setAttribute('title', lang.transl('_快速下载本页'))
-    document.body.appendChild(this.quickDownBtn)
-    this.quickDownBtn.addEventListener(
-      'click',
-      () => {
-        store.states.quickDownload = true
+  protected initAny(): void {
+    EVT.bindOnce('quickCrawl', EVT.list.quickCrawl, () => {
+      if (!states.busy) {
         this.readyCrawl()
-      },
-      false
-    )
+      }
+    })
   }
 
   protected destroy() {
-    DOM.clearSlot('crawlBtns')
-
-    // 删除快速下载按钮
-    const quickBtn = document.querySelector('#quick_down_btn')
-    quickBtn && quickBtn.remove()
+    Tools.clearSlot('crawlBtns')
   }
 
   protected nextStep() {
@@ -53,10 +41,12 @@ class InitPostPage extends InitPageBase {
     this.fetchPost()
   }
 
-  protected async FetchPostList() { }
+  protected async FetchPostList() {}
 
   protected async fetchPost() {
-    const data = await API.getPost(API.getURLPathField('posts'))
+    const data = await API.getPost(
+      Utils.getURLPathField(window.location.pathname, 'posts')
+    )
     this.afterFetchPost(data)
   }
 }

@@ -1,9 +1,10 @@
 import { lang } from './Lang'
 import { Colors } from './Colors'
-import { DOM } from './DOM'
+import { Tools } from './Tools'
 import { InitPageBase } from './InitPageBase'
 import { PostList } from './CrawlResult.d'
 import { API } from './API'
+import { Utils } from './utils/Utils'
 
 class InitTagPage extends InitPageBase {
   constructor() {
@@ -12,8 +13,8 @@ class InitTagPage extends InitPageBase {
   }
 
   // 添加中间按钮
-  protected appendCenterBtns() {
-    DOM.addBtn(
+  protected addCrawlBtns() {
+    Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
       lang.transl('_抓取该tag的投稿')
@@ -29,7 +30,7 @@ class InitTagPage extends InitPageBase {
     } else {
       data = await API.getTagPostListByUser(
         await API.getUserId(API.getCreatorId(location.href)),
-        API.getURLPathField('tags')
+        Utils.getURLPathField(window.location.pathname, 'tags')
       )
     }
     this.afterFetchPostList(data)

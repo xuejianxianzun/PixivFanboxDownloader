@@ -1,13 +1,18 @@
 // 下载文件，并发送给浏览器下载
-import { EVT } from './EVT'
-import { titleBar } from './TitleBar'
-import { fileName } from './FileName'
+import { EVT } from '../EVT'
+import { titleBar } from '../TitleBar'
+import { fileName } from '../FileName'
 import {
   downloadArgument,
   SendToBackEndData,
   DonwloadSuccessData,
-} from './Download.d'
-import { progressBar } from './ProgressBar'
+  DonwloadSkipData,
+} from './DownloadType'
+import { progressBar } from '../ProgressBar'
+import { downloadRecord } from './DownloadRecord'
+import { lang } from '../Lang'
+import { log } from '../Log'
+import { states } from '../States'
 
 class Download {
   constructor(progressBarIndex: number, data: downloadArgument) {
@@ -16,24 +21,17 @@ class Download {
 
     this.download(data)
 
-    this.listenEvents()
+    this.bindEvents()
   }
 
   private progressBarIndex: number
   private arg: downloadArgument
 
   private fileName = ''
-  private stoped = false
 
-  private listenEvents() {
-    ;[EVT.list.downloadStop, EVT.list.downloadPause].forEach((event) => {
-      window.addEventListener(event, () => {
-        this.stoped = true
-      })
-    })
-
+  private bindEvents() {
     window.addEventListener(
-      EVT.list.downloadSucccess,
+      EVT.list.downloadSuccess,
       (event: CustomEventInit) => {
         const donwloadSuccessData = event.detail.data as DonwloadSuccessData
 
@@ -42,6 +40,16 @@ class Download {
         }
       }
     )
+  }
+
+  // 跳过下载这个文件。可以传入用于提示的文本
+  private skipDownload(data: DonwloadSkipData, msg?: string) {
+    if (msg) {
+      log.warning(msg)
+    }
+    if (states.downloading) {
+      EVT.fire('skipDownload', data)
+    }
   }
 
   // 设置进度条信息
@@ -54,17 +62,30 @@ class Download {
   }
 
   // 下载文件
-  private download(arg: downloadArgument) {
+  private async download(arg: downloadArgument) {
     titleBar.change('↓')
-
-    // 获取文件名
     this.fileName = fileName.getFileName(arg.data)
+
+    // 检查是否是重复文件
+    const url = arg.data.url
+    if (!url.startsWith('blob')) {
+      const duplicate = await downloadRecord.checkDeduplication(arg.data)
+      if (duplicate) {
+        return this.skipDownload(
+          {
+            id: arg.id,
+            reason: 'duplicate',
+          },
+          lang.transl('_跳过下载因为重复文件', this.fileName)
+        )
+      }
+    }
 
     // 重设当前下载栏的信息
     this.setProgressBar(0, 0)
 
     // 向浏览器发送下载任务
-    this.browserDownload(arg.data.url, this.fileName, arg.id, arg.taskBatch)
+    this.browserDownload(url, this.fileName, arg.id, arg.taskBatch)
   }
 
   // 向浏览器发送下载任务
@@ -74,13 +95,6 @@ class Download {
     id: string,
     taskBatch: number
   ) {
-    // 如果任务已停止，不会向浏览器发送下载任务
-    // if (this.stoped) {
-    //   // 释放 bloburl
-    //   url.startsWith('blob') && URL.revokeObjectURL(url)
-    //   return
-    // }
-
     const sendData: SendToBackEndData = {
       msg: 'send_download',
       fileUrl: url,

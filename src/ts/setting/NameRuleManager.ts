@@ -1,7 +1,5 @@
+import { Config } from '../Config'
 import { EVT } from '../EVT'
-import { lang } from '../Lang'
-import { msgBox } from '../MsgBox'
-import { pageType } from '../PageType'
 import { Utils } from '../utils/Utils'
 import { settings, setSetting } from './Settings'
 
@@ -24,63 +22,20 @@ class NameRuleManager {
         this.setInputValue()
       })
     })
-
-    window.addEventListener(EVT.list.settingChange, (ev: CustomEventInit) => {
-      const data = ev.detail.data as any
-      // 当用户开启这个开关时，设置当前页面类型的命名规则
-      if (data.name === 'setNameRuleForEachPageType' && data.value) {
-        if (
-          settings.nameRuleForEachPageType[pageType.type] !==
-          settings.userSetName
-        ) {
-          this.setInputValue()
-        }
-      }
-    })
   }
-
-  private saveCurrentPageRule(rule: string) {
-    settings.nameRuleForEachPageType[pageType.type] = rule
-    setSetting('nameRuleForEachPageType', settings.nameRuleForEachPageType)
-  }
-
-  // 所有页面通用的命名规则
-  private readonly generalRule = '{page_title}/{id}'
 
   public get rule() {
-    if (settings.setNameRuleForEachPageType) {
-      let rule = settings.nameRuleForEachPageType[pageType.type]
-      if (rule === undefined) {
-        rule = this.generalRule
-        this.saveCurrentPageRule(rule)
-      }
-      return rule
-    } else {
-      return settings.userSetName
-    }
+    return settings.userSetName
   }
 
   public set rule(str: string) {
     // 检查传递的命名规则的合法性
-    // 为了防止文件名重复，命名规则里一定要包含 {id} 或者 {id_num}{p_num}
-    const check =
-      str.includes('{id}') ||
-      (str.includes('{id_num}') && str.includes('{p_num}'))
-    if (!check) {
-      window.setTimeout(() => {
-        msgBox.error(lang.transl('_命名规则一定要包含id'))
-      }, 300)
-    } else {
-      // 替换特殊字符
-      str = this.handleUserSetName(str) || this.generalRule
-      setSetting('userSetName', str)
 
-      if (settings.setNameRuleForEachPageType) {
-        this.saveCurrentPageRule(str)
-      }
+    // 替换特殊字符
+    str = this.handleUserSetName(str) || Config.defaultNameRule
+    setSetting('userSetName', str)
 
-      this.setInputValue()
-    }
+    this.setInputValue()
   }
 
   // 命名规则输入框的集合
@@ -109,16 +64,13 @@ class NameRuleManager {
           return
         }
         lastValue = input.value
-        if (settings.nameRuleForEachPageType[pageType.type] !== input.value) {
-          this.rule = input.value
-        }
+        this.rule = input.value
       })
     })
   }
 
   // 设置输入框的值为当前命名规则
   private setInputValue() {
-    // 如果 settings.nameRuleForEachPageType 里面没有当前页面的 key，值就是 undefined，需要设置为默认值
     const rule = this.rule
     this.inputList.forEach((input) => {
       input.value = rule

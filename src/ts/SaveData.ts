@@ -1,7 +1,6 @@
 import { filter } from './Filter'
 import { store } from './Store'
-import { FileResult, ResultMeta } from './Store.d'
-import { form } from './setting/Settings'
+import { FileResult, ResultMeta } from './StoreType'
 import {
   ServiceProvider,
   VideoProvider,
@@ -9,6 +8,7 @@ import {
   ImageData,
   FileData,
 } from './CrawlResult'
+import { settings } from './setting/Settings'
 
 type Dict = {
   [key in ServiceProvider]: string
@@ -82,7 +82,7 @@ class SaveData {
 
     // 提取投稿的封面图片
     // 封面图片的序号设置为 0，所以它里面不需要对 index 进行操作
-    if (form.savePostCover.checked) {
+    if (settings.savePostCover) {
       const cover = data.coverImageUrl
       if (cover) {
         const { name, ext } = this.getUrlNameAndExt(cover)
@@ -115,7 +115,7 @@ class SaveData {
         result.links.fileId = this.createFileId()
 
         // 保存文章正文里的文字
-        if (form.saveText.checked) {
+        if (settings.saveText) {
           result.links.text.push(text)
         }
       }
@@ -145,7 +145,7 @@ class SaveData {
         result.links.fileId = this.createFileId()
       }
 
-      if (form.saveText.checked && text) {
+      if (settings.saveText && text) {
         result.links.text.push(text)
       }
 
@@ -185,7 +185,7 @@ class SaveData {
       result.links.fileId = this.createFileId()
 
       // 保存嵌入的 URL，只能保存到文本
-      if (form.saveLink.checked) {
+      if (settings.saveLink) {
         const urlArr: string[] = []
         for (const val of Object.values(data.body.urlEmbedMap)) {
           if (val.type === 'default') {
@@ -334,7 +334,7 @@ class SaveData {
   private getTextLinks(text: string) {
     const links: string[] = []
 
-    if (!form.saveLink.checked) {
+    if (!settings.saveLink) {
       return links
     }
 
@@ -358,7 +358,7 @@ class SaveData {
   private getEmbedLinks(dataArr: EmbedDataArr, postId: string) {
     const links: string[] = []
 
-    if (!form.saveLink.checked) {
+    if (!settings.saveLink) {
       return links
     }
 

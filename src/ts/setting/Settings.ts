@@ -51,7 +51,7 @@ type SettingValue =
   | Map<string, string>
 
 export interface SettingChangeData {
-  name: SettingsKeys
+  name: SettingKeys
   value: SettingValue
 }
 
@@ -68,21 +68,35 @@ interface XzSetting {
   fee: number
   idRangeSwitch: boolean
   idRangeInput: number
+  idRange: '>' | '<'
   postDate: boolean
-  postDateStart: ''
-  postDateEnd: ''
+  postDateStart: number
+  postDateEnd: number
   saveLink: boolean
   saveText: boolean
-  userSetName: '{user}/{title}/{index}'
-  quietDownload: boolean
+  userSetName: string
+  autoStartDownload: boolean
   downloadThread: number
   dateFormat: 'YYYY-MM-DD hh-mm'
   savePostCover: boolean
+  userSetLang: 'zh-cn' | 'zh-tw' | 'ja' | 'en' | 'ko' | 'auto'
+  tipCreateFolder: boolean
+  whatIsNewFlag: string
+  showAdvancedSettings: boolean
+  bgDisplay: boolean
+  bgOpacity: number
+  bgPositionY: 'center' | 'top'
+  boldKeywords: boolean
+  namingRuleList: string[]
+  showNotificationAfterDownloadComplete: boolean
+  zeroPadding: boolean
+  zeroPaddingLength: number
+  deduplication: boolean
+  showHowToUse: boolean
 }
-
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
-type SettingsKeys = keyof XzSetting
+type SettingKeys = keyof XzSetting
 
 class Settings {
   constructor() {
@@ -104,36 +118,45 @@ class Settings {
     fee: 500,
     idRangeSwitch: false,
     idRangeInput: 0,
+    idRange: '>',
     postDate: false,
-    postDateStart: '',
-    postDateEnd: '',
+    postDateStart: 946684800000,
+    postDateEnd: 4102444800000,
     saveLink: true,
     saveText: false,
-    userSetName: '{user}/{title}/{index}',
-    quietDownload: true,
+    userSetName: '{user}/{postid}-{title}/{index}',
+    autoStartDownload: true,
     downloadThread: 3,
     dateFormat: 'YYYY-MM-DD hh-mm',
-    savePostCover: false,
+    savePostCover: true,
+    userSetLang: 'auto',
+    tipCreateFolder: true,
+    whatIsNewFlag: 'xuejian&saber',
+    showAdvancedSettings: false,
+    bgDisplay: false,
+    bgOpacity: 60,
+    bgPositionY: 'center',
+    boldKeywords: true,
+    namingRuleList: [],
+    showNotificationAfterDownloadComplete: false,
+    zeroPadding: false,
+    zeroPaddingLength: 3,
+    deduplication: false,
+    showHowToUse: true,
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)
 
   // 值为浮点数的选项
-  private floatNumberKey = ['userRatio', 'sizeMin', 'sizeMax']
+  private floatNumberKey: string[] = []
 
   // 值为整数的选项不必单独列出
 
   // 值为数字数组的选项
-  private numberArrayKeys = ['wantPageArr']
+  private numberArrayKeys: string[] = []
 
   // 值为字符串数组的选项
-  private stringArrayKeys = [
-    'namingRuleList',
-    'blockList',
-    'needTag',
-    'notNeedTag',
-    'createFolderTagList',
-  ]
+  private stringArrayKeys = ['namingRuleList']
 
   // 以默认设置作为初始设置
   public settings: XzSetting = Utils.deepCopy(this.defaultSettings)
@@ -160,7 +183,7 @@ class Settings {
   // 读取恢复设置
   private restore() {
     let restoreData = this.defaultSettings
-    // 首先从 chrome.storage 获取配置（从 11.5.0 版本开始）
+    // 首先从 chrome.storage 获取配置
     chrome.storage.local.get(Config.settingStoreName, (result) => {
       if (result[Config.settingStoreName]) {
         restoreData = result[Config.settingStoreName]
@@ -190,7 +213,7 @@ class Settings {
   private assignSettings(data: XzSetting) {
     const origin = Utils.deepCopy(data)
     for (const [key, value] of Object.entries(origin)) {
-      this.setSetting(key as SettingsKeys, value)
+      this.setSetting(key as SettingKeys, value)
     }
   }
 
@@ -233,7 +256,7 @@ class Settings {
   // 这里面有一些类型转换的代码，主要目的：
   // 1. 兼容旧版本的设置。读取旧版本的设置时，将其转换成新版本的设置。例如某个设置在旧版本里是 string 类型，值为 'a,b,c'。新版本里是 string[] 类型，这里会自动将其转换成 ['a','b','c']
   // 2. 减少额外操作。例如某个设置的类型为 string[]，其他模块可以传入 string 类型的值如 'a,b,c'，而不必先把它转换成 string[]
-  public setSetting(key: SettingsKeys, value: SettingValue) {
+  public setSetting(key: SettingKeys, value: SettingValue) {
     if (!this.allSettingKeys.includes(key)) {
       return
     }
@@ -314,4 +337,4 @@ const self = new Settings()
 const settings = self.settings
 const setSetting = self.setSetting.bind(self)
 
-export { settings, setSetting, SettingsKeys as SettingKeys }
+export { settings, setSetting, SettingKeys }

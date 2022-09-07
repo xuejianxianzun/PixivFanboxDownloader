@@ -1,6 +1,6 @@
 import { lang } from './Lang'
 import { Colors } from './Colors'
-import { DOM } from './DOM'
+import { Tools } from './Tools'
 import { InitPageBase } from './InitPageBase'
 
 // 这个类没有编写实际功能，没有被实际使用
@@ -11,8 +11,8 @@ class InitShopPage extends InitPageBase {
   }
 
   // 添加中间按钮
-  protected appendCenterBtns() {
-    DOM.addBtn(
+  protected addCrawlBtns() {
+    Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
       lang.transl('_抓取商品的封面图')
@@ -21,7 +21,7 @@ class InitShopPage extends InitPageBase {
     })
   }
 
-  protected async FetchPostList() { }
+  protected async FetchPostList() {}
 }
 
 export { InitShopPage }

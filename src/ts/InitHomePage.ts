@@ -1,6 +1,6 @@
 import { lang } from './Lang'
 import { Colors } from './Colors'
-import { DOM } from './DOM'
+import { Tools } from './Tools'
 import { InitPageBase } from './InitPageBase'
 import { PostList } from './CrawlResult.d'
 import { API } from './API'
@@ -12,8 +12,8 @@ class InitHomePage extends InitPageBase {
   }
 
   // 添加中间按钮
-  protected appendCenterBtns() {
-    DOM.addBtn(
+  protected addCrawlBtns() {
+    Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
       lang.transl('_抓取赞助的所有用户的投稿')

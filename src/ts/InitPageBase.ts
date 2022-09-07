@@ -1,6 +1,6 @@
 // 初始化抓取页面的流程
 import { lang } from './Lang'
-import { DOM } from './DOM'
+import { Tools } from './Tools'
 import { filter } from './Filter'
 import { store } from './Store'
 import { log } from './Log'
@@ -9,56 +9,56 @@ import { titleBar } from './TitleBar'
 import { saveData } from './SaveData'
 import { PostList, Post } from './CrawlResult.d'
 import { API } from './API'
+import { states } from './States'
+import { msgBox } from './MsgBox'
 
 abstract class InitPageBase {
   // 初始化
   protected init() {
-    this.appendCenterBtns()
-    this.appendElseEl()
-    this.initElse()
+    this.addCrawlBtns()
+    this.addAnyElement()
+    this.initAny()
 
-    window.addEventListener(EVT.list.destroy, () => {
+    window.addEventListener(EVT.list.pageSwitchedTypeChange, () => {
       this.destroy()
     })
   }
 
   // 各个子类私有的初始化内容
-  protected initElse() {}
+  protected initAny() {}
 
   // 销毁初始化页面时添加的元素和事件，恢复设置项等
   protected destroy(): void {
-    DOM.clearSlot('crawlBtns')
+    Tools.clearSlot('crawlBtns')
   }
 
   // 添加中间按钮
-  protected appendCenterBtns() {}
+  protected addCrawlBtns() {}
 
   // 添加其他元素（如果有）
-  protected appendElseEl(): void {}
+  protected addAnyElement(): void {}
 
   protected crawlNumber: number = 0 // 要抓取的个数/页数
   protected nextUrl: null | string = null
 
-  private readonly getPostDataConcurrencyNumMax = 6
+  private readonly getPostDataThreadMax = 6
   protected getPostDataThreadNum = 0
   protected getPostDatafinished = 0
 
   // 准备抓取，进行抓取之前的一些检查工作。必要时可以在子类中改写
   protected async readyCrawl() {
-    if (!store.states.allowWork) {
+    if (states.busy) {
       window.alert(lang.transl('_当前任务尚未完成2'))
       return
     }
 
-    EVT.fire(EVT.list.crawlStart)
+    EVT.fire('crawlStart')
 
     log.clear()
 
     log.success(lang.transl('_任务开始0'))
 
     titleBar.change('↑')
-
-    filter.init()
 
     this.getPostDataThreadNum = 0
     this.getPostDatafinished = 0
@@ -108,10 +108,15 @@ abstract class InitPageBase {
   // 抓取文章列表之后，建立并发抓取线程，逐个获取文章数据
   protected FetchPostListFinished() {
     log.log(lang.transl('_列表页抓取完成'))
-    log.log(lang.transl('_当前作品个数', store.postIdList.length.toString()))
-    log.log(lang.transl('_开始获取作品信息'))
 
-    for (let i = 0; i < this.getPostDataConcurrencyNumMax; i++) {
+    if (store.postIdList.length === 0) {
+      return this.noResult()
+    }
+
+    log.log(lang.transl('_当前作品个数', store.postIdList.length.toString()))
+    log.log(lang.transl('_开始获取投稿信息'))
+
+    for (let i = 0; i < this.getPostDataThreadMax; i++) {
       const postId = store.postIdList.shift()
       if (postId) {
         this.getPostDataThreadNum++
@@ -155,15 +160,16 @@ abstract class InitPageBase {
 
     log.log(lang.transl('_抓取完毕'), 2)
 
-    EVT.fire(EVT.list.crawlFinish)
+    EVT.fire('crawlFinish')
   }
 
   // 抓取结果为 0 时输出提示
   protected noResult() {
-    EVT.fire(EVT.list.crawlEmpty)
+    EVT.fire('crawlFinish')
+    EVT.fire('crawlEmpty')
     titleBar.reset()
     log.error(lang.transl('_抓取结果为零'), 2)
-    window.alert(lang.transl('_抓取结果为零'))
+    msgBox.error(lang.transl('_抓取结果为零'))
   }
 }
 

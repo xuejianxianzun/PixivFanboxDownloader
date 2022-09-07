@@ -183,11 +183,6 @@ class Utils {
     a.click()
   }
 
-  // 判断当前页面是否属于 pixiv.net
-  static isPixiv() {
-    return window.location.host.endsWith('.pixiv.net')
-  }
-
   // 从 url 中获取指定的查询字段的值
   // 注意：返回值经过 encodeURIComponent 编码！
   static getURLSearchField(url: string, query: string) {
@@ -216,35 +211,6 @@ class Utils {
     return array[index + 1] || ''
   }
 
-  // 获取指定元素里，可见的结果
-  static getVisibleEl(selector: string) {
-    const list: NodeListOf<HTMLElement> = document.querySelectorAll(selector)
-    return Array.from(list).filter((el) => {
-      return el.style.display !== 'none'
-    })
-  }
-
-  // 删除 DOM 元素，或者 DOM 元素列表
-  static removeEl(el: NodeListOf<Element> | HTMLElement) {
-    if (!el) {
-      return
-    }
-    if (Reflect.has(el, 'length')) {
-      // 如果有 length 属性则循环删除。
-      ;(el as NodeListOf<Element>).forEach((el) => {
-        if (el.parentNode) {
-          el.parentNode.removeChild(el)
-        }
-      })
-    } else {
-      // 没有 length 属性的直接删除（querySelector 的返回值是 HTMLElement）
-      const parent = (el as HTMLElement).parentNode
-      if (parent) {
-        parent.removeChild(el as HTMLElement)
-      }
-    }
-  }
-
   // 切换 DOM 元素的可见性
   // 第二个参数设置显示时的 display，默认是 block，如果要设置为其他类型，则需要指定第二个参数
   static toggleEl(el: HTMLElement, showDisplay: string = 'block') {
@@ -269,41 +235,6 @@ class Utils {
       img.onerror = () => {
         reject(new Error(`Load image error! url: ${url}`))
       }
-    })
-  }
-
-  // 加载图片并在获取到其宽高之后立即返回宽高数值。不需要等待图片加载完毕
-  // 请求出错时，返回值的宽高都是 0
-  static async getImageSize(url: string): Promise<{
-    width: number
-    height: number
-  }> {
-    return new Promise((resolve) => {
-      let timer = 0
-      const img = new Image()
-
-      // 在 Chrome 中图片请求的超时时间是 30 秒
-      // 如果请求超时，则直接返回
-      img.onerror = () => {
-        window.clearInterval(timer)
-        return resolve({
-          width: 0,
-          height: 0,
-        })
-      }
-
-      img.src = url
-      timer = window.setInterval(() => {
-        if (img.naturalWidth > 0) {
-          window.clearInterval(timer)
-          const wh = {
-            width: img.naturalWidth,
-            height: img.naturalHeight,
-          }
-          img.src = ''
-          return resolve(wh)
-        }
-      }, 50)
     })
   }
 

@@ -10,7 +10,7 @@ const packName = 'pixivfanboxDownloader'
 async function copys() {
   return new Promise(async (resolve, reject) => {
     // 复制 static 文件夹的内容
-    await copy('./static', './dist', {
+    await copy('./src/static', './dist', {
       overwrite: true,
     }).catch(function (error) {
       console.error('Copy failed: ' + error)

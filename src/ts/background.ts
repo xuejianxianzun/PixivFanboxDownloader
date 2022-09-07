@@ -1,4 +1,4 @@
-import { DonwloadListData, SendToBackEndData } from './Download.d'
+import { DonwloadListData, SendToBackEndData } from './download/DownloadType'
 
 // 设置 Origin 和 Referer
 chrome.webRequest.onBeforeSendHeaders.addListener(

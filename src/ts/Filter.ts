@@ -1,8 +1,11 @@
-import { form } from './setting/Settings'
 import { log } from './Log'
 import { EVT } from './EVT'
-import { store } from './Store'
+import { Config } from './Config'
+import { SettingKeys, settings } from './setting/Settings'
+import { msgBox } from './MsgBox'
+import { lang } from './Lang'
 
+/** 过滤选项，其中所有字段都是可选的 */
 interface FilterOption {
   id?: number | string
   date?: string
@@ -12,50 +15,38 @@ interface FilterOption {
 
 // 审查每个文件的数据，决定是否要下载它
 class Filter {
-  public init() {
+  constructor() {
+    this.bindEvents()
+  }
+
+  // 对启用了的过滤选项输出提示
+  private showTip() {
     this.getIdRange()
-    this.getDateRange()
+    this.getPostDate()
   }
 
-  private _postDateStart = 0
-  private _postDateEnd = 0
-
-  // 获取 id 范围设置
+  // 提示 id 范围设置
   private getIdRange() {
-    if (form.idRangeSwitch.checked) {
-      let id = parseInt(form.idRangeInput.value)
-      if (isNaN(id)) {
-        EVT.fire(EVT.list.crawlError)
-
-        const msg = 'id is not a number!'
-        window.alert(msg)
-        log.error(msg)
-        throw new Error(msg)
-      }
-    }
-  }
-
-  private getDateRange() {
-    if (
-      !form.postDate.checked ||
-      form.postDateStart.value === '' ||
-      form.postDateEnd.value === ''
-    ) {
+    if (!settings.idRangeSwitch) {
       return
     }
 
-    // 判断是否是有效的时间格式
-    const postDateStart = new Date(form.postDateStart.value)
-    const postDateEnd = new Date(form.postDateEnd.value)
-    // 如果输入的时间可以被转换成有效的时间，则启用
-    // 转换时间失败时，值是 Invalid Date，不能转换成数字
-    if (isNaN(postDateStart.getTime()) || isNaN(postDateEnd.getTime())) {
+    log.warning(`id ${settings.idRange} ${settings.idRangeInput}`)
+  }
+
+  // 提示投稿时间设置
+  private getPostDate() {
+    if (!settings.postDate) {
+      return
+    }
+
+    if (isNaN(settings.postDateStart) || isNaN(settings.postDateStart)) {
       const msg = 'Date format error!'
-      this.throwError(msg)
+      this.showWarning(msg)
     } else {
-      // 转换时间成功
-      this._postDateStart = postDateStart.getTime()
-      this._postDateEnd = postDateEnd.getTime()
+      const start = new Date(settings.postDateStart).toLocaleString()
+      const end = new Date(settings.postDateEnd).toLocaleString()
+      log.warning(`${lang.transl('_时间范围')}: ${start} - ${end}`)
     }
   }
 
@@ -97,14 +88,14 @@ class Filter {
     }
 
     // 检查 ext 存在于哪种类型里，然后检查这个类型是否被选中
-    for (const [key, value] of Object.entries(store.fileType)) {
+    for (const [key, value] of Object.entries(Config.fileType)) {
       if (value.includes(ext)) {
-        return form[key].checked ? true : false
+        return settings[key as SettingKeys]
       }
     }
 
     // 如果这个 ext 不存在任何规定的类型里，则把它当作 other 类型，决定是否保留
-    return form['other'].checked ? true : false
+    return settings.other
   }
 
   private checkfeeType(fee: FilterOption['fee']) {
@@ -113,28 +104,28 @@ class Filter {
     }
 
     if (fee > 0) {
-      return form.pay.checked
+      return settings.pay
     } else {
-      return form.free.checked
+      return settings.free
     }
   }
 
   private checkfeeRange(fee: FilterOption['fee']) {
-    if (fee === undefined || !form.feeSwitch.checked) {
+    if (fee === undefined || !settings.feeSwitch) {
       return true
     }
 
-    return fee >= parseInt(form.fee.value)
+    return fee >= settings.fee
   }
 
   private checkIdRange(id: FilterOption['id']) {
-    if (id === undefined || !form.idRangeSwitch.checked) {
+    if (id === undefined || !settings.idRangeSwitch) {
       return true
     }
 
-    const flag = parseInt(form.idRange.value)
+    const flag = parseInt(settings.idRange)
     const nowId = parseInt(id.toString())
-    const setId = parseInt(form.idRangeInput.value)
+    const setId = settings.idRangeInput
 
     if (flag === 1) {
       // 大于
@@ -149,29 +140,33 @@ class Filter {
 
   private checkPostDate(date: FilterOption['date']) {
     if (
-      !form.postDate.checked ||
+      !settings.postDate ||
       date === undefined ||
-      !this._postDateStart ||
-      !this._postDateEnd
+      !settings.postDateStart ||
+      !settings.postDateEnd
     ) {
       return true
     }
 
     const nowDate = new Date(date)
     return (
-      nowDate.getTime() >= this._postDateStart &&
-      nowDate.getTime() <= this._postDateEnd
+      nowDate.getTime() >= settings.postDateStart &&
+      nowDate.getTime() <= settings.postDateEnd
     )
   }
 
-  // 当需要时抛出错误
-  private throwError(msg: string) {
-    EVT.fire(EVT.list.crawlError)
-    log.error(msg, 2)
-    window.alert(msg)
-    throw new Error(msg)
+  // 如果设置项的值不合法，则显示提示
+  private showWarning(msg: string) {
+    EVT.fire('wrongSetting')
+    msgBox.error(msg)
+  }
+
+  private bindEvents() {
+    window.addEventListener(EVT.list.crawlStart, () => {
+      this.showTip()
+    })
   }
 }
 
 const filter = new Filter()
-export { filter, FilterOption }
+export { filter }

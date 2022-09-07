@@ -9,11 +9,15 @@
  * QQ group:  853021998
  */
 
+import './ListenPageSwitch'
 import './PageType'
 import './CenterPanel'
+import './setting/Form'
 import './InitPage'
-import './DownloadControl'
-import './RightIcon'
+import './QuickCrawl'
 import './Tip'
-import './setting/Output'
-import './Support'
+import './OutputPanel'
+import './download/DownloadControl'
+import './ShowNotification'
+import './ShowHowToUse'
+import './ShowWhatIsNew'

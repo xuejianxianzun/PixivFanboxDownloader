@@ -1,4 +1,4 @@
-import { Result } from './Store.d'
+import { Result } from '../StoreType'
 
 export interface downloadArgument {
   id: string
@@ -23,6 +23,18 @@ export interface DonwloadSuccessData {
   id: string
   tabId: number
   uuid: boolean
+}
+
+export interface DonwloadSkipData {
+  id: string
+  reason:
+    | 'duplicate'
+    | 'size'
+    | 'color'
+    | 'widthHeight'
+    | '404'
+    | '500'
+    | 'excludedType'
 }
 
 // 所有任务的信息

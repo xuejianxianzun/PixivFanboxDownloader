@@ -1,6 +1,7 @@
 import { store } from './Store'
-import { DOM } from './DOM'
+import { Tools } from './Tools'
 import { lang } from './Lang'
+import { EVT } from './EVT'
 
 interface ProgressBarEl {
   name: HTMLSpanElement
@@ -16,7 +17,7 @@ interface ProgressData {
 // 进度条
 class ProgressBar {
   constructor() {
-    this.wrap = DOM.useSlot('progressBar', this.wrapHTML) as HTMLDivElement
+    this.wrap = Tools.useSlot('progressBar', this.wrapHTML) as HTMLDivElement
     this.downloadedEl = this.wrap.querySelector(
       '.downloaded'
     ) as HTMLSpanElement
@@ -29,17 +30,27 @@ class ProgressBar {
     this.totalNumberEl = this.wrap.querySelector(
       '.totalNumber'
     ) as HTMLSpanElement
+
+    lang.register(this.wrap)
+
+    this.bindEvents()
+  }
+
+  private bindEvents() {
+    window.addEventListener(EVT.list.crawlStart, () => {
+      this.hide()
+    })
   }
 
   private readonly wrapHTML = `
   <div class="progressBarWrap">
   <div class="total">
-  <span class="text">${lang.transl('_下载进度')}</span>
+  <span class="text" data-xztext="_下载进度"></span>
   <div class="right1">
   <div class="progressBar progressBar1">
   <div class="progress progress1"></div>
   </div>
-  <div class="progressTip progressTip1">
+  <div class="totalNumberWrap">
   <span class="downloaded">0</span>
   /
   <span class="imgNum totalNumber">0</span>
@@ -68,14 +79,19 @@ class ProgressBar {
   private allProgressBar: ProgressBarEl[] = []
 
   // 重设所有进度
-  public reset(num: number, downloaded: number = 0) {
+  public reset(progressBarNum: number, downloaded: number = 0) {
+    if (progressBarNum === 0) {
+      // 如果进度条数量为 0（抓取结果为空），则隐藏进度条区域
+      return this.hide()
+    }
+
     // 重置总进度条
     this.setTotalProgress(downloaded)
     this.totalNumberEl.textContent = store.result.length.toString()
     // 重置子进度条
-    this.listWrap.innerHTML = this.barHTML.repeat(num)
+    this.listWrap.innerHTML = this.barHTML.repeat(progressBarNum)
 
-    this.wrap.style.display = 'block'
+    this.show()
 
     // 保存子进度条上需要使用到的元素
     const allProgressBar = this.listWrap.querySelectorAll('.downloadBar')
@@ -111,6 +127,14 @@ class ProgressBar {
   public showErrorColor(index: number, show: boolean) {
     const bar = this.allProgressBar[index]
     bar.name.classList[show ? 'add' : 'remove']('downloadError')
+  }
+
+  private show() {
+    this.wrap.style.display = 'block'
+  }
+
+  private hide() {
+    this.wrap.style.display = 'none'
   }
 }
 

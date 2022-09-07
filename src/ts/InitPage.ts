@@ -31,7 +31,7 @@ class InitPage {
       case pageType.list.Tags:
         return new InitTagPage()
       default:
-        console.error('Illegal pageType')
+        return
     }
   }
 }

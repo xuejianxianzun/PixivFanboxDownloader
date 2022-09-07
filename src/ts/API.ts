@@ -3,48 +3,6 @@
 import { Post, PostList, CreatorData } from './CrawlResult.d'
 
 class API {
-  // 检查给定的字符串解析为数字后，是否大于 0
-  static checkNumberGreater0(arg: string) {
-    let num = parseInt(arg)
-    // 空值会是 NaN
-    if (!isNaN(num) && num > 0) {
-      // 符合条件
-      return {
-        result: true,
-        value: num,
-      }
-    }
-    // 不符合条件
-    return {
-      result: false,
-      value: 0,
-    }
-  }
-
-  // 从 url 中获取指定的查询字段的值
-  // 注意：返回值经过 encodeURIComponent 编码！
-  static getURLSearchField(url: string, query: string) {
-    const result = new URL(url).searchParams.get(query)
-    if (result !== null) {
-      return encodeURIComponent(result)
-    } else {
-      return ''
-    }
-  }
-
-  // 从 URL 中获取指定路径名的值，适用于符合 RESTful API 风格的路径
-  // 如 https://kyomoneko.fanbox.cc/posts/904593
-  // 把路径用 / 分割，查找 key 所在的位置，后面一项就是它的 value
-  static getURLPathField(query: string) {
-    const pathArr = location.pathname.split('/')
-    const index = pathArr.indexOf(query)
-    if (index > 0) {
-      return pathArr[index + 1]
-    }
-
-    throw new Error(`getURLPathField ${query} failed!`)
-  }
-
   // 组装 url 的查询参数。当该参数有值时，将其添加到 url 里
   static assembleURL(
     baseURL: string,
