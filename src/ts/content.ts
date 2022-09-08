@@ -9,6 +9,7 @@
  * QQ group:  853021998
  */
 
+import './UnifiedURL'
 import './ListenPageSwitch'
 import './PageType'
 import './CenterPanel'

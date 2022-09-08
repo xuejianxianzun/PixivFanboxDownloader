@@ -844,6 +844,20 @@ const langText = {
     '{} つのファイルをスキップしました',
     '{}개의 파일을 건너뛰었습니다',
   ],
+  _统一网址格式: [
+    '统一网址格式',
+    '統一網址格式',
+    'Unified URL Format',
+    '統一 URL 形式',
+    '통합 URL 형식',
+  ],
+  _统一网址格式的说明: [
+    '保持用户名在域名之后，例如：https://www.fanbox.cc/@username',
+    '保持使用者名稱在域名後面，例如：https://www.fanbox.cc/@username',
+    'Keep the username after the domain name, for example: https://www.fanbox.cc/@username',
+    'ユーザー名はドメイン名の後にあります。例: https://www.fanbox.cc/@username',
+    '도메인 이름 뒤에 사용자 이름을 유지합니다. 예를 들면 다음과 같습니다. https://www.fanbox.cc/@username',
+  ],
 }
 
 export { langText }

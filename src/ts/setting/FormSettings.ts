@@ -55,6 +55,7 @@ class FormSettings {
       'zeroPadding',
       'deduplication',
       'savePostCover',
+      'unifiedURL',
     ],
     text: [
       'fee',

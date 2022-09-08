@@ -25,7 +25,7 @@ async function copys() {
 
     await copy('./', './dist', {
       overwrite: true,
-      filter: ['*.md', 'LICENSE'],
+      filter: ['README*.md', 'LICENSE'],
     }).then(function (results) {
       resolve()
       console.log('Copy success')

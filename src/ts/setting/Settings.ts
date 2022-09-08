@@ -93,6 +93,7 @@ interface XzSetting {
   zeroPaddingLength: number
   deduplication: boolean
   showHowToUse: boolean
+  unifiedURL: boolean
 }
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
@@ -143,6 +144,7 @@ class Settings {
     zeroPaddingLength: 3,
     deduplication: false,
     showHowToUse: true,
+    unifiedURL: true,
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)

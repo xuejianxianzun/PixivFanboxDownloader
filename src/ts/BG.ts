@@ -17,7 +17,8 @@ interface BGItem {
 class BG {
   constructor() {
     this.IDB = new IndexedDB()
-    this.init()
+    this.initDB()
+    this.bindEvents()
   }
 
   private list: BGItem[] = []
@@ -32,14 +33,13 @@ class BG {
   private readonly storeName = 'bg'
   private readonly keyName = 'bg'
 
-  private async init() {
-    this.bindEvents()
-    await this.initDB()
-    this.restore()
-  }
-
   private async initDB() {
-    await this.IDB.open(this.DBName, this.DBVer, this.onUpdate)
+    // 如果用户没有启用“背景图片”，就不会创建数据库
+    // 因为大部分用户都不会启用此功能，所以没必要创建数据库
+    if (settings.bgDisplay) {
+      await this.IDB.open(this.DBName, this.DBVer, this.onUpdate)
+      this.restore()
+    }
   }
 
   // 在数据库升级事件里创建表
@@ -71,6 +71,9 @@ class BG {
       const data = ev.detail.data as any
       if (data.name === 'bgDisplay') {
         this.setBGAll()
+        if (data.value) {
+          this.initDB()
+        }
       }
 
       if (data.name === 'bgOpacity') {

@@ -226,15 +226,16 @@ class BG {
             }
         };
         this.IDB = new _utils_IndexedDB__WEBPACK_IMPORTED_MODULE_2__["IndexedDB"]();
-        this.init();
-    }
-    async init() {
+        this.initDB();
         this.bindEvents();
-        await this.initDB();
-        this.restore();
     }
     async initDB() {
-        await this.IDB.open(this.DBName, this.DBVer, this.onUpdate);
+        // 如果用户没有启用“背景图片”，就不会创建数据库
+        // 因为大部分用户都不会启用此功能，所以没必要创建数据库
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].bgDisplay) {
+            await this.IDB.open(this.DBName, this.DBVer, this.onUpdate);
+            this.restore();
+        }
     }
     createBGLayer(wrap) {
         const div = document.createElement('div');
@@ -253,6 +254,9 @@ class BG {
             const data = ev.detail.data;
             if (data.name === 'bgDisplay') {
                 this.setBGAll();
+                if (data.value) {
+                    this.initDB();
+                }
             }
             if (data.name === 'bgOpacity') {
                 this.setBGAll();
@@ -1365,6 +1369,15 @@ const formHtml = `<form class="settingForm">
     <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
     <slot data-name="downloadArea"></slot>
     <slot data-name="progressBar"></slot>
+
+    <p class="option" data-no="18">
+    <span class="has_tip settingNameStyle1" data-xztip="_统一网址格式的说明">
+    <span data-xztext="_统一网址格式"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="unifiedURL" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch"></span>
+    </p>
       
     <p class="option" data-no="53">
     <span class="settingNameStyle1" data-xztext="_高亮显示关键字"></span>
@@ -3909,6 +3922,54 @@ class Tools {
 
 /***/ }),
 
+/***/ "./src/ts/UnifiedURL.ts":
+/*!******************************!*\
+  !*** ./src/ts/UnifiedURL.ts ***!
+  \******************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+
+class UnifiedURL {
+    constructor() {
+        this.bindEvents();
+    }
+    bindEvents() {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+            const data = ev.detail.data;
+            if (data.name === 'unifiedURL' && data.value) {
+                this.check();
+            }
+        });
+    }
+    check() {
+        // 首先取出二级域名
+        // https://www.fanbox.cc/
+        const test = location.hostname.match(/(.*)\.fanbox.cc/);
+        if (test && test.length > 1) {
+            const subDomain = test[1];
+            if (subDomain === 'www') {
+                return;
+            }
+            // 如果二级域名不是 www，那么就是用户名。在 https://www.fanbox.cc/ 后面插入用户名
+            // 用户名在后面时，path 不能以斜线结尾，否则会 404。（用户名在前且处于用户主页时，path 就只有一个斜线）
+            let path = location.pathname;
+            if (path.endsWith('/')) {
+                path = path.substring(0, path.length - 1);
+            }
+            const newURL = `https://www.fanbox.cc/@${subDomain}` + path;
+            location.href = newURL;
+        }
+    }
+}
+new UnifiedURL();
+
+
+/***/ }),
+
 /***/ "./src/ts/content.ts":
 /*!***************************!*\
   !*** ./src/ts/content.ts ***!
@@ -3918,19 +3979,20 @@ class Tools {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ListenPageSwitch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListenPageSwitch */ "./src/ts/ListenPageSwitch.ts");
-/* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PageType */ "./src/ts/PageType.ts");
-/* harmony import */ var _CenterPanel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CenterPanel */ "./src/ts/CenterPanel.ts");
-/* harmony import */ var _setting_Form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./setting/Form */ "./src/ts/setting/Form.ts");
-/* harmony import */ var _InitPage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InitPage */ "./src/ts/InitPage.ts");
-/* harmony import */ var _QuickCrawl__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./QuickCrawl */ "./src/ts/QuickCrawl.ts");
-/* harmony import */ var _Tip__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Tip */ "./src/ts/Tip.ts");
-/* harmony import */ var _Tip__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_Tip__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _OutputPanel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./OutputPanel */ "./src/ts/OutputPanel.ts");
-/* harmony import */ var _download_DownloadControl__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./download/DownloadControl */ "./src/ts/download/DownloadControl.ts");
-/* harmony import */ var _ShowNotification__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ShowNotification */ "./src/ts/ShowNotification.ts");
-/* harmony import */ var _ShowHowToUse__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ShowHowToUse */ "./src/ts/ShowHowToUse.ts");
-/* harmony import */ var _ShowWhatIsNew__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ShowWhatIsNew */ "./src/ts/ShowWhatIsNew.ts");
+/* harmony import */ var _UnifiedURL__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UnifiedURL */ "./src/ts/UnifiedURL.ts");
+/* harmony import */ var _ListenPageSwitch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListenPageSwitch */ "./src/ts/ListenPageSwitch.ts");
+/* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PageType */ "./src/ts/PageType.ts");
+/* harmony import */ var _CenterPanel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CenterPanel */ "./src/ts/CenterPanel.ts");
+/* harmony import */ var _setting_Form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./setting/Form */ "./src/ts/setting/Form.ts");
+/* harmony import */ var _InitPage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./InitPage */ "./src/ts/InitPage.ts");
+/* harmony import */ var _QuickCrawl__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./QuickCrawl */ "./src/ts/QuickCrawl.ts");
+/* harmony import */ var _Tip__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Tip */ "./src/ts/Tip.ts");
+/* harmony import */ var _Tip__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_Tip__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _OutputPanel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./OutputPanel */ "./src/ts/OutputPanel.ts");
+/* harmony import */ var _download_DownloadControl__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./download/DownloadControl */ "./src/ts/download/DownloadControl.ts");
+/* harmony import */ var _ShowNotification__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ShowNotification */ "./src/ts/ShowNotification.ts");
+/* harmony import */ var _ShowHowToUse__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ShowHowToUse */ "./src/ts/ShowHowToUse.ts");
+/* harmony import */ var _ShowWhatIsNew__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ShowWhatIsNew */ "./src/ts/ShowWhatIsNew.ts");
 /*
  * project: Pixiv Fanbox Downloader
  * author:  xuejianxianzun; 雪见仙尊
@@ -3941,6 +4003,7 @@ __webpack_require__.r(__webpack_exports__);
  * E-mail:  xuejianxianzun@gmail.com
  * QQ group:  853021998
  */
+
 
 
 
@@ -5533,6 +5596,20 @@ const langText = {
         '{} つのファイルをスキップしました',
         '{}개의 파일을 건너뛰었습니다',
     ],
+    _统一网址格式: [
+        '统一网址格式',
+        '統一網址格式',
+        'Unified URL Format',
+        '統一 URL 形式',
+        '통합 URL 형식',
+    ],
+    _统一网址格式的说明: [
+        '保持用户名在域名之后，例如：https://www.fanbox.cc/@username',
+        '保持使用者名稱在域名後面，例如：https://www.fanbox.cc/@username',
+        'Keep the username after the domain name, for example: https://www.fanbox.cc/@username',
+        'ユーザー名はドメイン名の後にあります。例: https://www.fanbox.cc/@username',
+        '도메인 이름 뒤에 사용자 이름을 유지합니다. 예를 들면 다음과 같습니다. https://www.fanbox.cc/@username',
+    ],
 };
 
 
@@ -5802,6 +5879,7 @@ class FormSettings {
                 'zeroPadding',
                 'deduplication',
                 'savePostCover',
+                'unifiedURL',
             ],
             text: [
                 'fee',
@@ -6376,6 +6454,7 @@ class Settings {
             zeroPaddingLength: 3,
             deduplication: false,
             showHowToUse: true,
+            unifiedURL: true,
         };
         this.allSettingKeys = Object.keys(this.defaultSettings);
         // 值为浮点数的选项

@@ -35,4 +35,5 @@ export interface SettingsForm extends HTMLFormElement {
   zeroPadding: HTMLInputElement
   zeroPaddingLength: HTMLInputElement
   deduplication: HTMLInputElement
+  unifiedURL: HTMLInputElement
 }

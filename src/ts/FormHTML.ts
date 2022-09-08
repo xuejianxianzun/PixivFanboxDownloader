@@ -256,6 +256,15 @@ export const formHtml = `<form class="settingForm">
     <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
     <slot data-name="downloadArea"></slot>
     <slot data-name="progressBar"></slot>
+
+    <p class="option" data-no="18">
+    <span class="has_tip settingNameStyle1" data-xztip="_统一网址格式的说明">
+    <span data-xztext="_统一网址格式"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="unifiedURL" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch"></span>
+    </p>
       
     <p class="option" data-no="53">
     <span class="settingNameStyle1" data-xztext="_高亮显示关键字"></span>
