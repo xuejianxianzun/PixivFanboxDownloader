@@ -1572,7 +1572,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
 /* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./States */ "./src/ts/States.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./MsgBox */ "./src/ts/MsgBox.ts");
+/* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Toast */ "./src/ts/Toast.ts");
 // 初始化抓取页面的流程
+
 
 
 
@@ -1619,7 +1621,8 @@ class InitPageBase {
         }
         _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlStart');
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].clear();
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_任务开始0'));
+        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
+        _Toast__WEBPACK_IMPORTED_MODULE_11__["toast"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
         _TitleBar__WEBPACK_IMPORTED_MODULE_6__["titleBar"].change('↑');
         this.getPostDataThreadNum = 0;
         this.getPostDatafinished = 0;
@@ -1703,7 +1706,7 @@ class InitPageBase {
         }
         _Store__WEBPACK_IMPORTED_MODULE_3__["store"].crawlCompleteTime = new Date();
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取文件数量', _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length.toString()));
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取完毕'), 2);
+        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取完毕'), 2);
         _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlFinish');
     }
     // 抓取结果为 0 时输出提示
@@ -3660,7 +3663,7 @@ class Toast {
             dealy: 1500,
             enter: 'up',
             leave: 'fade',
-            position: 'topCenter',
+            position: 'mouse',
         };
         this.successCfg = {
             msg: '',
@@ -3669,7 +3672,7 @@ class Toast {
             dealy: 1500,
             enter: 'up',
             leave: 'fade',
-            position: 'topCenter',
+            position: 'mouse',
         };
         this.warningCfg = {
             msg: '',
@@ -3678,7 +3681,7 @@ class Toast {
             dealy: 1500,
             enter: 'up',
             leave: 'fade',
-            position: 'topCenter',
+            position: 'mouse',
         };
         this.errorCfg = {
             msg: '',
@@ -3687,7 +3690,7 @@ class Toast {
             dealy: 1500,
             enter: 'up',
             leave: 'fade',
-            position: 'topCenter',
+            position: 'mouse',
         };
         this.tipClassName = 'xzToast';
         this.mousePosition = { x: 0, y: 0 };
@@ -3951,10 +3954,13 @@ class UnifiedURL {
         const test = location.hostname.match(/(.*)\.fanbox.cc/);
         if (test && test.length > 1) {
             const subDomain = test[1];
-            if (subDomain === 'www') {
+            // 对于一些特定的二级域名，不会跳转
+            if (subDomain === 'www' ||
+                subDomain === 'api' ||
+                subDomain === 'downloads') {
                 return;
             }
-            // 如果二级域名不是 www，那么就是用户名。在 https://www.fanbox.cc/ 后面插入用户名
+            // 如果二级域名不符合上面的条件，那么就是用户名。在 https://www.fanbox.cc/ 后面插入用户名
             // 用户名在后面时，path 不能以斜线结尾，否则会 404。（用户名在前且处于用户主页时，path 就只有一个斜线）
             let path = location.pathname;
             if (path.endsWith('/')) {
@@ -4757,9 +4763,16 @@ __webpack_require__.r(__webpack_exports__);
 // {} 是占位符
 // <br> 是换行
 const langText = {
+    _开始抓取: [
+        '开始抓取',
+        '開始抓取',
+        'start crawling',
+        'クロールを開始する',
+        '크롤링 시작',
+    ],
     _或者: [' 或者 ', ' 或是 ', ' or ', ' または ', ' 또는 '],
     _并且: [' 并且 ', ' 並且 ', ' and ', ' かつ ', ' 그리고 '],
-    _任务开始0: [
+    _任务开始: [
         '任务开始',
         '工作開始',
         'Task starts',
@@ -5597,11 +5610,11 @@ const langText = {
         '{}개의 파일을 건너뛰었습니다',
     ],
     _统一网址格式: [
-        '统一网址格式',
-        '統一網址格式',
-        'Unified URL Format',
-        '統一 URL 形式',
-        '통합 URL 형식',
+        '统一<span class="key">网址</span>格式',
+        '統一<span class="key">網址</span>格式',
+        'Unified <span class="key">URL</span> Format',
+        '統一 <span class="key">URL</span> 形式',
+        '통합 <span class="key">URL</span> 형식',
     ],
     _统一网址格式的说明: [
         '保持用户名在域名之后，例如：https://www.fanbox.cc/@username',

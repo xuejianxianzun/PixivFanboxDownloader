@@ -4,9 +4,16 @@
 // <br> 是换行
 
 const langText = {
+  _开始抓取: [
+    '开始抓取',
+    '開始抓取',
+    'start crawling',
+    'クロールを開始する',
+    '크롤링 시작',
+  ],
   _或者: [' 或者 ', ' 或是 ', ' or ', ' または ', ' 또는 '],
   _并且: [' 并且 ', ' 並且 ', ' and ', ' かつ ', ' 그리고 '],
-  _任务开始0: [
+  _任务开始: [
     '任务开始',
     '工作開始',
     'Task starts',
@@ -845,11 +852,11 @@ const langText = {
     '{}개의 파일을 건너뛰었습니다',
   ],
   _统一网址格式: [
-    '统一网址格式',
-    '統一網址格式',
-    'Unified URL Format',
-    '統一 URL 形式',
-    '통합 URL 형식',
+    '统一<span class="key">网址</span>格式',
+    '統一<span class="key">網址</span>格式',
+    'Unified <span class="key">URL</span> Format',
+    '統一 <span class="key">URL</span> 形式',
+    '통합 <span class="key">URL</span> 형식',
   ],
   _统一网址格式的说明: [
     '保持用户名在域名之后，例如：https://www.fanbox.cc/@username',

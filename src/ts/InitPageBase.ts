@@ -11,6 +11,7 @@ import { PostList, Post } from './CrawlResult.d'
 import { API } from './API'
 import { states } from './States'
 import { msgBox } from './MsgBox'
+import { toast } from './Toast'
 
 abstract class InitPageBase {
   // 初始化
@@ -56,7 +57,8 @@ abstract class InitPageBase {
 
     log.clear()
 
-    log.success(lang.transl('_任务开始0'))
+    log.success(lang.transl('_开始抓取'))
+    toast.show(lang.transl('_开始抓取'))
 
     titleBar.change('↑')
 
@@ -158,7 +160,7 @@ abstract class InitPageBase {
 
     log.log(lang.transl('_抓取文件数量', store.result.length.toString()))
 
-    log.log(lang.transl('_抓取完毕'), 2)
+    log.success(lang.transl('_抓取完毕'), 2)
 
     EVT.fire('crawlFinish')
   }
