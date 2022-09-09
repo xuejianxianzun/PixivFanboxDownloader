@@ -17,7 +17,7 @@ class InitHomePage extends InitPageBase {
     Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
-      lang.transl('_抓取赞助的所有用户的投稿')
+      '_抓取赞助的所有用户的投稿'
     ).addEventListener('click', () => {
       this.readyCrawl()
     })
@@ -25,7 +25,7 @@ class InitHomePage extends InitPageBase {
     Tools.addBtn(
       'crawlBtns',
       Colors.bgGreen,
-      lang.transl('_清空已保存的抓取结果')
+      '_清空已保存的抓取结果'
     ).addEventListener('click', () => {
       EVT.fire('clearSavedCrawl')
     })

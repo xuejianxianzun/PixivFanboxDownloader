@@ -15,13 +15,12 @@ class InitPostPage extends InitPageBase {
 
   // 添加中间按钮
   protected addCrawlBtns() {
-    Tools.addBtn(
-      'crawlBtns',
-      Colors.bgBlue,
-      lang.transl('_抓取这篇投稿')
-    ).addEventListener('click', () => {
-      this.readyCrawl()
-    })
+    Tools.addBtn('crawlBtns', Colors.bgBlue, '_抓取这篇投稿').addEventListener(
+      'click',
+      () => {
+        this.readyCrawl()
+      }
+    )
   }
 
   protected initAny(): void {

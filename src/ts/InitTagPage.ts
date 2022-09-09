@@ -17,7 +17,7 @@ class InitTagPage extends InitPageBase {
     Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
-      lang.transl('_抓取该tag的投稿')
+      '_抓取该tag的投稿'
     ).addEventListener('click', () => {
       this.readyCrawl()
     })

@@ -1462,39 +1462,37 @@ const formHtml = `<form class="settingForm">
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitHomePage", function() { return InitHomePage; });
-/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
-/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
-/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
-/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
-/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
+/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 
 
 
 
 
-
-class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
+class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBase"] {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取赞助的所有用户的投稿')).addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBlue, '_抓取赞助的所有用户的投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgGreen, _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_清空已保存的抓取结果')).addEventListener('click', () => {
-            _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('clearSavedCrawl');
+        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgGreen, '_清空已保存的抓取结果').addEventListener('click', () => {
+            _EVT__WEBPACK_IMPORTED_MODULE_4__["EVT"].fire('clearSavedCrawl');
         });
     }
     async FetchPostList() {
         let data;
         if (this.nextUrl) {
-            data = (await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(this.nextUrl));
+            data = (await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(this.nextUrl));
         }
         else {
-            data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getPostListSupporting(300);
+            data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPostListSupporting(300);
         }
         this.afterFetchPostList(data);
     }
@@ -1736,34 +1734,32 @@ class InitPageBase {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitPostListPage", function() { return InitPostListPage; });
-/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
-/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
-/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
-/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
+/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
 
 
 
 
-
-class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
+class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBase"] {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取该用户的投稿')).addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBlue, '_抓取该用户的投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     async FetchPostList() {
         let data;
         if (this.nextUrl) {
-            data = (await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(this.nextUrl));
+            data = (await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(this.nextUrl));
         }
         else {
-            data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getPostListByUser(_API__WEBPACK_IMPORTED_MODULE_4__["API"].getCreatorId(location.href), 300);
+            data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPostListByUser(_API__WEBPACK_IMPORTED_MODULE_3__["API"].getCreatorId(location.href), 300);
         }
         this.afterFetchPostList(data);
     }
@@ -1783,14 +1779,13 @@ class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitP
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitPostPage", function() { return InitPostPage; });
-/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
-/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
-/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
-/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
-/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
-/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
-/* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./States */ "./src/ts/States.ts");
+/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
+/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./States */ "./src/ts/States.ts");
 
 
 
@@ -1798,27 +1793,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
+class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBase"] {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取这篇投稿')).addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBlue, '_抓取这篇投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     initAny() {
-        _EVT__WEBPACK_IMPORTED_MODULE_6__["EVT"].bindOnce('quickCrawl', _EVT__WEBPACK_IMPORTED_MODULE_6__["EVT"].list.quickCrawl, () => {
-            if (!_States__WEBPACK_IMPORTED_MODULE_7__["states"].busy) {
+        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].bindOnce('quickCrawl', _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].list.quickCrawl, () => {
+            if (!_States__WEBPACK_IMPORTED_MODULE_6__["states"].busy) {
                 this.readyCrawl();
             }
         });
     }
     destroy() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].clearSlot('crawlBtns');
+        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].clearSlot('crawlBtns');
     }
     nextStep() {
         this.getPostDataThreadNum = 1;
@@ -1826,7 +1820,7 @@ class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
     }
     async FetchPostList() { }
     async fetchPost() {
-        const data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].getURLPathField(window.location.pathname, 'posts'));
+        const data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].getURLPathField(window.location.pathname, 'posts'));
         this.afterFetchPost(data);
     }
 }
@@ -1845,36 +1839,34 @@ class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitTagPage", function() { return InitTagPage; });
-/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
-/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
-/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
-/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
-/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
+/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
 
 
 
 
 
-
-class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
+class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBase"] {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取该tag的投稿')).addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBlue, '_抓取该tag的投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     async FetchPostList() {
         let data;
         if (this.nextUrl) {
-            data = (await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(this.nextUrl));
+            data = (await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(this.nextUrl));
         }
         else {
-            data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getTagPostListByUser(await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getUserId(_API__WEBPACK_IMPORTED_MODULE_4__["API"].getCreatorId(location.href)), _utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].getURLPathField(window.location.pathname, 'tags'));
+            data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getTagPostListByUser(await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getUserId(_API__WEBPACK_IMPORTED_MODULE_3__["API"].getCreatorId(location.href)), _utils_Utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].getURLPathField(window.location.pathname, 'tags'));
         }
         this.afterFetchPostList(data);
     }
@@ -3743,6 +3735,8 @@ const toast = new Toast();
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Tools", function() { return Tools; });
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+
 class Tools {
     static getUserId() {
         const Reg = /creator\/(\d*)?/;
@@ -3790,15 +3784,17 @@ class Tools {
     static clearSlot(name) {
         this.findSlot(name).innerHTML = '';
     }
-    static addBtn(slot, bg = '', text = '', attr = []) {
+    // 创建下载面板上的通用按钮
+    // 注意 textFlag 和 titleFlag 必须是 LangText 里存在的属性，这是为了能根据语言设置动态切换文本
+    // 如果 text 和 title 是直接设置的字符串，那么不应该使用这个方法设置，而是由调用者自行设置
+    static addBtn(slot, bg = '', textFlag = '', titleFlag = '') {
         const e = document.createElement('button');
         e.type = 'button';
         e.style.backgroundColor = bg;
-        e.textContent = text;
-        for (const [key, value] of attr) {
-            e.setAttribute(key, value);
-        }
+        textFlag && e.setAttribute('data-xztext', textFlag);
+        titleFlag && e.setAttribute('data-xztitle', titleFlag);
         this.useSlot(slot, e);
+        _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].register(e);
         return e;
     }
     /**获取页面标题 */
