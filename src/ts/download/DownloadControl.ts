@@ -9,7 +9,6 @@ import {
 import { store } from '../Store'
 import { log } from '../Log'
 import { lang } from '../Lang'
-import { titleBar } from '../TitleBar'
 import { Colors } from '../Colors'
 import { Download } from './Download'
 import { progressBar } from '../ProgressBar'
@@ -17,6 +16,8 @@ import { settings } from '../setting/Settings'
 import { states } from '../States'
 import { ShowSkipCount } from './ShowSkipCount'
 import { msgBox } from '../MsgBox'
+import { downloadStates}  from './DownloadStates'
+import { toast } from '../Toast'
 
 interface TaskList {
   [id: string]: {
@@ -43,8 +44,6 @@ class DownloadControl {
 
   private taskBatch = 0 // 标记任务批次，每次重新下载时改变它的值，传递给后台使其知道这是一次新的下载
 
-  private statesList: number[] = [] // 下载状态列表，保存每个下载任务的状态
-
   private taskList: TaskList = {} // 下载任务列表，使用下载的文件的 id 做 key，保存下载栏编号和它在下载状态列表中的索引
 
   private downloaded: number = 0 // 已下载的任务数量
@@ -57,9 +56,9 @@ class DownloadControl {
 
   private downStatusEl: HTMLSpanElement = document.createElement('span')
 
-  private downloadStop: boolean = false // 是否停止下载
+  private stop: boolean = false // 是否停止下载
 
-  private downloadPause: boolean = false // 是否暂停下载
+  private pause: boolean = false // 是否暂停下载
 
   private readonly msgFlag = 'uuidTip'
 
@@ -75,7 +74,7 @@ class DownloadControl {
       }
 
       this.showDownloadArea()
-      this.beforeDownload()
+      this.readyDownload()
     })
 
     window.addEventListener(EVT.list.skipDownload, (ev: CustomEventInit) => {
@@ -124,35 +123,33 @@ class DownloadControl {
         log.error(lang.transl('_uuid'))
       }
     })
+    
+    window.addEventListener(EVT.list.downloadComplete, () => {
+      log.success(lang.transl('_下载完毕'), 2)
+      toast.success(lang.transl('_下载完毕2'), {
+        position: 'topCenter',
+      })
+    })
   }
 
-  private set setDownloaded(val: number) {
-    this.downloaded = val
-    this.LogDownloadStates()
+  private setDownloaded() {
+    this.downloaded = downloadStates.downloadedCount()
 
-    // 设置下载进度信息
-    this.totalNumberEl.textContent = store.result.length.toString()
+    const text = `${this.downloaded} / ${store.result.length}`
+    log.log(text, 2, false)
+
+    // 设置总下载进度条
     progressBar.setTotalProgress(this.downloaded)
 
-    // 重置下载进度信息
-    if (this.downloaded === 0) {
-      this.setDownStateText(lang.transl('_未开始下载'))
-    }
-
-    // 下载完毕
+    // 所有文件正常下载完毕（跳过下载的文件也算正常下载）
     if (this.downloaded === store.result.length) {
-      EVT.fire('downloadComplete')
+      window.setTimeout(() => {
+        // 延后触发下载完成的事件。因为下载完成事件是由上游事件（跳过下载，或下载成功事件）派生的，如果这里不延迟触发，可能导致其他模块先接收到下载完成事件，后接收到上游事件。
+        EVT.fire('downloadComplete')
+      }, 0)
       this.reset()
-      this.setDownStateText(lang.transl('_下载完毕'))
-      log.success(lang.transl('_下载完毕'), 2)
-      titleBar.change('√')
     }
   }
-
-  private downloadedAdd() {
-    this.setDownloaded = this.downloaded + 1
-  }
-
   // 显示或隐藏下载区域
   private showDownloadArea() {
     this.wrapper.style.display = 'block'
@@ -174,9 +171,8 @@ class DownloadControl {
   }
 
   private reset() {
-    this.statesList = []
-    this.downloadPause = false
-    this.downloadStop = false
+    this.pause = false
+    this.stop = false
     clearTimeout(this.reTryTimer)
   }
 
@@ -251,14 +247,12 @@ class DownloadControl {
   }
 
   // 抓取完毕之后，已经可以开始下载时，根据一些状态进行处理
-  private beforeDownload() {
-    this.setDownloaded = 0
+  private readyDownload() {
+    this.showDownloadArea()
+
+    this.setDownloaded()
 
     this.setDownloadThread()
-
-    if (!settings.autoStartDownload && !states.quickCrawl) {
-      titleBar.change('▶')
-    }
 
     // 视情况自动开始下载
     if (settings.autoStartDownload || states.quickCrawl) {
@@ -273,30 +267,21 @@ class DownloadControl {
       return
     }
 
-    // 如果之前不是暂停状态，则需要重新下载
-    if (!this.downloadPause) {
-      this.setDownloaded = 0
-      // 初始化下载记录
-      // 状态：
-      // -1 未使用
-      // 0 使用中
-      // 1 已完成
-      this.statesList = new Array(store.result.length).fill(-1)
-      this.taskBatch = new Date().getTime() // 修改本批下载任务的标记
-    } else {
-      // 继续下载
+    console.log(downloadStates.states)
+    if (this.pause) {
+      // 从上次中断的位置继续下载
       // 把“使用中”的下载状态重置为“未使用”
-      for (let index = 0; index < this.statesList.length; index++) {
-        if (this.statesList[index] === 0) {
-          this.statesList[index] = -1
-        }
-      }
+      downloadStates.resume()
+    } else {
+      // 如果之前没有暂停任务，也没有进入恢复模式，则重新下载
+      // 初始化下载状态列表
+      downloadStates.init()
     }
 
     // 重置一些条件
-    this.downloadPause = false
-    this.downloadStop = false
-    clearTimeout(this.reTryTimer)
+    this.reset()
+    this.setDownloaded()
+    this.taskBatch = new Date().getTime() // 修改本批下载任务的标记
     this.setDownloadThread()
 
     EVT.fire('downloadStart')
@@ -320,17 +305,16 @@ class DownloadControl {
     }
 
     // 停止的优先级高于暂停。点击停止可以取消暂停状态，但点击暂停不能取消停止状态
-    if (this.downloadStop === true) {
+    if (this.stop === true) {
       return
     }
 
-    if (this.downloadPause === false) {
+    if (this.pause === false) {
       // 如果正在下载中
       if (states.busy) {
-        this.downloadPause = true // 发出暂停信号
+        this.pause = true // 发出暂停信号
         EVT.fire('downloadPause')
 
-        titleBar.change('║')
         this.setDownStateText(lang.transl('_已暂停'), '#f00')
         log.warning(lang.transl('_已暂停'), 2)
       } else {
@@ -344,26 +328,25 @@ class DownloadControl {
   private stopDownload() {
     clearTimeout(this.reTryTimer)
 
-    if (store.result.length === 0 || this.downloadStop) {
+    if (store.result.length === 0 || this.stop) {
       return
     }
 
-    this.downloadStop = true
+    this.stop = true
     EVT.fire('downloadStop')
 
-    titleBar.change('■')
     this.setDownStateText(lang.transl('_已停止'), '#f00')
     log.error(lang.transl('_已停止'), 2)
-    this.downloadPause = false
+    this.pause = false
   }
 
   private downloadError(data: DonwloadSuccessData, err?: string) {
-    if (this.downloadPause || this.downloadStop) {
+    if (this.pause || this.stop) {
       return false
     }
     const task = this.taskList[data.id]
     // 复位这个任务的状态
-    this.setDownloadedIndex(task.index, -1)
+    downloadStates.setState(task.index, -1)
     // 建立下载任务，再次下载它
     // 如果出现了服务端错误，可能是获取原图时出现错误，改为使用缩略图进行下载
     this.createDownload(task.progressBarIndex, err === 'SERVER_FAILED')
@@ -372,9 +355,11 @@ class DownloadControl {
   private downloadSuccess(data: DonwloadSuccessData) {
     const task = this.taskList[data.id]
     // 更改这个任务状态为“已完成”
-    this.setDownloadedIndex(task.index, 1)
+    downloadStates.setState(task.index, 1)
+
     // 增加已下载数量
-    this.downloadedAdd()
+    this.setDownloaded()
+
     // 是否继续下载
     const no = task.progressBarIndex
     if (this.checkContinueDownload()) {
@@ -382,17 +367,12 @@ class DownloadControl {
     }
   }
 
-  // 设置已下载列表中的标记
-  private setDownloadedIndex(index: number, value: -1 | 0 | 1) {
-    this.statesList[index] = value
-  }
-
   // 当一个文件下载完成后，检查是否还有后续下载任务
   private checkContinueDownload() {
     // 如果没有全部下载完毕
     if (this.downloaded < store.result.length) {
       // 如果任务已停止
-      if (this.downloadPause || this.downloadStop) {
+      if (this.pause || this.stop) {
         return false
       }
       // 如果已完成的数量 加上 线程中未完成的数量，仍然没有达到文件总数，继续添加任务
@@ -406,24 +386,10 @@ class DownloadControl {
     }
   }
 
-  // 在日志上显示下载进度
-  private LogDownloadStates() {
-    let text = `${this.downloaded} / ${store.result.length}`
-    log.log(text, 2, false)
-  }
-
   // 查找需要进行下载的作品，建立下载
   // 可选第二个参数：使用缩略图 url 而不是原图 url 进行下载
   private createDownload(progressBarIndex: number, useThumb: boolean = false) {
-    let length = this.statesList.length
-    let index: number | undefined
-    for (let i = 0; i < length; i++) {
-      if (this.statesList[i] === -1) {
-        this.statesList[i] = 0
-        index = i
-        break
-      }
-    }
+    const index = downloadStates.getFirstDownloadItem()
 
     if (index === undefined) {
       throw new Error('There are no data to download')
@@ -447,7 +413,6 @@ class DownloadControl {
       }
 
       // 建立下载
-      console.log('name', result.name)
       new Download(progressBarIndex, data)
     }
   }

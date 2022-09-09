@@ -5,7 +5,6 @@ import { filter } from './Filter'
 import { store } from './Store'
 import { log } from './Log'
 import { EVT } from './EVT'
-import { titleBar } from './TitleBar'
 import { saveData } from './SaveData'
 import { PostList, Post } from './CrawlResult.d'
 import { API } from './API'
@@ -59,8 +58,6 @@ abstract class InitPageBase {
 
     log.success(lang.transl('_开始抓取'))
     toast.show(lang.transl('_开始抓取'))
-
-    titleBar.change('↑')
 
     this.getPostDataThreadNum = 0
     this.getPostDatafinished = 0
@@ -169,7 +166,6 @@ abstract class InitPageBase {
   protected noResult() {
     EVT.fire('crawlFinish')
     EVT.fire('crawlEmpty')
-    titleBar.reset()
     log.error(lang.transl('_抓取结果为零'), 2)
     msgBox.error(lang.transl('_抓取结果为零'))
   }

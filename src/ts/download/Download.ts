@@ -1,6 +1,5 @@
 // 下载文件，并发送给浏览器下载
 import { EVT } from '../EVT'
-import { titleBar } from '../TitleBar'
 import { fileName } from '../FileName'
 import {
   downloadArgument,
@@ -63,7 +62,6 @@ class Download {
 
   // 下载文件
   private async download(arg: downloadArgument) {
-    titleBar.change('↓')
     this.fileName = fileName.getFileName(arg.data)
 
     // 检查是否是重复文件

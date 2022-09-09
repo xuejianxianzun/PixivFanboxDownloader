@@ -4,6 +4,7 @@ import { Tools } from './Tools'
 import { InitPageBase } from './InitPageBase'
 import { PostList } from './CrawlResult.d'
 import { API } from './API'
+import { EVT } from './EVT'
 
 class InitHomePage extends InitPageBase {
   constructor() {
@@ -19,6 +20,14 @@ class InitHomePage extends InitPageBase {
       lang.transl('_抓取赞助的所有用户的投稿')
     ).addEventListener('click', () => {
       this.readyCrawl()
+    })
+    
+    Tools.addBtn(
+      'crawlBtns',
+      Colors.bgGreen,
+      lang.transl('_清空已保存的抓取结果')
+      ).addEventListener('click', () => {
+      EVT.fire('clearSavedCrawl')
     })
   }
 

@@ -67,6 +67,8 @@ class EVENT {
     importDownloadRecord: 'importDownloadRecord',
     exportDownloadRecord: 'exportDownloadRecord',
     clearDownloadRecord: 'clearDownloadRecord',
+    resume: 'resume',
+    clearSavedCrawl: 'clearSavedCrawl',
   }
 
   public fire(type: eventNames, data: object | string | number | boolean = '') {
