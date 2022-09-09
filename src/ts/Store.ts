@@ -8,11 +8,12 @@ class Store {
   }
 
   public postIdList: string[] = []
-
-  public resultMeta: ResultMeta[] = [] // 储存抓取结果的元数据
-  public result: Result[] = [] // 储存抓取结果
-
-  public crawlCompleteTime: Date = new Date()
+  /**抓取结果的元数据 */
+  private resultMeta: ResultMeta[] = []
+  /**抓取结果 */
+  public result: Result[] = []
+  /**抓取完成的时间 */
+  public date: Date = new Date()
 
   private bindEvents() {
     window.addEventListener(EVT.list.crawlStart, () => {
@@ -36,15 +37,9 @@ class Store {
   // 添加每个作品的信息。只需要传递有值的属性
   public addResult(data: ResultMeta) {
     this.resultMeta.push(data)
-    // 因为文本的体积小，所以首先生成文本数据，它会被最早下载。这样不用等待大文件下载完了才下载文本文件
     // 为投稿里的所有的 文本内容 生成一份数据
+    // 但是此时并不会生成文本的 URL，等到下载时才会为其生成 URL
     if (data.links.text.length > 0) {
-      const text = data.links.text.join('\r\n')
-      const blob = new Blob([text], {
-        type: 'text/plain',
-      })
-      data.links.url = URL.createObjectURL(blob)
-      data.links.size = blob.size
       const result = Object.assign(this.getCommonData(data), data.links)
 
       this.result.push(result)

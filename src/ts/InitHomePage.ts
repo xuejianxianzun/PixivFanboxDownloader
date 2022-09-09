@@ -21,12 +21,12 @@ class InitHomePage extends InitPageBase {
     ).addEventListener('click', () => {
       this.readyCrawl()
     })
-    
+
     Tools.addBtn(
       'crawlBtns',
       Colors.bgGreen,
       lang.transl('_清空已保存的抓取结果')
-      ).addEventListener('click', () => {
+    ).addEventListener('click', () => {
       EVT.fire('clearSavedCrawl')
     })
   }

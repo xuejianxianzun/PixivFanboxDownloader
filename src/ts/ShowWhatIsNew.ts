@@ -17,6 +17,8 @@ class ShowWhatIsNew {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
       let msg = `${lang.transl('_whatisnew')}
       <br>
+      · ${lang.transl('_恢复未完成的下载任务')}
+      <br>
       · ${lang.transl('_在序号前面填充0')}
       <br>
       · ${lang.transl('_下载完成后显示通知')}

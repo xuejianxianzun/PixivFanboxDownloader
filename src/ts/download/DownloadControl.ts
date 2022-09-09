@@ -16,7 +16,7 @@ import { settings } from '../setting/Settings'
 import { states } from '../States'
 import { ShowSkipCount } from './ShowSkipCount'
 import { msgBox } from '../MsgBox'
-import { downloadStates}  from './DownloadStates'
+import { downloadStates } from './DownloadStates'
 import { toast } from '../Toast'
 
 interface TaskList {
@@ -52,8 +52,6 @@ class DownloadControl {
 
   private wrapper: HTMLDivElement = document.createElement('div')
 
-  private totalNumberEl: HTMLSpanElement = document.createElement('span')
-
   private downStatusEl: HTMLSpanElement = document.createElement('span')
 
   private stop: boolean = false // 是否停止下载
@@ -68,14 +66,16 @@ class DownloadControl {
       this.reset()
     })
 
-    window.addEventListener(EVT.list.crawlFinish, () => {
-      if (store.result.length === 0) {
-        return progressBar.reset(0)
-      }
-
-      this.showDownloadArea()
-      this.readyDownload()
-    })
+    for (const ev of [EVT.list.crawlFinish, EVT.list.resume]) {
+      window.addEventListener(ev, (ev) => {
+        // 当恢复了未完成的抓取数据时，将下载状态设置为暂停
+        this.pause = ev.type === 'resume'
+        // 让开始下载的方法进入任务队列，以便让监听上述事件的其他部分的代码先执行完毕
+        window.setTimeout(() => {
+          this.readyDownload()
+        }, 0)
+      })
+    }
 
     window.addEventListener(EVT.list.skipDownload, (ev: CustomEventInit) => {
       // 跳过下载的文件不会触发 downloadSuccess 事件
@@ -123,7 +123,7 @@ class DownloadControl {
         log.error(lang.transl('_uuid'))
       }
     })
-    
+
     window.addEventListener(EVT.list.downloadComplete, () => {
       log.success(lang.transl('_下载完毕'), 2)
       toast.success(lang.transl('_下载完毕2'), {
@@ -267,7 +267,6 @@ class DownloadControl {
       return
     }
 
-    console.log(downloadStates.states)
     if (this.pause) {
       // 从上次中断的位置继续下载
       // 把“使用中”的下载状态重置为“未使用”
@@ -395,6 +394,17 @@ class DownloadControl {
       throw new Error('There are no data to download')
     } else {
       let result = store.result[index]
+
+      // 对于文本数据，此时创建其 URL
+      if ((result as any).text && (result as any).text.length > 0) {
+        const text = (result as any).text.join('\r\n')
+        const blob = new Blob([text], {
+          type: 'text/plain',
+        })
+        result.url = URL.createObjectURL(blob)
+        result.size = blob.size
+      }
+
       if (useThumb && result.retryUrl) {
         ;[result.url, result.retryUrl] = [result.retryUrl, result.url]
       }

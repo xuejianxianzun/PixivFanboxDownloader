@@ -153,7 +153,7 @@ abstract class InitPageBase {
       return this.noResult()
     }
 
-    store.crawlCompleteTime = new Date()
+    store.date = new Date()
 
     log.log(lang.transl('_抓取文件数量', store.result.length.toString()))
 

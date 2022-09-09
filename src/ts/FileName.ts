@@ -89,7 +89,7 @@ class FileName {
         safe: false,
       },
       '{task_date}': {
-        value: DateFormat.format(store.crawlCompleteTime, settings.dateFormat),
+        value: DateFormat.format(store.date, settings.dateFormat),
         prefix: '',
         safe: false,
       },

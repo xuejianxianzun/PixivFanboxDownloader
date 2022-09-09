@@ -302,6 +302,10 @@ class Settings {
       value = !!value
     }
 
+    if (key === 'downloadThread' && value > Config.downloadThreadMax) {
+      value = Config.downloadThreadMax
+    }
+
     // 处理数组类型的值
     if (Array.isArray(this.defaultSettings[key])) {
       if (this.stringArrayKeys.includes(key)) {

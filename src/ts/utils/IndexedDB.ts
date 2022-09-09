@@ -206,7 +206,7 @@ class IndexedDB {
     })
   }
 
-  public async delete(storeNames: string, key: number) {
+  public async delete(storeNames: string, key: number | string) {
     return new Promise((resolve, reject) => {
       if (this.db === undefined) {
         reject('Database is not defined')

@@ -42,10 +42,7 @@ class ShowStatusOnTitle {
       this.set(Flags.waiting)
     })
 
-    for (const ev of [
-      EVT.list.crawlFinish,
-      EVT.list.resume,
-    ]) {
+    for (const ev of [EVT.list.crawlFinish, EVT.list.resume]) {
       window.addEventListener(ev, () => {
         this.set(Flags.readyDownload)
       })
@@ -113,10 +110,7 @@ class ShowStatusOnTitle {
   private reset() {
     window.clearInterval(this.flashingTimer)
 
-    const metaTagPage = [
-      pageType.list.UserHome,
-      pageType.list.UserPostList,
-    ]
+    const metaTagPage = [pageType.list.UserHome, pageType.list.UserPostList]
     // 从 og:title 标签获取标题。og:title 标签是最早更新标题的。但不确定是否在所有页面上都可以直接使用 og:title 标签的内容，所以这里只在部分页面上使用
     if (metaTagPage.includes(pageType.type)) {
       const ogTitle = document.querySelector(
