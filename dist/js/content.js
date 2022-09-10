@@ -3839,6 +3839,22 @@ class UnifiedURL {
         });
     }
     check() {
+        // 判断用户是否登录，如果未登录，则不会跳转
+        // 因为未登录时，fanbox 会强制把网址改为用户名在前的形式，下载器无法把网址改成用户名在后的形式
+        console.log(document.head.querySelector('meta#metadata').getAttribute('content'));
+        const metaElement = document.head.querySelector('meta#metadata');
+        if (!metaElement) {
+            return;
+        }
+        const content = metaElement.getAttribute('content');
+        if (!content) {
+            return;
+        }
+        const data = JSON.parse(content);
+        // null 说明用户未登录。登录后是 string id
+        if (data.context.user.userId === null) {
+            return;
+        }
         // 首先取出二级域名
         // https://www.fanbox.cc/
         const test = location.hostname.match(/(.*)\.fanbox.cc/);
