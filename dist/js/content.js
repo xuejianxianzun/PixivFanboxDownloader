@@ -1704,6 +1704,9 @@ class InitPageBase {
     }
     // 抓取完毕
     crawlFinished() {
+        if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].skipDueToFee > 0) {
+            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_因为价格限制而跳过的文章数量') + _Store__WEBPACK_IMPORTED_MODULE_3__["store"].skipDueToFee);
+        }
         if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length === 0) {
             return this.noResult();
         }
@@ -2793,6 +2796,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter */ "./src/ts/Filter.ts");
 /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Store */ "./src/ts/Store.ts");
 /* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./setting/Settings */ "./src/ts/setting/Settings.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+
+
 
 
 
@@ -2816,6 +2823,8 @@ class SaveData {
     }
     parsePost(data) {
         if (data.body === null) {
+            _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
+            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_因为价格限制不能抓取文章') + data.title);
             return;
         }
         // 针对投稿进行检查，决定是否保留它
@@ -3421,6 +3430,8 @@ class Store {
         this.result = [];
         /**抓取完成的时间 */
         this.date = new Date();
+        /**因为价格限制而不能抓取的文章 */
+        this.skipDueToFee = 0;
         this.bindEvents();
     }
     bindEvents() {
@@ -3460,6 +3471,7 @@ class Store {
         this.postIdList = [];
         this.resultMeta = [];
         this.result = [];
+        this.skipDueToFee = 0;
     }
 }
 const store = new Store();
@@ -3840,9 +3852,22 @@ class UnifiedURL {
         });
     }
     check() {
+        // 首先取出二级域名
+        // https://www.fanbox.cc/
+        const test = location.hostname.match(/(.*)\.fanbox.cc/);
+        if (!test || test.length < 2) {
+            return;
+        }
+        const subDomain = test[1];
+        // 对于一些特定的二级域名，不会跳转
+        if (subDomain === 'www' ||
+            subDomain === 'api' ||
+            subDomain === 'downloads') {
+            return;
+        }
+        // 如果二级域名不符合上面的条件，那么就是用户名。
         // 判断用户是否登录，如果未登录，则不会跳转
         // 因为未登录时，fanbox 会强制把网址改为用户名在前的形式，下载器无法把网址改成用户名在后的形式
-        console.log(document.head.querySelector('meta#metadata').getAttribute('content'));
         const metaElement = document.head.querySelector('meta#metadata');
         if (!metaElement) {
             return;
@@ -3856,26 +3881,14 @@ class UnifiedURL {
         if (data.context.user.userId === null) {
             return;
         }
-        // 首先取出二级域名
-        // https://www.fanbox.cc/
-        const test = location.hostname.match(/(.*)\.fanbox.cc/);
-        if (test && test.length > 1) {
-            const subDomain = test[1];
-            // 对于一些特定的二级域名，不会跳转
-            if (subDomain === 'www' ||
-                subDomain === 'api' ||
-                subDomain === 'downloads') {
-                return;
-            }
-            // 如果二级域名不符合上面的条件，那么就是用户名。在 https://www.fanbox.cc/ 后面插入用户名
-            // 用户名在后面时，path 不能以斜线结尾，否则会 404。（用户名在前且处于用户主页时，path 就只有一个斜线）
-            let path = location.pathname;
-            if (path.endsWith('/')) {
-                path = path.substring(0, path.length - 1);
-            }
-            const newURL = `https://www.fanbox.cc/@${subDomain}` + path;
-            location.href = newURL;
+        // 用户名在后面时，path 不能以斜线结尾，否则会 404。（用户名在前且处于用户主页时，path 就只有一个斜线）
+        let path = location.pathname;
+        if (path.endsWith('/')) {
+            path = path.substring(0, path.length - 1);
         }
+        // 在 https://www.fanbox.cc/ 后面插入用户名
+        const newURL = `https://www.fanbox.cc/@${subDomain}` + path;
+        location.href = newURL;
     }
 }
 new UnifiedURL();
@@ -4244,8 +4257,10 @@ class DownloadControl {
     }
     // 抓取完毕之后，已经可以开始下载时，根据一些状态进行处理
     readyDownload() {
+        if (_States__WEBPACK_IMPORTED_MODULE_9__["states"].busy || _Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length === 0) {
+            return;
+        }
         this.showDownloadArea();
-        this.setDownloaded();
         this.setDownloadThread();
         // 视情况自动开始下载
         if (_setting_Settings__WEBPACK_IMPORTED_MODULE_8__["settings"].autoStartDownload || _States__WEBPACK_IMPORTED_MODULE_9__["states"].quickCrawl) {
@@ -5724,11 +5739,11 @@ const langText = {
     _顶部: ['顶部', '頂部', 'top', '上揃え', '상단'],
     _居中: ['居中', '居中', 'center', '中央揃え', '중앙'],
     _常见问题说明: [
-        '下载的文件保存在浏览器的下载目录里。<br><br>建议在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。<br><br>如果你需要一个梯子（机场）,可以试试 <a href="https://www.ttkcloud.net/#/register?code=6m4hMaPu" title="https://www.ttkcloud.net/">www.ttkcloud.net</a>，价格便宜，百兆带宽，无倍率。先购买订阅，然后在仪盘表复制订阅链接使用。<br><br>下载器 QQ 群：853021998',
-        '下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。',
-        'The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.',
-        'ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。',
-        '다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.',
+        '下载器不能绕过付费限制。<br><br>下载的文件保存在浏览器的下载目录里。<br><br>建议在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。<br><br>如果你需要一个梯子（机场）,可以试试 <a href="https://www.ttkcloud.net/#/register?code=6m4hMaPu" title="https://www.ttkcloud.net/">www.ttkcloud.net</a>，价格便宜，百兆带宽，无倍率。先购买订阅，然后在仪盘表复制订阅链接使用。<br><br>下载器 QQ 群：853021998',
+        '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。',
+        'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.',
+        'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。',
+        '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.',
     ],
     _赞助我: ['赞助我', '贊助我', 'Sponsor me', '支援する', '후원하기'],
     _赞助方式提示: [
@@ -6050,6 +6065,20 @@ const langText = {
         '未完了のダウンロード タスクを再開する',
         '완료되지 않은 다운로드 작업 재개',
     ],
+    _因为价格限制不能抓取文章: [
+        '因为价格限制，无法抓取文章：',
+        '因為價格限制，無法抓取文章：',
+        `Can't crawl post due to price limit: `,
+        '価格制限のため投稿をクロールできません: ',
+        '가격 제한으로 인해 게시물을 크롤링할 수 없음: ',
+    ],
+    _因为价格限制而跳过的文章数量: [
+        '因为价格限制而跳过的文章数量：',
+        '因為價格限制而跳過的文章數量：',
+        'Number of posts skipped due to price limit: ',
+        '価格制限によりスキップされた投稿の数: ',
+        '가격 제한으로 인해 건너뛴 게시물 수: ',
+    ]
 };
 
 

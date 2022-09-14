@@ -8,12 +8,18 @@ class Store {
   }
 
   public postIdList: string[] = []
+
   /**抓取结果的元数据 */
   private resultMeta: ResultMeta[] = []
+
   /**抓取结果 */
   public result: Result[] = []
+
   /**抓取完成的时间 */
   public date: Date = new Date()
+
+  /**因为价格限制而不能抓取的文章 */
+  public skipDueToFee = 0
 
   private bindEvents() {
     window.addEventListener(EVT.list.crawlStart, () => {
@@ -56,6 +62,7 @@ class Store {
     this.postIdList = []
     this.resultMeta = []
     this.result = []
+    this.skipDueToFee = 0
   }
 }
 

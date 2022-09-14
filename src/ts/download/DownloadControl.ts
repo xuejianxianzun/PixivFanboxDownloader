@@ -248,9 +248,11 @@ class DownloadControl {
 
   // 抓取完毕之后，已经可以开始下载时，根据一些状态进行处理
   private readyDownload() {
-    this.showDownloadArea()
+    if (states.busy || store.result.length === 0) {
+      return
+    }
 
-    this.setDownloaded()
+    this.showDownloadArea()
 
     this.setDownloadThread()
 

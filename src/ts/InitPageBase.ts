@@ -149,6 +149,11 @@ abstract class InitPageBase {
 
   // 抓取完毕
   protected crawlFinished() {
+    if (store.skipDueToFee > 0) {
+      log.warning(
+        lang.transl('_因为价格限制而跳过的文章数量') + store.skipDueToFee
+      )
+    }
     if (store.result.length === 0) {
       return this.noResult()
     }

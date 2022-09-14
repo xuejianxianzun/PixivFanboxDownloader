@@ -9,6 +9,8 @@ import {
   FileData,
 } from './CrawlResult'
 import { settings } from './setting/Settings'
+import { log } from './Log'
+import { lang } from './Lang'
 
 type Dict = {
   [key in ServiceProvider]: string
@@ -40,6 +42,8 @@ class SaveData {
 
   private parsePost(data: PostBody) {
     if (data.body === null) {
+      store.skipDueToFee++
+      log.warning(lang.transl('_因为价格限制不能抓取文章') + data.title)
       return
     }
 
