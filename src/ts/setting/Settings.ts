@@ -239,7 +239,9 @@ class Settings {
     }
     // 开始恢复导入的设置
     this.reset(loadedJSON)
-    toast.success(lang.transl('_导入成功'))
+    toast.success(lang.transl('_导入成功'), {
+      position: 'center',
+    })
   }
 
   // 重置设置 或者 导入设置

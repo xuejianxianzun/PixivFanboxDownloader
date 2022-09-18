@@ -51,7 +51,7 @@ export const formHtml = `<form class="settingForm">
       </span>
       </p>
       
-      <p class="option" data-no="9">
+      <p class="option" data-no="7">
       <span class="has_tip settingNameStyle1" data-xztip="_设置id范围提示">
       <span data-xztext="_id范围"></span>
       <span class="gray1"> ? </span>

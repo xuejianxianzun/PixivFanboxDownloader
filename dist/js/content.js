@@ -1169,7 +1169,7 @@ const formHtml = `<form class="settingForm">
       </span>
       </p>
       
-      <p class="option" data-no="9">
+      <p class="option" data-no="7">
       <span class="has_tip settingNameStyle1" data-xztip="_设置id范围提示">
       <span data-xztext="_id范围"></span>
       <span class="gray1"> ? </span>
@@ -2822,11 +2822,6 @@ class SaveData {
         this.parsePost(data);
     }
     parsePost(data) {
-        if (data.body === null) {
-            _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_因为价格限制不能抓取文章') + data.title);
-            return;
-        }
         // 针对投稿进行检查，决定是否保留它
         const id = data.id;
         const fee = data.feeRequired;
@@ -2857,6 +2852,7 @@ class SaveData {
                 retryUrl: null,
             },
         };
+        let resultChange = false;
         // 提取它的资源文件，并对每个资源进行检查，决定是否保存
         let index = 0; // 资源的序号
         // 封面图和文本资源的序号是 0，其他文件的序号自增
@@ -2876,7 +2872,17 @@ class SaveData {
                     retryUrl: null,
                 };
                 result.files.push(r);
+                resultChange = true;
             }
+        }
+        // 对于因为价格限制不能抓取文章，在此时返回，但是依然会保存封面图
+        if (data.body === null) {
+            _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
+            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_因为价格限制不能抓取文章') + data.title);
+            if (resultChange) {
+                _Store__WEBPACK_IMPORTED_MODULE_1__["store"].addResult(result);
+            }
+            return;
         }
         // 非 article 投稿都有 text 字段，这这里统一提取里面的链接
         // 但是因为正则没有分组，所以非 article 投稿中如果有多个链接，可能会有遗漏，待考
@@ -6078,7 +6084,7 @@ const langText = {
         'Number of posts skipped due to price limit: ',
         '価格制限によりスキップされた投稿の数: ',
         '가격 제한으로 인해 건너뛴 게시물 수: ',
-    ]
+    ],
 };
 
 
@@ -7007,7 +7013,9 @@ class Settings {
         }
         // 开始恢复导入的设置
         this.reset(loadedJSON);
-        _Toast__WEBPACK_IMPORTED_MODULE_4__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_导入成功'));
+        _Toast__WEBPACK_IMPORTED_MODULE_4__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_导入成功'), {
+            position: 'center'
+        });
     }
     // 重置设置 或者 导入设置
     // 可选参数：传递一份设置数据，用于从配置文件导入，恢复设置

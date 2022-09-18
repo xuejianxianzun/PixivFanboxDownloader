@@ -41,12 +41,6 @@ class SaveData {
   }
 
   private parsePost(data: PostBody) {
-    if (data.body === null) {
-      store.skipDueToFee++
-      log.warning(lang.transl('_因为价格限制不能抓取文章') + data.title)
-      return
-    }
-
     // 针对投稿进行检查，决定是否保留它
     const id = data.id
     const fee = data.feeRequired
@@ -79,6 +73,8 @@ class SaveData {
       },
     }
 
+    let resultChange = false
+
     // 提取它的资源文件，并对每个资源进行检查，决定是否保存
 
     let index = 0 // 资源的序号
@@ -100,7 +96,18 @@ class SaveData {
           retryUrl: null,
         }
         result.files.push(r)
+        resultChange = true
       }
+    }
+
+    // 对于因为价格限制不能抓取文章，在此时返回，但是依然会保存封面图
+    if (data.body === null) {
+      store.skipDueToFee++
+      log.warning(lang.transl('_因为价格限制不能抓取文章') + data.title)
+      if (resultChange) {
+        store.addResult(result)
+      }
+      return
     }
 
     // 非 article 投稿都有 text 字段，这这里统一提取里面的链接
