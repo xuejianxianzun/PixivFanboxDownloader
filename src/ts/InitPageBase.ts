@@ -151,7 +151,7 @@ abstract class InitPageBase {
   protected crawlFinished() {
     if (store.skipDueToFee > 0) {
       log.warning(
-        lang.transl('_因为价格限制而跳过的文章数量') + store.skipDueToFee
+        lang.transl('_因为价格限制而跳过的投稿数量') + store.skipDueToFee
       )
     }
     if (store.result.length === 0) {

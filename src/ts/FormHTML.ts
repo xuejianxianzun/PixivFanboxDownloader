@@ -30,7 +30,7 @@ export const formHtml = `<form class="settingForm">
       </p>
 
       <p class="option" data-no="21">
-      <span class="settingNameStyle1" data-xztext="_投稿类型"></span>
+      <span class="settingNameStyle1" data-xztext="_费用类型"></span>
 
       <input type="checkbox" name="free" id="postType1" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
@@ -106,9 +106,8 @@ export const formHtml = `<form class="settingForm">
       <span class="settingNameStyle1">
       <span data-xztext="_命名规则"></span>
       </span>
-      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="${
-        Config.defaultNameRule
-      }">
+      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="${Config.defaultNameRule
+  }">
       &nbsp;
       <select name="fileNameSelect" class="beautify_scrollbar">
         <option value="default">…</option>

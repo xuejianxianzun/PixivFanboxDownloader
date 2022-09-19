@@ -1148,7 +1148,7 @@ const formHtml = `<form class="settingForm">
       </p>
 
       <p class="option" data-no="21">
-      <span class="settingNameStyle1" data-xztext="_投稿类型"></span>
+      <span class="settingNameStyle1" data-xztext="_费用类型"></span>
 
       <input type="checkbox" name="free" id="postType1" class="need_beautify checkbox_common" checked>
       <span class="beautify_checkbox"></span>
@@ -1705,7 +1705,7 @@ class InitPageBase {
     // 抓取完毕
     crawlFinished() {
         if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].skipDueToFee > 0) {
-            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_因为价格限制而跳过的文章数量') + _Store__WEBPACK_IMPORTED_MODULE_3__["store"].skipDueToFee);
+            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_因为价格限制而跳过的投稿数量') + _Store__WEBPACK_IMPORTED_MODULE_3__["store"].skipDueToFee);
         }
         if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length === 0) {
             return this.noResult();
@@ -2852,7 +2852,6 @@ class SaveData {
                 retryUrl: null,
             },
         };
-        let resultChange = false;
         // 提取它的资源文件，并对每个资源进行检查，决定是否保存
         let index = 0; // 资源的序号
         // 封面图和文本资源的序号是 0，其他文件的序号自增
@@ -2872,14 +2871,13 @@ class SaveData {
                     retryUrl: null,
                 };
                 result.files.push(r);
-                resultChange = true;
             }
         }
-        // 对于因为价格限制不能抓取文章，在此时返回，但是依然会保存封面图
+        // 对于因为价格限制不能抓取文章，在此时返回，但是会保存封面图
         if (data.body === null) {
             _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_因为价格限制不能抓取文章') + data.title);
-            if (resultChange) {
+            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_因为价格限制不能抓取投稿') + data.title);
+            if (result.files.length > 0) {
                 _Store__WEBPACK_IMPORTED_MODULE_1__["store"].addResult(result);
             }
             return;
@@ -5447,7 +5445,7 @@ const langText = {
     _设置id范围提示: [
         '您可以输入一个投稿 id，抓取比它新或者比它旧的投稿',
         '您可以輸入一個投稿 id，擷取比它新或者比它舊的投稿。',
-        'You can enter a work id and crawl articles that are newer or older than it',
+        'You can enter a work id and crawl posts that are newer or older than it',
         '1つの投稿IDを入力することで、それより新しいあるいは古い投稿をまとめてダウンロードすることができます。',
         '1개의 게시물 ID를 입력하면 그보다 새로운 혹은 오래된 게시물을 일괄 다운로드 받을 수 있습니다.',
     ],
@@ -5463,7 +5461,7 @@ const langText = {
     _设置投稿时间提示: [
         '您可以下载指定时间内发布的投稿',
         '您可以下載指定時間内發佈的投稿',
-        'You can download articles published within a specified time',
+        'You can download posts published within a specified time',
         '指定期間内の投稿をまとめてダウンロードできます。',
         '지정된 기간 내에 게시물을 다운로드할 수 있습니다.',
     ],
@@ -5494,24 +5492,24 @@ const langText = {
         '압축된 파일',
     ],
     _PS文件: ['源文件', '原始檔', 'Source File', 'ソースファイル', '소스 파일'],
-    _投稿类型: [
-        '<span class="key">投稿</span>类型',
-        '<span class="key">投稿</span>類型',
-        '<span class="key">Article</span> type',
-        '<span class="key">投稿</span>タイプ',
-        '<span class="key">게시물</span> 유형',
+    _费用类型: [
+        '<span class="key">费用</span>类型',
+        '<span class="key">費用</span>型別',
+        '<span class="key">Fee</span> type',
+        '<span class="key">料金</span>タイプ',
+        '<span class="key">수수료</span> 유형',
     ],
     _免费投稿: [
         '免费投稿',
         '免費投稿',
-        'Free article',
+        'Free post',
         '無料投稿',
         '무료 게시물',
     ],
     _付费投稿: [
         '付费投稿',
         '付費投稿',
-        'Paid article',
+        'Paid post',
         '有償投稿',
         '유료 게시물',
     ],
@@ -5525,14 +5523,14 @@ const langText = {
     _保存投稿中的外部链接: [
         '保存投稿中的外部<span class="key">链接</span>',
         '儲存投稿中的外部<span class="key">連結</span>',
-        'Save external <span class="key">links</span> in the articles',
+        'Save external <span class="key">links</span> in the posts',
         '本文中の外部<span class="key">リンク</span>を保存',
         '게시물의 외부 <span class="key">링크</span> 저장',
     ],
     _保存投稿中的文字: [
         '保存投稿中的<span class="key">文字</span>',
         '儲存投稿中的<span class="key">文字</span>',
-        'Save the <span class="key">text</span> in the articles',
+        'Save the <span class="key">text</span> in the posts',
         '投稿の<span class="key">本文</span>を保存',
         '게시물의 <span class="key">본문</span> 저장',
     ],
@@ -5548,28 +5546,28 @@ const langText = {
     _抓取赞助的所有用户的投稿: [
         '抓取赞助的所有用户的投稿',
         '擷取所有贊助用戶的投稿',
-        'Crawl all sponsored articles',
+        'Crawl all sponsored posts',
         '支援中のユーザーの投稿をまとめて保存',
         '지원 중인 모든 크리에이터의 게시물 긁어오기',
     ],
     _抓取该用户的投稿: [
         '抓取该用户的投稿',
         '擷取該用戶的投稿',
-        "Crawl this user's articles",
+        "Crawl this user's posts",
         'このユーザーの投稿をまとめて保存',
         '이 크리에이터의 게시물 긁어오기',
     ],
     _抓取该tag的投稿: [
         '抓取该 tag 的投稿',
         '擷取該 tag 的投稿',
-        'Crawl articles with this tag',
+        'Crawl posts with this tag',
         'このタグの投稿をまとめて保存',
         '이 태그를 사용하여 게시물 긁어오기',
     ],
     _抓取这篇投稿: [
         '抓取这篇投稿',
         '擷取這篇投稿',
-        'Crawl this article',
+        'Crawl this post',
         'この投稿を保存',
         '이 게시물을 긁어오기',
     ],
@@ -5580,46 +5578,46 @@ const langText = {
         '投稿の表紙画像を保存',
         '게시물의 표지 이미지를 긁어오기',
     ],
-    _命名标记postid: ['投稿 id', '投稿 id', 'Article id', '投稿ID', '게시물 ID'],
+    _命名标记postid: ['投稿 id', '投稿 id', 'Post id', '投稿ID', '게시물 ID'],
     _命名标记title: [
         '投稿标题',
         '投稿標題',
-        'Article title',
+        'Post title',
         '投稿のタイトル',
         '게시물 제목',
     ],
     _命名标记tags: [
         '投稿的 tag 列表（可能为空）',
         '投稿的 tag 列表（可能為空）',
-        "Article's tag list (may be empty)",
+        "Post's tag list (may be empty)",
         '投稿のタグリスト（空の場合があります）',
         '게시물의 태그 목록 (비어있을 수 있음)',
     ],
     _命名标记date: [
         '投稿的发布日期，如 2019-08-29 12-30',
         '投稿的發布日期，如 2019-08-29 12-30',
-        'The publication date of the article, such as 2019-08-29 12-30',
+        'The publication date of the post, such as 2019-08-29 12-30',
         '投稿日など，例 2019-08-29 12-30',
         '게시물의 투고일. 예: 2019-08-29 12-30',
     ],
     _命名标记fee: [
         '投稿的价格',
         '投稿的價格',
-        'Article price',
+        'Post price',
         '支援額',
         '게시물 가격',
     ],
     _命名标记index: [
         '文件在它所属的投稿里的序号',
         '檔案在它所屬的投稿裡的序號',
-        'The serial number of the file in the article it belongs to',
+        'The serial number of the file in the post it belongs to',
         '投稿内のファイルの連番',
         '게시물의 파일 일련번호',
     ],
     _命名标记name: [
         '文件在投稿里的文件名',
         '檔案在投稿裡的名稱',
-        'File name in the article',
+        'File name in the post',
         '投稿内のファイル名',
         '게시물의 파일명',
     ],
@@ -5662,7 +5660,7 @@ const langText = {
     _保存投稿中的封面图片: [
         '保存投稿中的<span class="key">封面</span>图片',
         '儲存投稿中的<span class="key">封面</span>圖片',
-        'Save the <span class="key">cover</span> image in the articles',
+        'Save the <span class="key">cover</span> image in the posts',
         '投稿の<span class="key">表紙</span>画像を保存',
         '게시물의 <span class="key">표지</span> 이미지 저장',
     ],
@@ -6071,19 +6069,40 @@ const langText = {
         '未完了のダウンロード タスクを再開する',
         '완료되지 않은 다운로드 작업 재개',
     ],
-    _因为价格限制不能抓取文章: [
-        '因为价格限制，无法抓取文章：',
-        '因為價格限制，無法抓取文章：',
+    _因为价格限制不能抓取投稿: [
+        '因为价格限制，无法抓取投稿：',
+        '因為價格限制，無法抓取投稿：',
         `Can't crawl post due to price limit: `,
         '価格制限のため投稿をクロールできません: ',
         '가격 제한으로 인해 게시물을 크롤링할 수 없음: ',
     ],
-    _因为价格限制而跳过的文章数量: [
-        '因为价格限制而跳过的文章数量：',
-        '因為價格限制而跳過的文章數量：',
+    _因为价格限制而跳过的投稿数量: [
+        '因为价格限制而跳过的投稿数量：',
+        '因為價格限制而跳過的投稿數量：',
         'Number of posts skipped due to price limit: ',
         '価格制限によりスキップされた投稿の数: ',
         '가격 제한으로 인해 건너뛴 게시물 수: ',
+    ],
+    _即使遇到价格限制也可以保存封面图: [
+        '即使遇到价格限制，也可以保存封面图',
+        '即使遇到價格限制，也可以儲存封面圖',
+        '即使有价格限制，也可以保存封面图片',
+        '価格制限があっても表紙画像を保存',
+        '가격 제한이 있어도 표지 이미지 저장',
+    ],
+    _投稿标题必须含有关键字: [
+        '投稿标题<span class="key">必须</span>含有关键字',
+        '投稿標題<span class="key">必須</span>含有關鍵字',
+        'Post title <span class="key">must</span> contain keywords',
+        '投稿タイトルにはキーワードを含める必要があります',
+        '게시물 제목에는 키워드가 포함되어야 합니다',
+    ],
+    _投稿标题不能含有关键字: [
+        '投稿标题<span class="key">不能</span>含有关键字',
+        '投稿標題<span class="key">不能</span>含有關鍵字',
+        'Post title <span class="key">cannot</span> contain keywords',
+        '投稿タイトルにキーワードを含めることはできません',
+        '게시물 제목은 키워드를 포함할 수 없습니다',
     ],
 };
 
@@ -7014,7 +7033,7 @@ class Settings {
         // 开始恢复导入的设置
         this.reset(loadedJSON);
         _Toast__WEBPACK_IMPORTED_MODULE_4__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_导入成功'), {
-            position: 'center'
+            position: 'center',
         });
     }
     // 重置设置 或者 导入设置
