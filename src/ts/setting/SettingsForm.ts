@@ -36,4 +36,8 @@ export interface SettingsForm extends HTMLFormElement {
   zeroPaddingLength: HTMLInputElement
   deduplication: HTMLInputElement
   unifiedURL: HTMLInputElement
+  titleMustTextSwitch: HTMLInputElement
+  titleMustText: HTMLInputElement
+  titleCannotTextSwitch: HTMLInputElement
+  titleCannotText: HTMLInputElement
 }

@@ -45,7 +45,8 @@ class SaveData {
     const id = data.id
     const fee = data.feeRequired
     const date = data.publishedDatetime
-    const check = filter.check({ id, fee, date })
+    const title = data.title
+    const check = filter.check({ id, fee, date, title })
     if (!check) {
       return
     }
@@ -100,7 +101,9 @@ class SaveData {
     // 对于因为价格限制不能抓取文章，在此时返回，但是会保存封面图
     if (data.body === null) {
       store.skipDueToFee++
-      log.warning(lang.transl('_因为价格限制不能抓取投稿') + data.title)
+      log.warning(
+        lang.transl('_跳过文章因为', title) + lang.transl('_价格限制')
+      )
       if (result.files.length > 0) {
         store.addResult(result)
       }

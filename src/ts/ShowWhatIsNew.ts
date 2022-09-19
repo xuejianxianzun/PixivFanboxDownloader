@@ -10,22 +10,21 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '3.0.0'
+  private flag = '3.2.0'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-      let msg = `${lang.transl('_whatisnew')}
+      let msg = `${lang.transl('_新增设置项')}
       <br>
-      · ${lang.transl('_恢复未完成的下载任务')}
+      · ${lang.transl('_投稿标题必须含有文字')}
       <br>
-      · ${lang.transl('_在序号前面填充0')}
+      · ${lang.transl('_投稿标题不能含有文字')}
       <br>
-      · ${lang.transl('_下载完成后显示通知')}
       <br>
-      · ${lang.transl('_不下载重复文件')}
+      ${lang.transl('_即使遇到价格限制也可以保存封面图')}
       <br>
-      · ${lang.transl('_背景图片')}
+      ${lang.transl('_增加了一些提示')}
       `
 
       // 在更新说明的下方显示赞助提示

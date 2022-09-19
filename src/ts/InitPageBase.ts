@@ -11,6 +11,7 @@ import { API } from './API'
 import { states } from './States'
 import { msgBox } from './MsgBox'
 import { toast } from './Toast'
+import { Utils } from './utils/Utils'
 
 abstract class InitPageBase {
   // 初始化
@@ -52,12 +53,12 @@ abstract class InitPageBase {
       return
     }
 
-    EVT.fire('crawlStart')
-
     log.clear()
 
     log.success(lang.transl('_开始抓取'))
     toast.show(lang.transl('_开始抓取'))
+
+    EVT.fire('crawlStart')
 
     this.getPostDataThreadNum = 0
     this.getPostDatafinished = 0
@@ -91,7 +92,8 @@ abstract class InitPageBase {
       const id = item.id
       const fee = item.feeRequired
       const date = item.publishedDatetime
-      const check = filter.check({ id, fee, date })
+      const title = item.title
+      const check = filter.check({ id, fee, date, title })
       if (check) {
         store.postIdList.push(id)
       }
@@ -157,6 +159,9 @@ abstract class InitPageBase {
     if (store.result.length === 0) {
       return this.noResult()
     }
+
+    // 把抓取结果按照 postid 升序排列
+    store.result.sort(Utils.sortByProperty('postId', 'asc'))
 
     store.date = new Date()
 

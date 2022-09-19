@@ -94,6 +94,10 @@ interface XzSetting {
   deduplication: boolean
   showHowToUse: boolean
   unifiedURL: boolean
+  titleMustTextSwitch: boolean
+  titleMustText: string[]
+  titleCannotTextSwitch: boolean
+  titleCannotText: string[]
 }
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
@@ -145,6 +149,10 @@ class Settings {
     deduplication: false,
     showHowToUse: true,
     unifiedURL: true,
+    titleMustTextSwitch: false,
+    titleMustText: [],
+    titleCannotTextSwitch: false,
+    titleCannotText: [],
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)
@@ -158,7 +166,11 @@ class Settings {
   private numberArrayKeys: string[] = []
 
   // 值为字符串数组的选项
-  private stringArrayKeys = ['namingRuleList']
+  private stringArrayKeys = [
+    'namingRuleList',
+    'titleMustText',
+    'titleCannotText',
+  ]
 
   // 以默认设置作为初始设置
   public settings: XzSetting = Utils.deepCopy(this.defaultSettings)

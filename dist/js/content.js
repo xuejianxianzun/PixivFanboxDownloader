@@ -581,6 +581,75 @@ new CenterPanel();
 
 /***/ }),
 
+/***/ "./src/ts/CheckUnsupportBrowser.ts":
+/*!*****************************************!*\
+  !*** ./src/ts/CheckUnsupportBrowser.ts ***!
+  \*****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
+
+
+
+// 某些国产套壳浏览器不能正常使用本程序。如果检测到该浏览器，则显示提示
+// 相关文档： notes/一些国产套壳浏览器使用本程序的情况.md
+class CheckUnsupportBrowser {
+    constructor() {
+        this.rules = {
+            // "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36 SE 2.X MetaSr 1.0"
+            Sougou: function () {
+                return navigator.userAgent.includes(' SE ');
+            },
+            // "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3872.400 QQBrowser/10.8.4455.400"
+            QQ: function () {
+                return navigator.userAgent.includes('QQBrowser');
+            },
+            // "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3947.100 Safari/537.36 2345Explorer/10.21.0.21486"
+            '2345': function () {
+                return navigator.userAgent.includes('2345Explorer');
+            },
+            All: function () {
+                // 如果这个浏览器的 Chrome 内核的版本号较低，也会显示提示
+                // 为什么设置为 88：
+                // 1. 下载器使用的 Manifest V2 需要的内核版本最低为 79
+                // 2. Cent 浏览器的内核版本是 86，但它即使使用 V2，仍然会在转换 GIF 时出现问题，所以需要提高版本号
+                // 3. 未来升级到 Manifest V3 需要的内核版本最低为 88
+                const minChromeVer = 88;
+                const test = navigator.userAgent.match(/Chrome\/(\d*)/);
+                if (test && test[1]) {
+                    const ver = Number.parseInt(test[1]);
+                    if (ver < minChromeVer) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+        };
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingInitialized, () => {
+            this.check();
+        });
+    }
+    check() {
+        for (const func of Object.values(this.rules)) {
+            if (func()) {
+                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_不支持的浏览器');
+                _Log__WEBPACK_IMPORTED_MODULE_2__["log"].error(msg);
+                // msgBox.error(msg)
+                return;
+            }
+        }
+    }
+}
+new CheckUnsupportBrowser();
+
+
+/***/ }),
+
 /***/ "./src/ts/Colors.ts":
 /*!**************************!*\
   !*** ./src/ts/Colors.ts ***!
@@ -976,10 +1045,34 @@ class Filter {
     constructor() {
         this.bindEvents();
     }
-    // 对启用了的过滤选项输出提示
+    // 对启用了的过滤选项显示提示
     showTip() {
+        this.getFeeType();
+        this.getFeeRange();
         this.getIdRange();
         this.getPostDate();
+        this.getTitleMustText();
+        this.getTitleCannotText();
+    }
+    getFeeType() {
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].free && _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].pay) {
+            return;
+        }
+        let msg = '';
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].free) {
+            msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_免费投稿')}`;
+        }
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].pay) {
+            msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_付费投稿')}`;
+        }
+        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+    }
+    getFeeRange() {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].feeSwitch) {
+            return;
+        }
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_价格范围')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_最小值')} ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fee}¥`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
     }
     // 提示 id 范围设置
     getIdRange() {
@@ -994,7 +1087,7 @@ class Filter {
             return;
         }
         if (isNaN(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateStart) || isNaN(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateStart)) {
-            const msg = 'Date format error!';
+            const msg = _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_日期时间格式错误');
             this.showWarning(msg);
         }
         else {
@@ -1003,27 +1096,48 @@ class Filter {
             _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(`${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_时间范围')}: ${start} - ${end}`);
         }
     }
-    // 检查作品是否符合过滤器的要求
+    getTitleMustText() {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustTextSwitch) {
+            return;
+        }
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题必须含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustText.toString()}`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+    }
+    getTitleCannotText() {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotTextSwitch) {
+            return;
+        }
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotText.toString()}`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+    }
+    // 检查投稿是否符合过滤器的要求
     // 想要检查哪些数据就传递哪些数据，不需要传递 FilterOption 的所有选项
     check(option) {
-        // 检查文件类型
         if (!this.checkFileType(option.ext)) {
             return false;
         }
-        // 检查收费还是免费
         if (!this.checkfeeType(option.fee)) {
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型'));
             return false;
         }
-        // 检查价格范围
         if (!this.checkfeeRange(option.fee)) {
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_价格范围'));
             return false;
         }
-        // 检查 id 范围
         if (!this.checkIdRange(option.id)) {
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_id范围'));
             return false;
         }
-        // 检查投稿时间
         if (!this.checkPostDate(option.date)) {
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿时间'));
+            return false;
+        }
+        if (!this.checkTitltMustText(option.title)) {
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题必须含有文字'));
+            return false;
+        }
+        if (!this.checkTitltCannotText(option.title)) {
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题不能含有文字'));
             return false;
         }
         return true;
@@ -1063,19 +1177,13 @@ class Filter {
         if (id === undefined || !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRangeSwitch) {
             return true;
         }
-        const flag = parseInt(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRange);
         const nowId = parseInt(id.toString());
         const setId = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRangeInput;
-        if (flag === 1) {
-            // 大于
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRange === '>') {
             return nowId > setId;
         }
-        else if (flag === 2) {
-            // 小于
-            return nowId < setId;
-        }
         else {
-            return true;
+            return nowId < setId;
         }
     }
     checkPostDate(date) {
@@ -1088,6 +1196,28 @@ class Filter {
         const nowDate = new Date(date);
         return (nowDate.getTime() >= _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateStart &&
             nowDate.getTime() <= _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateEnd);
+    }
+    checkTitltMustText(title) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustTextSwitch || !title || _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustText.length === 0) {
+            return true;
+        }
+        title = title.toLowerCase();
+        const match = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustText.filter(str => title.includes(str.toLowerCase()));
+        if (match.length === 0) {
+            return false;
+        }
+        return true;
+    }
+    checkTitltCannotText(title) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotTextSwitch || !title || _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotText.length === 0) {
+            return true;
+        }
+        title = title.toLowerCase();
+        const match = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotText.filter(str => title.includes(str.toLowerCase()));
+        if (match.length > 0) {
+            return false;
+        }
+        return true;
     }
     // 如果设置项的值不合法，则显示提示
     showWarning(msg) {
@@ -1119,106 +1249,130 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 
 const formHtml = `<form class="settingForm">
-      <p class="option" data-no="2">
-      <span class="settingNameStyle1" data-xztext="_文件类型"></span>
+    <p class="option" data-no="2">
+    <span class="settingNameStyle1" data-xztext="_文件类型"></span>
 
-      <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType1" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.image.join()}" data-xztext="_图片"></label>
-      
-      <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType2" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.music.join()}" data-xztext="_音乐"></label>
+    <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType1" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.image.join()}" data-xztext="_图片"></label>
+    
+    <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType2" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.music.join()}" data-xztext="_音乐"></label>
 
-      <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType3" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.video.join()}" data-xztext="_视频"></label>
-      
-      <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType4" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.compressed.join()}" data-xztext="_压缩文件"></label>
-      
-      <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType5" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.ps.join()}" data-xztext="_PS文件"></label>
+    <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType3" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.video.join()}" data-xztext="_视频"></label>
+    
+    <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType4" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.compressed.join()}" data-xztext="_压缩文件"></label>
+    
+    <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType5" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.ps.join()}" data-xztext="_PS文件"></label>
 
-      <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType6" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.other.join()}" data-xztext="_其他"></label>
-      </p>
+    <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType6" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.other.join()}" data-xztext="_其他"></label>
+    </p>
 
-      <p class="option" data-no="21">
-      <span class="settingNameStyle1" data-xztext="_费用类型"></span>
+    <p class="option" data-no="21">
+    <span class="settingNameStyle1" data-xztext="_费用类型"></span>
 
-      <input type="checkbox" name="free" id="postType1" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="postType1" data-xztext="_免费投稿"></label>
+    <input type="checkbox" name="free" id="postType1" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="postType1" data-xztext="_免费投稿"></label>
 
-      <input type="checkbox" name="pay" id="postType2" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="postType2" data-xztext="_付费投稿"></label>
-      </p>
+    <input type="checkbox" name="pay" id="postType2" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="postType2" data-xztext="_付费投稿"></label>
+    </p>
 
-      <p class="option" data-no="9">
-      <span class="settingNameStyle1" data-xztext="_价格范围"></span>
-      <input type="checkbox" name="feeSwitch" class="need_beautify checkbox_switch">
-      <span class="beautify_switch"></span>
-      <span class="subOptionWrap" data-show="feeSwitch">
-      <span data-xztext="_最小值"></span>
-      <input type="text" name="fee" class="setinput_style1 blue" value="500"> ¥
-      </span>
-      </p>
-      
-      <p class="option" data-no="7">
-      <span class="has_tip settingNameStyle1" data-xztip="_设置id范围提示">
-      <span data-xztext="_id范围"></span>
-      <span class="gray1"> ? </span>
-      </span>
-      <input type="checkbox" name="idRangeSwitch" class="need_beautify checkbox_switch">
-      <span class="beautify_switch"></span>
-      <span class="subOptionWrap" data-show="idRangeSwitch">
-      <input type="radio" name="idRange" id="idRange2" class="need_beautify radio" value="<" checked>
-      <span class="beautify_radio"></span>
-      <label for="idRange2" data-xztext="_小于"></label>
-      <input type="radio" name="idRange" id="idRange1" class="need_beautify radio" value=">">
-      <span class="beautify_radio"></span>
-      <label for="idRange1" data-xztext="_大于"></label>
-      <input type="text" name="idRangeInput" class="setinput_style1 w100 blue" value="0">
-      </span>
-      </p>
+    <p class="option" data-no="9">
+    <span class="settingNameStyle1" data-xztext="_价格范围"></span>
+    <input type="checkbox" name="feeSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="feeSwitch">
+    <span data-xztext="_最小值"></span>
+    <input type="text" name="fee" class="setinput_style1 blue" value="500"> ¥
+    </span>
+    </p>
+    
+    <p class="option" data-no="7">
+    <span class="has_tip settingNameStyle1" data-xztip="_设置id范围提示">
+    <span data-xztext="_id范围"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="idRangeSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="idRangeSwitch">
+    <input type="radio" name="idRange" id="idRange2" class="need_beautify radio" value="<" checked>
+    <span class="beautify_radio"></span>
+    <label for="idRange2" data-xztext="_小于"></label>
+    <input type="radio" name="idRange" id="idRange1" class="need_beautify radio" value=">">
+    <span class="beautify_radio"></span>
+    <label for="idRange1" data-xztext="_大于"></label>
+    <input type="text" name="idRangeInput" class="setinput_style1 w100 blue" value="0">
+    </span>
+    </p>
 
-      <p class="option" data-no="10">
-      <span class="has_tip settingNameStyle1" data-xztip="_设置投稿时间提示">
-      <span data-xztext="_投稿时间"></span>
-      <span class="gray1"> ? </span>
-      </span>
+    <p class="option" data-no="10">
+    <span class="has_tip settingNameStyle1" data-xztip="_设置投稿时间提示">
+    <span data-xztext="_投稿时间"></span>
+    <span class="gray1"> ? </span>
+    </span>
 
-      <input type="checkbox" name="postDate" class="need_beautify checkbox_switch">
-      <span class="beautify_switch"></span>
-      <span class="subOptionWrap" data-show="postDate">
-      <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
-      &nbsp;-&nbsp;
-      <input type="datetime-local" name="postDateEnd" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
-      </span>
-      </p>
+    <input type="checkbox" name="postDate" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="postDate">
+    <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+    &nbsp;-&nbsp;
+    <input type="datetime-local" name="postDateEnd" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+    </span>
+    </p>
 
-      <p class="option" data-no="19">
-      <span class="settingNameStyle1" data-xztext="_保存投稿中的外部链接"></span>
-      <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
-      <span class="beautify_switch"></span>
-      </p>
-      
-      <p class="option" data-no="22">
-      <span class="settingNameStyle1" data-xztext="_保存投稿中的封面图片"></span>
-      <input type="checkbox" name="savePostCover" class="need_beautify checkbox_switch" checked>
-      <span class="beautify_switch"></span>
-      </p>
+    <p class="option" data-no="19">
+    <span class="settingNameStyle1" data-xztext="_保存投稿中的外部链接"></span>
+    <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch"></span>
+    </p>
+    
+    <p class="option" data-no="22">
+    <span class="settingNameStyle1" data-xztext="_保存投稿中的封面图片"></span>
+    <input type="checkbox" name="savePostCover" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch"></span>
+    </p>
 
-      <p class="option" data-no="20">
-      <span class="settingNameStyle1" data-xztext="_保存投稿中的文字"></span>
-      <input type="checkbox" name="saveText" class="need_beautify checkbox_switch">
-      <span class="beautify_switch"></span>
-      </p>
+    <p class="option" data-no="20">
+    <span class="settingNameStyle1" data-xztext="_保存投稿中的文字"></span>
+    <input type="checkbox" name="saveText" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    </p>
+
+    <p class="option" data-no="23">
+    <span class="has_tip settingNameStyle1" data-xztip="_多条文字用逗号分割">
+    <span data-xztext="_投稿标题必须含有文字"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="titleMustTextSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="titleMustTextSwitch">
+    <input type="text" name="titleMustText" class="setinput_style1 blue fileNameRule" value="">
+    </span>
+    </p>
+
+    <p class="option" data-no="24">
+    <span class="has_tip settingNameStyle1" data-xztip="_多条文字用逗号分割">
+    <span data-xztext="_投稿标题不能含有文字"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="titleCannotTextSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="titleCannotTextSwitch">
+    <input type="text" name="titleCannotText" class="setinput_style1 blue fileNameRule" value="">
+    </span>
+    </p>
 
     <p class="option" data-no="13">
       <span class="settingNameStyle1">
@@ -1578,7 +1732,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./States */ "./src/ts/States.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./MsgBox */ "./src/ts/MsgBox.ts");
 /* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Toast */ "./src/ts/Toast.ts");
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
 // 初始化抓取页面的流程
+
 
 
 
@@ -1623,10 +1779,10 @@ class InitPageBase {
             window.alert(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_当前任务尚未完成2'));
             return;
         }
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlStart');
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].clear();
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
         _Toast__WEBPACK_IMPORTED_MODULE_10__["toast"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
+        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlStart');
         this.getPostDataThreadNum = 0;
         this.getPostDatafinished = 0;
         this.nextUrl = null;
@@ -1651,7 +1807,8 @@ class InitPageBase {
             const id = item.id;
             const fee = item.feeRequired;
             const date = item.publishedDatetime;
-            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, fee, date });
+            const title = item.title;
+            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, fee, date, title });
             if (check) {
                 _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.push(id);
             }
@@ -1710,6 +1867,8 @@ class InitPageBase {
         if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length === 0) {
             return this.noResult();
         }
+        // 把抓取结果按照 postid 升序排列
+        _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.sort(_utils_Utils__WEBPACK_IMPORTED_MODULE_11__["Utils"].sortByProperty('postId', 'asc'));
         _Store__WEBPACK_IMPORTED_MODULE_3__["store"].date = new Date();
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取文件数量', _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length.toString()));
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取完毕'), 2);
@@ -2826,7 +2985,8 @@ class SaveData {
         const id = data.id;
         const fee = data.feeRequired;
         const date = data.publishedDatetime;
-        const check = _Filter__WEBPACK_IMPORTED_MODULE_0__["filter"].check({ id, fee, date });
+        const title = data.title;
+        const check = _Filter__WEBPACK_IMPORTED_MODULE_0__["filter"].check({ id, fee, date, title });
         if (!check) {
             return;
         }
@@ -2876,7 +3036,7 @@ class SaveData {
         // 对于因为价格限制不能抓取文章，在此时返回，但是会保存封面图
         if (data.body === null) {
             _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_因为价格限制不能抓取投稿') + data.title);
+            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过文章因为', title) + _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_价格限制'));
             if (result.files.length > 0) {
                 _Store__WEBPACK_IMPORTED_MODULE_1__["store"].addResult(result);
             }
@@ -3282,23 +3442,22 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '3.0.0';
+        this.flag = '3.2.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_whatisnew')}
+            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}
       <br>
-      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_恢复未完成的下载任务')}
+      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_投稿标题必须含有文字')}
       <br>
-      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_在序号前面填充0')}
+      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_投稿标题不能含有文字')}
       <br>
-      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载完成后显示通知')}
       <br>
-      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_不下载重复文件')}
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_即使遇到价格限制也可以保存封面图')}
       <br>
-      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_背景图片')}
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_增加了一些提示')}
       `;
             // 在更新说明的下方显示赞助提示
             msg += `
@@ -3925,6 +4084,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ShowNotification__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ShowNotification */ "./src/ts/ShowNotification.ts");
 /* harmony import */ var _ShowHowToUse__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./ShowHowToUse */ "./src/ts/ShowHowToUse.ts");
 /* harmony import */ var _ShowWhatIsNew__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ShowWhatIsNew */ "./src/ts/ShowWhatIsNew.ts");
+/* harmony import */ var _CheckUnsupportBrowser__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./CheckUnsupportBrowser */ "./src/ts/CheckUnsupportBrowser.ts");
 /*
  * project: Pixiv Fanbox Downloader
  * author:  xuejianxianzun; 雪见仙尊
@@ -3935,6 +4095,7 @@ __webpack_require__.r(__webpack_exports__);
  * E-mail:  xuejianxianzun@gmail.com
  * QQ group:  853021998
  */
+
 
 
 
@@ -6069,6 +6230,13 @@ const langText = {
         '未完了のダウンロード タスクを再開する',
         '완료되지 않은 다운로드 작업 재개',
     ],
+    _价格限制: [
+        '价格限制',
+        '價格限制',
+        `Price limit`,
+        '価格制限',
+        '가격 제한',
+    ],
     _因为价格限制不能抓取投稿: [
         '因为价格限制，无法抓取投稿：',
         '因為價格限制，無法抓取投稿：',
@@ -6090,19 +6258,70 @@ const langText = {
         '価格制限があっても表紙画像を保存',
         '가격 제한이 있어도 표지 이미지 저장',
     ],
-    _投稿标题必须含有关键字: [
-        '投稿标题<span class="key">必须</span>含有关键字',
-        '投稿標題<span class="key">必須</span>含有關鍵字',
-        'Post title <span class="key">must</span> contain keywords',
-        '投稿タイトルにはキーワードを含める必要があります',
-        '게시물 제목에는 키워드가 포함되어야 합니다',
+    _投稿标题必须含有文字: [
+        '投稿标题<span class="key">必须</span>含有文字',
+        '投稿標題<span class="key">必須</span>含有文字',
+        'Post title <span class="key">must</span> contain text',
+        '投稿のタイトルにはテキストを含める必要があります',
+        '게시물 제목에는 텍스트가 포함되어야 합니다',
     ],
-    _投稿标题不能含有关键字: [
-        '投稿标题<span class="key">不能</span>含有关键字',
-        '投稿標題<span class="key">不能</span>含有關鍵字',
-        'Post title <span class="key">cannot</span> contain keywords',
-        '投稿タイトルにキーワードを含めることはできません',
-        '게시물 제목은 키워드를 포함할 수 없습니다',
+    _投稿标题不能含有文字: [
+        '投稿标题<span class="key">不能</span>含有文字',
+        '投稿標題<span class="key">不能</span>含有文字',
+        'Post title <span class="key">cannot</span> contain text',
+        '投稿のタイトルにテキストを含めることはできません',
+        '게시물 제목은 텍스트를 포함할 수 없습니다',
+    ],
+    _多条文字用逗号分割: [
+        '你可以设置多条文字，不区分大小写；每条之间用半角逗号(,)分割',
+        '你可以設定多條文字，不區分大小寫；每條之間用半形逗號(,)分割',
+        'You can set multiple texts, not case sensitive, and separate each with a comma (,)',
+        '複数のテキストを設定でき、大文字と小文字を区別しない、それぞれをカンマ (,) で区切ります',
+        '대소문자를 구분하지 않고 여러 텍스트를 설정할 수 있으며 각각을 쉼표(,)로 구분할 수 있습니다.',
+    ],
+    _日期时间格式错误: [
+        '日期时间格式错误',
+        '日期時間格式錯誤',
+        'wrong datetime format',
+        '間違った日時形式',
+        '잘못된 날짜/시간 형식',
+    ],
+    _跳过文章因为: [
+        '跳过 {} 因为：',
+        '跳過 {} 因為：',
+        'Skip {} because: ',
+        '{} をスキップする理由: ',
+        '다음과 같은 이유로 {}를 건너뜁니다.',
+    ],
+    _优化性能和用户体验: [
+        '优化性能和用户体验。',
+        '最佳化效能和使用者體驗。',
+        'Optimize performance and user experience.',
+        'パフォーマンスとユーザー エクスペリエンスを最適化します。',
+        '성능과 사용자 경험을 최적화합니다.',
+    ],
+    _修复bug: ['修复 bug', '修復 bug', 'fix bugs', 'バグを修正', '버그 수정'],
+    _不支持的浏览器: [
+        '你的浏览器不能正常使用这个扩展程序，主要原因可能是浏览器内核版本太低，或者存在兼容性问题。<br>建议您更换成最新版本的 Chrome 或 Edge 浏览器。',
+        '你的瀏覽器不能正常使用這個擴充套件程式，主要原因可能是瀏覽器核心版本太低，或者存在相容性問題。<br>建議您更換成最新版本的 Chrome 或 Edge 瀏覽器。',
+        'Your browser cannot use this extension properly. The main reason may be that the browser kernel version is too low, or there is a compatibility problem. <br>We recommend that you switch to the latest version of Chrome or Edge.',
+        'お使いのブラウザでは、この拡張機能を正しく使用できません。 主な理由としては、ブラウザのカーネル バージョンが低すぎるか、互換性の問題がある可能性があります。 <br>最新バージョンの Chrome または Edge に切り替えることをお勧めします。',
+        '브라우저에서 이 확장 프로그램을 제대로 사용할 수 없습니다. 주된 이유는 브라우저 커널 버전이 너무 낮거나 호환성 문제가 있기 때문일 수 있습니다. <br>최신 버전의 Chrome 또는 Edge로 전환하는 것이 좋습니다.',
+    ],
+    _新增设置项: [
+        '新增设置项',
+        '新增設定項目',
+        'Added setting items',
+        '新たな機能を追加されました',
+        '새로운 설정 항목 추가',
+    ],
+    _新增功能: ['新增功能', '新增功能', 'New feature', '新機能', '새로운 기능'],
+    _增加了一些提示: [
+        '增加了一些提示',
+        '增加了一些提示',
+        'Added some tips',
+        'いくつかのヒントを追加しました',
+        '몇 가지 팁을 추가했습니다.',
     ],
 };
 
@@ -6374,6 +6593,8 @@ class FormSettings {
                 'deduplication',
                 'savePostCover',
                 'unifiedURL',
+                'titleMustTextSwitch',
+                'titleCannotTextSwitch',
             ],
             text: [
                 'fee',
@@ -6382,6 +6603,8 @@ class FormSettings {
                 'dateFormat',
                 'bgOpacity',
                 'zeroPaddingLength',
+                'titleMustText',
+                'titleCannotText',
             ],
             radio: ['idRange', 'bgPositionY', 'userSetLang'],
             textarea: [],
@@ -6949,6 +7172,10 @@ class Settings {
             deduplication: false,
             showHowToUse: true,
             unifiedURL: true,
+            titleMustTextSwitch: false,
+            titleMustText: [],
+            titleCannotTextSwitch: false,
+            titleCannotText: [],
         };
         this.allSettingKeys = Object.keys(this.defaultSettings);
         // 值为浮点数的选项
@@ -6957,7 +7184,7 @@ class Settings {
         // 值为数字数组的选项
         this.numberArrayKeys = [];
         // 值为字符串数组的选项
-        this.stringArrayKeys = ['namingRuleList'];
+        this.stringArrayKeys = ['namingRuleList', 'titleMustText', 'titleCannotText'];
         // 以默认设置作为初始设置
         this.settings = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].deepCopy(this.defaultSettings);
         this.store = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].debounce(() => {

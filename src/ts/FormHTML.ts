@@ -1,113 +1,138 @@
 import { Config } from './Config'
 
 export const formHtml = `<form class="settingForm">
-      <p class="option" data-no="2">
-      <span class="settingNameStyle1" data-xztext="_文件类型"></span>
+    <p class="option" data-no="2">
+    <span class="settingNameStyle1" data-xztext="_文件类型"></span>
 
-      <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType1" class="has_tip" data-tip="${Config.fileType.image.join()}" data-xztext="_图片"></label>
-      
-      <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType2" class="has_tip" data-tip="${Config.fileType.music.join()}" data-xztext="_音乐"></label>
+    <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType1" class="has_tip" data-tip="${Config.fileType.image.join()}" data-xztext="_图片"></label>
+    
+    <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType2" class="has_tip" data-tip="${Config.fileType.music.join()}" data-xztext="_音乐"></label>
 
-      <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType3" class="has_tip" data-tip="${Config.fileType.video.join()}" data-xztext="_视频"></label>
-      
-      <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType4" class="has_tip" data-tip="${Config.fileType.compressed.join()}" data-xztext="_压缩文件"></label>
-      
-      <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType5" class="has_tip" data-tip="${Config.fileType.ps.join()}" data-xztext="_PS文件"></label>
+    <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType3" class="has_tip" data-tip="${Config.fileType.video.join()}" data-xztext="_视频"></label>
+    
+    <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType4" class="has_tip" data-tip="${Config.fileType.compressed.join()}" data-xztext="_压缩文件"></label>
+    
+    <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType5" class="has_tip" data-tip="${Config.fileType.ps.join()}" data-xztext="_PS文件"></label>
 
-      <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="fileType6" class="has_tip" data-tip="${Config.fileType.other.join()}" data-xztext="_其他"></label>
-      </p>
+    <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="fileType6" class="has_tip" data-tip="${Config.fileType.other.join()}" data-xztext="_其他"></label>
+    </p>
 
-      <p class="option" data-no="21">
-      <span class="settingNameStyle1" data-xztext="_费用类型"></span>
+    <p class="option" data-no="21">
+    <span class="settingNameStyle1" data-xztext="_费用类型"></span>
 
-      <input type="checkbox" name="free" id="postType1" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="postType1" data-xztext="_免费投稿"></label>
+    <input type="checkbox" name="free" id="postType1" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="postType1" data-xztext="_免费投稿"></label>
 
-      <input type="checkbox" name="pay" id="postType2" class="need_beautify checkbox_common" checked>
-      <span class="beautify_checkbox"></span>
-      <label for="postType2" data-xztext="_付费投稿"></label>
-      </p>
+    <input type="checkbox" name="pay" id="postType2" class="need_beautify checkbox_common" checked>
+    <span class="beautify_checkbox"></span>
+    <label for="postType2" data-xztext="_付费投稿"></label>
+    </p>
 
-      <p class="option" data-no="9">
-      <span class="settingNameStyle1" data-xztext="_价格范围"></span>
-      <input type="checkbox" name="feeSwitch" class="need_beautify checkbox_switch">
-      <span class="beautify_switch"></span>
-      <span class="subOptionWrap" data-show="feeSwitch">
-      <span data-xztext="_最小值"></span>
-      <input type="text" name="fee" class="setinput_style1 blue" value="500"> ¥
-      </span>
-      </p>
-      
-      <p class="option" data-no="7">
-      <span class="has_tip settingNameStyle1" data-xztip="_设置id范围提示">
-      <span data-xztext="_id范围"></span>
-      <span class="gray1"> ? </span>
-      </span>
-      <input type="checkbox" name="idRangeSwitch" class="need_beautify checkbox_switch">
-      <span class="beautify_switch"></span>
-      <span class="subOptionWrap" data-show="idRangeSwitch">
-      <input type="radio" name="idRange" id="idRange2" class="need_beautify radio" value="<" checked>
-      <span class="beautify_radio"></span>
-      <label for="idRange2" data-xztext="_小于"></label>
-      <input type="radio" name="idRange" id="idRange1" class="need_beautify radio" value=">">
-      <span class="beautify_radio"></span>
-      <label for="idRange1" data-xztext="_大于"></label>
-      <input type="text" name="idRangeInput" class="setinput_style1 w100 blue" value="0">
-      </span>
-      </p>
+    <p class="option" data-no="9">
+    <span class="settingNameStyle1" data-xztext="_价格范围"></span>
+    <input type="checkbox" name="feeSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="feeSwitch">
+    <span data-xztext="_最小值"></span>
+    <input type="text" name="fee" class="setinput_style1 blue" value="500"> ¥
+    </span>
+    </p>
+    
+    <p class="option" data-no="7">
+    <span class="has_tip settingNameStyle1" data-xztip="_设置id范围提示">
+    <span data-xztext="_id范围"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="idRangeSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="idRangeSwitch">
+    <input type="radio" name="idRange" id="idRange2" class="need_beautify radio" value="<" checked>
+    <span class="beautify_radio"></span>
+    <label for="idRange2" data-xztext="_小于"></label>
+    <input type="radio" name="idRange" id="idRange1" class="need_beautify radio" value=">">
+    <span class="beautify_radio"></span>
+    <label for="idRange1" data-xztext="_大于"></label>
+    <input type="text" name="idRangeInput" class="setinput_style1 w100 blue" value="0">
+    </span>
+    </p>
 
-      <p class="option" data-no="10">
-      <span class="has_tip settingNameStyle1" data-xztip="_设置投稿时间提示">
-      <span data-xztext="_投稿时间"></span>
-      <span class="gray1"> ? </span>
-      </span>
+    <p class="option" data-no="10">
+    <span class="has_tip settingNameStyle1" data-xztip="_设置投稿时间提示">
+    <span data-xztext="_投稿时间"></span>
+    <span class="gray1"> ? </span>
+    </span>
 
-      <input type="checkbox" name="postDate" class="need_beautify checkbox_switch">
-      <span class="beautify_switch"></span>
-      <span class="subOptionWrap" data-show="postDate">
-      <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
-      &nbsp;-&nbsp;
-      <input type="datetime-local" name="postDateEnd" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
-      </span>
-      </p>
+    <input type="checkbox" name="postDate" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="postDate">
+    <input type="datetime-local" name="postDateStart" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+    &nbsp;-&nbsp;
+    <input type="datetime-local" name="postDateEnd" placeholder="yyyy-MM-dd HH:mm" class="setinput_style1 postDate blue" value="">
+    </span>
+    </p>
 
-      <p class="option" data-no="19">
-      <span class="settingNameStyle1" data-xztext="_保存投稿中的外部链接"></span>
-      <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
-      <span class="beautify_switch"></span>
-      </p>
-      
-      <p class="option" data-no="22">
-      <span class="settingNameStyle1" data-xztext="_保存投稿中的封面图片"></span>
-      <input type="checkbox" name="savePostCover" class="need_beautify checkbox_switch" checked>
-      <span class="beautify_switch"></span>
-      </p>
+    <p class="option" data-no="19">
+    <span class="settingNameStyle1" data-xztext="_保存投稿中的外部链接"></span>
+    <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch"></span>
+    </p>
+    
+    <p class="option" data-no="22">
+    <span class="settingNameStyle1" data-xztext="_保存投稿中的封面图片"></span>
+    <input type="checkbox" name="savePostCover" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch"></span>
+    </p>
 
-      <p class="option" data-no="20">
-      <span class="settingNameStyle1" data-xztext="_保存投稿中的文字"></span>
-      <input type="checkbox" name="saveText" class="need_beautify checkbox_switch">
-      <span class="beautify_switch"></span>
-      </p>
+    <p class="option" data-no="20">
+    <span class="settingNameStyle1" data-xztext="_保存投稿中的文字"></span>
+    <input type="checkbox" name="saveText" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    </p>
+
+    <p class="option" data-no="23">
+    <span class="has_tip settingNameStyle1" data-xztip="_多条文字用逗号分割">
+    <span data-xztext="_投稿标题必须含有文字"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="titleMustTextSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="titleMustTextSwitch">
+    <input type="text" name="titleMustText" class="setinput_style1 blue fileNameRule" value="">
+    </span>
+    </p>
+
+    <p class="option" data-no="24">
+    <span class="has_tip settingNameStyle1" data-xztip="_多条文字用逗号分割">
+    <span data-xztext="_投稿标题不能含有文字"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="titleCannotTextSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="titleCannotTextSwitch">
+    <input type="text" name="titleCannotText" class="setinput_style1 blue fileNameRule" value="">
+    </span>
+    </p>
 
     <p class="option" data-no="13">
       <span class="settingNameStyle1">
       <span data-xztext="_命名规则"></span>
       </span>
-      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="${Config.defaultNameRule
-  }">
+      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="${
+        Config.defaultNameRule
+      }">
       &nbsp;
       <select name="fileNameSelect" class="beautify_scrollbar">
         <option value="default">…</option>

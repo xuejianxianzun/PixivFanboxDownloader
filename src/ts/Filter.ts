@@ -5,12 +5,13 @@ import { SettingKeys, settings } from './setting/Settings'
 import { msgBox } from './MsgBox'
 import { lang } from './Lang'
 
-/** 过滤选项，其中所有字段都是可选的 */
+/** 过滤选项，所有字段都是可选的 */
 interface FilterOption {
   id?: number | string
   date?: string
   fee?: number
   ext?: string
+  title?: string
 }
 
 // 审查每个文件的数据，决定是否要下载它
@@ -19,10 +20,40 @@ class Filter {
     this.bindEvents()
   }
 
-  // 对启用了的过滤选项输出提示
+  // 对启用了的过滤选项显示提示
   private showTip() {
+    this.getFeeType()
+    this.getFeeRange()
     this.getIdRange()
     this.getPostDate()
+    this.getTitleMustText()
+    this.getTitleCannotText()
+  }
+
+  private getFeeType() {
+    if (settings.free && settings.pay) {
+      return
+    }
+
+    let msg = ''
+    if (settings.free) {
+      msg = `${lang.transl('_费用类型')}: ${lang.transl('_免费投稿')}`
+    }
+    if (settings.pay) {
+      msg = `${lang.transl('_费用类型')}: ${lang.transl('_付费投稿')}`
+    }
+    log.warning(msg)
+  }
+
+  private getFeeRange() {
+    if (!settings.feeSwitch) {
+      return
+    }
+
+    const msg = `${lang.transl('_价格范围')}: ${lang.transl('_最小值')} ${
+      settings.fee
+    }¥`
+    log.warning(msg)
   }
 
   // 提示 id 范围设置
@@ -41,7 +72,7 @@ class Filter {
     }
 
     if (isNaN(settings.postDateStart) || isNaN(settings.postDateStart)) {
-      const msg = 'Date format error!'
+      const msg = lang.transl('_日期时间格式错误')
       this.showWarning(msg)
     } else {
       const start = new Date(settings.postDateStart).toLocaleString()
@@ -50,31 +81,76 @@ class Filter {
     }
   }
 
-  // 检查作品是否符合过滤器的要求
+  private getTitleMustText() {
+    if (!settings.titleMustTextSwitch) {
+      return
+    }
+
+    const msg = `${lang.transl(
+      '_投稿标题必须含有文字'
+    )}: ${settings.titleMustText.toString()}`
+    log.warning(msg)
+  }
+
+  private getTitleCannotText() {
+    if (!settings.titleCannotTextSwitch) {
+      return
+    }
+
+    const msg = `${lang.transl(
+      '_投稿标题不能含有文字'
+    )}: ${settings.titleCannotText.toString()}`
+    log.warning(msg)
+  }
+
+  // 检查投稿是否符合过滤器的要求
   // 想要检查哪些数据就传递哪些数据，不需要传递 FilterOption 的所有选项
   public check(option: FilterOption) {
-    // 检查文件类型
     if (!this.checkFileType(option.ext)) {
       return false
     }
 
-    // 检查收费还是免费
     if (!this.checkfeeType(option.fee)) {
+      log.warning(
+        lang.transl('_跳过文章因为', option.title!) + lang.transl('_费用类型')
+      )
       return false
     }
 
-    // 检查价格范围
     if (!this.checkfeeRange(option.fee)) {
+      log.warning(
+        lang.transl('_跳过文章因为', option.title!) + lang.transl('_价格范围')
+      )
       return false
     }
 
-    // 检查 id 范围
     if (!this.checkIdRange(option.id)) {
+      log.warning(
+        lang.transl('_跳过文章因为', option.title!) + lang.transl('_id范围')
+      )
       return false
     }
 
-    // 检查投稿时间
     if (!this.checkPostDate(option.date)) {
+      log.warning(
+        lang.transl('_跳过文章因为', option.title!) + lang.transl('_投稿时间')
+      )
+      return false
+    }
+
+    if (!this.checkTitltMustText(option.title)) {
+      log.warning(
+        lang.transl('_跳过文章因为', option.title!) +
+          lang.transl('_投稿标题必须含有文字')
+      )
+      return false
+    }
+
+    if (!this.checkTitltCannotText(option.title)) {
+      log.warning(
+        lang.transl('_跳过文章因为', option.title!) +
+          lang.transl('_投稿标题不能含有文字')
+      )
       return false
     }
 
@@ -123,18 +199,13 @@ class Filter {
       return true
     }
 
-    const flag = parseInt(settings.idRange)
     const nowId = parseInt(id.toString())
     const setId = settings.idRangeInput
 
-    if (flag === 1) {
-      // 大于
+    if (settings.idRange === '>') {
       return nowId > setId
-    } else if (flag === 2) {
-      // 小于
-      return nowId < setId
     } else {
-      return true
+      return nowId < setId
     }
   }
 
@@ -153,6 +224,44 @@ class Filter {
       nowDate.getTime() >= settings.postDateStart &&
       nowDate.getTime() <= settings.postDateEnd
     )
+  }
+
+  private checkTitltMustText(title: FilterOption['title']) {
+    if (
+      !settings.titleMustTextSwitch ||
+      !title ||
+      settings.titleMustText.length === 0
+    ) {
+      return true
+    }
+
+    title = title.toLowerCase()
+    const match = settings.titleMustText.filter((str) =>
+      title!.includes(str.toLowerCase())
+    )
+    if (match.length === 0) {
+      return false
+    }
+    return true
+  }
+
+  private checkTitltCannotText(title: FilterOption['title']) {
+    if (
+      !settings.titleCannotTextSwitch ||
+      !title ||
+      settings.titleCannotText.length === 0
+    ) {
+      return true
+    }
+
+    title = title.toLowerCase()
+    const match = settings.titleCannotText.filter((str) =>
+      title!.includes(str.toLowerCase())
+    )
+    if (match.length > 0) {
+      return false
+    }
+    return true
   }
 
   // 如果设置项的值不合法，则显示提示

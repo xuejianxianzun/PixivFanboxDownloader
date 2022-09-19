@@ -56,6 +56,8 @@ class FormSettings {
       'deduplication',
       'savePostCover',
       'unifiedURL',
+      'titleMustTextSwitch',
+      'titleCannotTextSwitch',
     ],
     text: [
       'fee',
@@ -64,6 +66,8 @@ class FormSettings {
       'dateFormat',
       'bgOpacity',
       'zeroPaddingLength',
+      'titleMustText',
+      'titleCannotText',
     ],
     radio: ['idRange', 'bgPositionY', 'userSetLang'],
     textarea: [],
