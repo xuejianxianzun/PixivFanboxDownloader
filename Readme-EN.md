@@ -9,6 +9,8 @@
 
 <!-- /TOC -->
 
+[Discord](https://discord.gg/RpcG8WCBQq)
+
 # Introduction
 
 This is a Chrome browser extension for batch downloading files on Pixiv Fanbox.
@@ -17,7 +19,7 @@ Supports filtering file types, custom file names, and multiple languages.
 
 Note: This program cannot directly unlock paid content on Fanbox. If you want to download paid content, you must first purchase it.
 
-![screenshot](screenshot/ui2.png)
+![screenshot](screenshot/ui-3.png)
 
 # Install
 
@@ -28,7 +30,6 @@ It is recommended to use the **Chrome** browser latest version or the new **Edge
 You can install this extension from the Chrome Web Store. 
 
 [Chrome Web Store page](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
-
 
 ## Offline installation
 

@@ -475,7 +475,7 @@ class CenterPanel {
 
       <div class="help_bar gray1"> 
       <button class="textButton gray1" id="showDownTip" type="button" data-xztext="_常见问题"></button>
-      <a class="gray1" href="https://discord.gg/MCepX8Dw69" target="_blank">Discord</a>
+      <a class="gray1" href="https://discord.gg/u4wVMy7xJM" target="_blank">Discord</a>
       <a class="gray1" href="https://chrome.google.com/webstore/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank" data-xztext="_pixivDownloader"></a>
       <button class="textButton gray1" id="showPatronTip" type="button" data-xztext="_赞助我"></button>
       </div>

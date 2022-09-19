@@ -9,6 +9,8 @@
 
 <!-- /TOC -->
 
+[Discord](https://discord.gg/u4wVMy7xJM)
+
 # 소개
 
 이것은 Pixiv Fanbox에서 파일을 일괄 다운로드하기 위한 Chrome 브라우저의 확장 프로그램입니다.
@@ -17,7 +19,7 @@
 
 참고: 이 프로그램은 Fanbox의 유료 콘텐츠를 직접 잠금 해제할 수 없습니다. 유료 콘텐츠를 다운로드하려면 먼저 구매해야 합니다.
 
-![screenshot](screenshot/ui5.png)
+![screenshot](screenshot/ui-5.png)
 
 # 설치
 

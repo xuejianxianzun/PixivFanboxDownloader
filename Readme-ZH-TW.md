@@ -9,6 +9,8 @@
 
 <!-- /TOC -->
 
+[Discord](https://discord.gg/u4wVMy7xJM)
+
 # 簡介
 
 這是一個 Chrome 瀏覽器擴充功能，用於批次下載 Pixiv Fanbox 上的檔案。
@@ -17,7 +19,7 @@
 
 注意：本程式並不能直接解鎖 Fanbox 上的付費內容。如果你想要下載付費內容，必須先購買它。
 
-![screenshot](screenshot/ui4.png)
+![screenshot](screenshot/ui-2.png)
 
 # 安裝
 

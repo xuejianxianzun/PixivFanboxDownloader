@@ -15,6 +15,8 @@
 
 [한국어 소개 보기](Readme-KO.md)
 
+[Discord](https://discord.gg/u4wVMy7xJM)
+
 # 简介
 
 这是一个 Chrome 浏览器扩展程序，用于批量下载 Pixiv Fanbox 上的文件。
@@ -25,7 +27,7 @@
 
 QQ 群：853021998
 
-![screenshot](screenshot/ui1.png)
+![screenshot](screenshot/ui-1.png)
 
 # 安装
 
