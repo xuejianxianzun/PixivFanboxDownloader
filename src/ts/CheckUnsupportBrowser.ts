@@ -56,6 +56,10 @@ class CheckUnsupportBrowser {
         return
       }
     }
+
+    if (navigator.userAgent.includes('YaBrowser')) {
+      log.warning(lang.transl('_yandex浏览器的警告'))
+    }
   }
 }
 

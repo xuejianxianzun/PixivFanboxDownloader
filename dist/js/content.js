@@ -643,6 +643,9 @@ class CheckUnsupportBrowser {
                 return;
             }
         }
+        if (navigator.userAgent.includes('YaBrowser')) {
+            _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_yandex浏览器的警告'));
+        }
     }
 }
 new CheckUnsupportBrowser();
@@ -4309,7 +4312,15 @@ class DownloadControl {
             }
             else if (msg.msg === 'download_err') {
                 // 浏览器把文件保存到本地时出错
-                if (msg.err === 'SERVER_BAD_CONTENT') {
+                // 用户操作导致下载取消的情况，跳过这个文件，不再重试保存它。触发条件如：
+                // 用户在浏览器弹出“另存为”对话框时取消保存
+                // 用户让 IDM 转接这个下载时
+                if (msg.err === 'USER_CANCELED') {
+                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_user_canceled_tip', msg.data.url, msg.err || 'unknown'));
+                    this.downloadSuccess(msg.data);
+                    return;
+                }
+                else if (msg.err === 'SERVER_BAD_CONTENT') {
                     _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`);
                     // 404 错误不重试下载
                 }
@@ -6310,6 +6321,25 @@ const langText = {
         'Added some tips',
         'いくつかのヒントを追加しました',
         '몇 가지 팁을 추가했습니다.',
+    ],
+    _user_canceled_tip: [
+        `{} 未保存，code：{}。`,
+        `{} 未儲存，code：{}。`,
+        `{} not saved, code: {}.`,
+        `{} 保存されていません。code：{}。`,
+        `{} 저장되지 않음, 코드: {}.`,
+    ],
+    _yandex浏览器的警告: [
+        `如果你在 Yandex 浏览器（Android）上使用 Pixiv Fanbox Downloader，请换成 Kiwi 浏览器。<br>
+    因为下载器在最近将会升级到 Manifest version 3，但是 Yandex 浏览器不支持  Manifest version 3， 所以它不能使用新版本的下载器。`,
+        `如果你在 Yandex 瀏覽器（Android）上使用 Pixiv Fanbox Downloader，請換成 Kiwi 瀏覽器。<br>
+    因為下載器在最近將會升級到 Manifest version 3，但是 Yandex 瀏覽器不支援  Manifest version 3， 所以它不能使用新版本的下載器。`,
+        `If you are using Pixiv Fanbox Downloader on Yandex browser（Android）, please switch to Kiwi browser. <br>
+    Because the downloader will be upgraded to Manifest version 3 in the near future, but Yandex browser does not support Manifest version 3, so it cannot use the new version of the downloader.`,
+        `Yandex（Android） ブ Pixiv Fanbox Downloader を使用している場合は、Kiwi ブラウザに切り替えてください。 <br>
+    ダウンローダは近いうちにマニフェスト バージョン 3 にアップグレードされますが、Yandex ブラウザはマニフェスト バージョン 3 をサポートしていないため、新しいバージョンのダウンローダを使用することはできません。`,
+        `Yandex Browser(Android)에서 Pixiv Fanbox Downloader를 사용하는 경우 Kiwi 브라우저로 전환하십시오. <br>
+    다운로더는 가까운 시일 내에 Manifest 버전 3으로 업그레이드되지만 Yandex 브라우저는 Manifest 버전 3을 지원하지 않으므로 새 버전의 다운로더를 사용할 수 없습니다.`,
     ],
 };
 

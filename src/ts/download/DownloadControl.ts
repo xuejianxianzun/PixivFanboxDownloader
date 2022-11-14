@@ -102,7 +102,21 @@ class DownloadControl {
         this.downloadSuccess(msg.data)
       } else if (msg.msg === 'download_err') {
         // 浏览器把文件保存到本地时出错
-        if (msg.err === 'SERVER_BAD_CONTENT') {
+        // 用户操作导致下载取消的情况，跳过这个文件，不再重试保存它。触发条件如：
+        // 用户在浏览器弹出“另存为”对话框时取消保存
+        // 用户让 IDM 转接这个下载时
+        if (msg.err === 'USER_CANCELED') {
+          log.error(
+            lang.transl(
+              '_user_canceled_tip',
+              msg.data.url,
+              msg.err || 'unknown'
+            )
+          )
+
+          this.downloadSuccess(msg.data)
+          return
+        } else if (msg.err === 'SERVER_BAD_CONTENT') {
           log.error(
             `${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`
           )
