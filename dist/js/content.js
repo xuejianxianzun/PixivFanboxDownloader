@@ -726,7 +726,7 @@ Config.fileType = {
     other: ['txt', 'pdf'],
 };
 /**默认的命名规则 */
-Config.defaultNameRule = '{user}/{postid}-{title}/{index}';
+Config.defaultNameRule = '{user}/{date}-{title}/{index}';
 
 
 
@@ -898,6 +898,10 @@ class FileName {
                 value: data.postId,
                 safe: true,
             },
+            '{post_id}': {
+                value: data.postId,
+                safe: true,
+            },
             '{title}': {
                 value: data.title,
                 safe: false,
@@ -935,7 +939,15 @@ class FileName {
                 value: data.user,
                 safe: false,
             },
+            '{create_id}': {
+                value: data.createID,
+                safe: true,
+            },
             '{uid}': {
+                value: data.uid,
+                safe: true,
+            },
+            '{user_id}': {
                 value: data.uid,
                 safe: true,
             },
@@ -1392,9 +1404,10 @@ const formHtml = `<form class="settingForm">
       <select name="fileNameSelect" class="beautify_scrollbar">
         <option value="default">…</option>
         <option value="{user}">{user}</option>
-        <option value="{uid}">{uid}</option>
+        <option value="{create_id}">{create_id}</option>
+        <option value="{user_id}">{user_id}</option>
         <option value="{title}">{title}</option>
-        <option value="{postid}">{postid}</option>
+        <option value="{post_id}">{post_id}</option>
         <option value="{date}">{date}</option>
         <option value="{task_date}">{task_date}</option>
         <option value="{index}">{index}</option>
@@ -1426,13 +1439,16 @@ const formHtml = `<form class="settingForm">
       <span class="blue">{user}</span>
     <span data-xztext="_命名标记user"></span>
       <br>
-      <span class="blue">{uid}</span>
+      <span class="blue">{create_id}</span>
+    <span data-xztext="_命名标记create_id"></span>
+      <br>
+      <span class="blue">{user_id}</span>
     <span data-xztext="_命名标记uid"></span>
       <br>
       <span class="blue">{title}</span>
     <span data-xztext="_命名标记title"></span>
       <br>
-      <span class="blue">{postid}</span>
+      <span class="blue">{post_id}</span>
     <span data-xztext="_命名标记postid"></span>
       <br>
       <span class="blue">{date}</span>
@@ -3008,6 +3024,7 @@ class SaveData {
             fee,
             user: data.user.name,
             uid: data.user.userId,
+            createID: data.creatorId,
             tags: data.tags.join(','),
             files: [],
             links: {
@@ -3451,22 +3468,15 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '3.2.0';
+        this.flag = '3.3.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}
+            let msg = `<strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增命名标记')}</strong>：
       <br>
-      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_投稿标题必须含有文字')}
-      <br>
-      · ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_投稿标题不能含有文字')}
-      <br>
-      <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_即使遇到价格限制也可以保存封面图')}
-      <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_增加了一些提示')}
+      <span class="blue">{create_id}</span> ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_命名标记create_id')}
       `;
             // 在更新说明的下方显示赞助提示
             msg += `
@@ -3620,6 +3630,7 @@ class Store {
             fee: data.fee,
             user: data.user,
             uid: data.uid,
+            createID: data.createID,
             tags: data.tags,
         };
     }
@@ -5464,12 +5475,19 @@ const langText = {
         'ユーザー名',
         '아티스트명',
     ],
+    _命名标记create_id: [
+        '画师的创作者 ID（英文名或罗马字）',
+        '畫師的創作者 ID（英文名或羅馬字）',
+        `Artist's Creator ID (English or Romaji)`,
+        'アーティストのクリエイター ID (英語またはローマ字)',
+        '아티스트 크리에이터 ID(영어 또는 로마자)',
+    ],
     _命名标记uid: [
-        '画师 id',
-        '畫師 id',
-        'Artist id',
-        'ユーザーID',
-        '아티스트 ID',
+        '画师 ID（数字）',
+        '畫師 ID（數字）',
+        'Artist ID (number)',
+        'ユーザーID（数字）',
+        '아티스트 ID(숫자)',
     ],
     _预览文件名: [
         '预览文件名',
@@ -5744,7 +5762,7 @@ const langText = {
         '投稿の表紙画像を保存',
         '게시물의 표지 이미지를 긁어오기',
     ],
-    _命名标记postid: ['投稿 id', '投稿 id', 'Post id', '投稿ID', '게시물 ID'],
+    _命名标记postid: ['投稿 ID', '投稿 ID', 'Post ID', '投稿ID', '게시물 ID'],
     _命名标记title: [
         '投稿标题',
         '投稿標題',
@@ -5760,11 +5778,11 @@ const langText = {
         '게시물의 태그 목록 (비어있을 수 있음)',
     ],
     _命名标记date: [
-        '投稿的发布日期，如 2019-08-29 12-30',
-        '投稿的發布日期，如 2019-08-29 12-30',
-        'The publication date of the post, such as 2019-08-29 12-30',
-        '投稿日など，例 2019-08-29 12-30',
-        '게시물의 투고일. 예: 2019-08-29 12-30',
+        '投稿的发布日期，如 2019-08-29',
+        '投稿的發布日期，如 2019-08-29',
+        'The publication date of the post, such as 2019-08-29',
+        '投稿日など，例 2019-08-29',
+        '게시물의 투고일. 예: 2019-08-29',
     ],
     _命名标记fee: [
         '投稿的价格',
@@ -5816,11 +5834,11 @@ const langText = {
         '아래 태그를 사용하여 날짜 형식을 설정할 수 있습니다.<br>이것은 명명 규칙의 {date}와 {task_date}에 영향을 미칩니다.<br>예: 2021-04-30T 06:40:08',
     ],
     _命名标记taskDate: [
-        '本次任务抓取完成时的时间。例如：2020-10-21 12-30',
-        '本次工作擷取完成時的時間。例如：2020-10-21 12-30。',
-        'The time when the task was crawl completed. For example: 2020-10-21 12-30',
-        'タスクを完了した日時です。 例：2020-10-21 12-30',
-        '긁어오기 작업 완료 날짜. 예: 2020-10-21 12-30',
+        '本次任务抓取完成时的时间。例如：2020-10-21',
+        '本次工作擷取完成時的時間。例如：2020-10-21。',
+        'The time when the task was crawl completed. For example: 2020-10-21',
+        'タスクを完了した日時です。 例：2020-10-21',
+        '긁어오기 작업 완료 날짜. 예: 2020-10-21',
     ],
     _提示: ['提示', '提示', 'tip', 'ヒント', '팁'],
     _保存投稿中的封面图片: [
@@ -6340,6 +6358,13 @@ const langText = {
     ダウンローダは近いうちにマニフェスト バージョン 3 にアップグレードされますが、Yandex ブラウザはマニフェスト バージョン 3 をサポートしていないため、新しいバージョンのダウンローダを使用することはできません。`,
         `Yandex Browser(Android)에서 Pixiv Fanbox Downloader를 사용하는 경우 Kiwi 브라우저로 전환하십시오. <br>
     다운로더는 가까운 시일 내에 Manifest 버전 3으로 업그레이드되지만 Yandex 브라우저는 Manifest 버전 3을 지원하지 않으므로 새 버전의 다운로더를 사용할 수 없습니다.`,
+    ],
+    _新增命名标记: [
+        '新增命名标记',
+        '新增命名標記',
+        'Add named tag',
+        '名前付きタグを追加',
+        '명명된 태그 추가',
     ],
 };
 
@@ -7170,10 +7195,10 @@ class Settings {
             postDateEnd: 4102444800000,
             saveLink: true,
             saveText: false,
-            userSetName: '{user}/{postid}-{title}/{index}',
+            userSetName: '{user}/{date}-{title}/{index}',
             autoStartDownload: true,
             downloadThread: 3,
-            dateFormat: 'YYYY-MM-DD hh-mm',
+            dateFormat: 'YYYY-MM-DD',
             savePostCover: true,
             userSetLang: 'auto',
             tipCreateFolder: true,

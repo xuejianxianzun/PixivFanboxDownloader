@@ -137,9 +137,10 @@ export const formHtml = `<form class="settingForm">
       <select name="fileNameSelect" class="beautify_scrollbar">
         <option value="default">…</option>
         <option value="{user}">{user}</option>
-        <option value="{uid}">{uid}</option>
+        <option value="{create_id}">{create_id}</option>
+        <option value="{user_id}">{user_id}</option>
         <option value="{title}">{title}</option>
-        <option value="{postid}">{postid}</option>
+        <option value="{post_id}">{post_id}</option>
         <option value="{date}">{date}</option>
         <option value="{task_date}">{task_date}</option>
         <option value="{index}">{index}</option>
@@ -171,13 +172,16 @@ export const formHtml = `<form class="settingForm">
       <span class="blue">{user}</span>
     <span data-xztext="_命名标记user"></span>
       <br>
-      <span class="blue">{uid}</span>
+      <span class="blue">{create_id}</span>
+    <span data-xztext="_命名标记create_id"></span>
+      <br>
+      <span class="blue">{user_id}</span>
     <span data-xztext="_命名标记uid"></span>
       <br>
       <span class="blue">{title}</span>
     <span data-xztext="_命名标记title"></span>
       <br>
-      <span class="blue">{postid}</span>
+      <span class="blue">{post_id}</span>
     <span data-xztext="_命名标记postid"></span>
       <br>
       <span class="blue">{date}</span>

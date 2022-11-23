@@ -64,6 +64,10 @@ class FileName {
         value: data.postId,
         safe: true,
       },
+      '{post_id}': {
+        value: data.postId,
+        safe: true,
+      },
       '{title}': {
         value: data.title,
         safe: false,
@@ -101,7 +105,15 @@ class FileName {
         value: data.user,
         safe: false,
       },
+      '{create_id}': {
+        value: data.createID,
+        safe: true,
+      },
       '{uid}': {
+        value: data.uid,
+        safe: true,
+      },
+      '{user_id}': {
         value: data.uid,
         safe: true,
       },

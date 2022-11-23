@@ -10,21 +10,14 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '3.2.0'
+  private flag = '3.3.0'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-      let msg = `${lang.transl('_新增设置项')}
+      let msg = `<strong>${lang.transl('_新增命名标记')}</strong>：
       <br>
-      · ${lang.transl('_投稿标题必须含有文字')}
-      <br>
-      · ${lang.transl('_投稿标题不能含有文字')}
-      <br>
-      <br>
-      ${lang.transl('_即使遇到价格限制也可以保存封面图')}
-      <br>
-      ${lang.transl('_增加了一些提示')}
+      <span class="blue">{create_id}</span> ${lang.transl('_命名标记create_id')}
       `
 
       // 在更新说明的下方显示赞助提示

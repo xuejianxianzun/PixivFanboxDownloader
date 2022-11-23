@@ -36,6 +36,7 @@ class Store {
       fee: data.fee,
       user: data.user,
       uid: data.uid,
+      createID: data.createID,
       tags: data.tags,
     }
   }

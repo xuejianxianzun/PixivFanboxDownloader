@@ -8,6 +8,7 @@ interface CommonResult {
   fee: number
   user: string
   uid: string
+  createID: string
   tags: string
 }
 

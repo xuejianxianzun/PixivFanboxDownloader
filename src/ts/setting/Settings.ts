@@ -77,7 +77,7 @@ interface XzSetting {
   userSetName: string
   autoStartDownload: boolean
   downloadThread: number
-  dateFormat: 'YYYY-MM-DD hh-mm'
+  dateFormat: string
   savePostCover: boolean
   userSetLang: 'zh-cn' | 'zh-tw' | 'ja' | 'en' | 'ko' | 'auto'
   tipCreateFolder: boolean
@@ -129,10 +129,10 @@ class Settings {
     postDateEnd: 4102444800000,
     saveLink: true,
     saveText: false,
-    userSetName: '{user}/{postid}-{title}/{index}',
+    userSetName: '{user}/{date}-{title}/{index}',
     autoStartDownload: true,
     downloadThread: 3,
-    dateFormat: 'YYYY-MM-DD hh-mm',
+    dateFormat: 'YYYY-MM-DD',
     savePostCover: true,
     userSetLang: 'auto',
     tipCreateFolder: true,

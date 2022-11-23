@@ -60,6 +60,7 @@ class SaveData {
       fee,
       user: data.user.name,
       uid: data.user.userId,
+      createID: data.creatorId,
       tags: data.tags.join(','),
       files: [],
       links: {

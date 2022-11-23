@@ -21,7 +21,7 @@ class Config {
     other: ['txt', 'pdf'],
   }
   /**默认的命名规则 */
-  static readonly defaultNameRule = '{user}/{postid}-{title}/{index}'
+  static readonly defaultNameRule = '{user}/{date}-{title}/{index}'
 }
 
 export { Config }
