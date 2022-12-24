@@ -20,12 +20,12 @@ async function copys() {
     // 复制静态文件
     await copy('./src', './dist', {
       overwrite: true,
-      filter: ['manifest.json'],
+      filter: ['manifest.json', 'declarative_net_request_rules.json'],
     })
 
     await copy('./', './dist', {
       overwrite: true,
-      filter: ['README*.md', 'LICENSE'],
+      filter: ['Readme*.md', 'LICENSE'],
     }).then(function (results) {
       resolve()
       console.log('Copy success')

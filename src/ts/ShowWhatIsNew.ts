@@ -10,14 +10,13 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '3.3.0'
+  private flag = '4.0.0'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-      let msg = `<strong>${lang.transl('_新增命名标记')}</strong>：
-      <br>
-      <span class="blue">{create_id}</span> ${lang.transl('_命名标记create_id')}
+      let msg = `<strong></strong>
+      ${lang.transl('_升级到manifest_v3的提示')}
       `
 
       // 在更新说明的下方显示赞助提示

@@ -3468,15 +3468,14 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '3.3.0';
+        this.flag = '4.0.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `<strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增命名标记')}</strong>：
-      <br>
-      <span class="blue">{create_id}</span> ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_命名标记create_id')}
+            let msg = `<strong></strong>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_升级到manifest_v3的提示')}
       `;
             // 在更新说明的下方显示赞助提示
             msg += `
@@ -6365,6 +6364,13 @@ const langText = {
         'Add named tag',
         '名前付きタグを追加',
         '명명된 태그 추가',
+    ],
+    _升级到manifest_v3的提示: [
+        '下载器已升级到 Manifest V3。<br>如果你在下载时遇到问题，请打开扩展管理页面，重新加载本扩展。',
+        '下載器已升級到 Manifest V3。<br>如果你在下載時遇到問題，請開啟擴充套件管理頁面，重新載入本擴充套件。',
+        'Downloader has been upgraded to Manifest V3. <br>If you encounter problems when downloading, please open the extension management page and reload this extension.',
+        'Downloader が Manifest V3 にアップグレードされました。 <br>ダウンロード中に問題が発生した場合は、拡張機能の管理ページを開いて、この拡張機能をリロードしてください。',
+        '다운로더가 Manifest V3로 업그레이드되었습니다. <br>다운로드 시 문제가 발생하면 확장 프로그램 관리 페이지를 열고 이 확장 프로그램을 새로고침하세요.',
     ],
 };
 

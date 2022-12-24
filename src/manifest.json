@@ -1,7 +1,7 @@
 {
   "name": "Pixiv Fanbox Downloader",
-  "version": "3.3.0",
-  "manifest_version": 2,
+  "version": "4.0.0",
+  "manifest_version": 3,
   "description": "Pixiv Fanbox 批量下载器。Pixiv Fanbox batch downloader.",
   "icons": {
     "16": "icon/logo16.png",
@@ -9,7 +9,7 @@
     "48": "icon/logo48.png",
     "128": "icon/logo128.png"
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "icon/logo16.png",
       "32": "icon/logo32.png",
@@ -27,18 +27,33 @@
     }
   ],
   "background": {
-    "scripts": ["js/background.js"]
+    "service_worker": "js/background.js"
   },
   "permissions": [
     "downloads",
     "storage",
-    "*://*.fanbox.cc/*",
-    "webRequest",
-    "webRequestBlocking"
+    "declarativeNetRequest"
   ],
+  "host_permissions": [
+    "*://*.fanbox.cc/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "declarative_net_request_rules.json"
+      }
+    ]
+  },
   "web_accessible_resources": [
-    "lib/listen_history_change.js",
-    "icon/logo128.png"
+    {
+      "resources": [
+        "lib/listen_history_change.js",
+        "icon/logo128.png"
+      ],
+      "matches": ["*://*.fanbox.cc/*"]
+    }
   ],
   "incognito": "split",
   "homepage_url": "https://github.com/xuejianxianzun/PixivFanboxDownloader"

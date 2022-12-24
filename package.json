@@ -1,6 +1,6 @@
 {
   "name": "pixiv-fanbox-downloader",
-  "version": "3.3.0",
+  "version": "4.0.0",
   "description": "Pixiv Fanbox Downloader",
   "repository": "https://github.com/xuejianxianzun/PixivFanboxDownloader",
   "author": "xuejianxianzun",
@@ -13,7 +13,7 @@
     "build": "npm run pre-build && node ./pack.js"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.91",
+    "@types/chrome": "0.0.154",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
     "archiver": "^3.1.1",
