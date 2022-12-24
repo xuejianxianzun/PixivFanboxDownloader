@@ -2800,7 +2800,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// 进度条
 class ProgressBar {
     constructor() {
         this.wrapHTML = `
@@ -4453,6 +4452,7 @@ class DownloadControl {
             return;
         }
         this.showDownloadArea();
+        this.setDownloaded();
         this.setDownloadThread();
         // 视情况自动开始下载
         if (_setting_Settings__WEBPACK_IMPORTED_MODULE_8__["settings"].autoStartDownload || _States__WEBPACK_IMPORTED_MODULE_9__["states"].quickCrawl) {

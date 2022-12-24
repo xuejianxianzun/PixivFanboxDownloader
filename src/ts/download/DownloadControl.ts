@@ -164,6 +164,7 @@ class DownloadControl {
       this.reset()
     }
   }
+  
   // 显示或隐藏下载区域
   private showDownloadArea() {
     this.wrapper.style.display = 'block'
@@ -267,6 +268,8 @@ class DownloadControl {
     }
 
     this.showDownloadArea()
+
+    this.setDownloaded()
 
     this.setDownloadThread()
 

@@ -14,7 +14,6 @@ interface ProgressData {
   total: number
 }
 
-// 进度条
 class ProgressBar {
   constructor() {
     this.wrap = Tools.useSlot('progressBar', this.wrapHTML) as HTMLDivElement
