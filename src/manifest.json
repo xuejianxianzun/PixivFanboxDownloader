@@ -1,6 +1,6 @@
 {
   "name": "Pixiv Fanbox Downloader",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "manifest_version": 3,
   "description": "Pixiv Fanbox 批量下载器。Pixiv Fanbox batch downloader.",
   "icons": {
@@ -31,21 +31,11 @@
   },
   "permissions": [
     "downloads",
-    "storage",
-    "declarativeNetRequest"
+    "storage"
   ],
   "host_permissions": [
     "*://*.fanbox.cc/*"
   ],
-  "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "ruleset_1",
-        "enabled": true,
-        "path": "declarative_net_request_rules.json"
-      }
-    ]
-  },
   "web_accessible_resources": [
     {
       "resources": [
