@@ -12,13 +12,17 @@ chrome.action.onClicked.addListener(function (tab) {
   })
 })
 
-// 存储每个下载任务的数据，这是因为下载完成的顺序和前台发送的顺序可能不一致，所以需要把数据保存起来以供使用
-let dlData: DonwloadListData = {}
-
 // 当扩展被安装、被更新、或者浏览器升级时，初始化数据
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.set({ batchNo: {} })
+  chrome.storage.local.set({ dlData: {}, batchNo: {} })
 })
+
+// 存储每个下载任务的数据，这是因为下载完成的顺序和前台发送的顺序可能不一致，所以需要把数据保存起来以供使用
+let dlData: DonwloadListData = {}
+// 当浏览器开始下载一个由前台传递的文件时，会把一些数据保存到 dlData 里
+// 当浏览器把这个文件下载完毕之后，从 dlData 里取出保存的数据，发送给前台
+// 由于这个下载器是由浏览器去下载文件的，某些大文件可能需要比较长的时间才能下载完，在这期间 SW 有可能被回收，
+// 导致 dlData 被清空，所以需要持久化储存 dlData
 
 type batchNoType = { [key: string]: number }
 
@@ -35,8 +39,9 @@ chrome.runtime.onMessage.addListener(async function (
     // 当处于初始状态时，或者变量被回收了，就从存储中读取数据储存在变量中
     // 之后每当要使用这两个数据时，从变量读取，而不是从存储中获得。这样就解决了数据不同步的问题，而且性能更高
     if (Object.keys(batchNo).length === 0) {
-      const data = await chrome.storage.local.get('batchNo')
+      const data = await chrome.storage.local.get(['batchNo', 'dlData'])
       batchNo = data.batchNo
+      dlData = data.dlData
     }
 
     const tabId = sender.tab!.id!
@@ -62,6 +67,7 @@ chrome.runtime.onMessage.addListener(async function (
           tabId: tabId,
           uuid: false,
         }
+        chrome.storage.local.set({ dlData })
       }
     )
   }
@@ -73,9 +79,15 @@ const UUIDRegexp =
 
 // 监听下载事件
 // 每个下载会触发两次 onChanged 事件
-chrome.downloads.onChanged.addListener(function (detail) {
+chrome.downloads.onChanged.addListener(async function (detail) {
   // 根据 detail.id 取出保存的数据
-  const data = dlData[detail.id]
+  let data = dlData[detail.id]
+  if (!data) {
+    const getData = await chrome.storage.local.get(['dlData'])
+    dlData = getData.dlData
+    data = dlData[detail.id]
+  }
+
   if (data) {
     let msg = ''
     let err = ''
@@ -109,6 +121,7 @@ chrome.downloads.onChanged.addListener(function (detail) {
       chrome.tabs.sendMessage(data.tabId, { msg, data, err })
       // 清除这个任务的数据
       dlData[detail.id] = null
+      chrome.storage.local.set({ dlData })
     }
   }
 })
