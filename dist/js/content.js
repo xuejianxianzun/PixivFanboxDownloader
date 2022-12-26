@@ -3467,14 +3467,14 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.0.0';
+        this.flag = '4.1.1';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
             let msg = `<strong></strong>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_升级到manifest_v3的提示')}
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复bug')}
       `;
             // 在更新说明的下方显示赞助提示
             msg += `
