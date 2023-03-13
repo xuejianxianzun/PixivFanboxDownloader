@@ -40,4 +40,5 @@ export interface SettingsForm extends HTMLFormElement {
   titleMustText: HTMLInputElement
   titleCannotTextSwitch: HTMLInputElement
   titleCannotText: HTMLInputElement
+  nameruleForNonImages: HTMLInputElement
 }

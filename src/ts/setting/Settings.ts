@@ -98,6 +98,7 @@ interface XzSetting {
   titleMustText: string[]
   titleCannotTextSwitch: boolean
   titleCannotText: string[]
+  nameruleForNonImages: string
 }
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
@@ -153,6 +154,7 @@ class Settings {
     titleMustText: [],
     titleCannotTextSwitch: false,
     titleCannotText: [],
+    nameruleForNonImages: '{user}/{date}-{title}/{name}',
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)

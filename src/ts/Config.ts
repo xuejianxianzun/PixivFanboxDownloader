@@ -22,6 +22,7 @@ class Config {
   }
   /**默认的命名规则 */
   static readonly defaultNameRule = '{user}/{date}-{title}/{index}'
+  static readonly defaultNameRuleForNonImages = '{user}/{date}-{title}/{name}'
 }
 
 export { Config }

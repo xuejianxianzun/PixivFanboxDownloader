@@ -52,11 +52,17 @@ class FileName {
       : index
   }
 
+  private getNameRule(data: Result) {
+    if (Config.fileType.image.includes(data.ext.toLowerCase())) {
+      return settings.userSetName || Config.defaultNameRule
+    } else {
+      return settings.nameruleForNonImages || Config.defaultNameRuleForNonImages
+    }
+  }
+
   // 生成文件名，传入参数为图片信息
   public getFileName(data: Result) {
-    let result = settings.userSetName
-    // 为空时使用预设的命名规则
-    result = result || Config.defaultNameRule
+    let result = this.getNameRule(data)
 
     // 配置所有命名标记
     const cfg = {

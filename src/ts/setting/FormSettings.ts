@@ -68,6 +68,7 @@ class FormSettings {
       'zeroPaddingLength',
       'titleMustText',
       'titleCannotText',
+      'nameruleForNonImages',
     ],
     radio: ['idRange', 'bgPositionY', 'userSetLang'],
     textarea: [],

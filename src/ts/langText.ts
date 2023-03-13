@@ -1022,6 +1022,32 @@ const langText = {
     'Downloader が Manifest V3 にアップグレードされました。 <br>ダウンロード中に問題が発生した場合は、拡張機能の管理ページを開いて、この拡張機能をリロードしてください。',
     '다운로더가 Manifest V3로 업그레이드되었습니다. <br>다운로드 시 문제가 발생하면 확장 프로그램 관리 페이지를 열고 이 확장 프로그램을 새로고침하세요.',
   ],
+  _图片的命名规则: [
+    '图片的<span class="key">命名规则</span>',
+    '圖片的<span class="key">命名規則</span>',
+    '<span class="key">Naming rule</span> for image files',
+    '画像ファイルの<span class="key">命名規則</span>',
+    '이미지 파일의 명명 규칙',
+  ],
+  _非图片的命名规则: [
+    '<span class="key">非图片</span>的命名规则',
+    '<span class="key">非圖片</span>的命名規則',
+    'Naming rule for <span class="key">non-image files</span>',
+    '<span class="key">画像以外</span>のファイルの命名規則',
+    '이미지가 아닌 파일의 이름 지정 규칙',
+  ],
+  _新增非图片命名规则的说明: [
+    `现在你可以为图片文件和非图片文件设置独立的命名规则。<br>
+    另外，非图片文件的默认名字改为它们的原文件名，而不是序号。`,
+    `現在你可以為圖片檔案和非圖片檔案設定獨立的命名規則。<br>
+    另外，非圖片檔案的預設名字改為它們的原檔名，而不是序號。`,
+    `Now you can set separate naming rules for image files and non-image files. <br>
+    Also, the default names of non-image files have been changed to their original filenames instead of serial numbers.`,
+    `画像ファイルと非画像ファイルに別々の命名規則を設定できるようになりました。 <br>
+    また、画像以外のファイルのデフォルト名は、シリアル番号ではなく元のファイル名に変更されています。`,
+    `이제 이미지 파일과 이미지가 아닌 파일에 대해 별도의 이름 지정 규칙을 설정할 수 있습니다. <br>
+    또한 이미지가 아닌 파일의 기본 이름이 일련 번호 대신 원래 파일 이름으로 변경되었습니다.`,
+  ],
 }
 
 export { langText }

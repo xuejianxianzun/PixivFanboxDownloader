@@ -128,7 +128,7 @@ export const formHtml = `<form class="settingForm">
 
     <p class="option" data-no="13">
       <span class="settingNameStyle1">
-      <span data-xztext="_命名规则"></span>
+      <span data-xztext="_图片的命名规则"></span>
       </span>
       <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="${
         Config.defaultNameRule
@@ -206,6 +206,11 @@ export const formHtml = `<form class="settingForm">
     <span data-xztext="_命名标记tags"></span>
     </p>
     
+    <p class="option" data-no="33">
+    <span class="settingNameStyle1" data-xztext="_非图片的命名规则"></span>
+    <input type="text" name="nameruleForNonImages" class="setinput_style1 blue nameruleForNonImages" style="width:300px;" value="{user}/{date}-{title}/{name}">
+    </p>
+
     <p class="option" data-no="46">
     <span class="has_tip settingNameStyle1" data-xztip="_在序号前面填充0的说明">
     <span data-xztext="_在序号前面填充0"></span>
