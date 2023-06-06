@@ -5939,7 +5939,7 @@ const langText = {
     _顶部: ['顶部', '頂部', 'top', '上揃え', '상단'],
     _居中: ['居中', '居中', 'center', '中央揃え', '중앙'],
     _常见问题说明: [
-        '下载器不能绕过付费限制。<br><br>下载的文件保存在浏览器的下载目录里。<br><br>建议在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。<br><br>如果你需要一个梯子（机场）,可以试试 <a href="https://www.ttkcloud.net/#/register?code=6m4hMaPu" title="https://www.ttkcloud.net/">www.ttkcloud.net</a>，价格便宜，百兆带宽，无倍率。先购买订阅，然后在仪盘表复制订阅链接使用。<br><br>下载器 QQ 群：853021998',
+        '下载器不能绕过付费限制。<br><br>下载的文件保存在浏览器的下载目录里。<br><br>建议在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。<br><br>如果你需要一个梯子（机场）,可以试试 <a href="https://www.xfx.icu/#/register?code=6m4hMaPu" title="https://www.xfx.icu/" target="_blank">www.xfx.icu</a>，质量稳定，百兆带宽，无倍率。先购买订阅，然后在仪盘表复制订阅链接使用。<br><br>下载器 QQ 群：853021998',
         '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。',
         'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.',
         'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。',
