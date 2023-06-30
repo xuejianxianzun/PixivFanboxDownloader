@@ -1003,31 +1003,43 @@ class FileName {
         }
         // 使用数组储存和拼接字符串，提高性能
         const resultArr = [];
+        let result = '';
         const length = _Store__WEBPACK_IMPORTED_MODULE_1__["store"].result.length;
-        for (let i = 0; i < length; i++) {
-            const data = _Store__WEBPACK_IMPORTED_MODULE_1__["store"].result[i];
-            // 为生成的文件名添加颜色
-            const fullName = this.getFileName(data);
-            const part = fullName.split('/');
-            const length = part.length;
+        if (length < _Config__WEBPACK_IMPORTED_MODULE_5__["Config"].outputMax) {
             for (let i = 0; i < length; i++) {
-                const str = part[i];
-                if (i < length - 1) {
-                    // 如果不是最后一项，说明是文件夹名，添加颜色
-                    part[i] = `<span class="color666">${str}</span>`;
+                const data = _Store__WEBPACK_IMPORTED_MODULE_1__["store"].result[i];
+                // 为生成的文件名添加颜色
+                const fullName = this.getFileName(data);
+                const part = fullName.split('/');
+                const length = part.length;
+                for (let i = 0; i < length; i++) {
+                    const str = part[i];
+                    if (i < length - 1) {
+                        // 如果不是最后一项，说明是文件夹名，添加颜色
+                        part[i] = `<span class="color666">${str}</span>`;
+                    }
+                    else {
+                        // 最后一项，是文件名，添加颜色
+                        part[i] = `<span class="color000">${str}</span>`;
+                    }
                 }
-                else {
-                    // 最后一项，是文件名，添加颜色
-                    part[i] = `<span class="color000">${str}</span>`;
-                }
+                const fullNameHtml = part.join('/');
+                // 保存本条结果
+                const nowResult = `<p class="result">${fullNameHtml}</p>`;
+                resultArr.push(nowResult);
             }
-            const fullNameHtml = part.join('/');
-            // 保存本条结果
-            const nowResult = `<p class="result">${fullNameHtml}</p>`;
-            resultArr.push(nowResult);
+            // 拼接所有结果
+            result = resultArr.join('');
         }
-        // 拼接所有结果
-        const result = resultArr.join('');
+        else {
+            // 不生成 html 标签，只生成纯文本，保存为 txt 文件
+            for (let i = 0; i < length; i++) {
+                const data = _Store__WEBPACK_IMPORTED_MODULE_1__["store"].result[i];
+                const fullName = this.getFileName(data);
+                resultArr.push(fullName);
+            }
+            result = resultArr.join('\n');
+        }
         _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('output', {
             content: result,
             title: '_预览文件名',

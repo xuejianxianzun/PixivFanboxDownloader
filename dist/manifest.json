@@ -1,6 +1,6 @@
 {
   "name": "Pixiv Fanbox Downloader",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "manifest_version": 3,
   "description": "Pixiv Fanbox 批量下载器。Pixiv Fanbox batch downloader.",
   "icons": {

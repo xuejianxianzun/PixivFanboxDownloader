@@ -1,3 +1,13 @@
+# 4.2.3 2023/06/30
+
+### 修复了预览文件名的结果保存为 txt 时，内容是 html 格式的问题
+
+当预览内容太多（大于 5000 条）时，下载器会把输出内容保存到一个 txt 文件里，但是里面却依然是 html 代码。
+
+现在把 txt 的内容改为纯文本。
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/49
+
 # 4.2.2 2023/06/28
 
 ### 把机场链接从 xfx 替换为农家有风小院
