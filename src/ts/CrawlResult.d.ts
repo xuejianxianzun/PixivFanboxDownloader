@@ -138,7 +138,7 @@ interface URLEmbedDataDefault {
 
 interface URLEmbedDataHtml {
   id: string
-  type: 'html'
+  type: 'html' | 'html.card'
   html: string
 }
 

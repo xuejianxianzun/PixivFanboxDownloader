@@ -202,11 +202,24 @@ class SaveData {
         for (const val of Object.values(data.body.urlEmbedMap)) {
           if (val.type === 'default') {
             urlArr.push(val.url)
-          } else if (val.type === 'html') {
+          } else if (val.type === 'html' || val.type === 'html.card') {
             // 尝试从 html 代码中提取 url
             const testURL = val.html.match('iframe src="(http.*)"')
             if (testURL && testURL.length > 1) {
-              urlArr.push(testURL[1])
+              let url = testURL[1]
+              // 对 Google Drive 的链接进行特殊处理，将其从转换后的嵌入网址还原为原始网址
+              if (url.includes('preview?usp=embed_googleplus')) {
+                url = url.replace(
+                  'preview?usp=embed_googleplus',
+                  'edit?usp=drive_link'
+                )
+              }
+              if (url.includes('embeddedfolderview?id=')) {
+                url = url
+                  .replace('embeddedfolderview?id=', 'drive/folders/')
+                  .replace('#list', '?usp=drive_link')
+              }
+              urlArr.push(url)
             } else {
               urlArr.push(val.html)
             }
