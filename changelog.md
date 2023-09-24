@@ -1,3 +1,17 @@
+# 4.2.5 2023/09/24
+
+### 优化了对 SERVER_FAILED 错误的提示和重试机制
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/51
+
+这个文章的封面图是 500 错误：
+
+https://www.fanbox.cc/@chisamell/posts/4368124
+
+SERVER_FAILED 错误是 500 服务器内部错误。下载器会尝试进行重试，但是有些文件没有缩略图，无法重试，会无限循环。
+
+现在下载器优化了提示，并且当文件没有缩略图时，跳过下载它。
+
 # 4.2.4 2023/07/01
 
 ### 支持了 fanbox 新增的一种嵌入网址类型，可以提取其 URL

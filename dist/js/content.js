@@ -3186,7 +3186,8 @@ class SaveData {
                                 url = url.replace('preview?usp=embed_googleplus', 'edit?usp=drive_link');
                             }
                             if (url.includes('embeddedfolderview?id=')) {
-                                url = url.replace('embeddedfolderview?id=', 'drive/folders/')
+                                url = url
+                                    .replace('embeddedfolderview?id=', 'drive/folders/')
                                     .replace('#list', '?usp=drive_link');
                             }
                             urlArr.push(url);
@@ -3500,16 +3501,19 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.2.0';
+        this.flag = '4.2.5';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `<strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_非图片的命名规则')}</strong>
-      <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增非图片命名规则的说明')}
+            let msg = `
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}
       `;
+            // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
+            //   '_非图片的命名规则'
+            // )}</strong>
+            // ${lang.transl('_新增非图片命名规则的说明')}
             // 在更新说明的下方显示赞助提示
             msg += `
       <br>
@@ -4364,10 +4368,16 @@ class DownloadControl {
                     return;
                 }
                 else if (msg.err === 'SERVER_BAD_CONTENT') {
-                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`);
                     // 404 错误不重试下载
+                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`);
+                }
+                else if (msg.err === 'SERVER_FAILED') {
+                    // 通常是 500 错误，尝试重试下载
+                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. This is a server-side error, not a downloader bug. The downloader will retry the download.`);
+                    this.downloadError(msg.data, msg.err);
                 }
                 else {
+                    // 其他错误
                     _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`);
                     // 重新下载这个文件
                     this.downloadError(msg.data, msg.err);
@@ -4619,9 +4629,22 @@ class DownloadControl {
                 result.url = URL.createObjectURL(blob);
                 result.size = blob.size;
             }
-            if (useThumb && result.retryUrl) {
-                ;
-                [result.url, result.retryUrl] = [result.retryUrl, result.url];
+            // 对于需要使用缩略图来重试下载的情况，如果没有缩略图，则跳过下载此文件
+            if (useThumb) {
+                if (result.retryUrl) {
+                    ;
+                    [result.url, result.retryUrl] = [result.retryUrl, result.url];
+                }
+                else {
+                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${result.url} Unable to retry, this file has been skipped.`);
+                    const data = {
+                        url: result.url,
+                        id: result.fileId,
+                        tabId: 0,
+                        uuid: false,
+                    };
+                    return this.downloadSuccess(data);
+                }
             }
             const data = {
                 id: result.fileId,
@@ -6431,6 +6454,14 @@ const langText = {
     また、画像以外のファイルのデフォルト名は、シリアル番号ではなく元のファイル名に変更されています。`,
         `이제 이미지 파일과 이미지가 아닌 파일에 대해 별도의 이름 지정 규칙을 설정할 수 있습니다. <br>
     또한 이미지가 아닌 파일의 기본 이름이 일련 번호 대신 원래 파일 이름으로 변경되었습니다.`,
+    ],
+    _修复已知问题: [
+        '修复已知问题',
+        '修復已知問題',
+        'fix known issues',
+        '既知の問題を修正する',
+        '알려진 문제 수정',
+        'исправить известные проблемы',
     ],
 };
 

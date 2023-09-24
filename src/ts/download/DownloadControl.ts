@@ -117,11 +117,19 @@ class DownloadControl {
           this.downloadSuccess(msg.data)
           return
         } else if (msg.err === 'SERVER_BAD_CONTENT') {
+          // 404 错误不重试下载
           log.error(
             `${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`
           )
-          // 404 错误不重试下载
+        } else if (msg.err === 'SERVER_FAILED') {
+          // 通常是 500 错误，尝试重试下载
+          log.error(
+            `${msg.data.url} Download error! Code: ${msg.err}. This is a server-side error, not a downloader bug. The downloader will retry the download.`
+          )
+
+          this.downloadError(msg.data, msg.err)
         } else {
+          // 其他错误
           log.error(
             `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`
           )
@@ -362,6 +370,7 @@ class DownloadControl {
     if (this.pause || this.stop) {
       return false
     }
+
     const task = this.taskList[data.id]
     // 复位这个任务的状态
     downloadStates.setState(task.index, -1)
@@ -424,9 +433,25 @@ class DownloadControl {
         result.size = blob.size
       }
 
-      if (useThumb && result.retryUrl) {
-        ;[result.url, result.retryUrl] = [result.retryUrl, result.url]
+      // 对于需要使用缩略图来重试下载的情况，如果没有缩略图，则跳过下载此文件
+      if (useThumb) {
+        if (result.retryUrl) {
+          ;[result.url, result.retryUrl] = [result.retryUrl, result.url]
+        } else {
+          log.error(
+            `${result.url} Unable to retry, this file has been skipped.`
+          )
+
+          const data: DonwloadSuccessData = {
+            url: result.url,
+            id: result.fileId,
+            tabId: 0,
+            uuid: false,
+          }
+          return this.downloadSuccess(data)
+        }
       }
+
       const data: downloadArgument = {
         id: result.fileId,
         data: result,
