@@ -103,7 +103,7 @@ class SaveData {
     if (data.body === null) {
       store.skipDueToFee++
       log.warning(
-        lang.transl('_跳过文章因为', title) + lang.transl('_价格限制')
+        lang.transl('_跳过文章因为', title) + lang.transl('_价格限制') + ` ${fee}`
       )
       if (result.files.length > 0) {
         store.addResult(result)

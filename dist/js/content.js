@@ -3085,7 +3085,7 @@ class SaveData {
         // 对于因为价格限制不能抓取文章，在此时返回，但是会保存封面图
         if (data.body === null) {
             _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过文章因为', title) + _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_价格限制'));
+            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过文章因为', title) + _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_价格限制') + ` ${fee}`);
             if (result.files.length > 0) {
                 _Store__WEBPACK_IMPORTED_MODULE_1__["store"].addResult(result);
             }

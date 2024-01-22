@@ -287,9 +287,9 @@ const langText = {
     '<span class="key">ID</span> 범위',
   ],
   _设置id范围提示: [
-    '您可以输入一个投稿 id，抓取比它新或者比它旧的投稿',
-    '您可以輸入一個投稿 id，擷取比它新或者比它舊的投稿。',
-    'You can enter a work id and crawl posts that are newer or older than it',
+    '您可以输入一个投稿 ID，抓取比它新或者比它旧的投稿',
+    '您可以輸入一個投稿 ID，擷取比它新或者比它舊的投稿。',
+    'You can enter a work ID and crawl posts that are newer or older than it',
     '1つの投稿IDを入力することで、それより新しいあるいは古い投稿をまとめてダウンロードすることができます。',
     '1개의 게시물 ID를 입력하면 그보다 새로운 혹은 오래된 게시물을 일괄 다운로드 받을 수 있습니다.',
   ],
