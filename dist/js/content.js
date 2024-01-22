@@ -3505,7 +3505,7 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.2.5';
+        this.flag = '4.2.6';
         this.bindEvents();
     }
     bindEvents() {
