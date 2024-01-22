@@ -139,8 +139,8 @@ class SaveData {
       let linkTexts: string[] = []
       let text = '' // 正文文本
       for (const block of data.body.blocks) {
-        if (block.type === 'p' && block.text) {
-          linkTexts.push(block.text)
+        if (block.type === 'p') {
+          block.text && linkTexts.push(block.text)
           if (block.links && block.links.length > 0) {
             for (const links of block.links) {
               linkTexts.push(links.url)
@@ -148,7 +148,11 @@ class SaveData {
           }
 
           // 保存文章正文里的文字，每个段落后面添加换行
-          text += block.text + '\r\n\r\n'
+          text += block.text + '\r\n'
+          // 空字符串在网页上渲染出来的表现是一个额外的空行，用于隔开段落。所以这里额外添加一个换行
+          if (block.text === '') {
+            text += '\r\n'
+          }
         }
       }
       for (const link of linkTexts) {

@@ -3118,15 +3118,19 @@ class SaveData {
             let linkTexts = [];
             let text = ''; // 正文文本
             for (const block of data.body.blocks) {
-                if (block.type === 'p' && block.text) {
-                    linkTexts.push(block.text);
+                if (block.type === 'p') {
+                    block.text && linkTexts.push(block.text);
                     if (block.links && block.links.length > 0) {
                         for (const links of block.links) {
                             linkTexts.push(links.url);
                         }
                     }
                     // 保存文章正文里的文字，每个段落后面添加换行
-                    text += block.text + '\r\n\r\n';
+                    text += block.text + '\r\n';
+                    // 空字符串在网页上渲染出来的表现是一个额外的空行，用于隔开段落。所以这里额外添加一个换行
+                    if (block.text === '') {
+                        text += '\r\n';
+                    }
                 }
             }
             for (const link of linkTexts) {
@@ -5695,9 +5699,9 @@ const langText = {
         '<span class="key">ID</span> 범위',
     ],
     _设置id范围提示: [
-        '您可以输入一个投稿 id，抓取比它新或者比它旧的投稿',
-        '您可以輸入一個投稿 id，擷取比它新或者比它舊的投稿。',
-        'You can enter a work id and crawl posts that are newer or older than it',
+        '您可以输入一个投稿 ID，抓取比它新或者比它旧的投稿',
+        '您可以輸入一個投稿 ID，擷取比它新或者比它舊的投稿。',
+        'You can enter a work ID and crawl posts that are newer or older than it',
         '1つの投稿IDを入力することで、それより新しいあるいは古い投稿をまとめてダウンロードすることができます。',
         '1개의 게시물 ID를 입력하면 그보다 새로운 혹은 오래된 게시물을 일괄 다운로드 받을 수 있습니다.',
     ],

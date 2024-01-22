@@ -10,6 +10,10 @@ export NODE_OPTIONS=--openssl-legacy-provider
 跳过 xxxx 因为：价格限制 1000
 ```
 
+### 修复了保存投稿文字时，换行不正确的问题
+
+现在换行的效果可以保持与原文一致。
+
 # 4.2.5 2023/09/24
 
 ### 优化了对 SERVER_FAILED 错误的提示和重试机制
