@@ -170,6 +170,7 @@ abstract class InitPageBase {
     log.success(lang.transl('_抓取完毕'), 2)
 
     EVT.fire('crawlFinish')
+    // console.log(store.result)
   }
 
   // 抓取结果为 0 时输出提示

@@ -293,7 +293,7 @@ class SaveData {
       }
     }
 
-    // 提取 file 投稿的资源
+    // 提取 file 投稿的资源，也就是作者上传的附件
     if (data.type === 'file') {
       // 保存 file 资源
       for (const fileData of data.body.files) {
@@ -306,7 +306,7 @@ class SaveData {
       }
     }
 
-    // 提取 video 投稿的资源
+    // 提取 video 投稿的资源，注意这里的 video 是引用的外部网站的链接，不是作者上传的附件
     // video 数据保存到文本
     if (data.type === 'video') {
       const video = data.body.video
@@ -345,6 +345,7 @@ class SaveData {
     if (
       filter.check({
         ext: fileData.extension,
+        name: fileData.name,
       })
     ) {
       return {

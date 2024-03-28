@@ -1087,6 +1087,8 @@ class Filter {
         this.getPostDate();
         this.getTitleMustText();
         this.getTitleCannotText();
+        this.getFileNameIncludes();
+        this.getFileNameExcludes();
     }
     getFeeType() {
         if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].free && _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].pay) {
@@ -1144,6 +1146,20 @@ class Filter {
         const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotText.toString()}`;
         _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
     }
+    getFileNameIncludes() {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch && _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length > 0) {
+            return;
+        }
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中必须含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.toString()}`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+    }
+    getFileNameExcludes() {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch && _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length > 0) {
+            return;
+        }
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.toString()}`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+    }
     // 检查投稿是否符合过滤器的要求
     // 想要检查哪些数据就传递哪些数据，不需要传递 FilterOption 的所有选项
     check(option) {
@@ -1174,6 +1190,14 @@ class Filter {
         if (!this.checkTitltCannotText(option.title)) {
             _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) +
                 _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题不能含有文字'));
+            return false;
+        }
+        if (!this.checkFileNameInclude(option.name)) {
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', `${option.name}.${option.ext}`) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中必须含有文字') + ': ' + _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.join(','));
+            return false;
+        }
+        if (!this.checkFileNameExclude(option.name)) {
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', `${option.name}.${option.ext}`) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字') + ': ' + _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.join(','));
             return false;
         }
         return true;
@@ -1259,6 +1283,20 @@ class Filter {
         }
         return true;
     }
+    checkFileNameInclude(name) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch || _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length === 0 || !name) {
+            return true;
+        }
+        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.some(str => name.toLowerCase().includes(str.toLowerCase()));
+        return find;
+    }
+    checkFileNameExclude(name) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch || _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length === 0 || !name) {
+            return true;
+        }
+        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.some(str => name.toLowerCase().includes(str.toLowerCase()));
+        return !find;
+    }
     // 如果设置项的值不合法，则显示提示
     showWarning(msg) {
         _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('wrongSetting');
@@ -1288,6 +1326,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formHtml", function() { return formHtml; });
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 
+// 已使用的最大编号为 55
 const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -1398,7 +1437,7 @@ const formHtml = `<form class="settingForm">
     <input type="checkbox" name="titleMustTextSwitch" class="need_beautify checkbox_switch">
     <span class="beautify_switch"></span>
     <span class="subOptionWrap" data-show="titleMustTextSwitch">
-    <input type="text" name="titleMustText" class="setinput_style1 blue fileNameRule" value="">
+    <input type="text" name="titleMustText" class="setinput_style1 blue fileNameRule" value="" placeholder="text1,text2,text3">
     </span>
     </p>
 
@@ -1410,9 +1449,39 @@ const formHtml = `<form class="settingForm">
     <input type="checkbox" name="titleCannotTextSwitch" class="need_beautify checkbox_switch">
     <span class="beautify_switch"></span>
     <span class="subOptionWrap" data-show="titleCannotTextSwitch">
-    <input type="text" name="titleCannotText" class="setinput_style1 blue fileNameRule" value="">
+    <input type="text" name="titleCannotText" class="setinput_style1 blue fileNameRule" value="" placeholder="text1,text2,text3">
     </span>
     </p>
+
+    <p class="option" data-no="54">
+    <span class="has_tip settingNameStyle1" data-xztip="_文件指的是附件">
+    <span data-xztext="_文件名中必须含有文字"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="fileNameIncludeSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="fileNameIncludeSwitch">
+    <span data-xztext="_任一"></span>
+    <input type="text" name="fileNameInclude" class="setinput_style1 blue fileNameRule" value="" placeholder="text1,text2,text3">
+    </span>
+    </p>
+
+    <p class="option" data-no="55">
+    <span class="has_tip settingNameStyle1" data-xztip="_文件指的是附件">
+    <span data-xztext="_文件名中不能含有文字"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="fileNameExcludeSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="fileNameExcludeSwitch">
+    <span data-xztext="_任一"></span>
+    <input type="text" name="fileNameExclude" class="setinput_style1 blue fileNameRule" value="" placeholder="text1,text2,text3">
+    </span>
+    </p>
+
+    <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
+    <slot data-name="downloadArea"></slot>
+    <slot data-name="progressBar"></slot>
 
     <p class="option" data-no="13">
       <span class="settingNameStyle1">
@@ -1497,18 +1566,6 @@ const formHtml = `<form class="settingForm">
     <input type="text" name="nameruleForNonImages" class="setinput_style1 blue nameruleForNonImages" style="width:300px;" value="{user}/{date}-{title}/{name}">
     </p>
 
-    <p class="option" data-no="46">
-    <span class="has_tip settingNameStyle1" data-xztip="_在序号前面填充0的说明">
-    <span data-xztext="_在序号前面填充0"></span>
-    <span class="gray1"> ? </span></span>
-    <input type="checkbox" name="zeroPadding" class="need_beautify checkbox_switch" >
-    <span class="beautify_switch" tabindex="0"></span>
-    <span class="subOptionWrap" data-show="zeroPadding">
-    <span data-xztext="_序号总长度"></span>
-    <input type="text" name="zeroPaddingLength" class="setinput_style1 blue" value="3" style="width:30px;min-width: 30px;">
-    </span>
-    </p>
-
     <p class="option" data-no="31">
     <span class="settingNameStyle1" data-xztext="_日期格式"></span>
     <input type="text" name="dateFormat" class="setinput_style1 blue" style="width:250px;" value="YYYY-MM-DD">
@@ -1537,11 +1594,16 @@ const formHtml = `<form class="settingForm">
     <br>
     </p>
 
-    <p class="option" data-no="16">
-    <span class="settingNameStyle1"">
-    <span data-xztext="_下载线程"></span>
+    <p class="option" data-no="46">
+    <span class="has_tip settingNameStyle1" data-xztip="_在序号前面填充0的说明">
+    <span data-xztext="_在序号前面填充0"></span>
+    <span class="gray1"> ? </span></span>
+    <input type="checkbox" name="zeroPadding" class="need_beautify checkbox_switch" >
+    <span class="beautify_switch" tabindex="0"></span>
+    <span class="subOptionWrap" data-show="zeroPadding">
+    <span data-xztext="_序号总长度"></span>
+    <input type="text" name="zeroPaddingLength" class="setinput_style1 blue" value="3" style="width:30px;min-width: 30px;">
     </span>
-    <input type="text" name="downloadThread" class="has_tip setinput_style1 blue" data-xztip="_线程数字" value="3">
     </p>
 
     <p class="option" data-no="17">
@@ -1551,6 +1613,13 @@ const formHtml = `<form class="settingForm">
     </span>
     <input type="checkbox" name="autoStartDownload" id="setQuietDownload" class="need_beautify checkbox_switch" checked>
     <span class="beautify_switch"></span>
+    </p>
+
+    <p class="option" data-no="16">
+    <span class="settingNameStyle1"">
+    <span data-xztext="_下载线程"></span>
+    </span>
+    <input type="text" name="downloadThread" class="has_tip setinput_style1 blue" data-xztip="_线程数字" value="3">
     </p>
 
     <p class="option" data-no="52">
@@ -1571,10 +1640,6 @@ const formHtml = `<form class="settingForm">
     <button class="textButton gray1" type="button" id="clearDownloadRecord" data-xztext="_清除"></button>
     </span>
     </p>
-
-    <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
-    <slot data-name="downloadArea"></slot>
-    <slot data-name="progressBar"></slot>
 
     <p class="option" data-no="18">
     <span class="has_tip settingNameStyle1" data-xztip="_统一网址格式的说明">
@@ -1922,6 +1987,7 @@ class InitPageBase {
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取文件数量', _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length.toString()));
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取完毕'), 2);
         _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlFinish');
+        // console.log(store.result)
     }
     // 抓取结果为 0 时输出提示
     noResult() {
@@ -3085,7 +3151,9 @@ class SaveData {
         // 对于因为价格限制不能抓取文章，在此时返回，但是会保存封面图
         if (data.body === null) {
             _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过文章因为', title) + _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_价格限制') + ` ${fee}`);
+            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过文章因为', title) +
+                _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_价格限制') +
+                ` ${fee}`);
             if (result.files.length > 0) {
                 _Store__WEBPACK_IMPORTED_MODULE_1__["store"].addResult(result);
             }
@@ -3256,7 +3324,7 @@ class SaveData {
                 }
             }
         }
-        // 提取 file 投稿的资源
+        // 提取 file 投稿的资源，也就是作者上传的附件
         if (data.type === 'file') {
             // 保存 file 资源
             for (const fileData of data.body.files) {
@@ -3268,7 +3336,7 @@ class SaveData {
                 resource !== null && result.files.push(resource);
             }
         }
-        // 提取 video 投稿的资源
+        // 提取 video 投稿的资源，注意这里的 video 是引用的外部网站的链接，不是作者上传的附件
         // video 数据保存到文本
         if (data.type === 'video') {
             const video = data.body.video;
@@ -3300,6 +3368,7 @@ class SaveData {
     getFileData(fileData, index) {
         if (_Filter__WEBPACK_IMPORTED_MODULE_0__["filter"].check({
             ext: fileData.extension,
+            name: fileData.name,
         })) {
             return {
                 fileId: fileData.id,
@@ -3505,14 +3574,17 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.2.6';
+        this.flag = '4.3.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
             let msg = `
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}
+      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: </strong><br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_文件名中必须含有文字')}<br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_文件名中不能含有文字')}<br><br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_过滤文件名的说明')}
       `;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
@@ -6336,18 +6408,39 @@ const langText = {
         '가격 제한이 있어도 표지 이미지 저장',
     ],
     _投稿标题必须含有文字: [
-        '投稿标题<span class="key">必须</span>含有文字',
-        '投稿標題<span class="key">必須</span>含有文字',
-        'Post title <span class="key">must</span> contain text',
+        '投稿<span class="key">标题</span>必须含有文字',
+        '投稿<span class="key">標題</span>必須含有文字',
+        'Post <span class="key">title</span> must contain text',
         '投稿のタイトルにはテキストを含める必要があります',
         '게시물 제목에는 텍스트가 포함되어야 합니다',
     ],
     _投稿标题不能含有文字: [
-        '投稿标题<span class="key">不能</span>含有文字',
-        '投稿標題<span class="key">不能</span>含有文字',
-        'Post title <span class="key">cannot</span> contain text',
+        '投稿<span class="key">标题</span>不能含有文字',
+        '投稿<span class="key">標題</span>不能含有文字',
+        'Post <span class="key">title</span> cannot contain text',
         '投稿のタイトルにテキストを含めることはできません',
         '게시물 제목은 텍스트를 포함할 수 없습니다',
+    ],
+    _文件名中必须含有文字: [
+        '<span class="key">文件名</span>中必须含有文字',
+        '<span class="key">檔名</span>中必須含有文字',
+        '<span class="key">File names</span> must contain text',
+        'ファイル名には次の内容を含める必要があります',
+        '파일 이름에는 다음이 포함되어야 합니다',
+    ],
+    _文件名中不能含有文字: [
+        '<span class="key">文件名</span>中不能含有文字',
+        '<span class="key">檔名</span>中不能含有文字',
+        '<span class="key">File names</span> cannot contain text',
+        'ファイル名に次の内容を含めることはできません',
+        '파일 이름에는 다음을 포함할 수 없습니다',
+    ],
+    _文件指的是附件: [
+        '此处的文件指作者上传的附件（会显示文件名的那些），通常是压缩文件、视频、音频。',
+        '此處的檔案指作者上傳的附件（會顯示檔名的那些），通常是壓縮檔案、影片、音訊。',
+        'The file here refers to the attachment uploaded by the author (the file name will be displayed), usually a compressed file, video, or audio.',
+        'ここでのファイルとは、作成者がアップロードした添付ファイル (ファイル名が表示されます) を指し、通常は圧縮ファイル、ビデオ、またはオーディオです。',
+        '여기서 파일이란 작성자가 업로드한 첨부파일(파일명이 표시됩니다.)을 의미하며 일반적으로 압축된 파일, 비디오, 오디오 등입니다.',
     ],
     _多条文字用逗号分割: [
         '你可以设置多条文字，不区分大小写；每条之间用半角逗号(,)分割',
@@ -6465,7 +6558,14 @@ const langText = {
         'fix known issues',
         '既知の問題を修正する',
         '알려진 문제 수정',
-        'исправить известные проблемы',
+    ],
+    _任一: ['任一', '任一', 'One', '何れか', '하나만',],
+    _过滤文件名的说明: [
+        '现在你可以通过文件名来过滤文件了。',
+        '現在你可以透過檔名來過濾檔案了。',
+        'Now you can filter files by filename.',
+        'ファイル名でファイルをフィルタリングできるようになりました。',
+        '이제 파일 이름을 기준으로 파일을 필터링할 수 있습니다.',
     ],
 };
 
@@ -6739,6 +6839,8 @@ class FormSettings {
                 'unifiedURL',
                 'titleMustTextSwitch',
                 'titleCannotTextSwitch',
+                'fileNameIncludeSwitch',
+                'fileNameExcludeSwitch',
             ],
             text: [
                 'fee',
@@ -6750,6 +6852,8 @@ class FormSettings {
                 'titleMustText',
                 'titleCannotText',
                 'nameruleForNonImages',
+                'fileNameInclude',
+                'fileNameExclude',
             ],
             radio: ['idRange', 'bgPositionY', 'userSetLang'],
             textarea: [],
@@ -6989,7 +7093,7 @@ __webpack_require__.r(__webpack_exports__);
 class Options {
     constructor() {
         // 保持显示的选项的 id
-        this.whiteList = [2, 21, 51, 13, 16, 17, 33];
+        this.whiteList = [2, 21, 51, 13, 17, 33];
         // 某些页面类型需要隐藏某些选项。当调用 hideOption 方法时，把选项 id 保存起来
         // 优先级高于 whiteList
         this.hiddenList = [];
@@ -7322,6 +7426,10 @@ class Settings {
             titleCannotTextSwitch: false,
             titleCannotText: [],
             nameruleForNonImages: '{user}/{date}-{title}/{name}',
+            fileNameIncludeSwitch: false,
+            fileNameInclude: [],
+            fileNameExcludeSwitch: false,
+            fileNameExclude: [],
         };
         this.allSettingKeys = Object.keys(this.defaultSettings);
         // 值为浮点数的选项
@@ -7334,6 +7442,8 @@ class Settings {
             'namingRuleList',
             'titleMustText',
             'titleCannotText',
+            'fileNameInclude',
+            'fileNameExclude',
         ];
         // 以默认设置作为初始设置
         this.settings = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].deepCopy(this.defaultSettings);

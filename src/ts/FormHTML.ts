@@ -1,5 +1,6 @@
 import { Config } from './Config'
 
+// 已使用的最大编号为 55
 export const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -110,7 +111,7 @@ export const formHtml = `<form class="settingForm">
     <input type="checkbox" name="titleMustTextSwitch" class="need_beautify checkbox_switch">
     <span class="beautify_switch"></span>
     <span class="subOptionWrap" data-show="titleMustTextSwitch">
-    <input type="text" name="titleMustText" class="setinput_style1 blue fileNameRule" value="">
+    <input type="text" name="titleMustText" class="setinput_style1 blue fileNameRule" value="" placeholder="text1,text2,text3">
     </span>
     </p>
 
@@ -122,9 +123,39 @@ export const formHtml = `<form class="settingForm">
     <input type="checkbox" name="titleCannotTextSwitch" class="need_beautify checkbox_switch">
     <span class="beautify_switch"></span>
     <span class="subOptionWrap" data-show="titleCannotTextSwitch">
-    <input type="text" name="titleCannotText" class="setinput_style1 blue fileNameRule" value="">
+    <input type="text" name="titleCannotText" class="setinput_style1 blue fileNameRule" value="" placeholder="text1,text2,text3">
     </span>
     </p>
+
+    <p class="option" data-no="54">
+    <span class="has_tip settingNameStyle1" data-xztip="_文件指的是附件">
+    <span data-xztext="_文件名中必须含有文字"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="fileNameIncludeSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="fileNameIncludeSwitch">
+    <span data-xztext="_任一"></span>
+    <input type="text" name="fileNameInclude" class="setinput_style1 blue fileNameRule" value="" placeholder="text1,text2,text3">
+    </span>
+    </p>
+
+    <p class="option" data-no="55">
+    <span class="has_tip settingNameStyle1" data-xztip="_文件指的是附件">
+    <span data-xztext="_文件名中不能含有文字"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    <input type="checkbox" name="fileNameExcludeSwitch" class="need_beautify checkbox_switch">
+    <span class="beautify_switch"></span>
+    <span class="subOptionWrap" data-show="fileNameExcludeSwitch">
+    <span data-xztext="_任一"></span>
+    <input type="text" name="fileNameExclude" class="setinput_style1 blue fileNameRule" value="" placeholder="text1,text2,text3">
+    </span>
+    </p>
+
+    <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
+    <slot data-name="downloadArea"></slot>
+    <slot data-name="progressBar"></slot>
 
     <p class="option" data-no="13">
       <span class="settingNameStyle1">
@@ -211,18 +242,6 @@ export const formHtml = `<form class="settingForm">
     <input type="text" name="nameruleForNonImages" class="setinput_style1 blue nameruleForNonImages" style="width:300px;" value="{user}/{date}-{title}/{name}">
     </p>
 
-    <p class="option" data-no="46">
-    <span class="has_tip settingNameStyle1" data-xztip="_在序号前面填充0的说明">
-    <span data-xztext="_在序号前面填充0"></span>
-    <span class="gray1"> ? </span></span>
-    <input type="checkbox" name="zeroPadding" class="need_beautify checkbox_switch" >
-    <span class="beautify_switch" tabindex="0"></span>
-    <span class="subOptionWrap" data-show="zeroPadding">
-    <span data-xztext="_序号总长度"></span>
-    <input type="text" name="zeroPaddingLength" class="setinput_style1 blue" value="3" style="width:30px;min-width: 30px;">
-    </span>
-    </p>
-
     <p class="option" data-no="31">
     <span class="settingNameStyle1" data-xztext="_日期格式"></span>
     <input type="text" name="dateFormat" class="setinput_style1 blue" style="width:250px;" value="YYYY-MM-DD">
@@ -251,11 +270,16 @@ export const formHtml = `<form class="settingForm">
     <br>
     </p>
 
-    <p class="option" data-no="16">
-    <span class="settingNameStyle1"">
-    <span data-xztext="_下载线程"></span>
+    <p class="option" data-no="46">
+    <span class="has_tip settingNameStyle1" data-xztip="_在序号前面填充0的说明">
+    <span data-xztext="_在序号前面填充0"></span>
+    <span class="gray1"> ? </span></span>
+    <input type="checkbox" name="zeroPadding" class="need_beautify checkbox_switch" >
+    <span class="beautify_switch" tabindex="0"></span>
+    <span class="subOptionWrap" data-show="zeroPadding">
+    <span data-xztext="_序号总长度"></span>
+    <input type="text" name="zeroPaddingLength" class="setinput_style1 blue" value="3" style="width:30px;min-width: 30px;">
     </span>
-    <input type="text" name="downloadThread" class="has_tip setinput_style1 blue" data-xztip="_线程数字" value="3">
     </p>
 
     <p class="option" data-no="17">
@@ -265,6 +289,13 @@ export const formHtml = `<form class="settingForm">
     </span>
     <input type="checkbox" name="autoStartDownload" id="setQuietDownload" class="need_beautify checkbox_switch" checked>
     <span class="beautify_switch"></span>
+    </p>
+
+    <p class="option" data-no="16">
+    <span class="settingNameStyle1"">
+    <span data-xztext="_下载线程"></span>
+    </span>
+    <input type="text" name="downloadThread" class="has_tip setinput_style1 blue" data-xztip="_线程数字" value="3">
     </p>
 
     <p class="option" data-no="52">
@@ -285,10 +316,6 @@ export const formHtml = `<form class="settingForm">
     <button class="textButton gray1" type="button" id="clearDownloadRecord" data-xztext="_清除"></button>
     </span>
     </p>
-
-    <slot data-name="crawlBtns" class="centerWrap_btns crawlBtns"></slot>
-    <slot data-name="downloadArea"></slot>
-    <slot data-name="progressBar"></slot>
 
     <p class="option" data-no="18">
     <span class="has_tip settingNameStyle1" data-xztip="_统一网址格式的说明">

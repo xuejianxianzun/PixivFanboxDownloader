@@ -99,6 +99,10 @@ interface XzSetting {
   titleCannotTextSwitch: boolean
   titleCannotText: string[]
   nameruleForNonImages: string
+  fileNameIncludeSwitch: boolean
+  fileNameInclude: string[]
+  fileNameExcludeSwitch: boolean
+  fileNameExclude: string[]
 }
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
@@ -155,6 +159,10 @@ class Settings {
     titleCannotTextSwitch: false,
     titleCannotText: [],
     nameruleForNonImages: '{user}/{date}-{title}/{name}',
+    fileNameIncludeSwitch: false,
+    fileNameInclude: [],
+    fileNameExcludeSwitch: false,
+    fileNameExclude: [],
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)
@@ -172,6 +180,8 @@ class Settings {
     'namingRuleList',
     'titleMustText',
     'titleCannotText',
+    'fileNameInclude',
+    'fileNameExclude',
   ]
 
   // 以默认设置作为初始设置

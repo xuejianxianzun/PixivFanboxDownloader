@@ -10,13 +10,16 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '4.2.6'
+  private flag = '4.3.0'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
       let msg = `
-      ${lang.transl('_修复已知问题')}
+      <strong>${lang.transl('_新增设置项')}: </strong><br>
+      ${lang.transl('_文件名中必须含有文字')}<br>
+      ${lang.transl('_文件名中不能含有文字')}<br><br>
+      ${lang.transl('_过滤文件名的说明')}
       `
 
       // <strong>${lang.transl('_新增设置项')}: ${lang.transl(

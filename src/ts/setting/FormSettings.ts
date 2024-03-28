@@ -58,6 +58,8 @@ class FormSettings {
       'unifiedURL',
       'titleMustTextSwitch',
       'titleCannotTextSwitch',
+      'fileNameIncludeSwitch',
+      'fileNameExcludeSwitch',
     ],
     text: [
       'fee',
@@ -69,6 +71,8 @@ class FormSettings {
       'titleMustText',
       'titleCannotText',
       'nameruleForNonImages',
+      'fileNameInclude',
+      'fileNameExclude',
     ],
     radio: ['idRange', 'bgPositionY', 'userSetLang'],
     textarea: [],

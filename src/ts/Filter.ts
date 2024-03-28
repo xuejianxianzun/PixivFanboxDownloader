@@ -7,11 +7,18 @@ import { lang } from './Lang'
 
 /** 过滤选项，所有字段都是可选的 */
 interface FilterOption {
+  /**文章 ID */
   id?: number | string
+  /**文章发布日期 */
   date?: string
+  /**文章价格 */
   fee?: number
+  /**文件扩展名 */
   ext?: string
+  /**文章标题 */
   title?: string
+  /**文件名（原名，不是下载器重命名后的名字） */
+  name?: string
 }
 
 // 审查每个文件的数据，决定是否要下载它
@@ -28,6 +35,8 @@ class Filter {
     this.getPostDate()
     this.getTitleMustText()
     this.getTitleCannotText()
+    this.getFileNameIncludes()
+    this.getFileNameExcludes()
   }
 
   private getFeeType() {
@@ -103,6 +112,34 @@ class Filter {
     log.warning(msg)
   }
 
+  private getFileNameIncludes() {
+    if (
+      !settings.fileNameIncludeSwitch &&
+      settings.fileNameInclude.length > 0
+    ) {
+      return
+    }
+
+    const msg = `${lang.transl(
+      '_文件名中必须含有文字'
+    )}: ${settings.fileNameInclude.toString()}`
+    log.warning(msg)
+  }
+
+  private getFileNameExcludes() {
+    if (
+      !settings.fileNameExcludeSwitch &&
+      settings.fileNameExclude.length > 0
+    ) {
+      return
+    }
+
+    const msg = `${lang.transl(
+      '_文件名中不能含有文字'
+    )}: ${settings.fileNameExclude.toString()}`
+    log.warning(msg)
+  }
+
   // 检查投稿是否符合过滤器的要求
   // 想要检查哪些数据就传递哪些数据，不需要传递 FilterOption 的所有选项
   public check(option: FilterOption) {
@@ -150,6 +187,26 @@ class Filter {
       log.warning(
         lang.transl('_跳过文章因为', option.title!) +
           lang.transl('_投稿标题不能含有文字')
+      )
+      return false
+    }
+
+    if (!this.checkFileNameInclude(option.name)) {
+      log.warning(
+        lang.transl('_跳过文章因为', `${option.name}.${option.ext}`) +
+          lang.transl('_文件名中必须含有文字') +
+          ': ' +
+          settings.fileNameInclude.join(',')
+      )
+      return false
+    }
+
+    if (!this.checkFileNameExclude(option.name)) {
+      log.warning(
+        lang.transl('_跳过文章因为', `${option.name}.${option.ext}`) +
+          lang.transl('_文件名中不能含有文字') +
+          ': ' +
+          settings.fileNameExclude.join(',')
       )
       return false
     }
@@ -262,6 +319,36 @@ class Filter {
       return false
     }
     return true
+  }
+
+  private checkFileNameInclude(name: FilterOption['name']) {
+    if (
+      !settings.fileNameIncludeSwitch ||
+      settings.fileNameInclude.length === 0 ||
+      !name
+    ) {
+      return true
+    }
+
+    const find = settings.fileNameInclude.some((str) =>
+      name.toLowerCase().includes(str.toLowerCase())
+    )
+    return find
+  }
+
+  private checkFileNameExclude(name: FilterOption['name']) {
+    if (
+      !settings.fileNameExcludeSwitch ||
+      settings.fileNameExclude.length === 0 ||
+      !name
+    ) {
+      return true
+    }
+
+    const find = settings.fileNameExclude.some((str) =>
+      name.toLowerCase().includes(str.toLowerCase())
+    )
+    return !find
   }
 
   // 如果设置项的值不合法，则显示提示
