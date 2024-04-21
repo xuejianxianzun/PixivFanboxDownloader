@@ -145,8 +145,8 @@ const langText = {
     '파일명 미리보기',
   ],
   _下载线程: [
-    '下载<span class="key">线程</span>',
-    '下載<span class="key">執行緒</span>',
+    '同时下载<span class="key">数量</span>',
+    '同時下載<span class="key">數量</span>',
     'Download <span class="key">thread</span>',
     '同時ダウンロード数',
     '다운로드 <span class="key">쓰레드</span>',
@@ -223,11 +223,11 @@ const langText = {
     '다운로드 중',
   ],
   _下载完毕: [
-    '√ 下载完毕!',
-    '√ 下載完畢!',
-    '√ Download finished!',
-    '√ ダウンロードが完了しました！',
-    '√ 다운로드 완료!',
+    '✓ 下载完毕!',
+    '✓ 下載完畢!',
+    '✓ Download finished!',
+    '✓ ダウンロードが完了しました！',
+    '✓ 다운로드 완료!',
   ],
   _已暂停: [
     '下载已暂停',
