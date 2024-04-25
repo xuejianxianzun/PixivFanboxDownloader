@@ -31,6 +31,10 @@
 
 [Chrome Web Store 頁面](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
 
+這個下載器是為 PC 設計的。如果你想在安卓上使用，請參考該文件：
+
+[在安卓上通过kiwi浏览器使用此扩展.md](./docs/在安卓上通过kiwi浏览器使用此扩展.md)
+
 ## 離線安裝
 
 如果您無法從 Chrome Web Store 安裝本擴充功能，您可以離線安裝。
