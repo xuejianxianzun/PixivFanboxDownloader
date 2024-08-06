@@ -1162,6 +1162,13 @@ class Filter {
         const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.toString()}`;
         _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
     }
+    /**生成文章的 URL */
+    createPostURL(option) {
+        if (option.creatorId && option.id) {
+            return `<a href="https://www.fanbox.cc/@${option.creatorId}/posts/${option.id}" target="_blank">${option.title}</a>`;
+        }
+        return option.title;
+    }
     // 检查投稿是否符合过滤器的要求
     // 想要检查哪些数据就传递哪些数据，不需要传递 FilterOption 的所有选项
     check(option) {
@@ -1169,28 +1176,28 @@ class Filter {
             return false;
         }
         if (!this.checkfeeType(option.fee)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型'));
             return false;
         }
         if (!this.checkfeeRange(option.fee)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_价格范围'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_价格范围'));
             return false;
         }
         if (!this.checkIdRange(option.id)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_id范围'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_id范围'));
             return false;
         }
         if (!this.checkPostDate(option.date)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿时间'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿时间'));
             return false;
         }
         if (!this.checkTitltMustText(option.title)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) +
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
                 _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题必须含有文字'));
             return false;
         }
         if (!this.checkTitltCannotText(option.title)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', option.title) +
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
                 _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题不能含有文字'));
             return false;
         }
@@ -1941,10 +1948,11 @@ class InitPageBase {
             }
             // 针对投稿进行检查，决定是否保留它
             const id = item.id;
+            const creatorId = item.creatorId;
             const fee = item.feeRequired;
             const date = item.publishedDatetime;
             const title = item.title;
-            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, fee, date, title });
+            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, creatorId, fee, date, title });
             if (check) {
                 _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.push(id);
             }
@@ -1968,10 +1976,11 @@ class InitPageBase {
             }
             // 针对投稿进行检查，决定是否保留它
             const id = item.id;
+            const creatorId = item.creatorId;
             const fee = item.feeRequired;
             const date = item.publishedDatetime;
             const title = item.title;
-            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, fee, date, title });
+            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, creatorId, fee, date, title });
             if (check) {
                 _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.push(id);
             }
@@ -2091,7 +2100,7 @@ class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitP
         if ((paginateData === null || paginateData === void 0 ? void 0 : paginateData.body.length) > 0) {
             // 分页 API 返回的是每次请求 10 个作品数据的 URL，如：
             // https://api.fanbox.cc/post.listCreator?creatorId=usotukiya&maxPublishedDatetime=2024-08-04%2020%3A41%3A47&maxId=8345112&limit=10
-            // 因为 getPostListByUser API 每次最多可以请求 300 个文章数据, 
+            // 因为 getPostListByUser API 每次最多可以请求 300 个文章数据,
             // 所以如果文章总数不超过 300, 一次请求就可以全部获取
             // 如果超过了 300 个, 则需要构造出列表页 API 网址列表
             let index = 0;
@@ -3171,10 +3180,11 @@ class SaveData {
     parsePost(data) {
         // 针对投稿进行检查，决定是否保留它
         const id = data.id;
+        const creatorId = data.creatorId;
         const fee = data.feeRequired;
         const date = data.publishedDatetime;
         const title = data.title;
-        const check = _Filter__WEBPACK_IMPORTED_MODULE_0__["filter"].check({ id, fee, date, title });
+        const check = _Filter__WEBPACK_IMPORTED_MODULE_0__["filter"].check({ id, creatorId, fee, date, title });
         if (!check) {
             return;
         }
@@ -3225,7 +3235,7 @@ class SaveData {
         // 对于因为价格限制不能抓取文章，在此时返回，但是会保存封面图
         if (data.body === null) {
             _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过文章因为', title) +
+            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过文章因为', `<a href="https://www.fanbox.cc/@${creatorId}/posts/${id}" target="_blank">${title}</a>`) +
                 _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_价格限制') +
                 ` ${fee}`);
             if (result.files.length > 0) {
@@ -3654,8 +3664,12 @@ class ShowWhatIsNew {
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}<br>
+            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}：
+      <br>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复因为API数据变化导致抓取失败的问题')}
+      <br>
+      <br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_优化性能和用户体验')}
       `;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'

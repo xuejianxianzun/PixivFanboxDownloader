@@ -15,8 +15,12 @@ class ShowWhatIsNew {
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-      let msg = `${lang.transl('_修复已知问题')}<br>
+      let msg = `${lang.transl('_修复已知问题')}：
+      <br>
       ${lang.transl('_修复因为API数据变化导致抓取失败的问题')}
+      <br>
+      <br>
+      ${lang.transl('_优化性能和用户体验')}
       `
 
       // <strong>${lang.transl('_新增设置项')}: ${lang.transl(

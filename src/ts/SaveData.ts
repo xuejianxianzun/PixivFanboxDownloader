@@ -43,10 +43,11 @@ class SaveData {
   private parsePost(data: PostBody) {
     // 针对投稿进行检查，决定是否保留它
     const id = data.id
+    const creatorId = data.creatorId
     const fee = data.feeRequired
     const date = data.publishedDatetime
     const title = data.title
-    const check = filter.check({ id, fee, date, title })
+    const check = filter.check({ id, creatorId, fee, date, title })
     if (!check) {
       return
     }
@@ -103,7 +104,10 @@ class SaveData {
     if (data.body === null) {
       store.skipDueToFee++
       log.warning(
-        lang.transl('_跳过文章因为', title) +
+        lang.transl(
+          '_跳过文章因为',
+          `<a href="https://www.fanbox.cc/@${creatorId}/posts/${id}" target="_blank">${title}</a>`
+        ) +
           lang.transl('_价格限制') +
           ` ${fee}`
       )

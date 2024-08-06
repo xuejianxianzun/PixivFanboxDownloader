@@ -90,10 +90,11 @@ abstract class InitPageBase {
       }
       // 针对投稿进行检查，决定是否保留它
       const id = item.id
+      const creatorId = item.creatorId
       const fee = item.feeRequired
       const date = item.publishedDatetime
       const title = item.title
-      const check = filter.check({ id, fee, date, title })
+      const check = filter.check({ id, creatorId, fee, date, title })
       if (check) {
         store.postIdList.push(id)
       }
@@ -120,10 +121,11 @@ abstract class InitPageBase {
       }
       // 针对投稿进行检查，决定是否保留它
       const id = item.id
+      const creatorId = item.creatorId
       const fee = item.feeRequired
       const date = item.publishedDatetime
       const title = item.title
-      const check = filter.check({ id, fee, date, title })
+      const check = filter.check({ id, creatorId, fee, date, title })
       if (check) {
         store.postIdList.push(id)
       }

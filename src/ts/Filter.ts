@@ -9,6 +9,8 @@ import { lang } from './Lang'
 interface FilterOption {
   /**文章 ID */
   id?: number | string
+  /** 创作者 ID */
+  creatorId?: string
   /**文章发布日期 */
   date?: string
   /**文章价格 */
@@ -140,6 +142,14 @@ class Filter {
     log.warning(msg)
   }
 
+  /**生成文章的 URL */
+  private createPostURL(option: FilterOption) {
+    if (option.creatorId && option.id) {
+      return `<a href="https://www.fanbox.cc/@${option.creatorId}/posts/${option.id}" target="_blank">${option.title}</a>`
+    }
+    return option.title!
+  }
+
   // 检查投稿是否符合过滤器的要求
   // 想要检查哪些数据就传递哪些数据，不需要传递 FilterOption 的所有选项
   public check(option: FilterOption) {
@@ -149,35 +159,39 @@ class Filter {
 
     if (!this.checkfeeType(option.fee)) {
       log.warning(
-        lang.transl('_跳过文章因为', option.title!) + lang.transl('_费用类型')
+        lang.transl('_跳过文章因为', this.createPostURL(option)) +
+          lang.transl('_费用类型')
       )
       return false
     }
 
     if (!this.checkfeeRange(option.fee)) {
       log.warning(
-        lang.transl('_跳过文章因为', option.title!) + lang.transl('_价格范围')
+        lang.transl('_跳过文章因为', this.createPostURL(option)) +
+          lang.transl('_价格范围')
       )
       return false
     }
 
     if (!this.checkIdRange(option.id)) {
       log.warning(
-        lang.transl('_跳过文章因为', option.title!) + lang.transl('_id范围')
+        lang.transl('_跳过文章因为', this.createPostURL(option)) +
+          lang.transl('_id范围')
       )
       return false
     }
 
     if (!this.checkPostDate(option.date)) {
       log.warning(
-        lang.transl('_跳过文章因为', option.title!) + lang.transl('_投稿时间')
+        lang.transl('_跳过文章因为', this.createPostURL(option)) +
+          lang.transl('_投稿时间')
       )
       return false
     }
 
     if (!this.checkTitltMustText(option.title)) {
       log.warning(
-        lang.transl('_跳过文章因为', option.title!) +
+        lang.transl('_跳过文章因为', this.createPostURL(option)) +
           lang.transl('_投稿标题必须含有文字')
       )
       return false
@@ -185,7 +199,7 @@ class Filter {
 
     if (!this.checkTitltCannotText(option.title)) {
       log.warning(
-        lang.transl('_跳过文章因为', option.title!) +
+        lang.transl('_跳过文章因为', this.createPostURL(option)) +
           lang.transl('_投稿标题不能含有文字')
       )
       return false
