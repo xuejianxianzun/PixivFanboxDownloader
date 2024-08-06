@@ -382,6 +382,13 @@ const langText = {
     '支援中のユーザーの投稿をまとめて保存',
     '지원 중인 모든 크리에이터의 게시물 긁어오기',
   ],
+  _没有赞助的用户: [
+    '没有可用的数据，可能是因为你没有赞助的创作者。如果你认为是程序错误，请向作者反馈。',
+    '沒有可用的資料，可能是因為你沒有贊助的創作者。如果你認為是程式錯誤，請向作者反饋。',
+    `There is no available data, probably because you don't have a sponsored creator. If you think it's a program error, please give feedback to the author.`,
+    '利用可能なデータがありません。おそらくスポンサークリエイターがいないためです。 プログラミングのミスだと思われる場合は、作者にフィードバックしてください。',
+    '스폰서 크리에이터가 없기 때문에 사용할 수 있는 데이터가 없습니다. 프로그래밍 오류라고 생각되면 작성자에게 피드백을 보내주세요.',
+  ],
   _抓取该用户的投稿: [
     '抓取该用户的投稿',
     '擷取該用戶的投稿',
@@ -503,7 +510,7 @@ const langText = {
     'リストページがクロールされ',
     '목록 페이지를 긁어왔습니다',
   ],
-  _当前作品个数: [
+  _当前有x个投稿: [
     '当前有 {} 个投稿 ',
     '目前有 {} 個投稿 ',
     'There are now {} posts',
@@ -587,7 +594,7 @@ const langText = {
     您可以在 Patreon 上赞助我：<br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank">https://www.patreon.com/xuejianxianzun</a><br>
     中国大陆用户可以在“爱发电”上赞助我：<br>
-    <a href="https://afdian.net/@xuejianxianzun" target="_blank">https://afdian.net/@xuejianxianzun</a><br>
+    <a href="https://afdian.com/@xuejianxianzun" target="_blank">https://afdian.com/@xuejianxianzun</a><br>
     也可以扫描二维码：<br>
     <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader#%E6%94%AF%E6%8C%81%E5%92%8C%E6%8D%90%E5%8A%A9" target="_blank">在 Github 上查看二维码</a> 或者加入 QQ 群 853021998，在群文件里查看二维码。
     `,
@@ -595,7 +602,7 @@ const langText = {
     您可以在 Patreon 上贊助我：<br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank">https://www.patreon.com/xuejianxianzun</a><br>
     中國大陸使用者可以在“愛發電”上贊助我：<br>
-    <a href="https://afdian.net/@xuejianxianzun" target="_blank">https://afdian.net/@xuejianxianzun</a><br>
+    <a href="https://afdian.com/@xuejianxianzun" target="_blank">https://afdian.com/@xuejianxianzun</a><br>
     也可以掃描二維碼（QR Code）：<br>
     <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader#%E6%94%AF%E6%8C%81%E5%92%8C%E6%8D%90%E5%8A%A9" target="_blank">在 Github 上檢視二維碼</a> 或者加入 QQ 群 853021998 檢視二維碼。
     `,
@@ -1075,6 +1082,13 @@ const langText = {
     'fix known issues',
     '既知の問題を修正する',
     '알려진 문제 수정',
+  ],
+  _修复因为API数据变化导致抓取失败的问题: [
+    '修复因为 API 数据变化导致抓取失败的问题。',
+    '修復因為 API 資料變化導致抓取失敗的問題。',
+    'Fix crawl failure due to API data changes.',
+    'APIデータの変更によるクロールの失敗を修正しました。',
+    'API 데이터 변경으로 인한 크롤링 실패를 수정합니다.',
   ],
   _任一: ['任一', '任一', 'One', '何れか', '하나만'],
   _过滤文件名的说明: [

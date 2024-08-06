@@ -1147,14 +1147,16 @@ class Filter {
         _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
     }
     getFileNameIncludes() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch && _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length > 0) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch &&
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length > 0) {
             return;
         }
         const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中必须含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.toString()}`;
         _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
     }
     getFileNameExcludes() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch && _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length > 0) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch &&
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length > 0) {
             return;
         }
         const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.toString()}`;
@@ -1193,11 +1195,17 @@ class Filter {
             return false;
         }
         if (!this.checkFileNameInclude(option.name)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', `${option.name}.${option.ext}`) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中必须含有文字') + ': ' + _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.join(','));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', `${option.name}.${option.ext}`) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中必须含有文字') +
+                ': ' +
+                _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.join(','));
             return false;
         }
         if (!this.checkFileNameExclude(option.name)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', `${option.name}.${option.ext}`) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字') + ': ' + _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.join(','));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', `${option.name}.${option.ext}`) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字') +
+                ': ' +
+                _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.join(','));
             return false;
         }
         return true;
@@ -1284,17 +1292,21 @@ class Filter {
         return true;
     }
     checkFileNameInclude(name) {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch || _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length === 0 || !name) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch ||
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length === 0 ||
+            !name) {
             return true;
         }
-        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.some(str => name.toLowerCase().includes(str.toLowerCase()));
+        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.some((str) => name.toLowerCase().includes(str.toLowerCase()));
         return find;
     }
     checkFileNameExclude(name) {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch || _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length === 0 || !name) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch ||
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length === 0 ||
+            !name) {
             return true;
         }
-        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.some(str => name.toLowerCase().includes(str.toLowerCase()));
+        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.some((str) => name.toLowerCase().includes(str.toLowerCase()));
         return !find;
     }
     // 如果设置项的值不合法，则显示提示
@@ -1731,39 +1743,49 @@ const formHtml = `<form class="settingForm">
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitHomePage", function() { return InitHomePage; });
-/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
-/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
-/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
-/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
+/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
 
 
 
 
 
-class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBase"] {
+
+
+class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBlue, '_抓取赞助的所有用户的投稿').addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取赞助的所有用户的投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
-        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgGreen, '_清空已保存的抓取结果').addEventListener('click', () => {
-            _EVT__WEBPACK_IMPORTED_MODULE_4__["EVT"].fire('clearSavedCrawl');
+        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgGreen, '_清空已保存的抓取结果').addEventListener('click', () => {
+            _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('clearSavedCrawl');
         });
     }
     async FetchPostList() {
         let data;
         if (this.nextUrl) {
-            data = (await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(this.nextUrl));
+            data = (await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(this.nextUrl));
         }
         else {
-            data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPostListSupporting(300);
+            data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getPostListSupporting(300);
         }
-        this.afterFetchPostList(data);
+        // 如果没有赞助任何创作者, 那么这里获取到的是空数据
+        // {"body":{"items":[],"nextUrl":null}}
+        if (data.body.items.length === 0 && data.body.nextUrl === null) {
+            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_没有赞助的用户'));
+            return this.FetchPostListFinished();
+        }
+        this.afterFetchPostListOld(data);
     }
 }
 
@@ -1867,6 +1889,7 @@ class InitPageBase {
         this.getPostDataThreadMax = 6;
         this.getPostDataThreadNum = 0;
         this.getPostDatafinished = 0;
+        this.postListURLs = [];
     }
     // 初始化
     init() {
@@ -1900,6 +1923,7 @@ class InitPageBase {
         this.getPostDataThreadNum = 0;
         this.getPostDatafinished = 0;
         this.nextUrl = null;
+        this.postListURLs = [];
         // 进入第一个抓取方法
         this.nextStep();
     }
@@ -1908,6 +1932,31 @@ class InitPageBase {
         this.FetchPostList();
     }
     afterFetchPostList(data) {
+        if (data.body.length === 0) {
+            return this.noResult();
+        }
+        for (const item of data.body) {
+            if (item.body === null) {
+                continue;
+            }
+            // 针对投稿进行检查，决定是否保留它
+            const id = item.id;
+            const fee = item.feeRequired;
+            const date = item.publishedDatetime;
+            const title = item.title;
+            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, fee, date, title });
+            if (check) {
+                _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.push(id);
+            }
+        }
+        if (this.postListURLs.length > 0) {
+            this.FetchPostList();
+        }
+        else {
+            this.FetchPostListFinished();
+        }
+    }
+    afterFetchPostListOld(data) {
         if (data.body.items.length === 0) {
             return this.noResult();
         }
@@ -1940,7 +1989,7 @@ class InitPageBase {
         if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.length === 0) {
             return this.noResult();
         }
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_当前作品个数', _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.length.toString()));
+        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_当前有x个投稿', _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.length.toString()));
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始获取投稿信息'));
         for (let i = 0; i < this.getPostDataThreadMax; i++) {
             const postId = _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.shift();
@@ -2016,6 +2065,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
 /* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
 /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
+
 
 
 
@@ -2031,14 +2082,37 @@ class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitP
             this.readyCrawl();
         });
     }
+    async nextStep() {
+        this.postListURLs = [];
+        // 获取分页数据，然后构造出每次请求 300 篇文章的 URL
+        const creatorId = _API__WEBPACK_IMPORTED_MODULE_3__["API"].getCreatorId(location.href);
+        const paginateData = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(`https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`);
+        // console.log(paginateData.body)
+        if ((paginateData === null || paginateData === void 0 ? void 0 : paginateData.body.length) > 0) {
+            // 分页 API 返回的是每次请求 10 个作品数据的 URL，如：
+            // https://api.fanbox.cc/post.listCreator?creatorId=usotukiya&maxPublishedDatetime=2024-08-04%2020%3A41%3A47&maxId=8345112&limit=10
+            // 因为 getPostListByUser API 每次最多可以请求 300 个文章数据, 
+            // 所以如果文章总数不超过 300, 一次请求就可以全部获取
+            // 如果超过了 300 个, 则需要构造出列表页 API 网址列表
+            let index = 0;
+            const total = paginateData.body.length;
+            while (index < total) {
+                const url = paginateData.body[index];
+                this.postListURLs.push(url.replace('limit=10', 'limit=300'));
+                // 每隔 30 页构造一个请求列表页数据的 URL
+                index = index + 30;
+            }
+            // this.postListURLs.forEach(url => console.log(url))
+        }
+        this.FetchPostList();
+    }
     async FetchPostList() {
-        let data;
-        if (this.nextUrl) {
-            data = (await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(this.nextUrl));
+        const url = this.postListURLs.shift();
+        if (url === undefined) {
+            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(`Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`);
+            return this.FetchPostListFinished();
         }
-        else {
-            data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPostListByUser(_API__WEBPACK_IMPORTED_MODULE_3__["API"].getCreatorId(location.href), 300);
-        }
+        const data = (await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(url));
         this.afterFetchPostList(data);
     }
 }
@@ -2146,7 +2220,7 @@ class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBa
         else {
             data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getTagPostListByUser(await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getUserId(_API__WEBPACK_IMPORTED_MODULE_3__["API"].getCreatorId(location.href)), _utils_Utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].getURLPathField(window.location.pathname, 'tags'));
         }
-        this.afterFetchPostList(data);
+        this.afterFetchPostListOld(data);
     }
 }
 
@@ -3574,17 +3648,14 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.3.0';
+        this.flag = '4.4.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `
-      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: </strong><br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_文件名中必须含有文字')}<br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_文件名中不能含有文字')}<br><br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_过滤文件名的说明')}
+            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}<br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复因为API数据变化导致抓取失败的问题')}
       `;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
@@ -5629,8 +5700,8 @@ const langText = {
         '파일명 미리보기',
     ],
     _下载线程: [
-        '下载<span class="key">线程</span>',
-        '下載<span class="key">執行緒</span>',
+        '同时下载<span class="key">数量</span>',
+        '同時下載<span class="key">數量</span>',
         'Download <span class="key">thread</span>',
         '同時ダウンロード数',
         '다운로드 <span class="key">쓰레드</span>',
@@ -5707,11 +5778,11 @@ const langText = {
         '다운로드 중',
     ],
     _下载完毕: [
-        '√ 下载完毕!',
-        '√ 下載完畢!',
-        '√ Download finished!',
-        '√ ダウンロードが完了しました！',
-        '√ 다운로드 완료!',
+        '✓ 下载完毕!',
+        '✓ 下載完畢!',
+        '✓ Download finished!',
+        '✓ ダウンロードが完了しました！',
+        '✓ 다운로드 완료!',
     ],
     _已暂停: [
         '下载已暂停',
@@ -5866,6 +5937,13 @@ const langText = {
         '支援中のユーザーの投稿をまとめて保存',
         '지원 중인 모든 크리에이터의 게시물 긁어오기',
     ],
+    _没有赞助的用户: [
+        '没有可用的数据，可能是因为你没有赞助的创作者。如果你认为是程序错误，请向作者反馈。',
+        '沒有可用的資料，可能是因為你沒有贊助的創作者。如果你認為是程式錯誤，請向作者反饋。',
+        `There is no available data, probably because you don't have a sponsored creator. If you think it's a program error, please give feedback to the author.`,
+        '利用可能なデータがありません。おそらくスポンサークリエイターがいないためです。 プログラミングのミスだと思われる場合は、作者にフィードバックしてください。',
+        '스폰서 크리에이터가 없기 때문에 사용할 수 있는 데이터가 없습니다. 프로그래밍 오류라고 생각되면 작성자에게 피드백을 보내주세요.',
+    ],
     _抓取该用户的投稿: [
         '抓取该用户的投稿',
         '擷取該用戶的投稿',
@@ -5987,7 +6065,7 @@ const langText = {
         'リストページがクロールされ',
         '목록 페이지를 긁어왔습니다',
     ],
-    _当前作品个数: [
+    _当前有x个投稿: [
         '当前有 {} 个投稿 ',
         '目前有 {} 個投稿 ',
         'There are now {} posts',
@@ -6071,7 +6149,7 @@ const langText = {
     您可以在 Patreon 上赞助我：<br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank">https://www.patreon.com/xuejianxianzun</a><br>
     中国大陆用户可以在“爱发电”上赞助我：<br>
-    <a href="https://afdian.net/@xuejianxianzun" target="_blank">https://afdian.net/@xuejianxianzun</a><br>
+    <a href="https://afdian.com/@xuejianxianzun" target="_blank">https://afdian.com/@xuejianxianzun</a><br>
     也可以扫描二维码：<br>
     <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader#%E6%94%AF%E6%8C%81%E5%92%8C%E6%8D%90%E5%8A%A9" target="_blank">在 Github 上查看二维码</a> 或者加入 QQ 群 853021998，在群文件里查看二维码。
     `,
@@ -6079,7 +6157,7 @@ const langText = {
     您可以在 Patreon 上贊助我：<br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank">https://www.patreon.com/xuejianxianzun</a><br>
     中國大陸使用者可以在“愛發電”上贊助我：<br>
-    <a href="https://afdian.net/@xuejianxianzun" target="_blank">https://afdian.net/@xuejianxianzun</a><br>
+    <a href="https://afdian.com/@xuejianxianzun" target="_blank">https://afdian.com/@xuejianxianzun</a><br>
     也可以掃描二維碼（QR Code）：<br>
     <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader#%E6%94%AF%E6%8C%81%E5%92%8C%E6%8D%90%E5%8A%A9" target="_blank">在 Github 上檢視二維碼</a> 或者加入 QQ 群 853021998 檢視二維碼。
     `,
@@ -6559,7 +6637,14 @@ const langText = {
         '既知の問題を修正する',
         '알려진 문제 수정',
     ],
-    _任一: ['任一', '任一', 'One', '何れか', '하나만',],
+    _修复因为API数据变化导致抓取失败的问题: [
+        '修复因为 API 数据变化导致抓取失败的问题。',
+        '修復因為 API 資料變化導致抓取失敗的問題。',
+        'Fix crawl failure due to API data changes.',
+        'APIデータの変更によるクロールの失敗を修正しました。',
+        'API 데이터 변경으로 인한 크롤링 실패를 수정합니다.',
+    ],
+    _任一: ['任一', '任一', 'One', '何れか', '하나만'],
     _过滤文件名的说明: [
         '现在你可以通过文件名来过滤文件了。',
         '現在你可以透過檔名來過濾檔案了。',

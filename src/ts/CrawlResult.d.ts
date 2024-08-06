@@ -276,7 +276,19 @@ type PostListItem = (
 
 // 囊括所有类型的列表数据
 interface PostList {
+  body: PostListItem[]
+}
+
+interface SupportPostList {
   body: {
+    items: PostListItem[]
+    nextUrl: null | string
+  }
+}
+
+interface TagPostList {
+  body: {
+    count: number
     items: PostListItem[]
     nextUrl: null | string
   }
@@ -307,6 +319,8 @@ export {
   Post,
   PostListItem,
   PostList,
+  SupportPostList,
+  TagPostList,
   ServiceProvider,
   VideoProvider,
   ImageData,

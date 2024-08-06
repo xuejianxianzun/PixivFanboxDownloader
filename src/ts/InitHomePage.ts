@@ -2,9 +2,10 @@ import { lang } from './Lang'
 import { Colors } from './Colors'
 import { Tools } from './Tools'
 import { InitPageBase } from './InitPageBase'
-import { PostList } from './CrawlResult.d'
+import { SupportPostList } from './CrawlResult.d'
 import { API } from './API'
 import { EVT } from './EVT'
+import { log } from './Log'
 
 class InitHomePage extends InitPageBase {
   constructor() {
@@ -32,13 +33,21 @@ class InitHomePage extends InitPageBase {
   }
 
   protected async FetchPostList() {
-    let data: PostList
+    let data: SupportPostList
     if (this.nextUrl) {
-      data = (await API.request(this.nextUrl)) as PostList
+      data = (await API.request(this.nextUrl)) as SupportPostList
     } else {
       data = await API.getPostListSupporting(300)
     }
-    this.afterFetchPostList(data)
+
+    // 如果没有赞助任何创作者, 那么这里获取到的是空数据
+    // {"body":{"items":[],"nextUrl":null}}
+    if (data.body.items.length === 0 && data.body.nextUrl === null) {
+      log.warning(lang.transl('_没有赞助的用户'))
+      return this.FetchPostListFinished()
+    }
+
+    this.afterFetchPostListOld(data)
   }
 }
 

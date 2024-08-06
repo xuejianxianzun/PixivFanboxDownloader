@@ -1,6 +1,12 @@
 // api 类
 // 不依赖其他模块，可独立使用
-import { Post, PostList, CreatorData } from './CrawlResult.d'
+import {
+  Post,
+  PostList,
+  CreatorData,
+  SupportPostList,
+  TagPostList,
+} from './CrawlResult.d'
 
 class API {
   // 组装 url 的查询参数。当该参数有值时，将其添加到 url 里
@@ -75,7 +81,7 @@ class API {
     limit = 10,
     maxPublishedDatetime = '',
     maxId = ''
-  ): Promise<PostList> {
+  ): Promise<SupportPostList> {
     const baseURL = 'https://api.fanbox.cc/post.listSupporting'
     const url = this.assembleURL(baseURL, {
       limit,
@@ -103,7 +109,7 @@ class API {
   static async getTagPostListByUser(
     userId: string,
     tag: string
-  ): Promise<PostList> {
+  ): Promise<TagPostList> {
     const url = `https://api.fanbox.cc/post.listTagged?tag=${tag}&userId=${userId}`
     return this.request(url)
   }

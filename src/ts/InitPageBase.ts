@@ -6,7 +6,7 @@ import { store } from './Store'
 import { log } from './Log'
 import { EVT } from './EVT'
 import { saveData } from './SaveData'
-import { PostList, Post } from './CrawlResult.d'
+import { PostList, Post, SupportPostList, TagPostList } from './CrawlResult.d'
 import { API } from './API'
 import { states } from './States'
 import { msgBox } from './MsgBox'
@@ -46,6 +46,8 @@ abstract class InitPageBase {
   protected getPostDataThreadNum = 0
   protected getPostDatafinished = 0
 
+  protected postListURLs: string[] = []
+
   // 准备抓取，进行抓取之前的一些检查工作。必要时可以在子类中改写
   protected async readyCrawl() {
     if (states.busy) {
@@ -63,6 +65,7 @@ abstract class InitPageBase {
     this.getPostDataThreadNum = 0
     this.getPostDatafinished = 0
     this.nextUrl = null
+    this.postListURLs = []
 
     // 进入第一个抓取方法
     this.nextStep()
@@ -77,6 +80,33 @@ abstract class InitPageBase {
   protected abstract FetchPostList(): Promise<void>
 
   protected afterFetchPostList(data: PostList) {
+    if (data.body.length === 0) {
+      return this.noResult()
+    }
+
+    for (const item of data.body) {
+      if (item.body === null) {
+        continue
+      }
+      // 针对投稿进行检查，决定是否保留它
+      const id = item.id
+      const fee = item.feeRequired
+      const date = item.publishedDatetime
+      const title = item.title
+      const check = filter.check({ id, fee, date, title })
+      if (check) {
+        store.postIdList.push(id)
+      }
+    }
+
+    if (this.postListURLs.length > 0) {
+      this.FetchPostList()
+    } else {
+      this.FetchPostListFinished()
+    }
+  }
+
+  protected afterFetchPostListOld(data: SupportPostList | TagPostList) {
     if (data.body.items.length === 0) {
       return this.noResult()
     }
@@ -114,7 +144,7 @@ abstract class InitPageBase {
       return this.noResult()
     }
 
-    log.log(lang.transl('_当前作品个数', store.postIdList.length.toString()))
+    log.log(lang.transl('_当前有x个投稿', store.postIdList.length.toString()))
     log.log(lang.transl('_开始获取投稿信息'))
 
     for (let i = 0; i < this.getPostDataThreadMax; i++) {

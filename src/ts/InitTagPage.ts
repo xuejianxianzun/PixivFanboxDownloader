@@ -2,7 +2,7 @@ import { lang } from './Lang'
 import { Colors } from './Colors'
 import { Tools } from './Tools'
 import { InitPageBase } from './InitPageBase'
-import { PostList } from './CrawlResult.d'
+import { PostList, TagPostList } from './CrawlResult.d'
 import { API } from './API'
 import { Utils } from './utils/Utils'
 
@@ -24,16 +24,16 @@ class InitTagPage extends InitPageBase {
   }
 
   protected async FetchPostList() {
-    let data: PostList
+    let data: TagPostList
     if (this.nextUrl) {
-      data = (await API.request(this.nextUrl)) as PostList
+      data = (await API.request(this.nextUrl)) as TagPostList
     } else {
       data = await API.getTagPostListByUser(
         await API.getUserId(API.getCreatorId(location.href)),
         Utils.getURLPathField(window.location.pathname, 'tags')
       )
     }
-    this.afterFetchPostList(data)
+    this.afterFetchPostListOld(data)
   }
 }
 

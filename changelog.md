@@ -1,5 +1,52 @@
 export NODE_OPTIONS=--openssl-legacy-provider
 
+# 4.4.0 2024/08/06
+
+### 🐛修复因为 API 数据变化导致抓取失败的问题
+
+在用户主页抓取时（也就是说在文章列表页面时），用的 API 是 `/post.listCreator?creatorId=usotukiya&limit=300` 这样。之前文章列表数据保存在 `data.body.items` 里，现在直接是 `data.body` 了。
+
+之前返回的数据结构：
+
+```ts
+body: {
+  items: PostListItem[]
+  nextUrl: null | string
+}
+```
+
+现在只有：
+
+```ts
+body: PostListItem[]
+```
+
+![](./docs/images/20240806_192341.jpg)
+
+
+`PostListItem[]` 直接提升到 body 里，另外取消了 nextUrl。
+
+之前的 nextUrl 是用于获取下一批作品数据的 URL，但现在没有了。那怎么请求后续文章呢？其实看下官方怎么做的就知道了，有个分页 API `/post.paginateCreator?creatorId=creatorId` 会返回一个网址列表，里面就是用于获取每一个列表页数据的 URL（每次显示 10 个）。
+
+![](./docs/images/20240806_195505.jpg)
+
+之前下载器没有使用这个 API，因为获取文章列表数据时，有前面说的 nextUrl 可以用。而且之前一页可以获取 300 条文章数据。300 是最大数字，超出的话 API 会报错。
+
+考虑到极端情况，假设某个作者有 1000 篇文章，那么下载器现在只能请求到第一批的 300 个（因为没有 nextUrl 了），会漏掉后续的文章。
+
+现在我有 2 个解决思路：
+
+1. 使用官方的分页 API 获取每一个列表页的 URL，但是它每个 URL 里只有 10 篇文章，需要对列表页发起 100 次请求。
+2. 先使用官方的分页 API，然后我自行修改一下，实现每 300 页发起一次请求。
+
+用 2 的方式比较好，现在采用了 2 的方式。
+
+**注意：** 并非所有的请求列表数据的 API 都发生了变化。只有在用户主页抓取文章列表出现了变化。
+
+在 fanbox 主页“抓取赞助的所有用户的投稿”的数据没有变化。
+
+在文章 tag 列表页抓取的数据也没有变化。
+
 # 4.3.0 2024/03/29
 
 ### 新功能：文件名中必须/不能含有文字
@@ -673,6 +720,12 @@ https://www.fanbox.cc/@itsuwa0815
 
 -没有视频
 -没有 zip
+
+--------------
+
+测试抓取 tag（标签分类）用：
+
+https://www.fanbox.cc/@sakichisuzu/tags/%E3%82%AA%E3%83%8A%E3%83%8B%E3%83%BC
 
 --------------
 
