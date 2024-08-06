@@ -72,7 +72,7 @@ QQ 群：853021998
 
 1. 国内的众筹赞助平台“爱发电”（类似于 patreon）。
 
-[https://afdian.net/@xuejianxianzun](https://afdian.net/@xuejianxianzun)
+[https://afdian.com/@xuejianxianzun](https://afdian.com/@xuejianxianzun)
 
 2. Patreon
 
