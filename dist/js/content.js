@@ -1176,19 +1176,23 @@ class Filter {
             return false;
         }
         if (!this.checkfeeType(option.fee)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型'));
             return false;
         }
         if (!this.checkfeeRange(option.fee)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_价格范围'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_价格范围'));
             return false;
         }
         if (!this.checkIdRange(option.id)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_id范围'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_id范围'));
             return false;
         }
         if (!this.checkPostDate(option.date)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) + _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿时间'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿时间'));
             return false;
         }
         if (!this.checkTitltMustText(option.title)) {
@@ -5644,7 +5648,7 @@ const langText = {
         'Github 页面，欢迎 star',
         'Github 頁面，歡迎 star',
         'Github page, if you like, please star it',
-        'Github のページ、star をクリックしてください。',
+        'Github のページ。ぜひ star をください。',
         'Github, 유용하셨다면 Star를 주세요.',
     ],
     _pixivDownloader: [
@@ -5824,7 +5828,7 @@ const langText = {
         '<span class="key">自动</span>开始下载',
         '<span class="key">自動</span>開始下載',
         'Download starts <span class="key">automatically</span>',
-        'ダウンロードは自動的に開始されます',
+        'ダウンロードを自動的に開始する',
         '<span class="key">자동으로</span> 다운로드 시작',
     ],
     _自动下载的提示: [
@@ -6040,7 +6044,7 @@ const langText = {
         '您可以使用多个标记；建议在不同标记之间添加分割用的字符。示例：{postid}-{title}<br>建议在命名规则中包含 {postid} 和 {index}，防止文件名重复。',
         '您可以使用多個標記；建議在不同標記之間加入分隔用的字元。範例：{postid}-{title}<br>建議在命名規則中包含 {postid} 和 {index}，防止檔名重複。',
         'You can use multiple tags; it is recommended to add characters to separate between different tags. Example: {postid}-{title} <br> It is recommended to include {postid} and {index} in the naming rules to prevent duplicate file names.',
-        '複数のタグを使用できます。異なるタグを区切るために文字を追加することを推奨します。 例：{postid}-{title} <br>ファイル名の重複を防ぐために、命名規則に{postid}と{index}を含めることを推奨します。',
+        '複数のタグを使用できます。異なるタグを区切るために文字を追加することを推奨します。 例：{postid}-{title} <br>ファイル名の衝突を防ぐために、命名規則に{postid}と{index}を含めることを推奨します。',
         '여러 태그를 사용할 수 있습니다. 서로 다른 태그 사이에 구분자를 넣는 것을 권장합니다.<br>예: {title}-{postid}<br>파일명이 중복되지 않도록 명명 규칙에 {postid}와 {index}를 포함할 것을 권장합니다.',
     ],
     _日期格式: [
@@ -6061,7 +6065,7 @@ const langText = {
         '本次任务抓取完成时的时间。例如：2020-10-21',
         '本次工作擷取完成時的時間。例如：2020-10-21。',
         'The time when the task was crawl completed. For example: 2020-10-21',
-        'タスクを完了した日時です。 例：2020-10-21',
+        'タスクを完了した日時。 例：2020-10-21',
         '긁어오기 작업 완료 날짜. 예: 2020-10-21',
     ],
     _提示: ['提示', '提示', 'tip', 'ヒント', '팁'],
@@ -6098,7 +6102,7 @@ const langText = {
         '共抓取到 {} 个投稿',
         '共擷取到 {} 個投稿',
         'Crawl a total of {} posts',
-        '合計 {} つの投稿があります',
+        '合計 {} 件の投稿があります',
         '총 {}개의 게시물을 긁어오기',
     ],
     _最近更新: [
@@ -6254,21 +6258,21 @@ const langText = {
         '导出设置',
         '匯出設定',
         'Export settings',
-        'エクスポート設定',
+        '設定をエクスポート',
         '내보내기',
     ],
     _导入设置: [
         '导入设置',
         '匯入設定',
         'Import settings',
-        'インポート設定',
+        '設定をインポート',
         '불러오기',
     ],
     _重置设置: [
         '重置设置',
         '重設設定',
         'Reset settings',
-        'リセット設定',
+        '設定をリセット',
         '설정 초기화',
     ],
     _自动检测: ['自动检测', '自動偵測', 'Auto', '自動検出', '자동'],
@@ -6325,7 +6329,7 @@ const langText = {
         '不下载<span class="key">重复</span>文件',
         '不下載<span class="key">重複</span>檔案',
         'Don`t download <span class="key">duplicate</span> files',
-        '重複ファイルをダウンロードしない',
+        '重複するファイルをダウンロードしない',
         '<span class="key">중복</span>파일 다운로드하지 않기',
     ],
     _不下载重复文件的提示: [
@@ -6517,14 +6521,14 @@ const langText = {
         '<span class="key">文件名</span>中必须含有文字',
         '<span class="key">檔名</span>中必須含有文字',
         '<span class="key">File names</span> must contain text',
-        'ファイル名には次の内容を含める必要があります',
+        'ファイル名に次の文字列を含める',
         '파일 이름에는 다음이 포함되어야 합니다',
     ],
     _文件名中不能含有文字: [
         '<span class="key">文件名</span>中不能含有文字',
         '<span class="key">檔名</span>中不能含有文字',
         '<span class="key">File names</span> cannot contain text',
-        'ファイル名に次の内容を含めることはできません',
+        'ファイル名に次の文字列を含めない',
         '파일 이름에는 다음을 포함할 수 없습니다',
     ],
     _文件指的是附件: [
