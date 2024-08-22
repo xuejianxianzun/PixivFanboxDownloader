@@ -74,7 +74,7 @@ class FormSettings {
       'fileNameInclude',
       'fileNameExclude',
     ],
-    radio: ['idRange', 'bgPositionY', 'userSetLang'],
+    radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
     textarea: [],
     datetime: ['postDateStart', 'postDateEnd'],
   }

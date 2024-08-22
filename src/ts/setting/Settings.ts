@@ -65,6 +65,7 @@ interface XzSetting {
   free: boolean
   pay: boolean
   feeSwitch: boolean
+  feeRange: '>=' | '='
   fee: number
   idRangeSwitch: boolean
   idRangeInput: number
@@ -125,6 +126,7 @@ class Settings {
     free: true,
     pay: true,
     feeSwitch: false,
+    feeRange: '>=',
     fee: 500,
     idRangeSwitch: false,
     idRangeInput: 0,
@@ -328,7 +330,10 @@ class Settings {
       value = !!value
     }
 
-    if (key === 'downloadThread' && value > Config.downloadThreadMax) {
+    if (
+      key === 'downloadThread' &&
+      (value as number) > Config.downloadThreadMax
+    ) {
       value = Config.downloadThreadMax
     }
 

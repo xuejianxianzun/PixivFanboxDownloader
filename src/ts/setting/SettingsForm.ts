@@ -9,6 +9,7 @@ export interface SettingsForm extends HTMLFormElement {
   pay: HTMLInputElement
   feeSwitch: HTMLInputElement
   fee: HTMLInputElement
+  feeRange: HTMLInputElement
   idRangeSwitch: HTMLInputElement
   idRange: RadioNodeList
   idRangeInput: HTMLInputElement

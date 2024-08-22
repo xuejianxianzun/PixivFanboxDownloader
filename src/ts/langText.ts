@@ -582,7 +582,7 @@ const langText = {
   _顶部: ['顶部', '頂部', 'top', '上揃え', '상단'],
   _居中: ['居中', '居中', 'center', '中央揃え', '중앙'],
   _常见问题说明: [
-    '下载器不能绕过付费限制。<br><br>下载的文件保存在浏览器的下载目录里。<br><br>建议在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。<br><br>如果你需要一个梯子（机场）,可以试试这个机场：<a href="https://v2.hjl772vps.top/#/register?code=KEA3xTT4" title="农家有风小院" target="_blank">农家有风小院</a>，价格实惠，网络稳定。先购买订阅，然后在仪表盘复制订阅链接使用。<br><br>下载器 QQ 群：853021998',
+    '下载器不能绕过付费限制。<br><br>下载的文件保存在浏览器的下载目录里。<br><br>建议在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。<br><br>下载器 QQ 群：853021998',
     '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。',
     'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.',
     'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。',
@@ -590,31 +590,29 @@ const langText = {
   ],
   _赞助我: ['赞助我', '贊助我', 'Sponsor me', '支援する', '후원하기'],
   _赞助方式提示: [
-    `非常感谢您的支持！<br>
+    `如果您觉得这个工具对您有帮助，可以考虑赞助我，谢谢！<br>
     您可以在 Patreon 上赞助我：<br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank">https://www.patreon.com/xuejianxianzun</a><br>
     中国大陆用户可以在“爱发电”上赞助我：<br>
-    <a href="https://afdian.com/@xuejianxianzun" target="_blank">https://afdian.com/@xuejianxianzun</a><br>
+    <a href="https://afdian.com/a/xuejianxianzun" target="_blank">https://afdian.com/a/xuejianxianzun</a><br>
     也可以扫描二维码：<br>
-    <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader#%E6%94%AF%E6%8C%81%E5%92%8C%E6%8D%90%E5%8A%A9" target="_blank">在 Github 上查看二维码</a> 或者加入 QQ 群 853021998，在群文件里查看二维码。
+    <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader#%E6%94%AF%E6%8C%81%E5%92%8C%E6%8D%90%E5%8A%A9" target="_blank">在 Github 上查看二维码</a>。
     `,
-    `非常感謝您的支持！<br>
+    `如果您覺得這個工具對您有幫助，可以考慮贊助我，謝謝！<br>
     您可以在 Patreon 上贊助我：<br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank">https://www.patreon.com/xuejianxianzun</a><br>
     中國大陸使用者可以在“愛發電”上贊助我：<br>
-    <a href="https://afdian.com/@xuejianxianzun" target="_blank">https://afdian.com/@xuejianxianzun</a><br>
-    也可以掃描二維碼（QR Code）：<br>
-    <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader#%E6%94%AF%E6%8C%81%E5%92%8C%E6%8D%90%E5%8A%A9" target="_blank">在 Github 上檢視二維碼</a> 或者加入 QQ 群 853021998 檢視二維碼。
+    <a href="https://afdian.com/a/xuejianxianzun" target="_blank">https://afdian.com/a/xuejianxianzun</a>
     `,
-    `Thank you very much for your support!<br>
+    `If you find this tool helpful, please consider sponsoring me, thank you!<br>
     You can sponsor me on Patreon: <br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank">https://www.patreon.com/xuejianxianzun</a>
     `,
-    `ご支援してくださった皆様、本当にありがとうございました。<br>
+    `このツールが役に立ったと思われる場合は、スポンサーになることをご検討ください。ありがとうございます。<br>
     ご支援してくださった方は、以下の Patreon で：<br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank"> https://www.patreon.com/xuejianxianzun </a>
     `,
-    `지원해주셔서 정말 감사합니다!<br>
+    `이 도구가 도움이 된다면 후원해 보시기 바랍니다. 감사합니다!<br>
     Patreon에서 저를 후원해주세요<br>
     <a href="https://www.patreon.com/xuejianxianzun" target="_blank">https://www.patreon.com/xuejianxianzun</a>
     `,
@@ -1091,12 +1089,12 @@ const langText = {
     'API 데이터 변경으로 인한 크롤링 실패를 수정합니다.',
   ],
   _任一: ['任一', '任一', 'One', '何れか', '하나만'],
-  _过滤文件名的说明: [
-    '现在你可以通过文件名来过滤文件了。',
-    '現在你可以透過檔名來過濾檔案了。',
-    'Now you can filter files by filename.',
-    'ファイル名でファイルをフィルタリングできるようになりました。',
-    '이제 파일 이름을 기준으로 파일을 필터링할 수 있습니다.',
+  _更新说明: [
+    '“价格范围”现在可以设置为等于（=）指定价格了。以前只能设置为大于等于（>=）。',
+    '“價格範圍”現在可以設定為等於（=）指定價格了。以前只能設定為大於等於（>=）。',
+    'The Price Range can now be set to equal (=) a specified price. Previously it could only be set to greater than or equal to (>=).',
+    '「価格帯」を指定価格と等しく（＝）設定できるようになりました。以前は、以上 (>=) にのみ設定できました。',
+    '이제 "가격 범위"를 지정된 가격과 동일하게(=) 설정할 수 있습니다. 이전에는 크거나 같음(>=)으로만 설정할 수 있었습니다.',
   ],
 }
 

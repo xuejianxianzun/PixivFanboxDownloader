@@ -47,8 +47,17 @@ export const formHtml = `<form class="settingForm">
     <input type="checkbox" name="feeSwitch" class="need_beautify checkbox_switch">
     <span class="beautify_switch"></span>
     <span class="subOptionWrap" data-show="feeSwitch">
-    <span data-xztext="_最小值"></span>
+
+    <input type="radio" name="feeRange" id="feeRange1" class="need_beautify radio" value=">=" checked>
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="feeRange1">&gt;=</label>
+
+    <input type="radio" name="feeRange" id="feeRange2" class="need_beautify radio" value="=">
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="feeRange2">=</label>
+    
     <input type="text" name="fee" class="setinput_style1 blue" value="500"> ¥
+
     </span>
     </p>
     

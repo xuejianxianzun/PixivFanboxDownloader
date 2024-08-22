@@ -262,7 +262,11 @@ class Filter {
       return true
     }
 
-    return fee >= settings.fee
+    if (settings.feeRange === '>=') {
+      return fee >= settings.fee
+    } else {
+      return fee === settings.fee
+    }
   }
 
   private checkIdRange(id: FilterOption['id']) {
