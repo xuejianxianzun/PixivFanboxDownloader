@@ -1,5 +1,22 @@
 export NODE_OPTIONS=--openssl-legacy-provider
 
+# 4.4.2 2024/09/02
+
+### 🐛修复抓取到 vimeo.com 插入的视频时，输出网址错误的问题
+
+对于这样的数据：
+
+```json
+"video": {
+  "serviceProvider": "vimeo",
+  "videoId": "968618271"
+}
+```
+
+下载器应该输出这样的链接：https://player.vimeo.com/video/968618271
+
+之前输出的链接是错误的，因为网址前缀不正确。现在修复此问题。
+
 # 4.4.1 2024/08/23
 
 ### ✨“价格范围”现在可以设置为等于指定价格了

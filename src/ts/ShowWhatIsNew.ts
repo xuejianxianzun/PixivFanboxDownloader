@@ -10,12 +10,12 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '4.4.1'
+  private flag = '4.4.2'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-      let msg = `${lang.transl('_更新说明')}`
+      let msg = `${lang.transl('_修复已知问题')}`
 
       // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
       //   '_非图片的命名规则'

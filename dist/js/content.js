@@ -3185,7 +3185,7 @@ class SaveData {
             fanbox: 'https://www.fanbox.cc/',
             gist: 'https://gist.github.com/',
             soundcloud: 'https://soundcloud.com/',
-            vimeo: 'https://vimeo.com/',
+            vimeo: 'https://player.vimeo.com/video/',
             twitter: 'https://twitter.com/i/web/status/',
             google_forms: 'https://docs.google.com/forms/d/e/',
         };
@@ -3676,13 +3676,13 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.4.1';
+        this.flag = '4.4.2';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_更新说明')}`;
+            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}`;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
             // )}</strong>
@@ -6669,13 +6669,6 @@ const langText = {
         'API 데이터 변경으로 인한 크롤링 실패를 수정합니다.',
     ],
     _任一: ['任一', '任一', 'One', '何れか', '하나만'],
-    _更新说明: [
-        '“价格范围”现在可以设置为等于（=）指定价格了。以前只能设置为大于等于（>=）。',
-        '“價格範圍”現在可以設定為等於（=）指定價格了。以前只能設定為大於等於（>=）。',
-        'The Price Range can now be set to equal (=) a specified price. Previously it could only be set to greater than or equal to (>=).',
-        '「価格帯」を指定価格と等しく（＝）設定できるようになりました。以前は、以上 (>=) にのみ設定できました。',
-        '이제 "가격 범위"를 지정된 가격과 동일하게(=) 설정할 수 있습니다. 이전에는 크거나 같음(>=)으로만 설정할 수 있었습니다.',
-    ],
 };
 
 
@@ -7688,7 +7681,8 @@ class Settings {
         if (keyType === 'boolean' && valueType !== 'boolean') {
             value = !!value;
         }
-        if (key === 'downloadThread' && value > _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax) {
+        if (key === 'downloadThread' &&
+            value > _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax) {
             value = _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax;
         }
         // 处理数组类型的值

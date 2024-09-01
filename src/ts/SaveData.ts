@@ -25,7 +25,7 @@ class SaveData {
     fanbox: 'https://www.fanbox.cc/',
     gist: 'https://gist.github.com/',
     soundcloud: 'https://soundcloud.com/',
-    vimeo: 'https://vimeo.com/',
+    vimeo: 'https://player.vimeo.com/video/',
     twitter: 'https://twitter.com/i/web/status/',
     google_forms: 'https://docs.google.com/forms/d/e/',
   }
