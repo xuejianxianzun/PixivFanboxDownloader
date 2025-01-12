@@ -3284,21 +3284,32 @@ class SaveData {
         }
         // 提取 article 投稿的资源
         if (data.type === 'article') {
-            // 从正文文本里提取链接
             let linkTexts = [];
             let text = ''; // 正文文本
             for (const block of data.body.blocks) {
-                if (block.type === 'p') {
+                if (block.type === 'p' || block.type === 'header') {
+                    // 保存正文里的链接
+                    // 文本里也可能有链接，稍后会尝试提取链接
                     block.text && linkTexts.push(block.text);
                     if (block.links && block.links.length > 0) {
+                        // 保存链接
                         for (const links of block.links) {
                             linkTexts.push(links.url);
                         }
                     }
-                    // 保存文章正文里的文字，每个段落后面添加换行
-                    text += block.text + '\r\n';
-                    // 空字符串在网页上渲染出来的表现是一个额外的空行，用于隔开段落。所以这里额外添加一个换行
-                    if (block.text === '') {
+                    // 保存正文里的文字
+                    if (block.text) {
+                        if (block.type === 'p') {
+                            // 在每个段落后面添加换行
+                            text += block.text + '\r\n';
+                        }
+                        else if (block.type === 'header') {
+                            // 对于标题文本，在其前后添加换行，以便和其他文本之间留出一定空白
+                            text += `\r\n${block.text}\r\n\r\n`;
+                        }
+                    }
+                    else if (block.text === '') {
+                        // 空字符串在网页上渲染出来的表现是一个额外的空行，用于隔开段落。所以这里额外添加一个换行
                         text += '\r\n';
                     }
                 }
@@ -3307,6 +3318,11 @@ class SaveData {
                 const links = this.getTextLinks(link);
                 result.links.text = result.links.text.concat(links);
                 result.links.fileId = this.createFileId();
+            }
+            // 如果有链接，则添加一个空字符串，使其占据一行
+            // 这样可以让链接和下面的正文部分之间有一个空行
+            if (result.links.text.length > 0) {
+                result.links.text.push('');
             }
             if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveText && text) {
                 result.links.text.push(text);

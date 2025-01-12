@@ -91,8 +91,12 @@ type ServiceProvider =
   | 'gist'
 
 // article 投稿里的段落信息1
+// type p 对应普通文本、加粗文本、链接。
+// 加粗时会有 styles
+// 链接会有 links
+// type header 对应标题文本
 interface BlocksDataText {
-  type: 'p'
+  type: 'p' | 'header'
   text: string
   styles?: [{ type: 'bold'; offset: number; length: number }]
   links?: [{ offset: number; length: number; url: string }]
