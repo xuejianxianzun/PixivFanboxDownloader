@@ -12,6 +12,7 @@ enum PageName {
   Post,
   Tags,
   Shop,
+  Following,
 }
 
 class PageType {
@@ -42,10 +43,14 @@ class PageType {
       // https://www.fanbox.cc/
       // 自己主页
       return PageName.Home
-    } else if (path === '/home/supporting') {
-      // https://www.fanbox.cc/home/supporting
-      // 正在赞助
+    } else if (path === '/creators/supporting') {
+      // https://www.fanbox.cc/creators/supporting
+      // 正在赞助的创作者
       return PageName.Supporting
+    } else if (path === '/creators/following') {
+      // https://www.fanbox.cc/creators/following
+      // 正在关注的创作者
+      return PageName.Following
     } else if (
       userPage &&
       !path.includes('/posts') &&

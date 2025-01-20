@@ -40,8 +40,6 @@ class InitPostPage extends InitPageBase {
     this.fetchPost()
   }
 
-  protected async FetchPostList() {}
-
   protected async fetchPost() {
     const data = await API.getPost(
       Utils.getURLPathField(window.location.pathname, 'posts')

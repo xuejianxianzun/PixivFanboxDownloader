@@ -298,24 +298,29 @@ interface TagPostList {
   }
 }
 
-interface CreatorData {
-  body: {
-    user: {
-      userId: string
-      name: string
-      iconUrl: string
-    }
-    creatorId: string
-    description: string
-    hasAdultContent: boolean
-    coverImageUrl: string | null
-    profileLinks: string[]
-    profileItems: []
-    isFollowed: boolean
-    isSupported: boolean
-    isStopped: boolean
-    hasBoothShop: boolean
+interface Creator {
+  user: {
+    userId: string
+    name: string
+    iconUrl: string
   }
+  creatorId: string
+  description: string
+  hasAdultContent: boolean
+  coverImageUrl: string | null
+  profileLinks: string[]
+  profileItems: []
+  isFollowed: boolean
+  isSupported: boolean
+  isStopped: boolean
+  hasBoothShop: boolean
+  isAcceptingRequest: boolean
+  hasPublishedPost: boolean
+  category: string
+}
+
+interface CreatorData {
+  body: Creator
 }
 
 export {
@@ -332,4 +337,5 @@ export {
   EmbedData,
   VideoData,
   CreatorData,
+  Creator
 }

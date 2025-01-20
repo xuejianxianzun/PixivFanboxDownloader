@@ -77,6 +77,7 @@ class API {
     return res.body.user.userId
   }
 
+  /**获取赞助的用户的文章列表 */
   static async getPostListSupporting(
     limit = 10,
     maxPublishedDatetime = '',
@@ -102,6 +103,7 @@ class API {
       limit,
       maxPublishedDatetime,
       maxId,
+      withPinned: 'true',
     })
     return this.request(url)
   }

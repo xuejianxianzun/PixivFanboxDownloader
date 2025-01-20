@@ -5,6 +5,7 @@ import { InitPageBase } from './InitPageBase'
 import { PostList, TagPostList } from './CrawlResult.d'
 import { API } from './API'
 import { Utils } from './utils/Utils'
+import { log } from './Log'
 
 class InitTagPage extends InitPageBase {
   constructor() {
@@ -24,6 +25,7 @@ class InitTagPage extends InitPageBase {
   }
 
   protected async FetchPostList() {
+    log.log(lang.transl('_抓取该tag的投稿'))
     let data: TagPostList
     if (this.nextUrl) {
       data = (await API.request(this.nextUrl)) as TagPostList

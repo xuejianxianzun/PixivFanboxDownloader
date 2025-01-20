@@ -14,7 +14,6 @@ import { toast } from './Toast'
 import { Utils } from './utils/Utils'
 
 abstract class InitPageBase {
-  // 初始化
   protected init() {
     this.addCrawlBtns()
     this.addAnyElement()
@@ -71,14 +70,52 @@ abstract class InitPageBase {
     this.nextStep()
   }
 
-  // 当可以开始抓取时，进入下一个流程。默认情况下，开始获取作品列表。如有不同，由子类具体定义
+  // 当可以开始抓取时，进入下一个流程。默认情况下，开始获取文章列表。如有不同，由子类自行修改
   protected nextStep() {
     this.FetchPostList()
   }
 
-  // 获取投稿列表
-  protected abstract FetchPostList(): Promise<void>
+  /**获取一个作者的文章列表分页网址 */
+  // 获取分页数据，然后构造出每次请求该作者 300 篇文章的 URL
+  protected async getPostListURLs(creatorId: string) {
+    const paginateData: {
+      body: string[]
+    } = await API.request(
+      `https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`
+    )
+    // console.log(paginateData.body)
 
+    if (paginateData?.body.length > 0) {
+      // 分页数据里的 URL 格式如下：
+      // https://api.fanbox.cc/post.listCreator?creatorId=usotukiya&maxPublishedDatetime=2024-08-04%2020%3A41%3A47&maxId=8345112&limit=10
+      // 每次可以获取 10 个文章的数据，但是 limit 的最大值是 300，可以一次获取 300 篇文章的数据
+      // 所以下面每隔 30 个网址保存一次，并把 limit 改成 300
+
+      let index = 0
+      const total = paginateData.body.length
+      while (index < total) {
+        const url = paginateData.body[index]
+        this.postListURLs.push(url.replace('limit=10', 'limit=300'))
+        index = index + 30
+      }
+      // this.postListURLs.forEach(url => console.log(url))
+    }
+  }
+
+  /**获取文章列表数据 */
+  protected async FetchPostList() {
+    const url = this.postListURLs.shift()
+    if (url === undefined) {
+      log.error(
+        `Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`
+      )
+      return this.FetchPostListFinished()
+    }
+    const data: PostList = (await API.request(url)) as PostList
+    this.afterFetchPostList(data)
+  }
+
+  /**保存符合过滤条件的文章的 ID，之后会抓取这些文章的详细数据 */
   protected afterFetchPostList(data: PostList) {
     if (data.body.length === 0) {
       return this.noResult()
@@ -88,7 +125,7 @@ abstract class InitPageBase {
       if (item.body === null) {
         continue
       }
-      // 针对投稿进行检查，决定是否保留它
+      // 对投稿进行检查，决定是否保留它
       const id = item.id
       const creatorId = item.creatorId
       const fee = item.feeRequired
@@ -138,7 +175,7 @@ abstract class InitPageBase {
     }
   }
 
-  // 抓取文章列表之后，建立并发抓取线程，逐个获取文章数据
+  /**获取了要抓取的文章的 ID 列表之后，开始抓取每个文章的详细数据 */
   protected FetchPostListFinished() {
     log.log(lang.transl('_列表页抓取完成'))
 

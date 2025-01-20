@@ -157,6 +157,7 @@ class API {
         const res = (await this.request(baseURL));
         return res.body.user.userId;
     }
+    /**获取赞助的用户的文章列表 */
     static async getPostListSupporting(limit = 10, maxPublishedDatetime = '', maxId = '') {
         const baseURL = 'https://api.fanbox.cc/post.listSupporting';
         const url = this.assembleURL(baseURL, {
@@ -172,6 +173,7 @@ class API {
             limit,
             maxPublishedDatetime,
             maxId,
+            withPinned: 'true'
         });
         return this.request(url);
     }
@@ -1775,6 +1777,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
+/* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./PageType */ "./src/ts/PageType.ts");
+
 
 
 
@@ -1785,18 +1789,44 @@ __webpack_require__.r(__webpack_exports__);
 class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
     constructor() {
         super();
+        this.crawlFlag = 'supporting';
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取赞助的所有用户的投稿').addEventListener('click', () => {
-            this.readyCrawl();
-        });
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgGreen, '_清空已保存的抓取结果').addEventListener('click', () => {
-            _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('clearSavedCrawl');
-        });
+        if (_PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Home || _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Supporting) {
+            _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取赞助的所有用户的投稿').addEventListener('click', () => {
+                this.crawlFlag = 'supporting';
+                this.readyCrawl();
+            });
+        }
+        if (_PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Home || _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Following) {
+            _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取关注的所有用户的投稿').addEventListener('click', () => {
+                const confirm = window.confirm(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取关注的所有用户的投稿的提示'));
+                if (!confirm) {
+                    return;
+                }
+                this.crawlFlag = 'following';
+                this.readyCrawl();
+            });
+        }
+        if (_PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Home) {
+            _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgGreen, '_清空已保存的抓取结果').addEventListener('click', () => {
+                _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('clearSavedCrawl');
+            });
+        }
     }
-    async FetchPostList() {
+    nextStep() {
+        switch (this.crawlFlag) {
+            case 'supporting':
+                return this.getSupportingPostList();
+            case 'following':
+                return this.getFollowingPostList();
+        }
+    }
+    /**获取赞助的所有用户的所有投稿 */
+    async getSupportingPostList() {
+        _Log__WEBPACK_IMPORTED_MODULE_6__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取赞助的所有用户的投稿'));
         let data;
         if (this.nextUrl) {
             data = (await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(this.nextUrl));
@@ -1807,10 +1837,39 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
         // 如果没有赞助任何创作者, 那么这里获取到的是空数据
         // {"body":{"items":[],"nextUrl":null}}
         if (data.body.items.length === 0 && data.body.nextUrl === null) {
-            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_没有赞助的用户'));
+            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_没有赞助的用户'));
             return this.FetchPostListFinished();
         }
         this.afterFetchPostListOld(data);
+    }
+    /**获取关注的所有用户的所有投稿 */
+    async getFollowingPostList() {
+        var _a;
+        _Log__WEBPACK_IMPORTED_MODULE_6__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取关注的所有用户的投稿'));
+        // 获取关注的用户列表
+        const url = 'https://api.fanbox.cc/creator.listFollowing';
+        const json = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(url);
+        if (((_a = json === null || json === void 0 ? void 0 : json.body) === null || _a === void 0 ? void 0 : _a.length) > 0) {
+            const userList = json.body.map(user => {
+                return {
+                    creatorId: user.creatorId,
+                    name: user.user.name
+                };
+            });
+            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_正在关注的创作者') + ':');
+            // 获取每个作者的文章列表分页网址
+            for (const user of userList) {
+                _Log__WEBPACK_IMPORTED_MODULE_6__["log"].log(user.name);
+                await this.getPostListURLs(user.creatorId);
+            }
+            // console.log(this.postListURLs)
+            // 获取文章列表
+            this.FetchPostList();
+        }
+        else {
+            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_没有找到关注的用户'));
+            return this.FetchPostListFinished();
+        }
     }
 }
 
@@ -1854,6 +1913,7 @@ class InitPage {
         switch (_PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].type) {
             case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.Home:
             case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.Supporting:
+            case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.Following:
                 return new _InitHomePage__WEBPACK_IMPORTED_MODULE_2__["InitHomePage"]();
             case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.UserHome:
             case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.UserPostList:
@@ -1916,7 +1976,6 @@ class InitPageBase {
         this.getPostDatafinished = 0;
         this.postListURLs = [];
     }
-    // 初始化
     init() {
         this.addCrawlBtns();
         this.addAnyElement();
@@ -1952,10 +2011,41 @@ class InitPageBase {
         // 进入第一个抓取方法
         this.nextStep();
     }
-    // 当可以开始抓取时，进入下一个流程。默认情况下，开始获取作品列表。如有不同，由子类具体定义
+    // 当可以开始抓取时，进入下一个流程。默认情况下，开始获取文章列表。如有不同，由子类自行修改
     nextStep() {
         this.FetchPostList();
     }
+    /**获取一个作者的文章列表分页网址 */
+    // 获取分页数据，然后构造出每次请求该作者 300 篇文章的 URL
+    async getPostListURLs(creatorId) {
+        const paginateData = await _API__WEBPACK_IMPORTED_MODULE_7__["API"].request(`https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`);
+        // console.log(paginateData.body)
+        if ((paginateData === null || paginateData === void 0 ? void 0 : paginateData.body.length) > 0) {
+            // 分页数据里的 URL 格式如下：
+            // https://api.fanbox.cc/post.listCreator?creatorId=usotukiya&maxPublishedDatetime=2024-08-04%2020%3A41%3A47&maxId=8345112&limit=10
+            // 每次可以获取 10 个文章的数据，但是 limit 的最大值是 300，可以一次获取 300 篇文章的数据
+            // 所以下面每隔 30 个网址保存一次，并把 limit 改成 300
+            let index = 0;
+            const total = paginateData.body.length;
+            while (index < total) {
+                const url = paginateData.body[index];
+                this.postListURLs.push(url.replace('limit=10', 'limit=300'));
+                index = index + 30;
+            }
+            // this.postListURLs.forEach(url => console.log(url))
+        }
+    }
+    /**获取文章列表数据 */
+    async FetchPostList() {
+        const url = this.postListURLs.shift();
+        if (url === undefined) {
+            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(`Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`);
+            return this.FetchPostListFinished();
+        }
+        const data = (await _API__WEBPACK_IMPORTED_MODULE_7__["API"].request(url));
+        this.afterFetchPostList(data);
+    }
+    /**保存符合过滤条件的文章的 ID，之后会抓取这些文章的详细数据 */
     afterFetchPostList(data) {
         if (data.body.length === 0) {
             return this.noResult();
@@ -1964,7 +2054,7 @@ class InitPageBase {
             if (item.body === null) {
                 continue;
             }
-            // 针对投稿进行检查，决定是否保留它
+            // 对投稿进行检查，决定是否保留它
             const id = item.id;
             const creatorId = item.creatorId;
             const fee = item.feeRequired;
@@ -2010,7 +2100,7 @@ class InitPageBase {
             this.FetchPostListFinished();
         }
     }
-    // 抓取文章列表之后，建立并发抓取线程，逐个获取文章数据
+    /**获取了要抓取的文章的 ID 列表之后，开始抓取每个文章的详细数据 */
     FetchPostListFinished() {
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_列表页抓取完成'));
         if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.length === 0) {
@@ -2088,59 +2178,35 @@ class InitPageBase {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitPostListPage", function() { return InitPostListPage; });
-/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
-/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
-/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
-/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
+/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
 
 
 
 
 
-class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBase"] {
+
+class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBlue, '_抓取该用户的投稿').addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取该用户的投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     async nextStep() {
+        _Log__WEBPACK_IMPORTED_MODULE_5__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取该用户的投稿'));
         this.postListURLs = [];
-        // 获取分页数据，然后构造出每次请求 300 篇文章的 URL
-        const creatorId = _API__WEBPACK_IMPORTED_MODULE_3__["API"].getCreatorId(location.href);
-        const paginateData = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(`https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`);
-        // console.log(paginateData.body)
-        if ((paginateData === null || paginateData === void 0 ? void 0 : paginateData.body.length) > 0) {
-            // 分页 API 返回的是每次请求 10 个作品数据的 URL，如：
-            // https://api.fanbox.cc/post.listCreator?creatorId=usotukiya&maxPublishedDatetime=2024-08-04%2020%3A41%3A47&maxId=8345112&limit=10
-            // 因为 getPostListByUser API 每次最多可以请求 300 个文章数据,
-            // 所以如果文章总数不超过 300, 一次请求就可以全部获取
-            // 如果超过了 300 个, 则需要构造出列表页 API 网址列表
-            let index = 0;
-            const total = paginateData.body.length;
-            while (index < total) {
-                const url = paginateData.body[index];
-                this.postListURLs.push(url.replace('limit=10', 'limit=300'));
-                // 每隔 30 页构造一个请求列表页数据的 URL
-                index = index + 30;
-            }
-            // this.postListURLs.forEach(url => console.log(url))
-        }
+        const creatorId = _API__WEBPACK_IMPORTED_MODULE_4__["API"].getCreatorId(location.href);
+        await this.getPostListURLs(creatorId);
         this.FetchPostList();
-    }
-    async FetchPostList() {
-        const url = this.postListURLs.shift();
-        if (url === undefined) {
-            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(`Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`);
-            return this.FetchPostListFinished();
-        }
-        const data = (await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(url));
-        this.afterFetchPostList(data);
     }
 }
 
@@ -2197,7 +2263,6 @@ class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageB
         this.getPostDataThreadNum = 1;
         this.fetchPost();
     }
-    async FetchPostList() { }
     async fetchPost() {
         const data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].getURLPathField(window.location.pathname, 'posts'));
         this.afterFetchPost(data);
@@ -2218,34 +2283,39 @@ class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageB
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitTagPage", function() { return InitTagPage; });
-/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
-/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
-/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
-/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
+/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
 
 
 
 
 
-class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBase"] {
+
+
+class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBlue, '_抓取该tag的投稿').addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取该tag的投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     async FetchPostList() {
+        _Log__WEBPACK_IMPORTED_MODULE_6__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取该tag的投稿'));
         let data;
         if (this.nextUrl) {
-            data = (await _API__WEBPACK_IMPORTED_MODULE_3__["API"].request(this.nextUrl));
+            data = (await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(this.nextUrl));
         }
         else {
-            data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getTagPostListByUser(await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getUserId(_API__WEBPACK_IMPORTED_MODULE_3__["API"].getCreatorId(location.href)), _utils_Utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].getURLPathField(window.location.pathname, 'tags'));
+            data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getTagPostListByUser(await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getUserId(_API__WEBPACK_IMPORTED_MODULE_4__["API"].getCreatorId(location.href)), _utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].getURLPathField(window.location.pathname, 'tags'));
         }
         this.afterFetchPostListOld(data);
     }
@@ -2479,7 +2549,7 @@ class Log {
             _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textWarning,
             _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textError,
         ];
-        this.max = 200;
+        this.max = 300;
         this.count = 0;
         this.toBottom = false; // 指示是否需要把日志滚动到底部。当有日志被添加或刷新，则为 true。滚动到底部之后复位到 false，避免一直滚动到底部。
         this.scrollToBottom();
@@ -2890,6 +2960,7 @@ var PageName;
     PageName[PageName["Post"] = 4] = "Post";
     PageName[PageName["Tags"] = 5] = "Tags";
     PageName[PageName["Shop"] = 6] = "Shop";
+    PageName[PageName["Following"] = 7] = "Following";
 })(PageName || (PageName = {}));
 class PageType {
     constructor() {
@@ -2914,10 +2985,15 @@ class PageType {
             // 自己主页
             return PageName.Home;
         }
-        else if (path === '/home/supporting') {
-            // https://www.fanbox.cc/home/supporting
-            // 正在赞助
+        else if (path === '/creators/supporting') {
+            // https://www.fanbox.cc/creators/supporting
+            // 正在赞助的创作者
             return PageName.Supporting;
+        }
+        else if (path === '/creators/following') {
+            // https://www.fanbox.cc/creators/following
+            // 正在关注的创作者
+            return PageName.Following;
         }
         else if (userPage &&
             !path.includes('/posts') &&
@@ -3692,13 +3768,18 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.4.2';
+        this.flag = '4.5.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}`;
+            let msg = `<strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增功能')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取关注的所有用户的投稿')}</strong>
+      <br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_你可以在首页和关注的创作者页面里使用此功能')}
+      <br>
+      <br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}`;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
             // )}</strong>
@@ -5985,6 +6066,41 @@ const langText = {
         `There is no available data, probably because you don't have a sponsored creator. If you think it's a program error, please give feedback to the author.`,
         '利用可能なデータがありません。おそらくスポンサークリエイターがいないためです。 プログラミングのミスだと思われる場合は、作者にフィードバックしてください。',
         '스폰서 크리에이터가 없기 때문에 사용할 수 있는 데이터가 없습니다. 프로그래밍 오류라고 생각되면 작성자에게 피드백을 보내주세요.',
+    ],
+    _抓取关注的所有用户的投稿: [
+        '抓取关注的所有用户的投稿',
+        '抓取關注的所有使用者的投稿',
+        'Crawl all posts of following users',
+        'フォローしているユーザーのすべての投稿をクロールする',
+        '다음 사용자의 모든 게시물을 크롤링합니다.',
+    ],
+    _抓取关注的所有用户的投稿的提示: [
+        `提示：关注的用户里不包含赞助的用户。\n\n如果你有多个关注的用户，抓取他们的所有投稿可能会产生大量的网络请求。你可以根据需要设置一些过滤条件，以避免产生不必要的抓取。例如设置“费用类型”、“投稿时间”等。\n\n是否立即开始抓取？`,
+        `提示：關注的使用者裡不包含贊助的使用者。\n\n如果你有多個關注的使用者，抓取他們的所有投稿可能會產生大量的網路請求。你可以根據需要設定一些過濾條件，以避免產生不必要的抓取。例如設定“費用型別”、“投稿時間”等。\n\n是否立即開始抓取？`,
+        `Tip: Followed users do not include sponsored users. \n\nIf you have multiple followed users, crawling all their posts may generate a large number of network requests. You can set some filtering conditions as needed to avoid unnecessary crawling. For example, set "fee type", "post time", etc. \n\nDo you want to start crawling now?`,
+        `ヒント: フォローしているユーザーにはスポンサーユーザーは含まれません。\n\nフォローしているユーザーが複数いる場合、そのユーザーの投稿をすべてクロールすると、大量のネットワーク リクエストが発生する可能性があります。不要なクロールを回避するために、必要に応じてフィルタリング条件を設定できます。たとえば、「料金タイプ」、「投稿時間」などを設定します。\n\n今すぐクロールを開始しますか?`,
+        `팁: 팔로우된 사용자에는 스폰서 사용자가 포함되지 않습니다. \n\n팔로우된 사용자가 여러 명인 경우 모든 게시물을 크롤링하면 많은 수의 네트워크 요청이 생성될 수 있습니다. 불필요한 크롤링을 피하기 위해 필요에 따라 일부 필터링 조건을 설정할 수 있습니다. 예를 들어 "수수료 유형", "게시 시간" 등을 설정합니다. \n\n지금 크롤링을 시작하시겠습니까?`,
+    ],
+    _正在关注的创作者: [
+        '正在关注的创作者',
+        '關注中的創作者',
+        'Followed Creators',
+        'フォロー中のクリエイター',
+        '팔로우 중인 크리에이터',
+    ],
+    _没有找到关注的用户: [
+        '没有找到关注的用户',
+        '沒有找到關注的創作者',
+        'No following users found',
+        'フォローしているユーザーが見つかりません',
+        '다음 사용자를 찾을 수 없습니다.',
+    ],
+    _你可以在首页和关注的创作者页面里使用此功能: [
+        '你可以在 Fanbox 主页和关注的创作者页面里使用此功能。',
+        '你可以在 Fanbox 主頁和關注的創作者頁面裡使用此功能',
+        'You can use this feature on the Fanbox homepage and the creators you follow page.',
+        'この機能は、Fanboxホームページやフォローしているクリエイターのページでご利用いただけます。',
+        '이 기능은 Fanbox 홈페이지와 팔로우하는 크리에이터 페이지에서 사용할 수 있습니다.',
     ],
     _抓取该用户的投稿: [
         '抓取该用户的投稿',

@@ -22,6 +22,7 @@ class InitPage {
     switch (pageType.type) {
       case pageType.list.Home:
       case pageType.list.Supporting:
+      case pageType.list.Following:
         return new InitHomePage()
       case pageType.list.UserHome:
       case pageType.list.UserPostList:

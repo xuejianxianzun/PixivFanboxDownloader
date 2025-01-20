@@ -20,8 +20,6 @@ class InitShopPage extends InitPageBase {
       this.readyCrawl()
     })
   }
-
-  protected async FetchPostList() {}
 }
 
 export { InitShopPage }

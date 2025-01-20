@@ -10,12 +10,19 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '4.4.2'
+  private flag = '4.5.0'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-      let msg = `${lang.transl('_修复已知问题')}`
+      let msg = `<strong>${lang.transl('_新增功能')}: ${lang.transl(
+        '_抓取关注的所有用户的投稿'
+      )}</strong>
+      <br>
+      ${lang.transl('_你可以在首页和关注的创作者页面里使用此功能')}
+      <br>
+      <br>
+      ${lang.transl('_修复已知问题')}`
 
       // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
       //   '_非图片的命名规则'
