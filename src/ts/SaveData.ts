@@ -11,6 +11,7 @@ import {
 import { settings } from './setting/Settings'
 import { log } from './Log'
 import { lang } from './Lang'
+import { msgBox } from './MsgBox'
 
 type Dict = {
   [key in ServiceProvider]: string
@@ -64,8 +65,8 @@ class SaveData {
       createID: data.creatorId,
       tags: data.tags.join(','),
       files: [],
-      links: {
-        fileId: '',
+      textContent: {
+        fileID: '',
         name: 'links-' + data.id,
         ext: 'txt',
         size: null,
@@ -88,7 +89,7 @@ class SaveData {
       if (cover) {
         const { name, ext } = this.getUrlNameAndExt(cover)
         const r: FileResult = {
-          fileId: this.createFileId(),
+          fileID: this.createFileId(),
           name,
           ext,
           size: null,
@@ -129,12 +130,12 @@ class SaveData {
       }
       if (text) {
         const links = this.getTextLinks(text)
-        result.links.text = result.links.text.concat(links)
-        result.links.fileId = this.createFileId()
+        result.textContent.text = result.textContent.text.concat(links)
+        result.textContent.fileID = this.createFileId()
 
         // 保存文章正文里的文字
         if (settings.saveText) {
-          result.links.text.push(text)
+          result.textContent.text.push(text)
         }
       }
     }
@@ -175,18 +176,18 @@ class SaveData {
 
       for (const link of linkTexts) {
         const links = this.getTextLinks(link)
-        result.links.text = result.links.text.concat(links)
-        result.links.fileId = this.createFileId()
+        result.textContent.text = result.textContent.text.concat(links)
+        result.textContent.fileID = this.createFileId()
       }
 
       // 如果有链接，则添加一个空字符串，使其占据一行
       // 这样可以让链接和下面的正文部分之间有一个空行
-      if (result.links.text.length > 0) {
-        result.links.text.push('')
+      if (result.textContent.text.length > 0) {
+        result.textContent.text.push('')
       }
 
       if (settings.saveText && text) {
-        result.links.text.push(text)
+        result.textContent.text.push(text)
       }
 
       // 保存图片资源
@@ -221,8 +222,8 @@ class SaveData {
         embedDataArr.push([embedData.serviceProvider, embedData.contentId])
       }
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
-      result.links.text = result.links.text.concat(embedLinks)
-      result.links.fileId = this.createFileId()
+      result.textContent.text = result.textContent.text.concat(embedLinks)
+      result.textContent.fileID = this.createFileId()
 
       // 保存嵌入的 URL，只能保存到文本
       if (settings.saveLink) {
@@ -254,8 +255,10 @@ class SaveData {
           }
         }
         if (urlArr.length > 0) {
-          result.links.text = result.links.text.concat(urlArr.join('\n\n'))
-          result.links.fileId = this.createFileId()
+          result.textContent.text = result.textContent.text.concat(
+            urlArr.join('\n\n')
+          )
+          result.textContent.fileID = this.createFileId()
         }
       }
     }
@@ -336,8 +339,17 @@ class SaveData {
         [video.serviceProvider, video.videoId],
       ]
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
-      result.links.text = result.links.text.concat(embedLinks)
-      result.links.fileId = this.createFileId()
+      result.textContent.text = result.textContent.text.concat(embedLinks)
+      result.textContent.fileID = this.createFileId()
+    }
+
+    if (result.textContent.text.length > 0) {
+      const findURL = result.textContent.text.some((text) =>
+        text.includes('https://')
+      )
+      if (findURL) {
+        msgBox.once('tipLinktext', lang.transl('_提示有外链保存到txt'))
+      }
     }
 
     store.addResult(result)
@@ -350,7 +362,7 @@ class SaveData {
       })
     ) {
       return {
-        fileId: imageData.id,
+        fileID: imageData.id,
         name: imageData.id,
         ext: imageData.extension,
         size: null,
@@ -371,7 +383,7 @@ class SaveData {
       })
     ) {
       return {
-        fileId: fileData.id,
+        fileID: fileData.id,
         name: fileData.name,
         ext: fileData.extension,
         size: fileData.size,

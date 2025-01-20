@@ -42,6 +42,11 @@ export NODE_OPTIONS=--openssl-legacy-provider
 
 测试用的文章：https://www.fanbox.cc/@xuejianxianzun/posts/9201637
 
+### 保存外链时会显示提示
+
+当抓取结果里有外链保存到 TXT 文件时，会显示一条提示消息：
+
+这次的抓取结果里有一些外部链接，下载器会把它们保存到 TXT 文件里，请手动处理。
 
 # 4.4.2 2024/09/02
 

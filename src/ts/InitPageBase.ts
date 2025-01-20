@@ -58,6 +58,7 @@ abstract class InitPageBase {
 
     log.success(lang.transl('_开始抓取'))
     toast.show(lang.transl('_开始抓取'))
+    msgBox.resetOnce('tipLinktext')
 
     EVT.fire('crawlStart')
 

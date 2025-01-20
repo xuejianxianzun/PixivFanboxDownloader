@@ -444,7 +444,7 @@ class DownloadControl {
 
           const data: DonwloadSuccessData = {
             url: result.url,
-            id: result.fileId,
+            id: result.fileID,
             tabId: 0,
             uuid: false,
           }
@@ -453,7 +453,7 @@ class DownloadControl {
       }
 
       const data: downloadArgument = {
-        id: result.fileId,
+        id: result.fileID,
         data: result,
         index: index,
         progressBarIndex: progressBarIndex,
@@ -461,7 +461,7 @@ class DownloadControl {
       }
 
       // 保存任务信息
-      this.taskList[data.data.fileId] = {
+      this.taskList[data.data.fileID] = {
         index,
         progressBarIndex: progressBarIndex,
       }

@@ -46,8 +46,8 @@ class Store {
     this.resultMeta.push(data)
     // 为投稿里的所有的 文本内容 生成一份数据
     // 但是此时并不会生成文本的 URL，等到下载时才会为其生成 URL
-    if (data.links.text.length > 0) {
-      const result = Object.assign(this.getCommonData(data), data.links)
+    if (data.textContent.text.length > 0) {
+      const result = Object.assign(this.getCommonData(data), data.textContent)
 
       this.result.push(result)
     }

@@ -1141,6 +1141,13 @@ const langText = {
     'API 데이터 변경으로 인한 크롤링 실패를 수정합니다.',
   ],
   _任一: ['任一', '任一', 'One', '何れか', '하나만'],
+  _提示有外链保存到txt: [
+    '这次的抓取结果里有一些外部链接，下载器会把它们保存到 TXT 文件里，请手动处理。',
+    '這次的抓取結果裡有一些外部連結，下載器會把它們儲存到 TXT 檔案裡，請手動處理。',
+    'There are some external links in the crawling results this time. The downloader will save them into TXT files. Please handle them manually.',
+    '今回のクロール結果には外部リンクがいくつか含まれます。ダウンローダーはそれらをTXTファイルに保存します。手動で処理してください。',
+    '이번에는 크롤링 결과에 외부 링크가 몇 개 있습니다. 다운로더가 이를 TXT 파일로 저장합니다. 수동으로 처리해 주세요.',
+  ],
 }
 
 export { langText }

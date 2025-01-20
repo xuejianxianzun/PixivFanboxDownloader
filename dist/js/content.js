@@ -2005,6 +2005,7 @@ class InitPageBase {
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].clear();
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
         _Toast__WEBPACK_IMPORTED_MODULE_10__["toast"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
+        _MsgBox__WEBPACK_IMPORTED_MODULE_9__["msgBox"].resetOnce('tipLinktext');
         _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlStart');
         this.getPostDataThreadNum = 0;
         this.getPostDatafinished = 0;
@@ -3250,6 +3251,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./setting/Settings */ "./src/ts/setting/Settings.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MsgBox */ "./src/ts/MsgBox.ts");
+
 
 
 
@@ -3296,8 +3299,8 @@ class SaveData {
             createID: data.creatorId,
             tags: data.tags.join(','),
             files: [],
-            links: {
-                fileId: '',
+            textContent: {
+                fileID: '',
                 name: 'links-' + data.id,
                 ext: 'txt',
                 size: null,
@@ -3317,7 +3320,7 @@ class SaveData {
             if (cover) {
                 const { name, ext } = this.getUrlNameAndExt(cover);
                 const r = {
-                    fileId: this.createFileId(),
+                    fileID: this.createFileId(),
                     name,
                     ext,
                     size: null,
@@ -3352,11 +3355,11 @@ class SaveData {
             }
             if (text) {
                 const links = this.getTextLinks(text);
-                result.links.text = result.links.text.concat(links);
-                result.links.fileId = this.createFileId();
+                result.textContent.text = result.textContent.text.concat(links);
+                result.textContent.fileID = this.createFileId();
                 // 保存文章正文里的文字
                 if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveText) {
-                    result.links.text.push(text);
+                    result.textContent.text.push(text);
                 }
             }
         }
@@ -3394,16 +3397,16 @@ class SaveData {
             }
             for (const link of linkTexts) {
                 const links = this.getTextLinks(link);
-                result.links.text = result.links.text.concat(links);
-                result.links.fileId = this.createFileId();
+                result.textContent.text = result.textContent.text.concat(links);
+                result.textContent.fileID = this.createFileId();
             }
             // 如果有链接，则添加一个空字符串，使其占据一行
             // 这样可以让链接和下面的正文部分之间有一个空行
-            if (result.links.text.length > 0) {
-                result.links.text.push('');
+            if (result.textContent.text.length > 0) {
+                result.textContent.text.push('');
             }
             if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveText && text) {
-                result.links.text.push(text);
+                result.textContent.text.push(text);
             }
             // 保存图片资源
             for (const block of data.body.blocks) {
@@ -3435,8 +3438,8 @@ class SaveData {
                 embedDataArr.push([embedData.serviceProvider, embedData.contentId]);
             }
             const embedLinks = this.getEmbedLinks(embedDataArr, data.id);
-            result.links.text = result.links.text.concat(embedLinks);
-            result.links.fileId = this.createFileId();
+            result.textContent.text = result.textContent.text.concat(embedLinks);
+            result.textContent.fileID = this.createFileId();
             // 保存嵌入的 URL，只能保存到文本
             if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveLink) {
                 const urlArr = [];
@@ -3466,8 +3469,8 @@ class SaveData {
                     }
                 }
                 if (urlArr.length > 0) {
-                    result.links.text = result.links.text.concat(urlArr.join('\n\n'));
-                    result.links.fileId = this.createFileId();
+                    result.textContent.text = result.textContent.text.concat(urlArr.join('\n\n'));
+                    result.textContent.fileID = this.createFileId();
                 }
             }
         }
@@ -3540,8 +3543,14 @@ class SaveData {
                 [video.serviceProvider, video.videoId],
             ];
             const embedLinks = this.getEmbedLinks(embedDataArr, data.id);
-            result.links.text = result.links.text.concat(embedLinks);
-            result.links.fileId = this.createFileId();
+            result.textContent.text = result.textContent.text.concat(embedLinks);
+            result.textContent.fileID = this.createFileId();
+        }
+        if (result.textContent.text.length > 0) {
+            const findURL = result.textContent.text.some(text => text.includes('https://'));
+            if (findURL) {
+                _MsgBox__WEBPACK_IMPORTED_MODULE_5__["msgBox"].once('tipLinktext', _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_提示有外链保存到txt'));
+            }
         }
         _Store__WEBPACK_IMPORTED_MODULE_1__["store"].addResult(result);
     }
@@ -3550,7 +3559,7 @@ class SaveData {
             ext: imageData.extension,
         })) {
             return {
-                fileId: imageData.id,
+                fileID: imageData.id,
                 name: imageData.id,
                 ext: imageData.extension,
                 size: null,
@@ -3567,7 +3576,7 @@ class SaveData {
             name: fileData.name,
         })) {
             return {
-                fileId: fileData.id,
+                fileID: fileData.id,
                 name: fileData.name,
                 ext: fileData.extension,
                 size: fileData.size,
@@ -3947,8 +3956,8 @@ class Store {
         this.resultMeta.push(data);
         // 为投稿里的所有的 文本内容 生成一份数据
         // 但是此时并不会生成文本的 URL，等到下载时才会为其生成 URL
-        if (data.links.text.length > 0) {
-            const result = Object.assign(this.getCommonData(data), data.links);
+        if (data.textContent.text.length > 0) {
+            const result = Object.assign(this.getCommonData(data), data.textContent);
             this.result.push(result);
         }
         // 为投稿里的每个 files 生成一份数据
@@ -4911,7 +4920,7 @@ class DownloadControl {
                     _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${result.url} Unable to retry, this file has been skipped.`);
                     const data = {
                         url: result.url,
-                        id: result.fileId,
+                        id: result.fileID,
                         tabId: 0,
                         uuid: false,
                     };
@@ -4919,14 +4928,14 @@ class DownloadControl {
                 }
             }
             const data = {
-                id: result.fileId,
+                id: result.fileID,
                 data: result,
                 index: index,
                 progressBarIndex: progressBarIndex,
                 taskBatch: this.taskBatch,
             };
             // 保存任务信息
-            this.taskList[data.data.fileId] = {
+            this.taskList[data.data.fileID] = {
                 index,
                 progressBarIndex: progressBarIndex,
             };
@@ -6820,6 +6829,13 @@ const langText = {
         'API 데이터 변경으로 인한 크롤링 실패를 수정합니다.',
     ],
     _任一: ['任一', '任一', 'One', '何れか', '하나만'],
+    _提示有外链保存到txt: [
+        '这次的抓取结果里有一些外部链接，下载器会把它们保存到 TXT 文件里，请手动处理。',
+        '這次的抓取結果裡有一些外部連結，下載器會把它們儲存到 TXT 檔案裡，請手動處理。',
+        'There are some external links in the crawling results this time. The downloader will save them into TXT files. Please handle them manually.',
+        '今回のクロール結果には外部リンクがいくつか含まれます。ダウンローダーはそれらをTXTファイルに保存します。手動で処理してください。',
+        '이번에는 크롤링 결과에 외부 링크가 몇 개 있습니다. 다운로더가 이를 TXT 파일로 저장합니다. 수동으로 처리해 주세요.',
+    ],
 };
 
 
