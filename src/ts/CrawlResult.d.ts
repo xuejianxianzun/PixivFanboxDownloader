@@ -337,5 +337,5 @@ export {
   EmbedData,
   VideoData,
   CreatorData,
-  Creator
+  Creator,
 }

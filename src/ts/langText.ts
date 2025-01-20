@@ -617,7 +617,24 @@ const langText = {
   _顶部: ['顶部', '頂部', 'top', '上揃え', '상단'],
   _居中: ['居中', '居中', 'center', '中央揃え', '중앙'],
   _常见问题说明: [
-    '下载器不能绕过付费限制。<br><br>下载的文件保存在浏览器的下载目录里。<br><br>建议在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。<br><br>下载器 QQ 群：853021998',
+    `下载器不能绕过付费限制。
+    <br><br>
+    下载的文件保存在浏览器的下载目录里。如果你想保存到其他位置，需要修改下载器的下载目录。
+    <br><br>
+    建议在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。
+    <br><br>
+    如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。
+    <br><br>
+    下载器 QQ 群：853021998
+    <br><br>
+    如果你需要一个机场（梯子）的话，可以试试我现在用的机场：魔法喵 <a href="https://magicm.cc/#/register?code=GYjQWDob" title="魔法喵" target="_blank">https://magicm.cc</a>，性价比很高，9.9 元 768 GB 流量（倍率都是 1x），而且速度很快，下载国外网盘的文件时可以跑满我的带宽（70 MB/s）。
+    <br>
+    如果上面的网址打不开，可以访问地址发布页：<a href="https://magicm.click" title="魔法喵" target="_blank">https://magicm.click</a>
+    <br>
+    你也可以查看我写的使用体验：<a href="https://saber.love/?p=12736" title="魔法喵使用体验" target="_blank">魔法喵使用体验</a>
+    <br>
+    我的邀请码：GYjQWDob
+    `,
     '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。',
     'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.',
     'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。',
