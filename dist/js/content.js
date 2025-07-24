@@ -99,13 +99,13 @@ __webpack_require__.r(__webpack_exports__);
 class API {
     constructor() {
         this.error = {
-            "message": "Fetch failed: Failed to fetch",
-            "error": {
-                message: "Failed to fetch",
+            message: 'Fetch failed: Failed to fetch',
+            error: {
+                message: 'Failed to fetch',
                 stack: `TypeError: Failed to fetch\n
               at chrome-extension://mfkglccbgcbnbkdgekepcgnhobeopoji/js/content.js:112:13\n
-              ...更多栈信息`
-            }
+              ...更多栈信息`,
+            },
         };
     }
     // 组装 url 的查询参数。当该参数有值时，将其添加到 url 里
@@ -6395,9 +6395,9 @@ const langText = {
     <br><br>
     下载器 QQ 群：853021998
     <br><br>
-    如果你需要一个机场（梯子）的话，可以试试我现在用的机场：魔法喵 <a href="https://magicm.cc/#/register?code=GYjQWDob" title="魔法喵" target="_blank">https://magicm.cc</a>，性价比很高，9.9 元 768 GB 流量（倍率都是 1x），而且速度很快，下载国外网盘的文件时可以跑满我的带宽（70 MB/s）。
+    如果你需要一个机场（梯子）的话，可以试试我现在用的机场：魔法喵 <a href="https://mofacgb.cc/register?code=GYjQWDob" title="魔法喵" target="_blank">https://mofacgb.cc</a>，性价比很高，9.9 元 768 GB 流量（倍率都是 1x），而且速度很快，下载国外网盘的文件时可以跑满我的带宽（70 MB/s）。
     <br>
-    如果上面的网址打不开，可以访问地址发布页：<a href="https://magicm.click" title="魔法喵" target="_blank">https://magicm.click</a>
+    如果上面的网址打不开，可以访问地址发布页：<a href="https://mofmiao.com" title="魔法喵" target="_blank">https://mofmiao.com</a>
     <br>
     你也可以查看我写的使用体验：<a href="https://saber.love/?p=12736" title="魔法喵使用体验" target="_blank">魔法喵使用体验</a>
     <br>
