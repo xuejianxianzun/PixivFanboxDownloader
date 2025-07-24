@@ -324,6 +324,7 @@ export const formHtml = `<form class="settingForm">
     <button class="textButton gray1" type="button" id="importDownloadRecord" data-xztext="_导入"></button>
     <button class="textButton gray1" type="button" id="clearDownloadRecord" data-xztext="_清除"></button>
     </span>
+    <button class="textButton gray1" type="button" id="deduplicationHelp" data-xztext="_提示"></button>
     </p>
 
     <p class="option" data-no="18">

@@ -1,5 +1,9 @@
 export NODE_OPTIONS=--openssl-legacy-provider
 
+# 4.6.0 2025/07/25
+
+
+
 # 4.5.0 2025/01/20
 
 ### ✨新功能：抓取关注的所有用户的投稿

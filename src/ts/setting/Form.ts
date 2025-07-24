@@ -8,6 +8,7 @@ import { FormSettings } from './FormSettings'
 import { Utils } from '../utils/Utils'
 import { lang } from '../Lang'
 import { options } from './Options'
+import { msgBox } from '../msgBox'
 
 // 设置表单
 class Form {
@@ -185,6 +186,16 @@ class Form {
         })
       }
     }
+
+    // 显示不下载重复文件的提示
+    const deduplicationHelp = this.form.querySelector(
+      '#deduplicationHelp'
+    ) as HTMLButtonElement
+    deduplicationHelp.addEventListener('click', () => {
+      msgBox.show(lang.transl('_不下载重复文件的提示'), {
+        title: lang.transl('_不下载重复文件'),
+      })
+    })
 
     // 显示命名字段提示
     this.form
