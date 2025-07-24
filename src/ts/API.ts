@@ -49,8 +49,19 @@ class API {
             message: `Fetch failed: ${error.message}`,
             error,
           })
+          // 发生 429 错误时，返回的错误信息如下面的 error 所示
         })
     })
+  }
+
+  private error = {
+    message: 'Fetch failed: Failed to fetch',
+    error: {
+      message: 'Failed to fetch',
+      stack: `TypeError: Failed to fetch\n
+              at chrome-extension://mfkglccbgcbnbkdgekepcgnhobeopoji/js/content.js:112:13\n
+              ...更多栈信息`,
+    },
   }
 
   static getCreatorId(url: string) {

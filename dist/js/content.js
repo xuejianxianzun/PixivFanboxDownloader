@@ -97,6 +97,17 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "API", function() { return API; });
 class API {
+    constructor() {
+        this.error = {
+            "message": "Fetch failed: Failed to fetch",
+            "error": {
+                message: "Failed to fetch",
+                stack: `TypeError: Failed to fetch\n
+              at chrome-extension://mfkglccbgcbnbkdgekepcgnhobeopoji/js/content.js:112:13\n
+              ...更多栈信息`
+            }
+        };
+    }
     // 组装 url 的查询参数。当该参数有值时，将其添加到 url 里
     static assembleURL(baseURL, args) {
         const temp = new URL(baseURL);
@@ -134,6 +145,7 @@ class API {
                     message: `Fetch failed: ${error.message}`,
                     error,
                 });
+                // 发生 429 错误时，返回的错误信息如下面的 error 所示
             });
         });
     }
@@ -3904,7 +3916,7 @@ class States {
     resetNextCrawlTime() {
         this.nextCrawlTime = 0;
     }
-    /**设置下一次抓取的时间。short 增加 1 秒钟，long 增加 3 分钟 */
+    /**设置下一次抓取的时间。short 增加 1 秒钟，long 增加 6 分钟 */
     addNextCrawlTime(timeSpan = 'short') {
         const now = Date.now();
         if (timeSpan === 'short') {
@@ -3913,8 +3925,8 @@ class States {
             this.nextCrawlTime = now + add_time;
         }
         else {
-            // 增加 160 - 200 秒之间的随机时间
-            const add_time = Math.floor(Math.random() * (200000 - 160000 + 1)) + 160000;
+            // 增加 300 - 360 秒之间的随机时间
+            const add_time = Math.floor(Math.random() * (360000 - 300000 + 1)) + 300000;
             this.nextCrawlTime = now + add_time;
             _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载器会等待几分钟然后再继续抓取'));
         }

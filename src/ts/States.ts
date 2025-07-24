@@ -47,7 +47,7 @@ class States {
     this.nextCrawlTime = 0
   }
 
-  /**设置下一次抓取的时间。short 增加 1 秒钟，long 增加 3 分钟 */
+  /**设置下一次抓取的时间。short 增加 1 秒钟，long 增加 6 分钟 */
   public addNextCrawlTime(timeSpan: 'short' | 'long' = 'short') {
     const now = Date.now()
     if (timeSpan === 'short') {
@@ -55,9 +55,9 @@ class States {
       const add_time = Math.floor(Math.random() * (2000 - 500 + 1)) + 500
       this.nextCrawlTime = now + add_time
     } else {
-      // 增加 160 - 200 秒之间的随机时间
+      // 增加 300 - 360 秒之间的随机时间
       const add_time =
-        Math.floor(Math.random() * (200000 - 160000 + 1)) + 160000
+        Math.floor(Math.random() * (360000 - 300000 + 1)) + 300000
       this.nextCrawlTime = now + add_time
       log.warning(lang.transl('_下载器会等待几分钟然后再继续抓取'))
     }
