@@ -31,21 +31,24 @@ class API {
       })
         .then((response) => {
           if (response.ok) {
-            return response.json()
+            return response.json().then((data) => resolve(data))
           } else {
-            // 第一种异常，请求成功但状态不对
+            // HTTP 状态码错误
             reject({
               status: response.status,
               statusText: response.statusText,
+              message: `HTTP error: ${response.status} ${response.statusText}`,
             })
           }
         })
-        .then((data) => {
-          resolve(data)
-        })
         .catch((error) => {
           // 第二种异常，请求失败
-          reject(error)
+          // fanbox 的 429 错误会触发请求失败
+          // Uncaught (in promise) TypeError: Failed to fetch
+          reject({
+            message: `Fetch failed: ${error.message}`,
+            error,
+          })
         })
     })
   }

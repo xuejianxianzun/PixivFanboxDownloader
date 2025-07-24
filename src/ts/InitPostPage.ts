@@ -41,10 +41,19 @@ class InitPostPage extends InitPageBase {
   }
 
   protected async fetchPost() {
-    const data = await API.getPost(
-      Utils.getURLPathField(window.location.pathname, 'posts')
-    )
-    this.afterFetchPost(data)
+    await states.awaitNextCrawl()
+
+    try {
+      const data = await API.getPost(
+        Utils.getURLPathField(window.location.pathname, 'posts')
+      )
+      states.addNextCrawlTime()
+      this.afterFetchPost(data)
+    } catch (error) {
+      console.log(error)
+      states.addNextCrawlTime('long')
+      this.fetchPost()
+    }
   }
 }
 

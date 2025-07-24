@@ -41,7 +41,8 @@ abstract class InitPageBase {
   protected crawlNumber: number = 0 // 要抓取的个数/页数
   protected nextUrl: null | string = null
 
-  private readonly getPostDataThreadMax = 6
+  /**并发请求数量 */
+  private readonly getPostDataThreadMax = 1
   protected getPostDataThreadNum = 0
   protected getPostDatafinished = 0
 
@@ -103,17 +104,29 @@ abstract class InitPageBase {
     }
   }
 
-  /**获取文章列表数据 */
-  protected async FetchPostList() {
-    const url = this.postListURLs.shift()
+  /**获取文章列表数据。如果传入了 URL，则是为了重试抓取该 URL */
+  protected async FetchPostList(url?: string) {
+    await states.awaitNextCrawl()
+
     if (url === undefined) {
-      log.error(
-        `Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`
-      )
-      return this.FetchPostListFinished()
+      url = this.postListURLs.shift()
+      if (url === undefined) {
+        log.error(
+          `Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`
+        )
+        return this.FetchPostListFinished()
+      }
     }
-    const data: PostList = (await API.request(url)) as PostList
-    this.afterFetchPostList(data)
+
+    try {
+      const data: PostList = (await API.request(url)) as PostList
+      states.addNextCrawlTime()
+      this.afterFetchPostList(data)
+    } catch (error) {
+      console.log(error)
+      states.addNextCrawlTime('long')
+      this.FetchPostList(url)
+    }
   }
 
   /**保存符合过滤条件的文章的 ID，之后会抓取这些文章的详细数据 */
@@ -199,8 +212,17 @@ abstract class InitPageBase {
   }
 
   protected async fetchPost(postId: string) {
-    const data = await API.getPost(postId)
-    this.afterFetchPost(data)
+    await states.awaitNextCrawl()
+
+    try {
+      const data = await API.getPost(postId)
+      states.addNextCrawlTime()
+      this.afterFetchPost(data)
+    } catch (error) {
+      console.log(error)
+      states.addNextCrawlTime('long')
+      this.fetchPost(postId)
+    }
   }
 
   protected afterFetchPost(data: Post) {

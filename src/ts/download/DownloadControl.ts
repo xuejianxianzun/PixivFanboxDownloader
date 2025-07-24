@@ -18,6 +18,7 @@ import { ShowSkipCount } from './ShowSkipCount'
 import { msgBox } from '../MsgBox'
 import { downloadStates } from './DownloadStates'
 import { toast } from '../Toast'
+import { Config } from '../Config'
 
 interface TaskList {
   [id: string]: {
@@ -38,9 +39,7 @@ class DownloadControl {
     new ShowSkipCount(skipTipWrap)
   }
 
-  private readonly downloadThreadMax: number = 6 // 同时下载的线程数的最大值，也是默认值
-
-  private downloadThread: number = 3 // 同时下载的线程数
+  private downloadThread: number = 2 // 同时下载的线程数
 
   private taskBatch = 0 // 标记任务批次，每次重新下载时改变它的值，传递给后台使其知道这是一次新的下载
 
@@ -251,11 +250,11 @@ class DownloadControl {
     const setThread = settings.downloadThread
     if (
       setThread < 1 ||
-      setThread > this.downloadThreadMax ||
+      setThread > Config.downloadThreadMax ||
       isNaN(setThread)
     ) {
       // 如果数值非法，则重设为默认值
-      this.downloadThread = this.downloadThreadMax
+      this.downloadThread = Config.downloadThreadMax
     } else {
       this.downloadThread = setThread // 设置为用户输入的值
     }

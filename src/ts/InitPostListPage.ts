@@ -31,6 +31,7 @@ class InitPostListPage extends InitPageBase {
 
     await this.getPostListURLs(creatorId)
 
+    log.warning(lang.transl('_下载器会减慢抓取速度以免被限制'))
     this.FetchPostList()
   }
 }

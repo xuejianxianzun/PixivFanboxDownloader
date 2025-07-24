@@ -8,7 +8,7 @@ import { FormSettings } from './FormSettings'
 import { Utils } from '../utils/Utils'
 import { lang } from '../Lang'
 import { options } from './Options'
-import { msgBox } from '../msgBox'
+import { msgBox } from '../MsgBox'
 
 // 设置表单
 class Form {

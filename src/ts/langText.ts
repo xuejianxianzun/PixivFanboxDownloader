@@ -152,11 +152,11 @@ const langText = {
     '다운로드 <span class="key">쓰레드</span>',
   ],
   _线程数字: [
-    '可以输入 1-6 之间的数字，设置同时下载的数量',
-    '可以輸入 1-6 之間的數字，設定同時下載的數量',
-    'You can type a number between 1-6 to set the number of concurrent downloads',
-    '同時にダウンロードするファイルの数を 1-6 で設定します。',
-    '1-6 사이의 숫자를 입력하여 동시 다운로드 수를 설정할 수 있습니다.',
+    '可以输入 1-3 之间的数字，设置同时下载的数量',
+    '可以輸入 1-3 之間的數字，設定同時下載的數量',
+    'You can type a number between 1-3 to set the number of concurrent downloads',
+    '同時にダウンロードするファイルの数を 1-3 で設定します。',
+    '1-3 사이의 숫자를 입력하여 동시 다운로드 수를 설정할 수 있습니다.',
   ],
   _下载按钮1: [
     '开始下载',
@@ -1192,6 +1192,20 @@ Additional notes: <br>
     'There are some external links in the crawling results this time. The downloader will save them into TXT files. Please handle them manually.',
     '今回のクロール結果には外部リンクがいくつか含まれます。ダウンローダーはそれらをTXTファイルに保存します。手動で処理してください。',
     '이번에는 크롤링 결과에 외부 링크가 몇 개 있습니다. 다운로더가 이를 TXT 파일로 저장합니다. 수동으로 처리해 주세요.',
+  ],
+  _下载器会等待几分钟然后再继续抓取: [
+    '下载器会等待几分钟，然后再继续抓取。',
+    '下載器會等待幾分鐘，然後再繼續擷取。',
+    'The downloader will wait a few minutes before continuing to crawl.',
+    '`ダウンローダーは数分間待機してから、クロールを続行します。`,',
+    '다운로더가 몇 분 기다린 후 크롤링을 계속합니다.',
+  ],
+  _下载器会减慢抓取速度以免被限制: [
+    '下载器会减慢抓取速度，以避免被 Fanbox 限制抓取。',
+    '下載器會減慢擷取速度，以避免被 Fanbox 限制擷取。',
+    'The downloader will slow down the crawling speed to avoid being restricted by Fanbox.',
+    'ダウンローダーは、Fanboxによるクロール制限を避けるために、クロール速度を落とします。',
+    '다운로더는 Fanbox에 의해 크롤링이 제한되는 것을 피하기 위해 크롤링 속도를 늦춥니다.',
   ],
 }
 

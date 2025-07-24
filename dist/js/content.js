@@ -115,22 +115,25 @@ class API {
             })
                 .then((response) => {
                 if (response.ok) {
-                    return response.json();
+                    return response.json().then((data) => resolve(data));
                 }
                 else {
-                    // 第一种异常，请求成功但状态不对
+                    // HTTP 状态码错误
                     reject({
                         status: response.status,
                         statusText: response.statusText,
+                        message: `HTTP error: ${response.status} ${response.statusText}`,
                     });
                 }
             })
-                .then((data) => {
-                resolve(data);
-            })
                 .catch((error) => {
                 // 第二种异常，请求失败
-                reject(error);
+                // fanbox 的 429 错误会触发请求失败
+                // Uncaught (in promise) TypeError: Failed to fetch
+                reject({
+                    message: `Fetch failed: ${error.message}`,
+                    error,
+                });
             });
         });
     }
@@ -711,7 +714,7 @@ class Config {
 /**使用输出面板显示内容时，如果文件数量大于这个值，就不再显示内容，而是保存到 txt 文件 */
 Config.outputMax = 5000;
 /**同时下载的文件数量的最大值 */
-Config.downloadThreadMax = 6;
+Config.downloadThreadMax = 3;
 /**下载某个文件出错时，最大重试次数 */
 Config.retryMax = 10;
 /**程序名 */
@@ -1678,6 +1681,7 @@ const formHtml = `<form class="settingForm">
     <button class="textButton gray1" type="button" id="importDownloadRecord" data-xztext="_导入"></button>
     <button class="textButton gray1" type="button" id="clearDownloadRecord" data-xztext="_清除"></button>
     </span>
+    <button class="textButton gray1" type="button" id="deduplicationHelp" data-xztext="_提示"></button>
     </p>
 
     <p class="option" data-no="18">
@@ -1866,6 +1870,7 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
             }
             // console.log(this.postListURLs)
             // 获取文章列表
+            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载器会减慢抓取速度以免被限制'));
             this.FetchPostList();
         }
         else {
@@ -1973,7 +1978,8 @@ class InitPageBase {
     constructor() {
         this.crawlNumber = 0; // 要抓取的个数/页数
         this.nextUrl = null;
-        this.getPostDataThreadMax = 6;
+        /**并发请求数量 */
+        this.getPostDataThreadMax = 1;
         this.getPostDataThreadNum = 0;
         this.getPostDatafinished = 0;
         this.postListURLs = [];
@@ -2038,15 +2044,26 @@ class InitPageBase {
             // this.postListURLs.forEach(url => console.log(url))
         }
     }
-    /**获取文章列表数据 */
-    async FetchPostList() {
-        const url = this.postListURLs.shift();
+    /**获取文章列表数据。如果传入了 URL，则是为了重试抓取该 URL */
+    async FetchPostList(url) {
+        await _States__WEBPACK_IMPORTED_MODULE_8__["states"].awaitNextCrawl();
         if (url === undefined) {
-            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(`Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`);
-            return this.FetchPostListFinished();
+            url = this.postListURLs.shift();
+            if (url === undefined) {
+                _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(`Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`);
+                return this.FetchPostListFinished();
+            }
         }
-        const data = (await _API__WEBPACK_IMPORTED_MODULE_7__["API"].request(url));
-        this.afterFetchPostList(data);
+        try {
+            const data = (await _API__WEBPACK_IMPORTED_MODULE_7__["API"].request(url));
+            _States__WEBPACK_IMPORTED_MODULE_8__["states"].addNextCrawlTime();
+            this.afterFetchPostList(data);
+        }
+        catch (error) {
+            console.log(error);
+            _States__WEBPACK_IMPORTED_MODULE_8__["states"].addNextCrawlTime('long');
+            this.FetchPostList(url);
+        }
     }
     /**保存符合过滤条件的文章的 ID，之后会抓取这些文章的详细数据 */
     afterFetchPostList(data) {
@@ -2123,8 +2140,17 @@ class InitPageBase {
         }
     }
     async fetchPost(postId) {
-        const data = await _API__WEBPACK_IMPORTED_MODULE_7__["API"].getPost(postId);
-        this.afterFetchPost(data);
+        await _States__WEBPACK_IMPORTED_MODULE_8__["states"].awaitNextCrawl();
+        try {
+            const data = await _API__WEBPACK_IMPORTED_MODULE_7__["API"].getPost(postId);
+            _States__WEBPACK_IMPORTED_MODULE_8__["states"].addNextCrawlTime();
+            this.afterFetchPost(data);
+        }
+        catch (error) {
+            console.log(error);
+            _States__WEBPACK_IMPORTED_MODULE_8__["states"].addNextCrawlTime('long');
+            this.fetchPost(postId);
+        }
     }
     afterFetchPost(data) {
         _SaveData__WEBPACK_IMPORTED_MODULE_6__["saveData"].receive(data.body);
@@ -2209,6 +2235,7 @@ class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitP
         this.postListURLs = [];
         const creatorId = _API__WEBPACK_IMPORTED_MODULE_4__["API"].getCreatorId(location.href);
         await this.getPostListURLs(creatorId);
+        _Log__WEBPACK_IMPORTED_MODULE_5__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载器会减慢抓取速度以免被限制'));
         this.FetchPostList();
     }
 }
@@ -2267,8 +2294,17 @@ class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageB
         this.fetchPost();
     }
     async fetchPost() {
-        const data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].getURLPathField(window.location.pathname, 'posts'));
-        this.afterFetchPost(data);
+        await _States__WEBPACK_IMPORTED_MODULE_6__["states"].awaitNextCrawl();
+        try {
+            const data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].getURLPathField(window.location.pathname, 'posts'));
+            _States__WEBPACK_IMPORTED_MODULE_6__["states"].addNextCrawlTime();
+            this.afterFetchPost(data);
+        }
+        catch (error) {
+            console.log(error);
+            _States__WEBPACK_IMPORTED_MODULE_6__["states"].addNextCrawlTime('long');
+            this.fetchPost();
+        }
     }
 }
 
@@ -2552,7 +2588,7 @@ class Log {
             _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textWarning,
             _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textError,
         ];
-        this.max = 300;
+        this.max = 600;
         this.count = 0;
         this.toBottom = false; // 指示是否需要把日志滚动到底部。当有日志被添加或刷新，则为 true。滚动到底部之后复位到 false，避免一直滚动到底部。
         this.scrollToBottom();
@@ -3547,7 +3583,7 @@ class SaveData {
             result.textContent.fileID = this.createFileId();
         }
         if (result.textContent.text.length > 0) {
-            const findURL = result.textContent.text.some(text => text.includes('https://'));
+            const findURL = result.textContent.text.some((text) => text.includes('https://'));
             if (findURL) {
                 _MsgBox__WEBPACK_IMPORTED_MODULE_5__["msgBox"].once('tipLinktext', _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_提示有外链保存到txt'));
             }
@@ -3779,18 +3815,14 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.5.0';
+        this.flag = '4.6.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
-            let msg = `<strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增功能')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取关注的所有用户的投稿')}</strong>
-      <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_你可以在首页和关注的创作者页面里使用此功能')}
-      <br>
-      <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_修复已知问题')}`;
+            let msg = `
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载器会减慢抓取速度以免被限制')}`;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
             // )}</strong>
@@ -3829,6 +3861,10 @@ new ShowWhatIsNew();
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "states", function() { return states; });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
+
+
 
 // 储存需要跨模块使用的、会变化的状态
 // 这里的状态不需要持久化保存
@@ -3851,7 +3887,37 @@ class States {
         this.quickCrawl = false;
         /**是否处于下载中 */
         this.downloading = false;
+        /**指示下一次抓取在什么时候进行 */
+        this.nextCrawlTime = 0;
         this.bindEvents();
+    }
+    async awaitNextCrawl() {
+        if (this.nextCrawlTime > 0) {
+            const now = Date.now();
+            if (now < this.nextCrawlTime) {
+                const waitTime = this.nextCrawlTime - now;
+                await new Promise((resolve) => setTimeout(resolve, waitTime));
+            }
+        }
+        return true;
+    }
+    resetNextCrawlTime() {
+        this.nextCrawlTime = 0;
+    }
+    /**设置下一次抓取的时间。short 增加 1 秒钟，long 增加 3 分钟 */
+    addNextCrawlTime(timeSpan = 'short') {
+        const now = Date.now();
+        if (timeSpan === 'short') {
+            // 增加 500 - 2000 ms 之间的随机时间
+            const add_time = Math.floor(Math.random() * (2000 - 500 + 1)) + 500;
+            this.nextCrawlTime = now + add_time;
+        }
+        else {
+            // 增加 160 - 200 秒之间的随机时间
+            const add_time = Math.floor(Math.random() * (200000 - 160000 + 1)) + 160000;
+            this.nextCrawlTime = now + add_time;
+            _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载器会等待几分钟然后再继续抓取'));
+        }
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingInitialized, () => {
@@ -4569,7 +4635,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../MsgBox */ "./src/ts/MsgBox.ts");
 /* harmony import */ var _DownloadStates__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./DownloadStates */ "./src/ts/download/DownloadStates.ts");
 /* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../Toast */ "./src/ts/Toast.ts");
+/* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
 // 下载控制
+
 
 
 
@@ -4586,8 +4654,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class DownloadControl {
     constructor() {
-        this.downloadThreadMax = 6; // 同时下载的线程数的最大值，也是默认值
-        this.downloadThread = 3; // 同时下载的线程数
+        this.downloadThread = 2; // 同时下载的线程数
         this.taskBatch = 0; // 标记任务批次，每次重新下载时改变它的值，传递给后台使其知道这是一次新的下载
         this.taskList = {}; // 下载任务列表，使用下载的文件的 id 做 key，保存下载栏编号和它在下载状态列表中的索引
         this.downloaded = 0; // 已下载的任务数量
@@ -4756,10 +4823,10 @@ class DownloadControl {
     setDownloadThread() {
         const setThread = _setting_Settings__WEBPACK_IMPORTED_MODULE_8__["settings"].downloadThread;
         if (setThread < 1 ||
-            setThread > this.downloadThreadMax ||
+            setThread > _Config__WEBPACK_IMPORTED_MODULE_14__["Config"].downloadThreadMax ||
             isNaN(setThread)) {
             // 如果数值非法，则重设为默认值
-            this.downloadThread = this.downloadThreadMax;
+            this.downloadThread = _Config__WEBPACK_IMPORTED_MODULE_14__["Config"].downloadThreadMax;
         }
         else {
             this.downloadThread = setThread; // 设置为用户输入的值
@@ -5841,11 +5908,11 @@ const langText = {
         '다운로드 <span class="key">쓰레드</span>',
     ],
     _线程数字: [
-        '可以输入 1-6 之间的数字，设置同时下载的数量',
-        '可以輸入 1-6 之間的數字，設定同時下載的數量',
-        'You can type a number between 1-6 to set the number of concurrent downloads',
-        '同時にダウンロードするファイルの数を 1-6 で設定します。',
-        '1-6 사이의 숫자를 입력하여 동시 다운로드 수를 설정할 수 있습니다.',
+        '可以输入 1-3 之间的数字，设置同时下载的数量',
+        '可以輸入 1-3 之間的數字，設定同時下載的數量',
+        'You can type a number between 1-3 to set the number of concurrent downloads',
+        '同時にダウンロードするファイルの数を 1-3 で設定します。',
+        '1-3 사이의 숫자를 입력하여 동시 다운로드 수를 설정할 수 있습니다.',
     ],
     _下载按钮1: [
         '开始下载',
@@ -6499,11 +6566,56 @@ const langText = {
         '<span class="key">중복</span>파일 다운로드하지 않기',
     ],
     _不下载重复文件的提示: [
-        '下载器会保存自己的下载记录，以避免下载重复的文件。<br>你可以清除浏览器的下载记录，这不会影响下载器的下载记录。<br>当你清除 Cookie 及其他网站数据时，下载器的记录也会被清除。',
-        '下載器會儲存自己的下載紀錄，以避免下載重複的檔案。<br>你可以清除瀏覽器的下載記錄，這不會影響下載器的下載記錄。<br>當你清除 Cookie 及其他網站資料時，下載器的記錄也會被清除。',
-        `The downloader will save its download record to avoid downloading duplicate files.<br>You can clear the browser's download history, which will not affect the downloader's download record.<br>When you clear cookies and other site data, the downloader's records will also be cleared.`,
-        'ダウンローダーは独自のダウンロード履歴を保存して、重複ファイルのダウンロードを回避する。<br>ブラウザのダウンロード履歴をクリアできますが、ダウンローダのダウンロード記録には影響しません。<br>cookie と他のサイトデータを削除すると、ダウンローダーの記録も削除されます。',
-        '다운로더가 중복되는 파일을 다운로드하지 않도록 자신의 다운로드 기록을 저장합니다.<br>브라우저의 다운로드 기록을 지울 수 있으며 이는 다운로더의 다운로드 기록에 영향을 미치지 않습니다.<br>쿠키와 다른 사이트 데이터를 지울 때 다운로드 기록도 삭제됩니다.',
+        `下载器会保存自己的下载记录。每个下载成功（保存到硬盘）的文件都会保存一条下载记录。下载失败的文件不会产生下载记录。<br>
+    如果你启用了“不下载重复文件”功能，那么下载器会在下载每一个文件前检查下载记录，如果它是重复文件，下载器就会跳过它（不下载它）。<br>
+    <br>
+    补充说明：<br>
+    - 这不是一个可靠的功能。下载器没有权限读取硬盘上的文件，所以只能依赖自己保存的下载记录。如果你把下载过的文件删除了，下载器是不会知道的，依然会认为文件下载过，从而跳过下载。如果有时你确实需要重新下载，可以关闭此功能。<br>
+    - 下载器的下载记录保存在浏览器的 IndexedDB 里。它不是浏览器的下载记录，所以清除浏览器的下载记录不会影响此功能。额外提一句，如果浏览器的下载记录太多，会导致浏览器在启动时卡住一段时间。如果你遇到了此问题，应该清除浏览器的下载记录。<br>
+    - 注意：清除浏览器的数据时，清除“Cookie 及其他网站数据”会导致下载器的下载记录被清空！如果你要清理此项，可以提前导出下载记录，以避免丢失下载记录。<br>
+    - 如果你使用多个设备或浏览器，可以点击“导出”按钮导出下载器的下载记录，然后在新的设备上导入。<br>
+    - 如果你想清空下载器的下载记录，可以点击此设置右边的“清除”按钮。<br>
+    `,
+        `下載器會儲存自己的下載記錄。每個下載成功（儲存到硬碟）的檔案都會儲存一條下載記錄。下載失敗的檔案不會產生下載記錄。<br>
+    如果你啟用了“不下載重複檔案”功能，那麼下載器會在下載每一個檔案前檢查下載記錄，如果它是重複檔案，下載器就會跳過它（不下載它）。<br>
+    <br>
+    補充說明：<br>
+    - 這不是一個可靠的功能。下載器沒有許可權讀取硬碟上的檔案，所以只能依賴自己儲存的下載記錄。如果你把下載過的檔案刪除了，下載器是不會知道的，依然會認為檔案下載過，從而跳過下載。如果有時你確實需要重新下載，可以關閉此功能。<br>
+    - 下載器的下載記錄儲存在瀏覽器的 IndexedDB 裡。它不是瀏覽器的下載記錄，所以清除瀏覽器的下載記錄不會影響此功能。額外提一句，如果瀏覽器的下載記錄太多，會導致瀏覽器在啟動時卡住一段時間。如果你遇到了此問題，應該清除瀏覽器的下載記錄。<br>
+    - 注意：清除瀏覽器的資料時，清除“Cookie 及其他網站資料”會導致下載器的下載記錄被清空！如果你要清理此項，可以提前匯出下載記錄，以避免丟失下載記錄。<br>
+    - 如果你使用多個裝置或瀏覽器，可以點選“匯出”按鈕匯出下載器的下載記錄，然後在新的裝置上匯入。<br>
+    - 如果你想清空下載器的下載記錄，可以點選此設定右邊的“清除”按鈕。<br>
+    `,
+        `This downloader will save its own download history. Each file that is successfully downloaded (saved to disk) will have a download record saved. Files that fail to download will not have a download record. <br>
+If you enable the "Do not download duplicate files" feature, the downloader will check the download record before downloading each file. If it is a duplicate file, the downloader will skip it (not download it). <br>
+<br>
+Additional notes: <br>
+- This is not a reliable feature. The downloader does not have permission to read files on the disk, so it can only rely on its own saved download records. If you delete a downloaded file, the downloader will not know and will still think that the file has been downloaded and skip the download. If you do need to re-download sometimes, you can turn this feature off. <br>
+- The download history of the Downloader is saved in the browser's IndexedDB. It is not the browser's download history, so clearing the browser's download history will not affect this feature. As an extra note, if the browser has too many download history, it will cause the browser to get stuck for a while when it starts. If you encounter this problem, you should clear the browser's download history. <br>
+- Note: When clearing the browser's data, clearing "Cookies and other website data" will cause the Downloader's download history to be cleared! If you want to clear this item, you can export the download history in advance to avoid losing the download history. <br>
+- If you use multiple devices or browsers, you can click the "Export" button to export the Downloader's download history, and then import it on a new device. <br>
+- If you want to clear the Downloader's download history, you can click the "Clear" button to the right of this setting. <br>
+`,
+        `このダウンローダーは独自のダウンロード履歴を保存します。正常にダウンロード（ディスクに保存）されたファイルにはダウンロード記録が保存されます。ダウンロードに失敗したファイルにはダウンロード記録は保存されません。<br>
+「重複ファイルをダウンロードしない」機能を有効にすると、ダウンローダーは各ファイルをダウンロードする前にダウンロード記録を確認します。重複ファイルの場合は、ダウンローダーはそのファイルをスキップ（ダウンロードしない）します。<br>
+<br>
+補足事項：<br>
+- これは信頼できる機能ではありません。ダウンローダーはディスク上のファイルを読み取る権限がないため、保存されたダウンロード記録のみに依存します。ダウンロード済みのファイルを削除しても、ダウンローダーはそれを認識できず、ファイルがダウンロード済みであると認識してダウンロードをスキップします。再ダウンロードが必要な場合は、この機能をオフにすることができます。<br>
+- ダウンローダーのダウンロード履歴はブラウザのIndexedDBに保存されます。これはブラウザのダウンロード履歴ではないため、ブラウザのダウンロード履歴を消去してもこの機能には影響しません。なお、ブラウザにダウンロード履歴が多すぎると、起動時にしばらくフリーズすることがあります。この問題が発生した場合は、ブラウザのダウンロード履歴を消去することをお勧めします。<br>
+- 注：ブラウザのデータを消去する際に、「Cookieとその他のウェブサイトデータ」を消去すると、ダウンローダーのダウンロード履歴も消去されます。この項目を消去する場合は、ダウンロード履歴の損失を防ぐために、事前にダウンロード履歴をエクスポートしておくことをお勧めします。 <br>
+- 複数のデバイスやブラウザを使用している場合は、「エクスポート」ボタンをクリックしてダウンローダーのダウンロード履歴をエクスポートし、新しいデバイスにインポートすることができます。<br>
+- ダウンローダーのダウンロード履歴を消去したい場合は、この設定の右側にある「クリア」ボタンをクリックしてください。<br>
+`,
+        `이 다운로더는 자체 다운로드 기록을 저장합니다. 성공적으로 다운로드된(디스크에 저장된) 각 파일에는 다운로드 기록이 저장됩니다. 다운로드에 실패한 파일에는 다운로드 기록이 없습니다. <br>
+"중복 파일 다운로드 안 함" 기능을 활성화하면 다운로더는 각 파일을 다운로드하기 전에 다운로드 기록을 확인합니다. 중복 파일인 경우, 다운로더는 해당 파일을 건너뜁니다(다운로드하지 않습니다). <br>
+<br>
+추가 참고 사항: <br>
+- 이 기능은 신뢰할 수 없습니다. 다운로더는 디스크에 있는 파일을 읽을 권한이 없으므로 자체 저장된 다운로드 기록에만 의존합니다. 다운로드한 파일을 삭제하면 다운로더는 해당 파일이 다운로드된 것으로 인식하지 못하고 다운로드를 건너뜁니다. 다시 다운로드해야 하는 경우 이 기능을 끌 수 있습니다. <br>
+- 다운로더의 다운로드 기록은 브라우저의 IndexedDB에 저장됩니다. 브라우저의 다운로드 기록이 아니므로 브라우저의 다운로드 기록을 삭제해도 이 기능에는 영향을 미치지 않습니다. 참고로, 브라우저에 다운로드 기록이 너무 많으면 브라우저가 시작 시 잠시 멈춥니다. 이 문제가 발생하면 브라우저의 다운로드 기록을 삭제해야 합니다. <br>
+- 참고: 브라우저 데이터를 삭제할 때 "쿠키 및 기타 웹사이트 데이터"를 삭제하면 다운로더의 다운로드 기록이 삭제됩니다! 이 항목을 삭제하려면 다운로드 기록을 미리 내보내어 다운로드 기록이 손실되는 것을 방지할 수 있습니다. <br>
+- 여러 기기 또는 브라우저를 사용하는 경우, "내보내기" 버튼을 클릭하여 다운로더의 다운로드 기록을 내보낸 후 새 기기로 가져올 수 있습니다. <br>
+- 다운로더의 다운로드 기록을 지우려면 이 설정 오른쪽에 있는 "지우기" 버튼을 클릭하세요. <br>
+`,
     ],
     _清除下载记录: [
         '清除下载记录',
@@ -6836,6 +6948,20 @@ const langText = {
         '今回のクロール結果には外部リンクがいくつか含まれます。ダウンローダーはそれらをTXTファイルに保存します。手動で処理してください。',
         '이번에는 크롤링 결과에 외부 링크가 몇 개 있습니다. 다운로더가 이를 TXT 파일로 저장합니다. 수동으로 처리해 주세요.',
     ],
+    _下载器会等待几分钟然后再继续抓取: [
+        '下载器会等待几分钟，然后再继续抓取。',
+        '下載器會等待幾分鐘，然後再繼續擷取。',
+        'The downloader will wait a few minutes before continuing to crawl.',
+        '`ダウンローダーは数分間待機してから、クロールを続行します。`,',
+        '다운로더가 몇 분 기다린 후 크롤링을 계속합니다.',
+    ],
+    _下载器会减慢抓取速度以免被限制: [
+        '下载器会减慢抓取速度，以避免被 Fanbox 限制抓取。',
+        '下載器會減慢擷取速度，以避免被 Fanbox 限制擷取。',
+        'The downloader will slow down the crawling speed to avoid being restricted by Fanbox.',
+        'ダウンローダーは、Fanboxによるクロール制限を避けるために、クロール速度を落とします。',
+        '다운로더는 Fanbox에 의해 크롤링이 제한되는 것을 피하기 위해 크롤링 속도를 늦춥니다.',
+    ],
 };
 
 
@@ -6860,6 +6986,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/Utils */ "./src/ts/utils/Utils.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Options__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Options */ "./src/ts/setting/Options.ts");
+/* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../MsgBox */ "./src/ts/MsgBox.ts");
+
 
 
 
@@ -7000,6 +7128,13 @@ class Form {
                 });
             }
         }
+        // 显示不下载重复文件的提示
+        const deduplicationHelp = this.form.querySelector('#deduplicationHelp');
+        deduplicationHelp.addEventListener('click', () => {
+            _MsgBox__WEBPACK_IMPORTED_MODULE_9__["msgBox"].show(_Lang__WEBPACK_IMPORTED_MODULE_7__["lang"].transl('_不下载重复文件的提示'), {
+                title: _Lang__WEBPACK_IMPORTED_MODULE_7__["lang"].transl('_不下载重复文件'),
+            });
+        });
         // 显示命名字段提示
         this.form
             .querySelector('.showFileNameTip')
