@@ -1,7 +1,5 @@
 .logWrap {
-  font-family: win-bug-omega, system-ui, -apple-system, 'Segoe UI', Roboto,
-    Ubuntu, Cantarell, 'Noto Sans', 'Hiragino Kaku Gothic ProN', Meiryo,
-    sans-serif;
+  font-family: win-bug-omega, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
   position: relative;
   z-index: 1;
   width: 100%;
@@ -15,7 +13,9 @@
   width: 100%;
   max-height: 300px;
   overflow-y: scroll;
+  background: #fff;
   font-size: 14px;
+  line-height: 1.4;
   margin: 0px auto;
   padding: 20px;
 }
