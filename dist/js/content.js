@@ -1164,16 +1164,16 @@ class Filter {
         _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
     }
     getFileNameIncludes() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch &&
-            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length > 0) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch ||
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length === 0) {
             return;
         }
         const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中必须含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.toString()}`;
         _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
     }
     getFileNameExcludes() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch &&
-            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length > 0) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch ||
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length === 0) {
             return;
         }
         const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.toString()}`;
@@ -7818,7 +7818,7 @@ class Settings {
             postDateEnd: 4102444800000,
             saveLink: true,
             saveText: false,
-            userSetName: '{user}/{date}-{title}/{index}',
+            userSetName: 'fanbox/{user}/{date}-{title}/{index}',
             autoStartDownload: true,
             downloadThread: 3,
             dateFormat: 'YYYY-MM-DD',
@@ -7842,7 +7842,7 @@ class Settings {
             titleMustText: [],
             titleCannotTextSwitch: false,
             titleCannotText: [],
-            nameruleForNonImages: '{user}/{date}-{title}/{name}',
+            nameruleForNonImages: 'fanbox/{user}/{date}-{title}/{name}',
             fileNameIncludeSwitch: false,
             fileNameInclude: [],
             fileNameExcludeSwitch: false,

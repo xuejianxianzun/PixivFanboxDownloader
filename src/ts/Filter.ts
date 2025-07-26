@@ -116,8 +116,8 @@ class Filter {
 
   private getFileNameIncludes() {
     if (
-      !settings.fileNameIncludeSwitch &&
-      settings.fileNameInclude.length > 0
+      !settings.fileNameIncludeSwitch ||
+      settings.fileNameInclude.length === 0
     ) {
       return
     }
@@ -130,8 +130,8 @@ class Filter {
 
   private getFileNameExcludes() {
     if (
-      !settings.fileNameExcludeSwitch &&
-      settings.fileNameExclude.length > 0
+      !settings.fileNameExcludeSwitch ||
+      settings.fileNameExclude.length === 0
     ) {
       return
     }
