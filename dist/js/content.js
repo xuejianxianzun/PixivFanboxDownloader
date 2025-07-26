@@ -733,7 +733,7 @@ Config.retryMax = 10;
 Config.appName = 'Pixiv Fanbox Downloader';
 /**下载器设置在 localStorage 里储存时的 name */
 Config.settingStoreName = 'fanboxSetting';
-/**文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些 */
+/**文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些。现在没有 bmp 格式了，不过以前文章里上传的文件还会保留，所以这里也不要删除 */
 Config.fileType = {
     image: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
     music: ['wav', 'mp3', 'flac'],
@@ -2020,7 +2020,7 @@ class InitPageBase {
             window.alert(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_当前任务尚未完成2'));
             return;
         }
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].clear();
+        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('clearLog');
         _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
         _Toast__WEBPACK_IMPORTED_MODULE_10__["toast"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
         _MsgBox__WEBPACK_IMPORTED_MODULE_9__["msgBox"].resetOnce('tipLinktext');
@@ -2590,22 +2590,42 @@ __webpack_require__.r(__webpack_exports__);
 // 日志
 class Log {
     constructor() {
-        this.id = 'logWrap'; // 日志区域元素的 id
-        this.wrap = document.createElement('div'); // 日志容器的区域
-        this.logArea = document.createElement('div'); // 日志主体区域
-        this.refresh = document.createElement('span'); // 刷新时使用的元素
+        /**每个日志区域显示多少条日志 */
+        // 如果日志条数超出最大值，下载器会创建多个日志区域
+        this.max = 100;
+        /**最新的日志区域里的日志条数。刷新的日志不会计入 */
+        this.count = 0;
+        this.logWrap = document.createElement('div'); // 日志容器的区域，当日志条数很多时，会产生多个日志容器。默认是隐藏的（display: none）
+        this.activeLogWrapID = 'logWrap'; // 当前活跃的日志容器的 id，也是最新的一个日志容器
+        this.logContent = document.createElement('div'); // 日志的主体区域，始终指向最新的那个日志容器内部
+        this.logContentClassName = 'logContent'; // 日志主体区域的类名
+        this.logWrapClassName = 'logWrap'; // 日志容器的类名，只负责样式
+        this.logWrapFlag = 'logWrapFlag'; // 日志容器的标志，当需要查找日志区域时，使用这个类名而不是 logWrap，因为其他元素可能也具有 logWrap 类名，以应用其样式。
+        /**储存会刷新的日志所使用的元素，可以传入 flag 来区分多个刷新区域 */
+        // 每个刷新区域使用一个 span 元素，里面的文本会变化
+        // 通常用于显示进度，例如 0/10, 1/10, 2/10... 10/10
+        // 如果不传入 flag，那么所有的刷新内容会共用 default 的 span 元素
+        this.refresh = {
+            default: document.createElement('span'),
+        };
+        this.toBottom = false; // 指示是否需要把日志滚动到底部。当有日志被添加或刷新，则为 true。滚动到底部之后复位到 false，避免一直滚动到底部。
+        /**不同日志等级的文字颜色 */
         this.levelColor = [
             'inherit',
             _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textSuccess,
             _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textWarning,
             _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textError,
         ];
-        this.max = 600;
-        this.count = 0;
-        this.toBottom = false; // 指示是否需要把日志滚动到底部。当有日志被添加或刷新，则为 true。滚动到底部之后复位到 false，避免一直滚动到底部。
-        this.scrollToBottom();
+        // 因为日志区域限制了最大高度，可能会出现滚动条
+        // 所以使用定时器，使日志总是滚动到底部
+        window.setInterval(() => {
+            if (this.toBottom) {
+                this.logContent.scrollTop = this.logContent.scrollHeight;
+                this.toBottom = false;
+            }
+        }, 500);
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.clearLog, () => {
-            this.clear();
+            this.removeAll();
         });
     }
     // 添加日志
@@ -2613,7 +2633,7 @@ class Log {
     str 日志文本
     level 日志等级
     br 换行标签的个数
-    keepShow 追加日志的模式，默认为 true，把这一条日志添加后不再修改。false 则是刷新显示这条消息。
+    keepShow 是否为持久日志。默认为 true，把这一条日志添加后不再修改。false 则会刷新显示这条日志。
   
     level 日志等级：
     0 normal
@@ -2621,14 +2641,28 @@ class Log {
     2 warning
     3 error
     */
-    add(str, level, br, keepShow) {
-        this.checkElement();
+    add(str, level, br, keepShow, refreshFlag = 'default') {
+        this.createLogArea();
         let span = document.createElement('span');
         if (!keepShow) {
-            span = this.refresh;
+            if (this.refresh[refreshFlag] === undefined) {
+                this.refresh[refreshFlag] = span;
+            }
+            else {
+                span = this.refresh[refreshFlag];
+            }
         }
         else {
             this.count++;
+            // 如果页面上的日志条数超过指定数量，则生成一个新的日志区域
+            // 因为日志数量太多的话会占用很大的内存。同时显示 8000 条日志可能占用接近 1 GB 的内存
+            if (this.count >= this.max) {
+                // 移除 id 属性，也就是 this.activeLogWrapID
+                // 下次输出日志时查找不到这个 id，就会新建一个日志区域
+                this.logWrap.removeAttribute('id');
+                // 滚动到底部
+                this.logContent.scrollTop = this.logContent.scrollHeight;
+            }
         }
         span.innerHTML = str;
         span.style.color = this.levelColor[level];
@@ -2636,58 +2670,66 @@ class Log {
             span.appendChild(document.createElement('br'));
             br--;
         }
-        this.logArea.appendChild(span);
+        this.logContent.appendChild(span);
         this.toBottom = true; // 需要把日志滚动到底部
     }
-    log(str, br = 1, keepShow = true) {
-        this.add(str, 0, br, keepShow);
+    log(str, br = 1, keepShow = true, refreshFlag = 'default') {
+        this.add(str, 0, br, keepShow, refreshFlag);
     }
-    success(str, br = 1, keepShow = true) {
-        this.add(str, 1, br, keepShow);
+    success(str, br = 1, keepShow = true, refreshFlag = 'default') {
+        this.add(str, 1, br, keepShow, refreshFlag);
     }
-    warning(str, br = 1, keepShow = true) {
-        this.add(str, 2, br, keepShow);
+    warning(str, br = 1, keepShow = true, refreshFlag = 'default') {
+        this.add(str, 2, br, keepShow, refreshFlag);
     }
-    error(str, br = 1, keepShow = true) {
-        this.add(str, 3, br, keepShow);
+    error(str, br = 1, keepShow = true, refreshFlag = 'default') {
+        this.add(str, 3, br, keepShow, refreshFlag);
     }
-    checkElement() {
-        // 如果日志区域没有被添加到页面上，则添加
-        let test = document.getElementById(this.id);
+    /**将一条刷新的日志元素持久化 */
+    // 例如当某个进度显示到 10/10 的时候，就不会再变化了，此时应该将其持久化
+    // 其实就是下载器解除了对它的引用，这样它的内容就不会再变化了
+    // 并且下载器会为这个 flag 生成一个新的 span 元素待用
+    persistentRefresh(refreshFlag = 'default') {
+        this.refresh[refreshFlag] = document.createElement('span');
+    }
+    /**创建新的日志区域 */
+    createLogArea() {
+        // 先检查是否存在日志区域
+        let test = document.getElementById(this.activeLogWrapID);
+        // 创建日志区域
         if (test === null) {
-            this.wrap = document.createElement('div');
-            this.wrap.id = this.id;
-            this.logArea = document.createElement('div');
-            this.logArea.classList.add('beautify_scrollbar', 'logContent');
-            this.wrap.append(this.logArea);
-            document.body.insertAdjacentElement('beforebegin', this.wrap);
-            // 虽然可以应用背景图片，但是由于日志区域比较狭长，背景图片的视觉效果不佳，看起来比较粗糙，所以还是不应用背景图片了
-            // bg.useBG(this.wrap, 0.9)
-        }
-        // 如果页面上的日志条数超过指定数量，则清空
-        // 因为日志数量太多的话会占用很大的内存。同时显示 8000 条日志可能占用接近 1 GB 的内存
-        if (this.count > this.max) {
-            this.clear();
+            this.count = 0;
+            const logWrap = document.createElement('div');
+            logWrap.id = this.activeLogWrapID;
+            logWrap.classList.add(this.logWrapClassName, this.logWrapFlag);
+            const logContent = document.createElement('div');
+            logContent.classList.add(this.logContentClassName, 'beautify_scrollbar');
+            logWrap.append(logContent);
+            // 添加到 body 前面
+            this.logWrap = logWrap;
+            this.logContent = logContent;
+            document.body.insertAdjacentElement('beforebegin', this.logWrap);
         }
     }
-    /**移除日志区域 */
-    remove() {
+    removeAll() {
+        const allLogWrap = document.querySelectorAll(`.${this.logWrapFlag}`);
+        allLogWrap.forEach((wrap) => wrap.remove());
         this.count = 0;
-        this.wrap.remove();
     }
-    /**清空日志内容 */
-    clear() {
-        this.count = 0;
-        this.logArea.innerHTML = '';
-    }
-    // 因为日志区域限制了最大高度，可能会出现滚动条，这里使日志总是滚动到底部
-    scrollToBottom() {
-        window.setInterval(() => {
-            if (this.toBottom) {
-                this.logArea.scrollTop = this.logArea.scrollHeight;
-                this.toBottom = false;
+    showAll() {
+        const allLogWrap = document.querySelectorAll(`.${this.logWrapFlag}`);
+        allLogWrap.forEach((wrap) => {
+            wrap.style.display = 'block';
+            // 把内容滚动到底部
+            const logContent = wrap.querySelector(`.${this.logContentClassName}`);
+            if (logContent) {
+                logContent.scrollTop = logContent.scrollHeight;
             }
-        }, 800);
+        });
+    }
+    hideAll() {
+        const allLogWrap = document.querySelectorAll(`.${this.logWrapFlag}`);
+        allLogWrap.forEach((wrap) => (wrap.style.display = 'none'));
     }
 }
 const log = new Log();
@@ -2710,6 +2752,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _BG__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./BG */ "./src/ts/BG.ts");
+/* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
+
 
 
 
@@ -2785,7 +2829,7 @@ class MsgBox {
             colorStyle = `style="color:${data.color}"`;
         }
         wrap.innerHTML = `
-        <p class="title" ${colorStyle}>${data.title || ''}</p>
+        <p class="title" ${colorStyle}>${data.title || _Config__WEBPACK_IMPORTED_MODULE_4__["Config"].appName}</p>
         <p class="content" ${colorStyle}>${data.msg}</p>
         <button class="btn" type="button">${data.btn || _Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_确定')}</button>
       `;
@@ -4675,7 +4719,6 @@ class DownloadControl {
         this.downStatusEl = document.createElement('span');
         this.stop = false; // 是否停止下载
         this.pause = false; // 是否暂停下载
-        this.msgFlag = 'uuidTip';
         this.createDownloadArea();
         this.bindEvents();
         const skipTipWrap = this.wrapper.querySelector('.skip_tip');
@@ -4707,10 +4750,11 @@ class DownloadControl {
             if (!this.taskBatch) {
                 return;
             }
-            // UUID 的情况
+            // 丢失文件名的情况。对于下载器动态创建的 Blob URL，文件名会是 UUID
+            // 对于 Fanbox 原有的 URL，文件名会是 URL 最后一段路径（浏览器会把这段作为默认的文件名）
             if ((_a = msg.data) === null || _a === void 0 ? void 0 : _a.uuid) {
-                _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_uuid'));
-                _MsgBox__WEBPACK_IMPORTED_MODULE_11__["msgBox"].once(this.msgFlag, _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_uuid'), 'error');
+                _Log__WEBPACK_IMPORTED_MODULE_3__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_uuid'), 1, false, 'filenameUUID');
+                _MsgBox__WEBPACK_IMPORTED_MODULE_11__["msgBox"].once('uuidTip', _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_uuid'), 'show');
             }
             // 文件下载成功
             if (msg.msg === 'downloaded') {
@@ -4743,10 +4787,6 @@ class DownloadControl {
                     this.downloadError(msg.data, msg.err);
                 }
                 _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('downloadError');
-            }
-            // UUID 的情况
-            if (msg.data && msg.data.uuid) {
-                _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_uuid'));
             }
         });
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete, () => {
@@ -5970,11 +6010,63 @@ const langText = {
         '자주 묻는 질문',
     ],
     _uuid: [
-        '如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。',
-        '如果下載後的檔案名稱異常，請停用其他有下載功能的瀏覽器擴充功能。',
-        'If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.',
-        'ダウンロード後のファイル名が異常な場合、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。',
-        '다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.',
+        `下载器检测到下载后的文件名可能异常。如果文件名是一串随机的字母和数字，或者没有使用下载器设置里的命名规则，就表示发生了此问题。<br>
+这不是下载器自身的问题，而是被其他扩展程序影响了，导致下载器设置的文件名丢失。<br>
+当你遇到这个问题时，可以考虑下面的处理方法：<br>
+1. 推荐：你可以新建一个浏览器本地用户来使用这个下载器。对于 Chrome 和 Edge 浏览器，你可以点击浏览器右上角的头像图标，然后创建新的个人资料（不需要登录 Google 或 Microsoft 账号）。每个用户都有独立的浏览器窗口，所以你可以为新用户安装这个下载器，并且不要安装其他扩展程序。当你需要下载 Pixiv 或 Fanbox 的文件时，使用这个用户进行下载，就可以避免受到其他扩展程序的影响。
+<br>
+2. 你可以找出导致此问题的扩展程序，并在使用本下载器时，临时禁用它们。这些扩展程序通常具有下载文件、管理下载的功能，例如：IDM Integration Module、Chrono 下载管理器、mage Downloade 等。如果你不确定是哪个扩展导致的，可以先禁用所有扩展，然后一个一个启用，并使用下载器进行下载，这样就可以找出是哪个扩展导致了此问题。<br>
+<br>
+技术细节：<br>
+某些扩展程序会监听 chrome.downloads.onDeterminingFilename 事件，这很容易导致预设的文件名丢失。<br>
+假设本下载器为某个文件设置了自定义文件名：user/image.jpg。<br>
+如果另一个扩展程序监听了 onDeterminingFilename 事件，浏览器会询问它对文件名的建议（使它有机会修改文件名）。问题在于：此时浏览器传递的文件名是默认的（也就是 URL 里的最后一段路径），而不是下载器设置的文件名。<br>
+所以下载器设置的文件名会丢失，并且文件名会变成 URL 里的最后一段路径。<br>`,
+        `下載器檢測到下載後的檔名可能異常。如果檔名是一串隨機的字母和數字，或者沒有使用下載器設定裡的命名規則，就表示發生了此問題。<br>
+這不是下載器自身的問題，而是被其他擴充套件程式影響了，導致下載器設定的檔名丟失。<br>
+當你遇到這個問題時，可以考慮下面的處理方法：<br>
+1. 推薦：你可以新建一個瀏覽器本地使用者來使用這個下載器。對於 Chrome 和 Edge 瀏覽器，你可以點選瀏覽器右上角的頭像圖示，然後建立新的個人資料（不需要登入 Google 或 Microsoft 賬號）。每個使用者都有獨立的瀏覽器視窗，所以你可以為新使用者安裝這個下載器，並且不要安裝其他擴充套件程式。當你需要下載 Pixiv 或 Fanbox 的檔案時，使用這個使用者進行下載，就可以避免受到其他擴充套件程式的影響。
+<br>
+2. 你可以找出導致此問題的擴充套件程式，並在使用本下載器時，臨時禁用它們。這些擴充套件程式通常具有下載檔案、管理下載的功能，例如：IDM Integration Module、Chrono 下載管理器、mage Downloade 等。如果你不確定是哪個擴充套件導致的，可以先禁用所有擴充套件，然後一個一個啟用，並使用下載器進行下載，這樣就可以找出是哪個擴充套件導致了此問題。<br>
+<br>
+技術細節：<br>
+某些擴充套件程式會監聽 chrome.downloads.onDeterminingFilename 事件，這很容易導致預設的檔名丟失。<br>
+假設本下載器為某個檔案設定了自定義檔名：user/image.jpg。<br>
+如果另一個擴充套件程式監聽了 onDeterminingFilename 事件，瀏覽器會詢問它對檔名的建議（使它有機會修改檔名）。問題在於：此時瀏覽器傳遞的檔名是預設的（也就是 URL 裡的最後一段路徑），而不是下載器設定的檔名。<br>
+所以下載器設定的檔名會丟失，並且檔名會變成 URL 裡的最後一段路徑。<br>`,
+        `The downloader detects that the file name after downloading may be abnormal. If the file name is a string of random letters and numbers, or does not use the naming rules in the downloader settings, it means that this problem has occurred. <br>
+This is not a problem with the downloader itself, but it is affected by other extensions, causing the file name set by the downloader to be lost. <br>
+When you encounter this problem, you can consider the following solutions: <br>
+1. Recommended: You can create a new browser local user to use this downloader. For Chrome and Edge browsers, you can click the avatar icon in the upper right corner of the browser and create a new profile (no need to log in to a Google or Microsoft account). Each user has a separate browser window, so you can install this downloader for the new user and do not install other extensions. When you need to download files from Pixiv or Fanbox, use this user to download to avoid being affected by other extensions. <br>
+2. You can find out the extensions that cause this problem and temporarily disable them when using this downloader. These extensions usually have the functions of downloading files and managing downloads, such as: IDM Integration Module, Chrono Download Manager, mage Downloade, etc. If you are not sure which extension is causing the problem, you can find out which extension is causing the problem by disabling all extensions, then enabling them one by one and downloading them using the Downloader. <br>
+<br>
+Technical details: <br>
+Some extensions listen to the chrome.downloads.onDeterminingFilename event, which can easily cause the preset file name to be lost. <br>
+Suppose this Downloader sets a custom file name for a file: user/image.jpg. <br>
+If another extension listens to the onDeterminingFilename event, the browser will ask it for suggestions for the file name (giving it a chance to modify the file name). The problem is: the file name passed by the browser is the default (the last path in the URL), not the file name set by the Downloader. <br>
+So the file name set by the Downloader is lost, and the file name becomes the last path in the URL. <br>`,
+        `ダウンローダーは、ダウンロード後のファイル名が異常である可能性があることを検出しました。ファイル名がランダムな文字と数字の文字列である場合、またはダウンローダー設定の命名規則を使用していない場合は、この問題が発生していることを意味します。<br>
+これはダウンローダー自体の問題ではなく、他の拡張機能の影響を受け、ダウンローダーによって設定されたファイル名が失われています。<br>
+この問題が発生した場合は、以下の解決策を検討してください。<br>
+1. 推奨：このダウンローダーを使用するために、新しいブラウザローカルユーザーを作成できます。ChromeおよびEdgeブラウザの場合、ブラウザの右上隅にあるアバターアイコンをクリックして、新しいプロファイルを作成できます（GoogleまたはMicrosoftアカウントにログインする必要はありません）。ユーザーごとにブラウザウィンドウが異なりますので、新しいユーザー用にこのダウンローダーをインストールし、他の拡張機能はインストールしないでください。PixivやFanboxからファイルをダウンロードする必要がある場合は、他の拡張機能の影響を受けないように、このユーザーを使用してダウンロードしてください。 <br>
+2. この問題の原因となっている拡張機能を特定し、このダウンローダーを使用する際に一時的に無効にすることができます。これらの拡張機能は通常、ファイルのダウンロードとダウンロード管理の機能を備えています。例としては、IDM Integration Module、Chrono Download Manager、mage Downloade などがあります。どの拡張機能が問題の原因となっているのかわからない場合は、すべての拡張機能を無効にしてから、1つずつ有効にしてダウンローダーを使用してダウンロードすることで、どの拡張機能が問題の原因となっているのかを特定できます。<br>
+<br>
+技術的な詳細: <br>
+一部の拡張機能は chrome.downloads.onDeterminingFilename イベントをリッスンしており、これによりプリセットされたファイル名が失われる場合があります。<br>
+このダウンローダーがファイルにカスタムファイル名（user/image.jpg）を設定するとします。<br>
+別の拡張機能が onDeterminingFilename イベントをリッスンしている場合、ブラウザはその拡張機能にファイル名の候補を尋ねます（これにより、拡張機能はファイル名を変更する機会を得ます）。問題は、ブラウザから渡されるファイル名がデフォルト（URL の最後のパス）であり、ダウンローダーによって設定されたファイル名ではないことです。<br>
+そのため、ダウンローダーによって設定されたファイル名は失われ、ファイル名が URL の最後のパスになります。<br>`,
+        `다운로더가 다운로드 후 파일 이름이 비정상적일 수 있음을 감지했습니다. 파일 이름이 임의의 문자와 숫자로 구성되어 있거나 다운로더 설정의 명명 규칙을 사용하지 않는 경우 이 문제가 발생했음을 의미합니다. <br>
+이 문제는 다운로더 자체의 문제가 아니라 다른 확장 프로그램의 영향을 받아 다운로더에서 설정한 파일 이름이 손실되는 것입니다. <br>
+이 문제가 발생하면 다음 해결 방법을 고려해 보세요. <br>
+1. 권장 사항: 이 다운로더를 사용할 새 브라우저 로컬 사용자를 만들 수 있습니다. Chrome 및 Edge 브라우저의 경우 브라우저 오른쪽 상단의 아바타 아이콘을 클릭하고 새 프로필을 만들 수 있습니다(Google 또는 Microsoft 계정에 로그인할 필요 없음). 각 사용자는 별도의 브라우저 창을 사용하므로 새 사용자를 위해 이 다운로더를 설치하고 다른 확장 프로그램을 설치하지 않아도 됩니다. Pixiv 또는 Fanbox에서 파일을 다운로드해야 하는 경우 다른 확장 프로그램의 영향을 받지 않도록 이 사용자를 사용하여 다운로드하세요. <br>
+2. 이 문제를 일으키는 확장 프로그램을 찾아 이 다운로더를 사용할 때 일시적으로 비활성화할 수 있습니다. 이러한 확장 프로그램은 일반적으로 IDM 통합 모듈, Chrono Download Manager, mage Downloade 등과 같이 파일 다운로드 및 다운로드 관리 기능을 제공합니다. 어떤 확장 프로그램이 문제를 일으키는지 확실하지 않은 경우, 모든 확장 프로그램을 비활성화한 후 하나씩 활성화하고 다운로더를 사용하여 다운로드하면 어떤 확장 프로그램이 문제를 일으키는지 확인할 수 있습니다. <br>
+<br>
+기술 세부 정보: <br>
+일부 확장 프로그램은 chrome.downloads.onDeterminingFilename 이벤트를 수신하는데, 이로 인해 미리 설정된 파일 이름이 쉽게 손실될 수 있습니다. <br>
+이 다운로더가 파일에 사용자 지정 파일 이름(user/image.jpg)을 설정한다고 가정해 보겠습니다. <br>
+다른 확장 프로그램이 onDeterminingFilename 이벤트를 수신하는 경우, 브라우저는 해당 확장 프로그램에 파일 이름을 제안하도록 요청하여 파일 이름을 수정할 수 있는 기회를 제공합니다. 문제는 브라우저에서 전달된 파일 이름이 다운로더에서 설정한 파일 이름이 아니라 기본값(URL의 마지막 경로)이라는 것입니다. <br>
+따라서 다운로더에서 설정한 파일 이름은 사라지고, 파일 이름이 URL의 마지막 경로가 됩니다. <br>`,
     ],
     _下载说明: [
         "下载的文件保存在浏览器的下载目录里。<br>请不要在浏览器的下载选项里选中'总是询问每个文件的保存位置'。<br><b>如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。</b><br>QQ群：853021998",

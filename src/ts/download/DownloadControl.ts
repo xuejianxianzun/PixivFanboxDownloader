@@ -57,8 +57,6 @@ class DownloadControl {
 
   private pause: boolean = false // 是否暂停下载
 
-  private readonly msgFlag = 'uuidTip'
-
   private bindEvents() {
     window.addEventListener(EVT.list.crawlStart, () => {
       this.hideDownloadArea()
@@ -88,10 +86,11 @@ class DownloadControl {
         return
       }
 
-      // UUID 的情况
+      // 丢失文件名的情况。对于下载器动态创建的 Blob URL，文件名会是 UUID
+      // 对于 Fanbox 原有的 URL，文件名会是 URL 最后一段路径（浏览器会把这段作为默认的文件名）
       if (msg.data?.uuid) {
-        log.error(lang.transl('_uuid'))
-        msgBox.once(this.msgFlag, lang.transl('_uuid'), 'error')
+        log.log(lang.transl('_uuid'), 1, false, 'filenameUUID')
+        msgBox.once('uuidTip', lang.transl('_uuid'), 'show')
       }
 
       // 文件下载成功
@@ -137,11 +136,6 @@ class DownloadControl {
           this.downloadError(msg.data, msg.err)
         }
         EVT.fire('downloadError')
-      }
-
-      // UUID 的情况
-      if (msg.data && msg.data.uuid) {
-        log.error(lang.transl('_uuid'))
       }
     })
 

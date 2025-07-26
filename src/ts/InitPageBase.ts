@@ -55,7 +55,7 @@ abstract class InitPageBase {
       return
     }
 
-    log.clear()
+    EVT.fire('clearLog')
 
     log.success(lang.transl('_开始抓取'))
     toast.show(lang.transl('_开始抓取'))

@@ -11,7 +11,7 @@ class Config {
   static readonly appName = 'Pixiv Fanbox Downloader'
   /**下载器设置在 localStorage 里储存时的 name */
   static readonly settingStoreName = 'fanboxSetting'
-  /**文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些 */
+  /**文件类型。fanbox 允许直接上传在投稿里的文件类型只有这些。现在没有 bmp 格式了，不过以前文章里上传的文件还会保留，所以这里也不要删除 */
   static readonly fileType = {
     image: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
     music: ['wav', 'mp3', 'flac'],

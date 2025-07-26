@@ -2,6 +2,7 @@ import { EVT } from './EVT'
 import { Colors } from './Colors'
 import { lang } from './Lang'
 import { bg } from './BG'
+import { Config } from './Config'
 
 interface MsgOptional {
   btn?: string
@@ -113,7 +114,7 @@ class MsgBox {
     }
 
     wrap.innerHTML = `
-        <p class="title" ${colorStyle}>${data.title || ''}</p>
+        <p class="title" ${colorStyle}>${data.title || Config.appName}</p>
         <p class="content" ${colorStyle}>${data.msg}</p>
         <button class="btn" type="button">${
           data.btn || lang.transl('_确定')
