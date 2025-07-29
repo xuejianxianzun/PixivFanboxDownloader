@@ -5130,7 +5130,9 @@ class DownloadRecord {
         // 当有文件下载完成时，存储这个任务的记录
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadSuccess, (ev) => {
             const successData = ev.detail.data;
-            if (!successData.url.startsWith('blob')) {
+            // 如果是 Blob URL 则不保存这个下载记录
+            // 如果文件名异常，不保存这个下载记录，以便用户之后重新下载这个文件
+            if (!successData.url.startsWith('blob') && !successData.uuid) {
                 this.addRecord({
                     url: this.removeHttp(successData.url),
                 });
