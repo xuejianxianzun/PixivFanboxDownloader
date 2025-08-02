@@ -23,10 +23,13 @@ class ShowHowToUse {
   }
 
   private show() {
-    msgBox.show(lang.transl('_HowToUse') + lang.transl('_账户可能被封禁的警告'), {
-      title: Config.appName,
-      btn: lang.transl('_我知道了'),
-    })
+    msgBox.show(
+      lang.transl('_HowToUse') + lang.transl('_账户可能被封禁的警告'),
+      {
+        title: Config.appName,
+        btn: lang.transl('_我知道了'),
+      }
+    )
   }
 }
 

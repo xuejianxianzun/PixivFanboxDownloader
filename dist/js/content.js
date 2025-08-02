@@ -759,6 +759,81 @@ Config.mobile = navigator.userAgent.includes('Mobile');
 
 /***/ }),
 
+/***/ "./src/ts/CrawlInterval.ts":
+/*!*********************************!*\
+  !*** ./src/ts/CrawlInterval.ts ***!
+  \*********************************/
+/*! exports provided: crawlInterval */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "crawlInterval", function() { return crawlInterval; });
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
+/* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./setting/Settings */ "./src/ts/setting/Settings.ts");
+
+
+
+
+class CrawlInterval {
+    constructor() {
+        /**指示下一次抓取在什么时候进行 */
+        this.nextCrawlTime = 0;
+        this.bindEvents();
+    }
+    bindEvents() {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlStart, () => {
+            // 在开始抓取时，如果应用了间隔时间，则显示一条日志提醒
+            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].crawlInterval > 0) {
+                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_抓取间隔') +
+                    `: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].crawlInterval} ` +
+                    _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_秒');
+                _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(msg, 1, false, 'crawlInterval');
+            }
+        });
+    }
+    async wait() {
+        if (this.nextCrawlTime > 0) {
+            const now = Date.now();
+            if (now < this.nextCrawlTime) {
+                const waitTime = this.nextCrawlTime - now;
+                await new Promise((resolve) => setTimeout(resolve, waitTime));
+            }
+        }
+        return true;
+    }
+    resetNextCrawlTime() {
+        this.nextCrawlTime = 0;
+    }
+    /**设置下一次抓取的时间。
+     *
+     * timeSpan 参数的默认值是 short，即增加用户设定的时间。
+     *
+     * 可选设置为 long，增加 6 分钟，在发生 429 错误，需要等待一段时间时使用 */
+    addTime(timeSpan = 'short') {
+        const now = Date.now();
+        if (timeSpan === 'short') {
+            // 对 settings.crawlInterval 进行随机，生成它的 0.8 倍至 1.2 倍之间的数字
+            const randomFactor = 0.8 + Math.random() * 0.4;
+            const interval = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].crawlInterval * 1000 * randomFactor;
+            this.nextCrawlTime = now + interval;
+        }
+        else {
+            // 增加 300 - 360 秒之间的随机时间
+            const add_time = Math.floor(Math.random() * (360000 - 300000 + 1)) + 300000;
+            this.nextCrawlTime = now + add_time;
+            _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载器会等待几分钟然后再继续抓取'));
+        }
+    }
+}
+const crawlInterval = new CrawlInterval();
+
+
+
+/***/ }),
+
 /***/ "./src/ts/EVT.ts":
 /*!***********************!*\
   !*** ./src/ts/EVT.ts ***!
@@ -1380,7 +1455,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formHtml", function() { return formHtml; });
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 
-// 已使用的最大编号为 56
+// 已使用的最大编号为 57
 const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -1694,6 +1769,18 @@ const formHtml = `<form class="settingForm">
     <input type="checkbox" name="showNotificationAfterDownloadComplete" class="need_beautify checkbox_switch">
     <span class="beautify_switch" tabindex="0"></span>
     </p>
+
+    <p class="option" data-no="57">
+    <span class="has_tip settingNameStyle1"  data-xztip="_抓取间隔的说明">
+    <span data-xztext="_抓取间隔"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    
+    <span data-xztext="_间隔时间"></span>
+    <input type="text" name="crawlInterval" class="setinput_style1 blue" value="1">
+    <span data-xztext="_秒"></span>
+    </span>
+    </p>
     
     <p class="option" data-no="56">
     <span class="has_tip settingNameStyle1"  data-xztip="_下载间隔的说明">
@@ -1907,7 +1994,6 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
             }
             // console.log(this.postListURLs)
             // 获取文章列表
-            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载器会减慢抓取速度以免被限制'));
             this.FetchPostList();
         }
         else {
@@ -1998,7 +2084,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./MsgBox */ "./src/ts/MsgBox.ts");
 /* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Toast */ "./src/ts/Toast.ts");
 /* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./CrawlInterval */ "./src/ts/CrawlInterval.ts");
 // 初始化抓取页面的流程
+
 
 
 
@@ -2103,7 +2191,7 @@ class InitPageBase {
     }
     /**获取文章列表数据。如果传入了 URL，则是为了重试抓取该 URL */
     async FetchPostList(url) {
-        await _States__WEBPACK_IMPORTED_MODULE_8__["states"].awaitNextCrawl();
+        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].wait();
         if (url === undefined) {
             url = this.postListURLs.shift();
             if (url === undefined) {
@@ -2113,12 +2201,16 @@ class InitPageBase {
         }
         try {
             const data = (await _API__WEBPACK_IMPORTED_MODULE_7__["API"].request(url));
-            _States__WEBPACK_IMPORTED_MODULE_8__["states"].addNextCrawlTime();
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].addTime();
             this.afterFetchPostList(data);
         }
         catch (error) {
             console.log(error);
-            _States__WEBPACK_IMPORTED_MODULE_8__["states"].addNextCrawlTime('long');
+            if (error.message) {
+                _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(error.message);
+            }
+            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_请求失败下载器会重试这个请求'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].addTime('long');
             this.FetchPostList(url);
         }
     }
@@ -2197,15 +2289,19 @@ class InitPageBase {
         }
     }
     async fetchPost(postId) {
-        await _States__WEBPACK_IMPORTED_MODULE_8__["states"].awaitNextCrawl();
+        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].wait();
         try {
             const data = await _API__WEBPACK_IMPORTED_MODULE_7__["API"].getPost(postId);
-            _States__WEBPACK_IMPORTED_MODULE_8__["states"].addNextCrawlTime();
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].addTime();
             this.afterFetchPost(data);
         }
         catch (error) {
             console.log(error);
-            _States__WEBPACK_IMPORTED_MODULE_8__["states"].addNextCrawlTime('long');
+            if (error.message) {
+                _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(error.message);
+            }
+            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_请求失败下载器会重试这个请求'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].addTime('long');
             this.fetchPost(postId);
         }
     }
@@ -2292,7 +2388,6 @@ class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitP
         this.postListURLs = [];
         const creatorId = _API__WEBPACK_IMPORTED_MODULE_4__["API"].getCreatorId(location.href);
         await this.getPostListURLs(creatorId);
-        _Log__WEBPACK_IMPORTED_MODULE_5__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载器会减慢抓取速度以免被限制'));
         this.FetchPostList();
     }
 }
@@ -2311,13 +2406,16 @@ class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitP
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitPostPage", function() { return InitPostPage; });
-/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
-/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
-/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
-/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
-/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
-/* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./States */ "./src/ts/States.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var _InitPageBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InitPageBase */ "./src/ts/InitPageBase.ts");
+/* harmony import */ var _API__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./API */ "./src/ts/API.ts");
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./States */ "./src/ts/States.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
+/* harmony import */ var _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./CrawlInterval */ "./src/ts/CrawlInterval.ts");
 
 
 
@@ -2325,41 +2423,48 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_2__["InitPageBase"] {
+
+
+
+class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBlue, '_抓取这篇投稿').addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取这篇投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     initAny() {
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].bindOnce('quickCrawl', _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].list.quickCrawl, () => {
-            if (!_States__WEBPACK_IMPORTED_MODULE_6__["states"].busy) {
+        _EVT__WEBPACK_IMPORTED_MODULE_6__["EVT"].bindOnce('quickCrawl', _EVT__WEBPACK_IMPORTED_MODULE_6__["EVT"].list.quickCrawl, () => {
+            if (!_States__WEBPACK_IMPORTED_MODULE_7__["states"].busy) {
                 this.readyCrawl();
             }
         });
     }
     destroy() {
-        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].clearSlot('crawlBtns');
+        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].clearSlot('crawlBtns');
     }
     nextStep() {
         this.getPostDataThreadNum = 1;
         this.fetchPost();
     }
     async fetchPost() {
-        await _States__WEBPACK_IMPORTED_MODULE_6__["states"].awaitNextCrawl();
+        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__["crawlInterval"].wait();
         try {
-            const data = await _API__WEBPACK_IMPORTED_MODULE_3__["API"].getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].getURLPathField(window.location.pathname, 'posts'));
-            _States__WEBPACK_IMPORTED_MODULE_6__["states"].addNextCrawlTime();
+            const data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].getURLPathField(window.location.pathname, 'posts'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__["crawlInterval"].addTime();
             this.afterFetchPost(data);
         }
         catch (error) {
             console.log(error);
-            _States__WEBPACK_IMPORTED_MODULE_6__["states"].addNextCrawlTime('long');
+            if (error.message) {
+                _Log__WEBPACK_IMPORTED_MODULE_8__["log"].error(error.message);
+            }
+            _Log__WEBPACK_IMPORTED_MODULE_8__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_请求失败下载器会重试这个请求'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__["crawlInterval"].addTime('long');
             this.fetchPost();
         }
     }
@@ -3923,9 +4028,15 @@ class ShowWhatIsNew {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
             let msg = `
+      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取间隔')}</strong>
+      <br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取间隔的说明')}
+      <br>
+      <br>
       <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔')}</strong>
       <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔的说明')}`;
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔的说明')}
+      `;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
             // )}</strong>
@@ -3964,10 +4075,6 @@ new ShowWhatIsNew();
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "states", function() { return states; });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
-/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
-/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
-
-
 
 // 储存需要跨模块使用的、会变化的状态
 // 这里的状态不需要持久化保存
@@ -3993,37 +4100,7 @@ class States {
         // 保存每次抓取完成和下载完成的时间戳，用来判断这次抓取结果是否已被下载完毕
         this.crawlCompleteTime = 1;
         this.downloadCompleteTime = 0;
-        /**指示下一次抓取在什么时候进行 */
-        this.nextCrawlTime = 0;
         this.bindEvents();
-    }
-    async awaitNextCrawl() {
-        if (this.nextCrawlTime > 0) {
-            const now = Date.now();
-            if (now < this.nextCrawlTime) {
-                const waitTime = this.nextCrawlTime - now;
-                await new Promise((resolve) => setTimeout(resolve, waitTime));
-            }
-        }
-        return true;
-    }
-    resetNextCrawlTime() {
-        this.nextCrawlTime = 0;
-    }
-    /**设置下一次抓取的时间。short 增加 1 秒钟，long 增加 6 分钟 */
-    addNextCrawlTime(timeSpan = 'short') {
-        const now = Date.now();
-        if (timeSpan === 'short') {
-            // 增加 500 - 2000 ms 之间的随机时间
-            const add_time = Math.floor(Math.random() * (2000 - 500 + 1)) + 500;
-            this.nextCrawlTime = now + add_time;
-        }
-        else {
-            // 增加 300 - 360 秒之间的随机时间
-            const add_time = Math.floor(Math.random() * (360000 - 300000 + 1)) + 300000;
-            this.nextCrawlTime = now + add_time;
-            _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载器会等待几分钟然后再继续抓取'));
-        }
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingInitialized, () => {
@@ -5186,7 +5263,7 @@ class DownloadInterval {
     }
     addTime() {
         // 对 settings.downloadInterval 进行随机，生成它的 0.8 倍至 1.2 倍之间的数字
-        const randomFactor = 0.8 + Math.random() * 0.4; // Generates a number between 0.8 and 1.2
+        const randomFactor = 0.8 + Math.random() * 0.4;
         const interval = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval * 1000 * randomFactor;
         this.allowDownloadTime = new Date().getTime() + interval;
     }
@@ -7226,6 +7303,30 @@ Additional notes: <br>
         'ダウンローダーは、Fanboxによるクロール制限を避けるために、クロール速度を落とします。',
         '다운로더는 Fanbox에 의해 크롤링이 제한되는 것을 피하기 위해 크롤링 속도를 늦춥니다.',
     ],
+    _抓取间隔: [
+        '抓取<span class="key">间隔</span>',
+        '擷取<span class="key">間隔</span>',
+        'Crawl <span class="key">interval</span>',
+        'クロール<span class="key">間隔</span>',
+        '크롤링 <span class="key">간격</span>',
+    ],
+    _抓取间隔的说明: [
+        `抓取投稿时，每个请求之间的间隔时间，单位是秒。<br>
+这是为了降低下载器发送请求的频率（特别是大量抓取时），从而减少账号被封的可能性。<br>
+你可以修改此设置，最小值是 0（即无限制）。<br>`,
+        `抓取投稿時，每個請求之間的間隔時間，單位是秒。<br>
+這是為了降低下載器傳送請求的頻率（特別是大量抓取時），從而減少賬號被封的可能性。<br>
+你可以修改此設定，最小值是 0（即無限制）。<br>`,
+        `The time interval between each request when crawling posts, in seconds. <br>
+This is intended to reduce the frequency of requests sent by the downloader (especially when crawling large volumes), thereby reducing the likelihood of your account being blocked. <br>
+You can modify this setting; the minimum value is 0 (no limit). <br>`,
+        `投稿をクロールする際の各リクエスト間の時間間隔（秒単位）。<br>
+これは、ダウンローダーから送信されるリクエストの頻度を減らすことを目的としています（特に大量の投稿をクロールする場合）。これにより、アカウントがブロックされる可能性が低減されます。<br>
+この設定は変更できます。最小値は 0（制限なし）です。<br>`,
+        `게시물을 크롤링할 때 각 요청 사이의 시간 간격(초)입니다. <br>
+이 설정은 다운로더가 보내는 요청 빈도를 줄이기 위한 것입니다(특히 대용량 게시물을 크롤링할 때). 따라서 계정이 차단될 가능성이 줄어듭니다. <br>
+이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+    ],
     _下载间隔: [
         '下载<span class="key">间隔</span>',
         '下載<span class="key">間隔</span>',
@@ -7294,6 +7395,13 @@ Downloader는 기본적으로 다운로드 및 스크래핑 속도를 늦춥니�
         `If you are using a mobile browser, it may not create a folder. This is not a problem with the downloader. If this happens, you need to modify the naming rules to avoid duplicate file names. A simple way to do this is to change the '/' in the default naming rules to '-'.`,
         `モバイルブラウザをご利用の場合、フォルダが作成されない場合があります。これはダウンローダーの問題ではありません。このような場合は、ファイル名の重複を避けるために命名規則を変更する必要があります。簡単な方法としては、デフォルトの命名規則の「/」を「-」に変更することです。`,
         `모바일 브라우저를 사용하는 경우 폴더가 생성되지 않을 수 있습니다. 이는 다운로더 문제가 아닙니다. 이 경우 파일 이름 중복을 방지하기 위해 파일 이름 지정 규칙을 수정해야 합니다. 간단한 방법은 기본 파일 이름 지정 규칙에서 '/'를 '-'로 변경하는 것입니다.`,
+    ],
+    _请求失败下载器会重试这个请求: [
+        `请求失败。下载器会重试这个请求，无须手动处理。`,
+        `請求失敗。下載器會重試這個請求，無須手動處理。`,
+        `The request failed. The downloader will retry the request, no manual processing is required.`,
+        `リクエストが失敗しました。ダウンローダーがリクエストを再試行するため、手動処理は必要ありません。`,
+        `요청이 실패했습니다. 다운로더가 요청을 다시 시도하며, 수동 처리는 필요하지 않습니다.`,
     ],
 };
 
@@ -7592,6 +7700,7 @@ class FormSettings {
                 'fileNameInclude',
                 'fileNameExclude',
                 'downloadInterval',
+                'crawlInterval',
             ],
             radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
             textarea: [],
@@ -8170,11 +8279,13 @@ class Settings {
             fileNameExcludeSwitch: false,
             fileNameExclude: [],
             downloadInterval: 1,
+            crawlInterval: 1,
         };
         this.allSettingKeys = Object.keys(this.defaultSettings);
         // 值为浮点数的选项
         this.floatNumberKey = [
             'downloadInterval',
+            'crawlInterval',
         ];
         // 值为整数的选项不必单独列出
         // 值为数字数组的选项
@@ -8324,10 +8435,10 @@ class Settings {
             value > _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax) {
             value = _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax;
         }
-        if (key === 'downloadInterval' && value < 0) {
+        if ((key === 'downloadInterval' || key === 'crawlInterval') && value < 0) {
             value = 0;
         }
-        if (key === 'downloadInterval' && value > 3600) {
+        if ((key === 'downloadInterval' || key === 'crawlInterval') && value > 3600) {
             value = 3600;
         }
         // 处理数组类型的值

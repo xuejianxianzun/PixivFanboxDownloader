@@ -12,6 +12,7 @@ import { states } from './States'
 import { msgBox } from './MsgBox'
 import { toast } from './Toast'
 import { Utils } from './utils/Utils'
+import { crawlInterval } from './CrawlInterval'
 
 abstract class InitPageBase {
   protected init() {
@@ -22,7 +23,7 @@ abstract class InitPageBase {
     window.addEventListener(EVT.list.pageSwitchedTypeChange, () => {
       this.destroy()
     })
-    
+
     EVT.bindOnce('crawlCompleteTime', EVT.list.crawlFinish, () => {
       states.crawlCompleteTime = new Date().getTime()
     })
@@ -131,7 +132,7 @@ abstract class InitPageBase {
 
   /**获取文章列表数据。如果传入了 URL，则是为了重试抓取该 URL */
   protected async FetchPostList(url?: string) {
-    await states.awaitNextCrawl()
+    await crawlInterval.wait()
 
     if (url === undefined) {
       url = this.postListURLs.shift()
@@ -145,11 +146,15 @@ abstract class InitPageBase {
 
     try {
       const data: PostList = (await API.request(url)) as PostList
-      states.addNextCrawlTime()
+      crawlInterval.addTime()
       this.afterFetchPostList(data)
     } catch (error) {
       console.log(error)
-      states.addNextCrawlTime('long')
+      if (error.message) {
+        log.error(error.message)
+      }
+      log.error(lang.transl('_请求失败下载器会重试这个请求'))
+      crawlInterval.addTime('long')
       this.FetchPostList(url)
     }
   }
@@ -237,15 +242,19 @@ abstract class InitPageBase {
   }
 
   protected async fetchPost(postId: string) {
-    await states.awaitNextCrawl()
+    await crawlInterval.wait()
 
     try {
       const data = await API.getPost(postId)
-      states.addNextCrawlTime()
+      crawlInterval.addTime()
       this.afterFetchPost(data)
     } catch (error) {
       console.log(error)
-      states.addNextCrawlTime('long')
+      if (error.message) {
+        log.error(error.message)
+      }
+      log.error(lang.transl('_请求失败下载器会重试这个请求'))
+      crawlInterval.addTime('long')
       this.fetchPost(postId)
     }
   }

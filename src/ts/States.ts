@@ -30,42 +30,9 @@ class States {
   /**是否处于下载中 */
   public downloading = false
 
-    // 保存每次抓取完成和下载完成的时间戳，用来判断这次抓取结果是否已被下载完毕
+  // 保存每次抓取完成和下载完成的时间戳，用来判断这次抓取结果是否已被下载完毕
   public crawlCompleteTime = 1
   public downloadCompleteTime = 0
-
-  /**指示下一次抓取在什么时候进行 */
-  private nextCrawlTime = 0
-  public async awaitNextCrawl() {
-    if (this.nextCrawlTime > 0) {
-      const now = Date.now()
-      if (now < this.nextCrawlTime) {
-        const waitTime = this.nextCrawlTime - now
-        await new Promise((resolve) => setTimeout(resolve, waitTime))
-      }
-    }
-    return true
-  }
-
-  public resetNextCrawlTime() {
-    this.nextCrawlTime = 0
-  }
-
-  /**设置下一次抓取的时间。short 增加 1 秒钟，long 增加 6 分钟 */
-  public addNextCrawlTime(timeSpan: 'short' | 'long' = 'short') {
-    const now = Date.now()
-    if (timeSpan === 'short') {
-      // 增加 500 - 2000 ms 之间的随机时间
-      const add_time = Math.floor(Math.random() * (2000 - 500 + 1)) + 500
-      this.nextCrawlTime = now + add_time
-    } else {
-      // 增加 300 - 360 秒之间的随机时间
-      const add_time =
-        Math.floor(Math.random() * (360000 - 300000 + 1)) + 300000
-      this.nextCrawlTime = now + add_time
-      log.warning(lang.transl('_下载器会等待几分钟然后再继续抓取'))
-    }
-  }
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {

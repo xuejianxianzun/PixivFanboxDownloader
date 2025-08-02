@@ -313,7 +313,7 @@ class DownloadControl {
     this.setDownStateText(lang.transl('_正在下载中'))
 
     log.log(lang.transl('_正在下载中'))
-    
+
     if (Config.mobile) {
       log.warning(lang.transl('_移动端浏览器可能不会建立文件夹的说明'))
     }

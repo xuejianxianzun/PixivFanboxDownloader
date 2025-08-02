@@ -6,6 +6,8 @@ import { API } from './API'
 import { Utils } from './utils/Utils'
 import { EVT } from './EVT'
 import { states } from './States'
+import { log } from './Log'
+import { crawlInterval } from './CrawlInterval'
 
 class InitPostPage extends InitPageBase {
   constructor() {
@@ -41,17 +43,21 @@ class InitPostPage extends InitPageBase {
   }
 
   protected async fetchPost() {
-    await states.awaitNextCrawl()
+    await crawlInterval.wait()
 
     try {
       const data = await API.getPost(
         Utils.getURLPathField(window.location.pathname, 'posts')
       )
-      states.addNextCrawlTime()
+      crawlInterval.addTime()
       this.afterFetchPost(data)
     } catch (error) {
       console.log(error)
-      states.addNextCrawlTime('long')
+      if (error.message) {
+        log.error(error.message)
+      }
+      log.error(lang.transl('_请求失败下载器会重试这个请求'))
+      crawlInterval.addTime('long')
       this.fetchPost()
     }
   }

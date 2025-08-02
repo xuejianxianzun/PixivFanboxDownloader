@@ -12,7 +12,7 @@ import { downloadRecord } from './DownloadRecord'
 import { lang } from '../Lang'
 import { log } from '../Log'
 import { states } from '../States'
-import {downloadInterval} from './DownloadInterval'
+import { downloadInterval } from './DownloadInterval'
 
 class Download {
   constructor(progressBarIndex: number, data: downloadArgument) {

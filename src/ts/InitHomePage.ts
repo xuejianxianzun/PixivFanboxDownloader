@@ -118,7 +118,6 @@ class InitHomePage extends InitPageBase {
       // console.log(this.postListURLs)
 
       // 获取文章列表
-      log.warning(lang.transl('_下载器会减慢抓取速度以免被限制'))
       this.FetchPostList()
     } else {
       log.error(lang.transl('_没有找到关注的用户'))

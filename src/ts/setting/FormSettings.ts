@@ -74,6 +74,7 @@ class FormSettings {
       'fileNameInclude',
       'fileNameExclude',
       'downloadInterval',
+      'crawlInterval',
     ],
     radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
     textarea: [],

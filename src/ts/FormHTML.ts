@@ -1,6 +1,6 @@
 import { Config } from './Config'
 
-// 已使用的最大编号为 56
+// 已使用的最大编号为 57
 export const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -315,6 +315,18 @@ export const formHtml = `<form class="settingForm">
     </span>
     <input type="checkbox" name="showNotificationAfterDownloadComplete" class="need_beautify checkbox_switch">
     <span class="beautify_switch" tabindex="0"></span>
+    </p>
+
+    <p class="option" data-no="57">
+    <span class="has_tip settingNameStyle1"  data-xztip="_抓取间隔的说明">
+    <span data-xztext="_抓取间隔"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    
+    <span data-xztext="_间隔时间"></span>
+    <input type="text" name="crawlInterval" class="setinput_style1 blue" value="1">
+    <span data-xztext="_秒"></span>
+    </span>
     </p>
     
     <p class="option" data-no="56">

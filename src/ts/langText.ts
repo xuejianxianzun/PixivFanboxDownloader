@@ -1267,6 +1267,30 @@ Additional notes: <br>
     'ダウンローダーは、Fanboxによるクロール制限を避けるために、クロール速度を落とします。',
     '다운로더는 Fanbox에 의해 크롤링이 제한되는 것을 피하기 위해 크롤링 속도를 늦춥니다.',
   ],
+  _抓取间隔: [
+    '抓取<span class="key">间隔</span>',
+    '擷取<span class="key">間隔</span>',
+    'Crawl <span class="key">interval</span>',
+    'クロール<span class="key">間隔</span>',
+    '크롤링 <span class="key">간격</span>',
+  ],
+  _抓取间隔的说明: [
+    `抓取投稿时，每个请求之间的间隔时间，单位是秒。<br>
+这是为了降低下载器发送请求的频率（特别是大量抓取时），从而减少账号被封的可能性。<br>
+你可以修改此设置，最小值是 0（即无限制）。<br>`,
+    `抓取投稿時，每個請求之間的間隔時間，單位是秒。<br>
+這是為了降低下載器傳送請求的頻率（特別是大量抓取時），從而減少賬號被封的可能性。<br>
+你可以修改此設定，最小值是 0（即無限制）。<br>`,
+    `The time interval between each request when crawling posts, in seconds. <br>
+This is intended to reduce the frequency of requests sent by the downloader (especially when crawling large volumes), thereby reducing the likelihood of your account being blocked. <br>
+You can modify this setting; the minimum value is 0 (no limit). <br>`,
+    `投稿をクロールする際の各リクエスト間の時間間隔（秒単位）。<br>
+これは、ダウンローダーから送信されるリクエストの頻度を減らすことを目的としています（特に大量の投稿をクロールする場合）。これにより、アカウントがブロックされる可能性が低減されます。<br>
+この設定は変更できます。最小値は 0（制限なし）です。<br>`,
+    `게시물을 크롤링할 때 각 요청 사이의 시간 간격(초)입니다. <br>
+이 설정은 다운로더가 보내는 요청 빈도를 줄이기 위한 것입니다(특히 대용량 게시물을 크롤링할 때). 따라서 계정이 차단될 가능성이 줄어듭니다. <br>
+이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+  ],
   _下载间隔: [
     '下载<span class="key">间隔</span>',
     '下載<span class="key">間隔</span>',
@@ -1274,7 +1298,7 @@ Additional notes: <br>
     'ダウンロード<span class="key">間隔</span>',
     '다운로드 <span class="key">간격</span>',
   ],
-  _秒: ['秒', '秒', 'seconds', '秒', '초',],
+  _秒: ['秒', '秒', 'seconds', '秒', '초'],
   _间隔时间: [
     '间隔时间：',
     '間隔時間：',
@@ -1335,6 +1359,13 @@ Downloader는 기본적으로 다운로드 및 스크래핑 속도를 늦춥니�
     `If you are using a mobile browser, it may not create a folder. This is not a problem with the downloader. If this happens, you need to modify the naming rules to avoid duplicate file names. A simple way to do this is to change the '/' in the default naming rules to '-'.`,
     `モバイルブラウザをご利用の場合、フォルダが作成されない場合があります。これはダウンローダーの問題ではありません。このような場合は、ファイル名の重複を避けるために命名規則を変更する必要があります。簡単な方法としては、デフォルトの命名規則の「/」を「-」に変更することです。`,
     `모바일 브라우저를 사용하는 경우 폴더가 생성되지 않을 수 있습니다. 이는 다운로더 문제가 아닙니다. 이 경우 파일 이름 중복을 방지하기 위해 파일 이름 지정 규칙을 수정해야 합니다. 간단한 방법은 기본 파일 이름 지정 규칙에서 '/'를 '-'로 변경하는 것입니다.`,
+  ],
+  _请求失败下载器会重试这个请求: [
+    `请求失败。下载器会重试这个请求，无须手动处理。`,
+    `請求失敗。下載器會重試這個請求，無須手動處理。`,
+    `The request failed. The downloader will retry the request, no manual processing is required.`,
+    `リクエストが失敗しました。ダウンローダーがリクエストを再試行するため、手動処理は必要ありません。`,
+    `요청이 실패했습니다. 다운로더가 요청을 다시 시도하며, 수동 처리는 필요하지 않습니다.`,
   ],
 }
 

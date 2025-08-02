@@ -106,6 +106,7 @@ interface XzSetting {
   fileNameExclude: string[]
   /**设置下载一个文件后，需要等待多久才能开始下一次下载。值为 0 - 3600 秒，允许小数 */
   downloadInterval: number
+  crawlInterval: number
 }
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
@@ -168,14 +169,13 @@ class Settings {
     fileNameExcludeSwitch: false,
     fileNameExclude: [],
     downloadInterval: 1,
+    crawlInterval: 1,
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)
 
   // 值为浮点数的选项
-  private floatNumberKey: string[] = [
-    'downloadInterval',
-  ]
+  private floatNumberKey: string[] = ['downloadInterval', 'crawlInterval']
 
   // 值为整数的选项不必单独列出
 
@@ -342,14 +342,20 @@ class Settings {
       value = Config.downloadThreadMax
     }
 
-    if (key === 'downloadInterval' && (value as number) < 0) {
+    if (
+      (key === 'downloadInterval' || key === 'crawlInterval') &&
+      (value as number) < 0
+    ) {
       value = 0
     }
 
-    if (key === 'downloadInterval' && (value as number) > 3600) {
+    if (
+      (key === 'downloadInterval' || key === 'crawlInterval') &&
+      (value as number) > 3600
+    ) {
       value = 3600
     }
-    
+
     // 处理数组类型的值
     if (Array.isArray(this.defaultSettings[key])) {
       if (this.stringArrayKeys.includes(key)) {

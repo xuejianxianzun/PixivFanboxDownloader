@@ -54,7 +54,7 @@ class DownloadInterval {
 
   private addTime() {
     // 对 settings.downloadInterval 进行随机，生成它的 0.8 倍至 1.2 倍之间的数字
-    const randomFactor = 0.8 + Math.random() * 0.4 // Generates a number between 0.8 and 1.2
+    const randomFactor = 0.8 + Math.random() * 0.4
     const interval = settings.downloadInterval * 1000 * randomFactor
     this.allowDownloadTime = new Date().getTime() + interval
   }
@@ -62,9 +62,7 @@ class DownloadInterval {
   public wait() {
     return new Promise(async (resolve) => {
       // 首先检查此设置不应该生效的情况，立即放行
-      if (
-        settings.downloadInterval === 0
-      ) {
+      if (settings.downloadInterval === 0) {
         return resolve(true)
       }
 
