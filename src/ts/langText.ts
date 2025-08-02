@@ -1259,6 +1259,44 @@ Additional notes: <br>
     'ダウンローダーは、Fanboxによるクロール制限を避けるために、クロール速度を落とします。',
     '다운로더는 Fanbox에 의해 크롤링이 제한되는 것을 피하기 위해 크롤링 속도를 늦춥니다.',
   ],
+  _下载间隔: [
+    '下载<span class="key">间隔</span>',
+    '下載<span class="key">間隔</span>',
+    'Download <span class="key">interval</span>',
+    'ダウンロード<span class="key">間隔</span>',
+    '다운로드 <span class="key">간격</span>',
+  ],
+  _秒: ['秒', '秒', 'seconds', '秒', '초',],
+  _间隔时间: [
+    '间隔时间：',
+    '間隔時間：',
+    'Interval time:',
+    'インターバル時間：',
+    '간격 시간:',
+    'Интервал времени:',
+  ],
+  _下载间隔的说明: [
+    `每隔一定时间开始一次下载，单位是秒。<br>
+默认值为 1，即每小时最多会从 Fanbox 下载 3600 个文件。<br>
+这是为了降低从 Fanbox 下载文件的频率（特别是下载体积较小的图片时），从而减少账号被封的可能性。<br>
+你可以修改此设置，最小值是 0（即无限制）。<br>`,
+`每隔一定時間開始一次下載，單位是秒。<br>
+預設值為 1，即每小時最多會從 Fanbox 下載 3600 個檔案。<br>
+這是為了降低從 Fanbox 下載檔案的頻率（特別是下載體積較小的圖片時），從而減少賬號被封的可能性。<br>
+你可以修改此設定，最小值是 0（即無限制）。<br>`,
+`The interval at which downloads are initiated, measured in seconds. <br>
+The default value is 1, meaning a maximum of 3,600 files will be downloaded from Fanbox per hour. <br>
+This is intended to reduce the frequency of downloads from Fanbox (especially when downloading small images), thereby reducing the likelihood of your account being blocked. <br>
+You can modify this setting; the minimum value is 0 (no limit). <br>`,
+`ダウンロードを開始する間隔（秒単位）。<br>
+デフォルト値は1で、Fanboxから1時間あたり最大3,600個のファイルがダウンロードされます。<br>
+これは、Fanboxからのダウンロード頻度（特に小さな画像をダウンロードする場合）を減らし、アカウントがブロックされる可能性を減らすことを目的としています。<br>
+この設定は変更できます。最小値は0（制限なし）です。<br>`,
+`다운로드 시작 간격(초)입니다. <br>
+기본값은 1이며, Fanbox에서 시간당 최대 3,600개의 파일이 다운로드됩니다. <br>
+이 설정은 Fanbox에서 다운로드 빈도(특히 작은 이미지 다운로드 시)를 줄여 계정이 차단될 가능성을 줄이기 위한 것입니다. <br>
+이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+  ],
 }
 
 export { langText }

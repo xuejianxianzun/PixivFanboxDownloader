@@ -73,6 +73,7 @@ class FormSettings {
       'nameruleForNonImages',
       'fileNameInclude',
       'fileNameExclude',
+      'downloadInterval',
     ],
     radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
     textarea: [],

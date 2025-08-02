@@ -1371,7 +1371,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formHtml", function() { return formHtml; });
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 
-// 已使用的最大编号为 55
+// 已使用的最大编号为 56
 const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -1680,6 +1680,18 @@ const formHtml = `<form class="settingForm">
     <span class="settingNameStyle1" data-xztext="_下载完成后显示通知"></span>
     <input type="checkbox" name="showNotificationAfterDownloadComplete" class="need_beautify checkbox_switch">
     <span class="beautify_switch" tabindex="0"></span>
+    </p>
+    
+    <p class="option" data-no="56">
+    <span class="has_tip settingNameStyle1"  data-xztip="_下载间隔的说明">
+    <span data-xztext="_下载间隔"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    
+    <span data-xztext="_间隔时间"></span>
+    <input type="text" name="downloadInterval" class="setinput_style1 blue" value="1">
+    <span data-xztext="_秒"></span>
+    </span>
     </p>
       
     <p class="option" data-no="28">
@@ -3871,14 +3883,17 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.6.0';
+        this.flag = '4.7.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
             let msg = `
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载器会减慢抓取速度以免被限制')}`;
+      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔')}</strong>
+      <br>
+      <br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔的说明')}`;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
             // )}</strong>
@@ -4591,7 +4606,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
 /* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../States */ "./src/ts/States.ts");
+/* harmony import */ var _DownloadInterval__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DownloadInterval */ "./src/ts/download/DownloadInterval.ts");
 // 下载文件，并发送给浏览器下载
+
 
 
 
@@ -4646,6 +4663,7 @@ class Download {
                 }, _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过下载因为重复文件', this.fileName));
             }
         }
+        await _DownloadInterval__WEBPACK_IMPORTED_MODULE_7__["downloadInterval"].wait();
         // 重设当前下载栏的信息
         this.setProgressBar(0, 0);
         // 向浏览器发送下载任务
@@ -5064,6 +5082,101 @@ class DownloadControl {
     }
 }
 new DownloadControl();
+
+
+/***/ }),
+
+/***/ "./src/ts/download/DownloadInterval.ts":
+/*!*********************************************!*\
+  !*** ./src/ts/download/DownloadInterval.ts ***!
+  \*********************************************/
+/*! exports provided: downloadInterval */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "downloadInterval", function() { return downloadInterval; });
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
+/* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../setting/Settings */ "./src/ts/setting/Settings.ts");
+
+
+
+
+class DownloadInterval {
+    constructor() {
+        /**允许开始下载的时间戳 */
+        // 不管设置里的值是多少，初始值都是 0，即允许第一次下载立即开始
+        // 在开始下载第一个文件后，才会有实际的值
+        this.allowDownloadTime = 0;
+        this.bindEvents();
+    }
+    bindEvents() {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+            const data = ev.detail.data;
+            if (data.name === 'downloadInterval') {
+                if (data.value === 0) {
+                    this.reset();
+                }
+            }
+        });
+        const resetEvents = [
+            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlFinish,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStart,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadPause,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStop,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete,
+        ];
+        resetEvents.forEach((evt) => {
+            window.addEventListener(evt, () => {
+                this.reset();
+            });
+        });
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStart, () => {
+            // 在开始下载时，如果应用了间隔时间，则显示一条日志提醒
+            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval > 0) {
+                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载间隔') +
+                    `: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval} ` +
+                    _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_秒');
+                _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(msg, 1, false, 'downloadInterval');
+            }
+        });
+    }
+    reset() {
+        this.allowDownloadTime = 0;
+    }
+    addTime() {
+        // 对 settings.downloadInterval 进行随机，生成它的 0.8 倍至 1.2 倍之间的数字
+        const randomFactor = 0.8 + Math.random() * 0.4; // Generates a number between 0.8 and 1.2
+        const interval = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval * 1000 * randomFactor;
+        console.log(interval);
+        this.allowDownloadTime = new Date().getTime() + interval;
+    }
+    wait() {
+        return new Promise(async (resolve) => {
+            // 首先检查此设置不应该生效的情况，立即放行
+            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval === 0) {
+                return resolve(true);
+            }
+            // 可以立即开始下载
+            if (new Date().getTime() >= this.allowDownloadTime) {
+                this.addTime();
+                return resolve(true);
+            }
+            // 需要等待
+            const timer = window.setInterval(() => {
+                if (new Date().getTime() >= this.allowDownloadTime) {
+                    window.clearInterval(timer);
+                    this.addTime();
+                    return resolve(true);
+                }
+            }, 50);
+        });
+    }
+}
+const downloadInterval = new DownloadInterval();
+
 
 
 /***/ }),
@@ -7068,6 +7181,44 @@ Additional notes: <br>
         'ダウンローダーは、Fanboxによるクロール制限を避けるために、クロール速度を落とします。',
         '다운로더는 Fanbox에 의해 크롤링이 제한되는 것을 피하기 위해 크롤링 속도를 늦춥니다.',
     ],
+    _下载间隔: [
+        '下载<span class="key">间隔</span>',
+        '下載<span class="key">間隔</span>',
+        'Download <span class="key">interval</span>',
+        'ダウンロード<span class="key">間隔</span>',
+        '다운로드 <span class="key">간격</span>',
+    ],
+    _秒: ['秒', '秒', 'seconds', '秒', '초',],
+    _间隔时间: [
+        '间隔时间：',
+        '間隔時間：',
+        'Interval time:',
+        'インターバル時間：',
+        '간격 시간:',
+        'Интервал времени:',
+    ],
+    _下载间隔的说明: [
+        `每隔一定时间开始一次下载，单位是秒。<br>
+默认值为 1，即每小时最多会从 Fanbox 下载 3600 个文件。<br>
+这是为了降低从 Fanbox 下载文件的频率（特别是下载体积较小的图片时），从而减少账号被封的可能性。<br>
+你可以修改此设置，最小值是 0（即无限制）。<br>`,
+        `每隔一定時間開始一次下載，單位是秒。<br>
+預設值為 1，即每小時最多會從 Fanbox 下載 3600 個檔案。<br>
+這是為了降低從 Fanbox 下載檔案的頻率（特別是下載體積較小的圖片時），從而減少賬號被封的可能性。<br>
+你可以修改此設定，最小值是 0（即無限制）。<br>`,
+        `The interval at which downloads are initiated, measured in seconds. <br>
+The default value is 1, meaning a maximum of 3,600 files will be downloaded from Fanbox per hour. <br>
+This is intended to reduce the frequency of downloads from Fanbox (especially when downloading small images), thereby reducing the likelihood of your account being blocked. <br>
+You can modify this setting; the minimum value is 0 (no limit). <br>`,
+        `ダウンロードを開始する間隔（秒単位）。<br>
+デフォルト値は1で、Fanboxから1時間あたり最大3,600個のファイルがダウンロードされます。<br>
+これは、Fanboxからのダウンロード頻度（特に小さな画像をダウンロードする場合）を減らし、アカウントがブロックされる可能性を減らすことを目的としています。<br>
+この設定は変更できます。最小値は0（制限なし）です。<br>`,
+        `다운로드 시작 간격(초)입니다. <br>
+기본값은 1이며, Fanbox에서 시간당 최대 3,600개의 파일이 다운로드됩니다. <br>
+이 설정은 Fanbox에서 다운로드 빈도(특히 작은 이미지 다운로드 시)를 줄여 계정이 차단될 가능성을 줄이기 위한 것입니다. <br>
+이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+    ],
 };
 
 
@@ -7364,6 +7515,7 @@ class FormSettings {
                 'nameruleForNonImages',
                 'fileNameInclude',
                 'fileNameExclude',
+                'downloadInterval',
             ],
             radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
             textarea: [],
@@ -7941,10 +8093,13 @@ class Settings {
             fileNameInclude: [],
             fileNameExcludeSwitch: false,
             fileNameExclude: [],
+            downloadInterval: 1,
         };
         this.allSettingKeys = Object.keys(this.defaultSettings);
         // 值为浮点数的选项
-        this.floatNumberKey = [];
+        this.floatNumberKey = [
+            'downloadInterval',
+        ];
         // 值为整数的选项不必单独列出
         // 值为数字数组的选项
         this.numberArrayKeys = [];
@@ -8092,6 +8247,12 @@ class Settings {
         if (key === 'downloadThread' &&
             value > _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax) {
             value = _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax;
+        }
+        if (key === 'downloadInterval' && value < 0) {
+            value = 0;
+        }
+        if (key === 'downloadInterval' && value > 3600) {
+            value = 3600;
         }
         // 处理数组类型的值
         if (Array.isArray(this.defaultSettings[key])) {

@@ -10,14 +10,19 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '4.6.0'
+  private flag = '4.7.0'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
       let msg = `
-      ${lang.transl('_下载器会减慢抓取速度以免被限制')}`
+      <strong>${lang.transl('_新增设置项')}: ${lang.transl(
+        '_下载间隔'
+      )}</strong>
+      <br>
+      ${lang.transl('_下载间隔的说明')}`
 
+      
       // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
       //   '_非图片的命名规则'
       // )}</strong>

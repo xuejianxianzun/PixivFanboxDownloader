@@ -1,6 +1,6 @@
 import { Config } from './Config'
 
-// 已使用的最大编号为 55
+// 已使用的最大编号为 56
 export const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -311,6 +311,18 @@ export const formHtml = `<form class="settingForm">
     <span class="settingNameStyle1" data-xztext="_下载完成后显示通知"></span>
     <input type="checkbox" name="showNotificationAfterDownloadComplete" class="need_beautify checkbox_switch">
     <span class="beautify_switch" tabindex="0"></span>
+    </p>
+    
+    <p class="option" data-no="56">
+    <span class="has_tip settingNameStyle1"  data-xztip="_下载间隔的说明">
+    <span data-xztext="_下载间隔"></span>
+    <span class="gray1"> ? </span>
+    </span>
+    
+    <span data-xztext="_间隔时间"></span>
+    <input type="text" name="downloadInterval" class="setinput_style1 blue" value="1">
+    <span data-xztext="_秒"></span>
+    </span>
     </p>
       
     <p class="option" data-no="28">

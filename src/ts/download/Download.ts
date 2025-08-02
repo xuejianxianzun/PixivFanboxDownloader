@@ -12,6 +12,7 @@ import { downloadRecord } from './DownloadRecord'
 import { lang } from '../Lang'
 import { log } from '../Log'
 import { states } from '../States'
+import {downloadInterval} from './DownloadInterval'
 
 class Download {
   constructor(progressBarIndex: number, data: downloadArgument) {
@@ -78,6 +79,8 @@ class Download {
         )
       }
     }
+
+    await downloadInterval.wait()
 
     // 重设当前下载栏的信息
     this.setProgressBar(0, 0)
