@@ -43,7 +43,8 @@ class GetTotalDownload {
         // response.history 例如：
         // [{date: '2025-08-03', bytes: 18431824}]
         if (response.history.length === 0) {
-          msgBox.warning('_没有数据可供使用')
+          msgBox.warning(lang.transl('_没有数据可供使用'))
+          return
         }
 
         const array: string[] = []
@@ -61,6 +62,7 @@ class GetTotalDownload {
           array.push(`<p><span>${date}</span> <span>${size}</span></p>`)
         })
 
+        // 显示历史记录
         const html = `<div id="downloadTotal30Day">
         <style>
           #downloadTotal30Day span{width:30%;display: inline-block;}

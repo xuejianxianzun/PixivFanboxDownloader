@@ -954,13 +954,13 @@ Additional notes: <br>
   ],
   _完成: ['完成', '完成', 'Completed', '完了', '완료됨'],
   _HowToUse: [
-    '点击页面右侧的蓝色按钮可以打开下载器面板。<br><br>下载的文件保存在浏览器的下载目录里。<br><br>建议您在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br><strong>下载器不能绕过付费限制。</strong>',
-    '點選頁面右側的藍色按鈕可以開啟下載器面板。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br><strong>下載器不能繞過付費限制。</strong>',
-    'Click the blue button on the right side of the page to open the downloader panel.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br><strong>Downloaders cannot bypass paid restrictions.</strong>',
-    'ページ右側の青いボタンをクリックすると、ダウンローダーパネルが開きます。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br><strong>ダウンローダーは、有料の制限を回避できません。</strong>',
-    '페이지 오른쪽에 있는 파란색 버튼을 클릭하면 다운로드 패널이 열립니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br><strong>다운로더는 유료 제한을 우회할 수 없습니다.</strong>',
+    '点击页面右侧的蓝色按钮可以打开下载器面板。<br>下载器可以在不同的页面里下载不同的内容，例如首页、用户主页、文章页面。<br><br>下载的文件保存在浏览器的下载目录里。<br><br>建议您在浏览器的下载设置中关闭“下载前询问每个文件的保存位置”。<br><br><strong>下载器不能绕过付费限制。</strong>',
+    '點選頁面右側的藍色按鈕可以開啟下載器面板。<br>下載器可以在不同的頁面裡下載不同的內容，例如首頁、使用者主頁、文章頁面。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br><strong>下載器不能繞過付費限制。</strong>',
+    'Click the blue button on the right side of the page to open the downloader panel.<br>The downloader can download different content on different pages, such as the home page, user home page, and article page.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br><strong>Downloaders cannot bypass paid restrictions.</strong>',
+    'ページ右側の青いボタンをクリックすると、ダウンローダーパネルが開きます。<br>ダウンローダーは、ホームページ、ユーザーホームページ、記事ページなど、さまざまなページのさまざまなコンテンツをダウンロードできます。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br><strong>ダウンローダーは、有料の制限を回避できません。</strong>',
+    '페이지 오른쪽에 있는 파란색 버튼을 클릭하면 다운로드 패널이 열립니다.<br>다운로더는 홈페이지, 사용자 홈페이지, 기사 페이지 등 다양한 페이지에서 다양한 콘텐츠를 다운로드할 수 있습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br><strong>다운로더는 유료 제한을 우회할 수 없습니다.</strong>',
   ],
-  _whatisnew: [
+  _代码重构: [
     `代码重构，并添加了新的功能。例如：`,
     `程式碼重構，並添加了新的功能。例如：`,
     `Code refactored and new features added. E.g:`,

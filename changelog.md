@@ -1,5 +1,7 @@
 export NODE_OPTIONS=--openssl-legacy-provider
 
+下载完成后，状态还是下载中？
+调整字体
 添加俄语
 
 # 4.7.0 2025/08/03

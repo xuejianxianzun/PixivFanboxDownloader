@@ -39,18 +39,14 @@ class TotalDownload {
     })
 
     // 加载 totalDownload
-    this.loadTotalDownload()
+    setTimeout(() => {
+      this.restore()
+    }, 0)
   }
 
-  private loadTotalDownload() {
-    // 使用 setTimeout 延迟加载
-    setTimeout(() => {
-      chrome.storage.local.get(['totalDownload'], (result) => {
-        // 确保 result.totalDownload 是对象
-        this.data = result.totalDownload || {}
-        // console.log('loaded totalDownload', this.data)
-      })
-    }, 300)
+  private async restore() {
+    const result = await chrome.storage.local.get(['totalDownload'])
+    this.data = result.totalDownload || {}
   }
 
   /** 生成 YYYY-MM-DD 格式的当前日期 */
@@ -77,6 +73,12 @@ class TotalDownload {
   public async getLast30DaysData(): Promise<
     Array<{ date: string; bytes: number }>
   > {
+    // 如果是空对象，可能尚未从 local storage 里加载数据，尝试重新加载一次
+    // 例如后台脚本被回收了，前台却要查看数据, 于是后台脚本被再次执行，此时可能还是默认值
+    if (Object.keys(this.data).length === 0) {
+      await this.restore()
+    }
+
     const today = new Date()
     const thirtyDaysAgo = new Date(today)
     thirtyDaysAgo.setDate(today.getDate() - 29)
