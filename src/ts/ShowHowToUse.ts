@@ -28,7 +28,7 @@ class ShowHowToUse {
       {
         title: Config.appName,
         btn: lang.transl('_我知道了'),
-      }
+      },
     )
   }
 }

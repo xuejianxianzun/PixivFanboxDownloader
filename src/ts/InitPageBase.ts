@@ -109,7 +109,7 @@ abstract class InitPageBase {
     const paginateData: {
       body: string[]
     } = await API.request(
-      `https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`
+      `https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`,
     )
     // console.log(paginateData.body)
 
@@ -138,7 +138,7 @@ abstract class InitPageBase {
       url = this.postListURLs.shift()
       if (url === undefined) {
         log.error(
-          `Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`
+          `Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`,
         )
         return this.FetchPostListFinished()
       }
@@ -150,8 +150,8 @@ abstract class InitPageBase {
       this.afterFetchPostList(data)
     } catch (error) {
       console.log(error)
-      if (error.message) {
-        log.error(error.message)
+      if ((error as Error).message) {
+        log.error((error as Error).message)
       }
       log.error(lang.transl('_请求失败下载器会重试这个请求'))
       crawlInterval.addTime('long')
@@ -250,8 +250,8 @@ abstract class InitPageBase {
       this.afterFetchPost(data)
     } catch (error) {
       console.log(error)
-      if (error.message) {
-        log.error(error.message)
+      if ((error as Error).message) {
+        log.error((error as Error).message)
       }
       log.error(lang.transl('_请求失败下载器会重试这个请求'))
       crawlInterval.addTime('long')
@@ -279,7 +279,7 @@ abstract class InitPageBase {
   protected crawlFinished() {
     if (store.skipDueToFee > 0) {
       log.warning(
-        lang.transl('_因为价格限制而跳过的投稿数量') + store.skipDueToFee
+        lang.transl('_因为价格限制而跳过的投稿数量') + store.skipDueToFee,
       )
     }
     if (store.result.length === 0) {

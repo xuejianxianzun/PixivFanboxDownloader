@@ -1,101 +1,17 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/ts/content.ts");
-/******/ })
-/************************************************************************/
-/******/ ({
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "./src/ts/API.ts":
 /*!***********************!*\
   !*** ./src/ts/API.ts ***!
   \***********************/
-/*! exports provided: API */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "API", function() { return API; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   API: () => (/* binding */ API)
+/* harmony export */ });
 class API {
     constructor() {
         this.error = {
@@ -210,12 +126,12 @@ class API {
 /*!**********************!*\
   !*** ./src/ts/BG.ts ***!
   \**********************/
-/*! exports provided: bg */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bg", function() { return bg; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   bg: () => (/* binding */ bg)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
 /* harmony import */ var _utils_IndexedDB__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/IndexedDB */ "./src/ts/utils/IndexedDB.ts");
@@ -242,14 +158,14 @@ class BG {
                 });
             }
         };
-        this.IDB = new _utils_IndexedDB__WEBPACK_IMPORTED_MODULE_2__["IndexedDB"]();
+        this.IDB = new _utils_IndexedDB__WEBPACK_IMPORTED_MODULE_2__.IndexedDB();
         this.initDB();
         this.bindEvents();
     }
     async initDB() {
         // 如果用户没有启用“背景图片”，就不会创建数据库
         // 因为大部分用户都不会启用此功能，所以没必要创建数据库
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].bgDisplay) {
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.bgDisplay) {
             await this.IDB.open(this.DBName, this.DBVer, this.onUpdate);
             this.restore();
         }
@@ -261,13 +177,13 @@ class BG {
         return el;
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.selectBG, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.selectBG, () => {
             this.selectBG();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.clearBG, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.clearBG, () => {
             this.clearBG();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, (ev) => {
             const data = ev.detail.data;
             if (data.name === 'bgDisplay') {
                 this.setBGAll();
@@ -292,7 +208,7 @@ class BG {
         this.preload();
     }
     async selectBG() {
-        const file = (await _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].selectFile('.jpg,.jpeg,.png,.bmp,.webp'))[0];
+        const file = (await _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.selectFile('.jpg,.jpeg,.png,.bmp,.webp'))[0];
         this.bgUrl = URL.createObjectURL(file);
         this.preload();
         for (const o of this.list) {
@@ -339,19 +255,19 @@ class BG {
         o.bg.style.backgroundImage = `url(${this.bgUrl})`;
     }
     setDisplay(o) {
-        o.bg.style.display = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].bgDisplay ? 'block' : 'none';
+        o.bg.style.display = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.bgDisplay ? 'block' : 'none';
         if (!this.bgUrl) {
             o.wrap.classList.remove(this.bgModeflagClassName);
         }
         else {
-            o.wrap.classList[_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].bgDisplay ? 'add' : 'remove'](this.bgModeflagClassName);
+            o.wrap.classList[_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.bgDisplay ? 'add' : 'remove'](this.bgModeflagClassName);
         }
     }
     setOpacity(o) {
-        o.bg.style.opacity = (o.opacity || _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].bgOpacity / 100).toString();
+        o.bg.style.opacity = (o.opacity || _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.bgOpacity / 100).toString();
     }
     setPositionY(o) {
-        o.bg.style.backgroundPositionY = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].bgPositionY;
+        o.bg.style.backgroundPositionY = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.bgPositionY;
     }
     // 其他模块可以调用这个方法，为一个元素添加背景层
     // 如果传入一个真值的不透明度，会始终使用传入的不透明度，忽略用户用户设置的不透明度
@@ -388,12 +304,12 @@ const bg = new BG();
 /*!********************************!*\
   !*** ./src/ts/BoldKeywords.ts ***!
   \********************************/
-/*! exports provided: BoldKeywords */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BoldKeywords", function() { return BoldKeywords; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BoldKeywords: () => (/* binding */ BoldKeywords)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./setting/Settings */ "./src/ts/setting/Settings.ts");
 
@@ -406,7 +322,7 @@ class BoldKeywords {
         this.setClassName();
     }
     bindEvent() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, (ev) => {
             const data = ev.detail.data;
             if (data.name === 'boldKeywords') {
                 this.setClassName();
@@ -414,7 +330,7 @@ class BoldKeywords {
         });
     }
     setClassName() {
-        this.wrap.classList[_setting_Settings__WEBPACK_IMPORTED_MODULE_1__["settings"].boldKeywords ? 'add' : 'remove'](this.className);
+        this.wrap.classList[_setting_Settings__WEBPACK_IMPORTED_MODULE_1__.settings.boldKeywords ? 'add' : 'remove'](this.className);
     }
 }
 
@@ -426,10 +342,8 @@ class BoldKeywords {
 /*!*******************************!*\
   !*** ./src/ts/CenterPanel.ts ***!
   \*******************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
@@ -454,21 +368,21 @@ class CenterPanel {
         this.centerPanel = document.createElement('div'); // 中间面板
         this.allLangFlag = [];
         this.addCenterPanel();
-        _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].register(this.centerPanel);
-        _BG__WEBPACK_IMPORTED_MODULE_3__["bg"].useBG(this.centerPanel);
-        new _BoldKeywords__WEBPACK_IMPORTED_MODULE_4__["BoldKeywords"](this.centerPanel);
-        this.allLangFlag = _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].langTypes.map((type) => 'lang_' + type);
+        _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.register(this.centerPanel);
+        _BG__WEBPACK_IMPORTED_MODULE_3__.bg.useBG(this.centerPanel);
+        new _BoldKeywords__WEBPACK_IMPORTED_MODULE_4__.BoldKeywords(this.centerPanel);
+        this.allLangFlag = _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.langTypes.map((type) => 'lang_' + type);
         this.setLangFlag();
         this.bindEvents();
     }
     // 添加中间面板
     addCenterPanel() {
         const centerPanelHTML = `
-      <div class="centerWrap ${'lang_' + _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].type}">
+      <div class="centerWrap ${'lang_' + _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.type}">
 
       <div class="centerWrap_head">
       <div class="centerWrap_title blue">
-      ${_Config__WEBPACK_IMPORTED_MODULE_7__["Config"].appName}
+      ${_Config__WEBPACK_IMPORTED_MODULE_7__.Config.appName}
       <div class="btns">
       <a class="has_tip centerWrap_top_btn" data-xztip="_github" href="https://github.com/xuejianxianzun/PixivFanboxDownloader" target="_blank">
       <svg class="icon" aria-hidden="true">
@@ -508,7 +422,7 @@ class CenterPanel {
         this.allLangFlag.forEach((flag) => {
             this.centerPanel.classList.remove(flag);
         });
-        this.centerPanel.classList.add('lang_' + _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].type);
+        this.centerPanel.classList.add('lang_' + _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.type);
     }
     // 绑定中间面板上的事件
     bindEvents() {
@@ -528,43 +442,45 @@ class CenterPanel {
         document
             .querySelector('.centerWrap_close')
             .addEventListener('click', () => {
-            _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('closeCenterPanel');
+            _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('closeCenterPanel');
         });
         // 开始抓取作品时，隐藏
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.crawlStart, () => {
-            _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('closeCenterPanel');
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.crawlStart, () => {
+            _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('closeCenterPanel');
         });
         // 抓取完作品详细数据时，显示
-        for (const ev of [_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.crawlFinish, _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.resume]) {
+        for (const ev of [_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.crawlFinish, _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.resume]) {
             window.addEventListener(ev, () => {
-                if (!_States__WEBPACK_IMPORTED_MODULE_5__["states"].quickCrawl) {
+                if (!_States__WEBPACK_IMPORTED_MODULE_5__.states.quickCrawl) {
                     this.show();
                 }
             });
         }
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.openCenterPanel, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.openCenterPanel, () => {
             this.show();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.closeCenterPanel, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.closeCenterPanel, () => {
             this.close();
         });
         // 显示常见问题
         this.centerPanel
             .querySelector('#showDownTip')
             .addEventListener('click', () => {
-            let msg = _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_常见问题说明') + _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_账户可能被封禁的警告');
-            if (_Config__WEBPACK_IMPORTED_MODULE_7__["Config"].mobile) {
+            let msg = _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_常见问题说明') + _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_账户可能被封禁的警告');
+            if (_Config__WEBPACK_IMPORTED_MODULE_7__.Config.mobile) {
                 msg =
-                    msg + '<br><br>' + _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_移动端浏览器可能不会建立文件夹的说明');
+                    msg +
+                        '<br><br>' +
+                        _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_移动端浏览器可能不会建立文件夹的说明');
             }
-            _MsgBox__WEBPACK_IMPORTED_MODULE_6__["msgBox"].show(msg, {
-                title: _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_常见问题'),
+            _MsgBox__WEBPACK_IMPORTED_MODULE_6__.msgBox.show(msg, {
+                title: _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_常见问题'),
             });
         });
         this.centerPanel
             .querySelector('#showPatronTip')
-            .addEventListener('click', () => _MsgBox__WEBPACK_IMPORTED_MODULE_6__["msgBox"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_赞助方式提示'), {
-            title: _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_赞助我'),
+            .addEventListener('click', () => _MsgBox__WEBPACK_IMPORTED_MODULE_6__.msgBox.show(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_赞助方式提示'), {
+            title: _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_赞助我'),
         }));
         this.centerPanel.addEventListener('click', (e) => {
             const ev = e || window.event;
@@ -572,31 +488,31 @@ class CenterPanel {
         });
         document.addEventListener('click', () => {
             if (getComputedStyle(this.centerPanel)['display'] !== 'none') {
-                _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('closeCenterPanel');
+                _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('closeCenterPanel');
             }
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.langChange, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.langChange, () => {
             this.setLangFlag();
         });
     }
     // 显示中间区域
     show() {
         this.centerPanel.style.display = 'block';
-        _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('centerPanelOpened');
+        _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('centerPanelOpened');
     }
     // 隐藏中间区域
     close() {
         this.centerPanel.style.display = 'none';
-        _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('centerPanelClosed');
+        _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('centerPanelClosed');
     }
     toggle() {
         const nowDisplay = this.centerPanel.style.display;
         nowDisplay === 'block' ? this.close() : this.show();
         if (nowDisplay === 'block') {
-            _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('closeCenterPanel');
+            _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('closeCenterPanel');
         }
         else {
-            _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('openCenterPanel');
+            _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('openCenterPanel');
         }
     }
 }
@@ -609,10 +525,8 @@ new CenterPanel();
 /*!*****************************************!*\
   !*** ./src/ts/CheckUnsupportBrowser.ts ***!
   \*****************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -654,21 +568,21 @@ class CheckUnsupportBrowser {
                 return false;
             },
         };
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingInitialized, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingInitialized, () => {
             this.check();
         });
     }
     check() {
         for (const func of Object.values(this.rules)) {
             if (func()) {
-                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_不支持的浏览器');
-                _Log__WEBPACK_IMPORTED_MODULE_2__["log"].error(msg);
+                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_不支持的浏览器');
+                _Log__WEBPACK_IMPORTED_MODULE_2__.log.error(msg);
                 // msgBox.error(msg)
                 return;
             }
         }
         if (navigator.userAgent.includes('YaBrowser')) {
-            _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_yandex浏览器的警告'));
+            _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_yandex浏览器的警告'));
         }
     }
 }
@@ -681,12 +595,12 @@ new CheckUnsupportBrowser();
 /*!**************************!*\
   !*** ./src/ts/Colors.ts ***!
   \**************************/
-/*! exports provided: Colors */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Colors", function() { return Colors; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Colors: () => (/* binding */ Colors)
+/* harmony export */ });
 var Colors;
 (function (Colors) {
     // 通用颜色
@@ -720,12 +634,12 @@ var Colors;
 /*!**************************!*\
   !*** ./src/ts/Config.ts ***!
   \**************************/
-/*! exports provided: Config */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Config", function() { return Config; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Config: () => (/* binding */ Config)
+/* harmony export */ });
 // 储存一些配置
 // 用户不可以修改这里的配置
 class Config {
@@ -763,12 +677,12 @@ Config.mobile = navigator.userAgent.includes('Mobile');
 /*!*********************************!*\
   !*** ./src/ts/CrawlInterval.ts ***!
   \*********************************/
-/*! exports provided: crawlInterval */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "crawlInterval", function() { return crawlInterval; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   crawlInterval: () => (/* binding */ crawlInterval)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
@@ -784,13 +698,13 @@ class CrawlInterval {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlStart, () => {
             // 在开始抓取时，如果应用了间隔时间，则显示一条日志提醒
-            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].crawlInterval > 0) {
-                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_抓取间隔') +
-                    `: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].crawlInterval} ` +
-                    _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_秒');
-                _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(msg, 1, false, 'crawlInterval');
+            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.crawlInterval > 0) {
+                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_抓取间隔') +
+                    `: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.crawlInterval} ` +
+                    _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_秒');
+                _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(msg, 1, false, 'crawlInterval');
             }
         });
     }
@@ -817,14 +731,14 @@ class CrawlInterval {
         if (timeSpan === 'short') {
             // 对 settings.crawlInterval 进行随机，生成它的 0.8 倍至 1.2 倍之间的数字
             const randomFactor = 0.8 + Math.random() * 0.4;
-            const interval = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].crawlInterval * 1000 * randomFactor;
+            const interval = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.crawlInterval * 1000 * randomFactor;
             this.nextCrawlTime = now + interval;
         }
         else {
             // 增加 300 - 360 秒之间的随机时间
             const add_time = Math.floor(Math.random() * (360000 - 300000 + 1)) + 300000;
             this.nextCrawlTime = now + add_time;
-            _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载器会等待几分钟然后再继续抓取'));
+            _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_下载器会等待几分钟然后再继续抓取'));
         }
     }
 }
@@ -838,12 +752,12 @@ const crawlInterval = new CrawlInterval();
 /*!***********************!*\
   !*** ./src/ts/EVT.ts ***!
   \***********************/
-/*! exports provided: EVT */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVT", function() { return EVT; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   EVT: () => (/* binding */ EVT)
+/* harmony export */ });
 // 管理自定义事件
 class EVENT {
     constructor() {
@@ -900,6 +814,7 @@ class EVENT {
             clearDownloadRecord: 'clearDownloadRecord',
             resume: 'resume',
             clearSavedCrawl: 'clearSavedCrawl',
+            totalDownloadHistory: 'totalDownloadHistory',
         };
     }
     // 只绑定某个事件一次，用于防止事件重复绑定
@@ -931,12 +846,12 @@ const EVT = new EVENT();
 /*!****************************!*\
   !*** ./src/ts/FileName.ts ***!
   \****************************/
-/*! exports provided: fileName */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fileName", function() { return fileName; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   fileName: () => (/* binding */ fileName)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Store */ "./src/ts/Store.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -967,7 +882,7 @@ class FileName {
             ['\\|', '｜'],
             ['~', '～'],
         ];
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.previewFileName, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.previewFileName, () => {
             this.previewFileName();
         });
     }
@@ -985,16 +900,16 @@ class FileName {
     createIndex(data) {
         let index = data.index.toString();
         // 处理在前面填充 0 的情况
-        return _setting_Settings__WEBPACK_IMPORTED_MODULE_4__["settings"].zeroPadding
-            ? index.padStart(_setting_Settings__WEBPACK_IMPORTED_MODULE_4__["settings"].zeroPaddingLength, '0')
+        return _setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.zeroPadding
+            ? index.padStart(_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.zeroPaddingLength, '0')
             : index;
     }
     getNameRule(data) {
-        if (_Config__WEBPACK_IMPORTED_MODULE_5__["Config"].fileType.image.includes(data.ext.toLowerCase())) {
-            return _setting_Settings__WEBPACK_IMPORTED_MODULE_4__["settings"].userSetName || _Config__WEBPACK_IMPORTED_MODULE_5__["Config"].defaultNameRule;
+        if (_Config__WEBPACK_IMPORTED_MODULE_5__.Config.fileType.image.includes(data.ext.toLowerCase())) {
+            return _setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.userSetName || _Config__WEBPACK_IMPORTED_MODULE_5__.Config.defaultNameRule;
         }
         else {
-            return _setting_Settings__WEBPACK_IMPORTED_MODULE_4__["settings"].nameruleForNonImages || _Config__WEBPACK_IMPORTED_MODULE_5__["Config"].defaultNameRuleForNonImages;
+            return _setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.nameruleForNonImages || _Config__WEBPACK_IMPORTED_MODULE_5__.Config.defaultNameRuleForNonImages;
         }
     }
     // 生成文件名，传入参数为图片信息
@@ -1031,11 +946,11 @@ class FileName {
                 safe: false,
             },
             '{date}': {
-                value: _utils_DateFormat__WEBPACK_IMPORTED_MODULE_3__["DateFormat"].format(data.date, _setting_Settings__WEBPACK_IMPORTED_MODULE_4__["settings"].dateFormat),
+                value: _utils_DateFormat__WEBPACK_IMPORTED_MODULE_3__.DateFormat.format(data.date, _setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.dateFormat),
                 safe: false,
             },
             '{task_date}': {
-                value: _utils_DateFormat__WEBPACK_IMPORTED_MODULE_3__["DateFormat"].format(_Store__WEBPACK_IMPORTED_MODULE_1__["store"].date, _setting_Settings__WEBPACK_IMPORTED_MODULE_4__["settings"].dateFormat),
+                value: _utils_DateFormat__WEBPACK_IMPORTED_MODULE_3__.DateFormat.format(_Store__WEBPACK_IMPORTED_MODULE_1__.store.date, _setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.dateFormat),
                 prefix: '',
                 safe: false,
             },
@@ -1099,16 +1014,16 @@ class FileName {
     }
     // 预览文件名
     previewFileName() {
-        if (_Store__WEBPACK_IMPORTED_MODULE_1__["store"].result.length === 0) {
-            return alert(_Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_没有数据可供使用'));
+        if (_Store__WEBPACK_IMPORTED_MODULE_1__.store.result.length === 0) {
+            return alert(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_没有数据可供使用'));
         }
         // 使用数组储存和拼接字符串，提高性能
         const resultArr = [];
         let result = '';
-        const length = _Store__WEBPACK_IMPORTED_MODULE_1__["store"].result.length;
-        if (length < _Config__WEBPACK_IMPORTED_MODULE_5__["Config"].outputMax) {
+        const length = _Store__WEBPACK_IMPORTED_MODULE_1__.store.result.length;
+        if (length < _Config__WEBPACK_IMPORTED_MODULE_5__.Config.outputMax) {
             for (let i = 0; i < length; i++) {
-                const data = _Store__WEBPACK_IMPORTED_MODULE_1__["store"].result[i];
+                const data = _Store__WEBPACK_IMPORTED_MODULE_1__.store.result[i];
                 // 为生成的文件名添加颜色
                 const fullName = this.getFileName(data);
                 const part = fullName.split('/');
@@ -1135,13 +1050,13 @@ class FileName {
         else {
             // 不生成 html 标签，只生成纯文本，保存为 txt 文件
             for (let i = 0; i < length; i++) {
-                const data = _Store__WEBPACK_IMPORTED_MODULE_1__["store"].result[i];
+                const data = _Store__WEBPACK_IMPORTED_MODULE_1__.store.result[i];
                 const fullName = this.getFileName(data);
                 resultArr.push(fullName);
             }
             result = resultArr.join('\n');
         }
-        _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('output', {
+        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('output', {
             content: result,
             title: '_预览文件名',
         });
@@ -1157,12 +1072,12 @@ const fileName = new FileName();
 /*!**************************!*\
   !*** ./src/ts/Filter.ts ***!
   \**************************/
-/*! exports provided: filter */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return filter; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   filter: () => (/* binding */ filter)
+/* harmony export */ });
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Log */ "./src/ts/Log.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
@@ -1192,76 +1107,76 @@ class Filter {
         this.getFileNameExcludes();
     }
     getFeeType() {
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].free && _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].pay) {
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.free && _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.pay) {
             return;
         }
         let msg = '';
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].free) {
-            msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_免费投稿')}`;
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.free) {
+            msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_费用类型')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_免费投稿')}`;
         }
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].pay) {
-            msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_付费投稿')}`;
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.pay) {
+            msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_费用类型')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_付费投稿')}`;
         }
-        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+        _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(msg);
     }
     getFeeRange() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].feeSwitch) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.feeSwitch) {
             return;
         }
-        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_价格范围')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_最小值')} ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fee}¥`;
-        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_价格范围')}: ${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_最小值')} ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fee}¥`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(msg);
     }
     // 提示 id 范围设置
     getIdRange() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRangeSwitch) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.idRangeSwitch) {
             return;
         }
-        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(`id ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRange} ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRangeInput}`);
+        _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(`id ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.idRange} ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.idRangeInput}`);
     }
     // 提示投稿时间设置
     getPostDate() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDate) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDate) {
             return;
         }
-        if (isNaN(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateStart) || isNaN(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateStart)) {
-            const msg = _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_日期时间格式错误');
+        if (isNaN(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDateStart) || isNaN(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDateStart)) {
+            const msg = _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_日期时间格式错误');
             this.showWarning(msg);
         }
         else {
-            const start = new Date(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateStart).toLocaleString();
-            const end = new Date(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateEnd).toLocaleString();
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(`${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_时间范围')}: ${start} - ${end}`);
+            const start = new Date(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDateStart).toLocaleString();
+            const end = new Date(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDateEnd).toLocaleString();
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(`${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_时间范围')}: ${start} - ${end}`);
         }
     }
     getTitleMustText() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustTextSwitch) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleMustTextSwitch) {
             return;
         }
-        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题必须含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustText.toString()}`;
-        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_投稿标题必须含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleMustText.toString()}`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(msg);
     }
     getTitleCannotText() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotTextSwitch) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleCannotTextSwitch) {
             return;
         }
-        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotText.toString()}`;
-        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_投稿标题不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleCannotText.toString()}`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(msg);
     }
     getFileNameIncludes() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch ||
-            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length === 0) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameIncludeSwitch ||
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameInclude.length === 0) {
             return;
         }
-        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中必须含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.toString()}`;
-        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_文件名中必须含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameInclude.toString()}`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(msg);
     }
     getFileNameExcludes() {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch ||
-            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length === 0) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameExcludeSwitch ||
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameExclude.length === 0) {
             return;
         }
-        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.toString()}`;
-        _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(msg);
+        const msg = `${_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_文件名中不能含有文字')}: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameExclude.toString()}`;
+        _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(msg);
     }
     /**生成文章的 URL */
     createPostURL(option) {
@@ -1277,47 +1192,47 @@ class Filter {
             return false;
         }
         if (!this.checkfeeType(option.fee)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
-                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_费用类型'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_费用类型'));
             return false;
         }
         if (!this.checkfeeRange(option.fee)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
-                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_价格范围'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_价格范围'));
             return false;
         }
         if (!this.checkIdRange(option.id)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
-                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_id范围'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_id范围'));
             return false;
         }
         if (!this.checkPostDate(option.date)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
-                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿时间'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_投稿时间'));
             return false;
         }
         if (!this.checkTitltMustText(option.title)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
-                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题必须含有文字'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_投稿标题必须含有文字'));
             return false;
         }
         if (!this.checkTitltCannotText(option.title)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', this.createPostURL(option)) +
-                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_投稿标题不能含有文字'));
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_跳过文章因为', this.createPostURL(option)) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_投稿标题不能含有文字'));
             return false;
         }
         if (!this.checkFileNameInclude(option.name)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', `${option.name}.${option.ext}`) +
-                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中必须含有文字') +
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_跳过文章因为', `${option.name}.${option.ext}`) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_文件名中必须含有文字') +
                 ': ' +
-                _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.join(','));
+                _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameInclude.join(','));
             return false;
         }
         if (!this.checkFileNameExclude(option.name)) {
-            _Log__WEBPACK_IMPORTED_MODULE_0__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_跳过文章因为', `${option.name}.${option.ext}`) +
-                _Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_文件名中不能含有文字') +
+            _Log__WEBPACK_IMPORTED_MODULE_0__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_跳过文章因为', `${option.name}.${option.ext}`) +
+                _Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_文件名中不能含有文字') +
                 ': ' +
-                _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.join(','));
+                _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameExclude.join(','));
             return false;
         }
         return true;
@@ -1328,43 +1243,43 @@ class Filter {
             return true;
         }
         // 检查 ext 存在于哪种类型里，然后检查这个类型是否被选中
-        for (const [key, value] of Object.entries(_Config__WEBPACK_IMPORTED_MODULE_2__["Config"].fileType)) {
+        for (const [key, value] of Object.entries(_Config__WEBPACK_IMPORTED_MODULE_2__.Config.fileType)) {
             if (value.includes(ext)) {
-                return _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"][key];
+                return _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings[key];
             }
         }
         // 如果这个 ext 不存在任何规定的类型里，则把它当作 other 类型，决定是否保留
-        return _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].other;
+        return _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.other;
     }
     checkfeeType(fee) {
         if (fee === undefined) {
             return true;
         }
         if (fee > 0) {
-            return _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].pay;
+            return _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.pay;
         }
         else {
-            return _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].free;
+            return _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.free;
         }
     }
     checkfeeRange(fee) {
-        if (fee === undefined || !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].feeSwitch) {
+        if (fee === undefined || !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.feeSwitch) {
             return true;
         }
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].feeRange === '>=') {
-            return fee >= _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fee;
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.feeRange === '>=') {
+            return fee >= _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fee;
         }
         else {
-            return fee === _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fee;
+            return fee === _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fee;
         }
     }
     checkIdRange(id) {
-        if (id === undefined || !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRangeSwitch) {
+        if (id === undefined || !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.idRangeSwitch) {
             return true;
         }
         const nowId = parseInt(id.toString());
-        const setId = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRangeInput;
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].idRange === '>') {
+        const setId = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.idRangeInput;
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.idRange === '>') {
             return nowId > setId;
         }
         else {
@@ -1372,67 +1287,67 @@ class Filter {
         }
     }
     checkPostDate(date) {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDate ||
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDate ||
             date === undefined ||
-            !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateStart ||
-            !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateEnd) {
+            !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDateStart ||
+            !_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDateEnd) {
             return true;
         }
         const nowDate = new Date(date);
-        return (nowDate.getTime() >= _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateStart &&
-            nowDate.getTime() <= _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].postDateEnd);
+        return (nowDate.getTime() >= _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDateStart &&
+            nowDate.getTime() <= _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.postDateEnd);
     }
     checkTitltMustText(title) {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustTextSwitch ||
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleMustTextSwitch ||
             !title ||
-            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustText.length === 0) {
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleMustText.length === 0) {
             return true;
         }
         title = title.toLowerCase();
-        const match = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleMustText.filter((str) => title.includes(str.toLowerCase()));
+        const match = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleMustText.filter((str) => title.includes(str.toLowerCase()));
         if (match.length === 0) {
             return false;
         }
         return true;
     }
     checkTitltCannotText(title) {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotTextSwitch ||
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleCannotTextSwitch ||
             !title ||
-            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotText.length === 0) {
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleCannotText.length === 0) {
             return true;
         }
         title = title.toLowerCase();
-        const match = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].titleCannotText.filter((str) => title.includes(str.toLowerCase()));
+        const match = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.titleCannotText.filter((str) => title.includes(str.toLowerCase()));
         if (match.length > 0) {
             return false;
         }
         return true;
     }
     checkFileNameInclude(name) {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameIncludeSwitch ||
-            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.length === 0 ||
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameIncludeSwitch ||
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameInclude.length === 0 ||
             !name) {
             return true;
         }
-        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameInclude.some((str) => name.toLowerCase().includes(str.toLowerCase()));
+        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameInclude.some((str) => name.toLowerCase().includes(str.toLowerCase()));
         return find;
     }
     checkFileNameExclude(name) {
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExcludeSwitch ||
-            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.length === 0 ||
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameExcludeSwitch ||
+            _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameExclude.length === 0 ||
             !name) {
             return true;
         }
-        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].fileNameExclude.some((str) => name.toLowerCase().includes(str.toLowerCase()));
+        const find = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.fileNameExclude.some((str) => name.toLowerCase().includes(str.toLowerCase()));
         return !find;
     }
     // 如果设置项的值不合法，则显示提示
     showWarning(msg) {
-        _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('wrongSetting');
-        _MsgBox__WEBPACK_IMPORTED_MODULE_4__["msgBox"].error(msg);
+        _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('wrongSetting');
+        _MsgBox__WEBPACK_IMPORTED_MODULE_4__.msgBox.error(msg);
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.crawlStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.crawlStart, () => {
             this.showTip();
         });
     }
@@ -1447,12 +1362,12 @@ const filter = new Filter();
 /*!****************************!*\
   !*** ./src/ts/FormHTML.ts ***!
   \****************************/
-/*! exports provided: formHtml */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formHtml", function() { return formHtml; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formHtml: () => (/* binding */ formHtml)
+/* harmony export */ });
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 
 // 已使用的最大编号为 57
@@ -1462,27 +1377,27 @@ const formHtml = `<form class="settingForm">
 
     <input type="checkbox" name="image" id="fileType1" class="need_beautify checkbox_common" checked>
     <span class="beautify_checkbox"></span>
-    <label for="fileType1" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.image.join()}" data-xztext="_图片"></label>
+    <label for="fileType1" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.fileType.image.join()}" data-xztext="_图片"></label>
     
     <input type="checkbox" name="music" id="fileType2" class="need_beautify checkbox_common" checked>
     <span class="beautify_checkbox"></span>
-    <label for="fileType2" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.music.join()}" data-xztext="_音乐"></label>
+    <label for="fileType2" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.fileType.music.join()}" data-xztext="_音乐"></label>
 
     <input type="checkbox" name="video" id="fileType3" class="need_beautify checkbox_common" checked>
     <span class="beautify_checkbox"></span>
-    <label for="fileType3" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.video.join()}" data-xztext="_视频"></label>
+    <label for="fileType3" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.fileType.video.join()}" data-xztext="_视频"></label>
     
     <input type="checkbox" name="compressed" id="fileType4" class="need_beautify checkbox_common" checked>
     <span class="beautify_checkbox"></span>
-    <label for="fileType4" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.compressed.join()}" data-xztext="_压缩文件"></label>
+    <label for="fileType4" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.fileType.compressed.join()}" data-xztext="_压缩文件"></label>
     
     <input type="checkbox" name="ps" id="fileType5" class="need_beautify checkbox_common" checked>
     <span class="beautify_checkbox"></span>
-    <label for="fileType5" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.ps.join()}" data-xztext="_PS文件"></label>
+    <label for="fileType5" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.fileType.ps.join()}" data-xztext="_PS文件"></label>
 
     <input type="checkbox" name="other" id="fileType6" class="need_beautify checkbox_common" checked>
     <span class="beautify_checkbox"></span>
-    <label for="fileType6" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].fileType.other.join()}" data-xztext="_其他"></label>
+    <label for="fileType6" class="has_tip" data-tip="${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.fileType.other.join()}" data-xztext="_其他"></label>
     </p>
 
     <p class="option" data-no="21">
@@ -1625,7 +1540,7 @@ const formHtml = `<form class="settingForm">
       <span class="settingNameStyle1">
       <span data-xztext="_图片的命名规则"></span>
       </span>
-      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].defaultNameRule}">
+      <input type="text" name="userSetName" class="setinput_style1 blue fileNameRule" value="${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.defaultNameRule}">
       &nbsp;
       <select name="fileNameSelect" class="beautify_scrollbar">
         <option value="default">…</option>
@@ -1649,7 +1564,7 @@ const formHtml = `<form class="settingForm">
       <p class="tip tipWithBtn" id="tipCreateFolder">
       <span class="left">
       <span data-xztext="_设置文件夹名的提示"></span>
-      <strong>${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].defaultNameRule}</strong>
+      <strong>${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.defaultNameRule}</strong>
       </span>
       <span class="right">
         <button type="button" class="textButton gray1" id="tipCreateFolderBtn" data-xztext="_我知道了">
@@ -1658,7 +1573,7 @@ const formHtml = `<form class="settingForm">
     </p>
     <p class="fileNameTip tip">
       <span data-xztext="_设置文件夹名的提示"></span>
-      <strong>${_Config__WEBPACK_IMPORTED_MODULE_0__["Config"].defaultNameRule}</strong>
+      <strong>${_Config__WEBPACK_IMPORTED_MODULE_0__.Config.defaultNameRule}</strong>
       <br>
       <span data-xztext="_命名标记提醒"></span>
       <br>
@@ -1779,7 +1694,6 @@ const formHtml = `<form class="settingForm">
     <span data-xztext="_间隔时间"></span>
     <input type="text" name="crawlInterval" class="setinput_style1 blue" value="1">
     <span data-xztext="_秒"></span>
-    </span>
     </p>
     
     <p class="option" data-no="56">
@@ -1791,7 +1705,21 @@ const formHtml = `<form class="settingForm">
     <span data-xztext="_间隔时间"></span>
     <input type="text" name="downloadInterval" class="setinput_style1 blue" value="1">
     <span data-xztext="_秒"></span>
+    </p>
+    
+    <p class="option" data-no="58">
+    <span class="has_tip settingNameStyle1"  data-xztip="_每天下载的文件大小限制的说明">
+    <span data-xztext="_每天下载的文件大小限制"></span>
+    <span class="gray1"> ? </span>
     </span>
+    <input type="checkbox" name="totalDownloadLimitSwitch" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch" tabindex="0"></span>
+    
+    <span class="subOptionWrap" data-show="totalDownloadLimitSwitch">
+    <input type="text" name="totalDownloadLimit" class="setinput_style1 blue" value="10">
+    <span>GiB</span>
+    </span>
+    <button class="textButton gray1" type="button" id="totalDownloadHistory" data-xztext="_查看历史数据"></button>
     </p>
       
     <p class="option" data-no="28">
@@ -1892,12 +1820,12 @@ const formHtml = `<form class="settingForm">
 /*!********************************!*\
   !*** ./src/ts/InitHomePage.ts ***!
   \********************************/
-/*! exports provided: InitHomePage */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitHomePage", function() { return InitHomePage; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InitHomePage: () => (/* binding */ InitHomePage)
+/* harmony export */ });
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
@@ -1914,7 +1842,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
+class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPageBase {
     constructor() {
         super();
         this.crawlFlag = 'supporting';
@@ -1922,17 +1850,17 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
     }
     // 添加中间按钮
     addCrawlBtns() {
-        if (_PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Home ||
-            _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Supporting) {
-            _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取赞助的所有用户的投稿').addEventListener('click', () => {
+        if (_PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.type === _PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.list.Home ||
+            _PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.type === _PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.list.Supporting) {
+            _Tools__WEBPACK_IMPORTED_MODULE_2__.Tools.addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.bgBlue, '_抓取赞助的所有用户的投稿').addEventListener('click', () => {
                 this.crawlFlag = 'supporting';
                 this.readyCrawl();
             });
         }
-        if (_PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Home ||
-            _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Following) {
-            _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取关注的所有用户的投稿').addEventListener('click', () => {
-                const confirm = window.confirm(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取关注的所有用户的投稿的提示'));
+        if (_PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.type === _PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.list.Home ||
+            _PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.type === _PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.list.Following) {
+            _Tools__WEBPACK_IMPORTED_MODULE_2__.Tools.addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.bgBlue, '_抓取关注的所有用户的投稿').addEventListener('click', () => {
+                const confirm = window.confirm(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取关注的所有用户的投稿的提示'));
                 if (!confirm) {
                     return;
                 }
@@ -1940,9 +1868,9 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
                 this.readyCrawl();
             });
         }
-        if (_PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].type === _PageType__WEBPACK_IMPORTED_MODULE_7__["pageType"].list.Home) {
-            _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgGreen, '_清空已保存的抓取结果').addEventListener('click', () => {
-                _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('clearSavedCrawl');
+        if (_PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.type === _PageType__WEBPACK_IMPORTED_MODULE_7__.pageType.list.Home) {
+            _Tools__WEBPACK_IMPORTED_MODULE_2__.Tools.addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.bgGreen, '_清空已保存的抓取结果').addEventListener('click', () => {
+                _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('clearSavedCrawl');
             });
         }
     }
@@ -1956,18 +1884,18 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
     }
     /**获取赞助的所有用户的所有投稿 */
     async getSupportingPostList() {
-        _Log__WEBPACK_IMPORTED_MODULE_6__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取赞助的所有用户的投稿'));
+        _Log__WEBPACK_IMPORTED_MODULE_6__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取赞助的所有用户的投稿'));
         let data;
         if (this.nextUrl) {
-            data = (await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(this.nextUrl));
+            data = (await _API__WEBPACK_IMPORTED_MODULE_4__.API.request(this.nextUrl));
         }
         else {
-            data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getPostListSupporting(300);
+            data = await _API__WEBPACK_IMPORTED_MODULE_4__.API.getPostListSupporting(300);
         }
         // 如果没有赞助任何创作者, 那么这里获取到的是空数据
         // {"body":{"items":[],"nextUrl":null}}
         if (data.body.items.length === 0 && data.body.nextUrl === null) {
-            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_没有赞助的用户'));
+            _Log__WEBPACK_IMPORTED_MODULE_6__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_没有赞助的用户'));
             return this.FetchPostListFinished();
         }
         this.afterFetchPostListOld(data);
@@ -1975,10 +1903,10 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
     /**获取关注的所有用户的所有投稿 */
     async getFollowingPostList() {
         var _a;
-        _Log__WEBPACK_IMPORTED_MODULE_6__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取关注的所有用户的投稿'));
+        _Log__WEBPACK_IMPORTED_MODULE_6__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取关注的所有用户的投稿'));
         // 获取关注的用户列表
         const url = 'https://api.fanbox.cc/creator.listFollowing';
-        const json = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(url);
+        const json = await _API__WEBPACK_IMPORTED_MODULE_4__.API.request(url);
         if (((_a = json === null || json === void 0 ? void 0 : json.body) === null || _a === void 0 ? void 0 : _a.length) > 0) {
             const userList = json.body.map((user) => {
                 return {
@@ -1986,10 +1914,10 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
                     name: user.user.name,
                 };
             });
-            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_正在关注的创作者') + ':');
+            _Log__WEBPACK_IMPORTED_MODULE_6__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_正在关注的创作者') + ':');
             // 获取每个作者的文章列表分页网址
             for (const user of userList) {
-                _Log__WEBPACK_IMPORTED_MODULE_6__["log"].log(user.name);
+                _Log__WEBPACK_IMPORTED_MODULE_6__.log.log(user.name);
                 await this.getPostListURLs(user.creatorId);
             }
             // console.log(this.postListURLs)
@@ -1997,7 +1925,7 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
             this.FetchPostList();
         }
         else {
-            _Log__WEBPACK_IMPORTED_MODULE_6__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_没有找到关注的用户'));
+            _Log__WEBPACK_IMPORTED_MODULE_6__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_没有找到关注的用户'));
             return this.FetchPostListFinished();
         }
     }
@@ -2011,10 +1939,8 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
 /*!****************************!*\
   !*** ./src/ts/InitPage.ts ***!
   \****************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PageType */ "./src/ts/PageType.ts");
@@ -2033,25 +1959,25 @@ class InitPage {
     constructor() {
         this.initPage();
         // 页面类型变化时，初始化抓取流程
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.pageSwitchedTypeChange, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.pageSwitchedTypeChange, () => {
             setTimeout(() => {
                 this.initPage();
             }, 0);
         });
     }
     initPage() {
-        switch (_PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].type) {
-            case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.Home:
-            case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.Supporting:
-            case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.Following:
-                return new _InitHomePage__WEBPACK_IMPORTED_MODULE_2__["InitHomePage"]();
-            case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.UserHome:
-            case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.UserPostList:
-                return new _InitPostListPage__WEBPACK_IMPORTED_MODULE_3__["InitPostListPage"]();
-            case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.Post:
-                return new _InitPostPage__WEBPACK_IMPORTED_MODULE_5__["InitPostPage"]();
-            case _PageType__WEBPACK_IMPORTED_MODULE_1__["pageType"].list.Tags:
-                return new _InitTagPage__WEBPACK_IMPORTED_MODULE_4__["InitTagPage"]();
+        switch (_PageType__WEBPACK_IMPORTED_MODULE_1__.pageType.type) {
+            case _PageType__WEBPACK_IMPORTED_MODULE_1__.pageType.list.Home:
+            case _PageType__WEBPACK_IMPORTED_MODULE_1__.pageType.list.Supporting:
+            case _PageType__WEBPACK_IMPORTED_MODULE_1__.pageType.list.Following:
+                return new _InitHomePage__WEBPACK_IMPORTED_MODULE_2__.InitHomePage();
+            case _PageType__WEBPACK_IMPORTED_MODULE_1__.pageType.list.UserHome:
+            case _PageType__WEBPACK_IMPORTED_MODULE_1__.pageType.list.UserPostList:
+                return new _InitPostListPage__WEBPACK_IMPORTED_MODULE_3__.InitPostListPage();
+            case _PageType__WEBPACK_IMPORTED_MODULE_1__.pageType.list.Post:
+                return new _InitPostPage__WEBPACK_IMPORTED_MODULE_5__.InitPostPage();
+            case _PageType__WEBPACK_IMPORTED_MODULE_1__.pageType.list.Tags:
+                return new _InitTagPage__WEBPACK_IMPORTED_MODULE_4__.InitTagPage();
             default:
                 return;
         }
@@ -2066,12 +1992,12 @@ new InitPage();
 /*!********************************!*\
   !*** ./src/ts/InitPageBase.ts ***!
   \********************************/
-/*! exports provided: InitPageBase */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitPageBase", function() { return InitPageBase; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InitPageBase: () => (/* binding */ InitPageBase)
+/* harmony export */ });
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
 /* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Filter */ "./src/ts/Filter.ts");
@@ -2113,32 +2039,32 @@ class InitPageBase {
         this.addCrawlBtns();
         this.addAnyElement();
         this.initAny();
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].list.pageSwitchedTypeChange, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.list.pageSwitchedTypeChange, () => {
             this.destroy();
         });
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].bindOnce('crawlCompleteTime', _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].list.crawlFinish, () => {
-            _States__WEBPACK_IMPORTED_MODULE_8__["states"].crawlCompleteTime = new Date().getTime();
+        _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.bindOnce('crawlCompleteTime', _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.list.crawlFinish, () => {
+            _States__WEBPACK_IMPORTED_MODULE_8__.states.crawlCompleteTime = new Date().getTime();
         });
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].bindOnce('downloadCompleteTime', _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].list.downloadComplete, () => {
-            _States__WEBPACK_IMPORTED_MODULE_8__["states"].downloadCompleteTime = new Date().getTime();
+        _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.bindOnce('downloadCompleteTime', _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.list.downloadComplete, () => {
+            _States__WEBPACK_IMPORTED_MODULE_8__.states.downloadCompleteTime = new Date().getTime();
         });
     }
     // 各个子类私有的初始化内容
     initAny() { }
     // 销毁初始化页面时添加的元素和事件，恢复设置项等
     destroy() {
-        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].clearSlot('crawlBtns');
+        _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.clearSlot('crawlBtns');
     }
     // 添加中间按钮
     addCrawlBtns() { }
     // 添加其他元素（如果有）
     addAnyElement() { }
     confirmRecrawl() {
-        if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length > 0) {
+        if (_Store__WEBPACK_IMPORTED_MODULE_3__.store.result.length > 0) {
             // 如果已经有抓取结果，则检查这些抓取结果是否已被下载过
             // 如果没有被下载过，则显示提醒
-            if (_States__WEBPACK_IMPORTED_MODULE_8__["states"].crawlCompleteTime > _States__WEBPACK_IMPORTED_MODULE_8__["states"].downloadCompleteTime) {
-                const _confirm = window.confirm(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_已有抓取结果时进行提醒'));
+            if (_States__WEBPACK_IMPORTED_MODULE_8__.states.crawlCompleteTime > _States__WEBPACK_IMPORTED_MODULE_8__.states.downloadCompleteTime) {
+                const _confirm = window.confirm(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_已有抓取结果时进行提醒'));
                 return _confirm;
             }
         }
@@ -2146,18 +2072,18 @@ class InitPageBase {
     }
     // 准备抓取，进行抓取之前的一些检查工作。必要时可以在子类中改写
     async readyCrawl() {
-        if (_States__WEBPACK_IMPORTED_MODULE_8__["states"].busy) {
-            window.alert(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_当前任务尚未完成2'));
+        if (_States__WEBPACK_IMPORTED_MODULE_8__.states.busy) {
+            window.alert(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_当前任务尚未完成2'));
             return;
         }
         if (!this.confirmRecrawl()) {
             return;
         }
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('clearLog');
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
-        _Toast__WEBPACK_IMPORTED_MODULE_10__["toast"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始抓取'));
-        _MsgBox__WEBPACK_IMPORTED_MODULE_9__["msgBox"].resetOnce('tipLinktext');
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlStart');
+        _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('clearLog');
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_开始抓取'));
+        _Toast__WEBPACK_IMPORTED_MODULE_10__.toast.show(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_开始抓取'));
+        _MsgBox__WEBPACK_IMPORTED_MODULE_9__.msgBox.resetOnce('tipLinktext');
+        _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('crawlStart');
         this.getPostDataThreadNum = 0;
         this.getPostDatafinished = 0;
         this.nextUrl = null;
@@ -2172,7 +2098,7 @@ class InitPageBase {
     /**获取一个作者的文章列表分页网址 */
     // 获取分页数据，然后构造出每次请求该作者 300 篇文章的 URL
     async getPostListURLs(creatorId) {
-        const paginateData = await _API__WEBPACK_IMPORTED_MODULE_7__["API"].request(`https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`);
+        const paginateData = await _API__WEBPACK_IMPORTED_MODULE_7__.API.request(`https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`);
         // console.log(paginateData.body)
         if ((paginateData === null || paginateData === void 0 ? void 0 : paginateData.body.length) > 0) {
             // 分页数据里的 URL 格式如下：
@@ -2191,26 +2117,26 @@ class InitPageBase {
     }
     /**获取文章列表数据。如果传入了 URL，则是为了重试抓取该 URL */
     async FetchPostList(url) {
-        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].wait();
+        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.wait();
         if (url === undefined) {
             url = this.postListURLs.shift();
             if (url === undefined) {
-                _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(`Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`);
+                _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(`Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`);
                 return this.FetchPostListFinished();
             }
         }
         try {
-            const data = (await _API__WEBPACK_IMPORTED_MODULE_7__["API"].request(url));
-            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].addTime();
+            const data = (await _API__WEBPACK_IMPORTED_MODULE_7__.API.request(url));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.addTime();
             this.afterFetchPostList(data);
         }
         catch (error) {
             console.log(error);
             if (error.message) {
-                _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(error.message);
+                _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(error.message);
             }
-            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_请求失败下载器会重试这个请求'));
-            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].addTime('long');
+            _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_请求失败下载器会重试这个请求'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.addTime('long');
             this.FetchPostList(url);
         }
     }
@@ -2229,9 +2155,9 @@ class InitPageBase {
             const fee = item.feeRequired;
             const date = item.publishedDatetime;
             const title = item.title;
-            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, creatorId, fee, date, title });
+            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__.filter.check({ id, creatorId, fee, date, title });
             if (check) {
-                _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.push(id);
+                _Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.push(id);
             }
         }
         if (this.postListURLs.length > 0) {
@@ -2257,9 +2183,9 @@ class InitPageBase {
             const fee = item.feeRequired;
             const date = item.publishedDatetime;
             const title = item.title;
-            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__["filter"].check({ id, creatorId, fee, date, title });
+            const check = _Filter__WEBPACK_IMPORTED_MODULE_2__.filter.check({ id, creatorId, fee, date, title });
             if (check) {
-                _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.push(id);
+                _Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.push(id);
             }
         }
         if (this.nextUrl) {
@@ -2271,14 +2197,14 @@ class InitPageBase {
     }
     /**获取了要抓取的文章的 ID 列表之后，开始抓取每个文章的详细数据 */
     FetchPostListFinished() {
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_列表页抓取完成'));
-        if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.length === 0) {
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_列表页抓取完成'));
+        if (_Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.length === 0) {
             return this.noResult();
         }
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_当前有x个投稿', _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.length.toString()));
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_开始获取投稿信息'));
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_当前有x个投稿', _Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.length.toString()));
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_开始获取投稿信息'));
         for (let i = 0; i < this.getPostDataThreadMax; i++) {
-            const postId = _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.shift();
+            const postId = _Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.shift();
             if (postId) {
                 this.getPostDataThreadNum++;
                 this.fetchPost(postId);
@@ -2289,28 +2215,28 @@ class InitPageBase {
         }
     }
     async fetchPost(postId) {
-        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].wait();
+        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.wait();
         try {
-            const data = await _API__WEBPACK_IMPORTED_MODULE_7__["API"].getPost(postId);
-            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].addTime();
+            const data = await _API__WEBPACK_IMPORTED_MODULE_7__.API.getPost(postId);
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.addTime();
             this.afterFetchPost(data);
         }
         catch (error) {
             console.log(error);
             if (error.message) {
-                _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(error.message);
+                _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(error.message);
             }
-            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_请求失败下载器会重试这个请求'));
-            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__["crawlInterval"].addTime('long');
+            _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_请求失败下载器会重试这个请求'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.addTime('long');
             this.fetchPost(postId);
         }
     }
     afterFetchPost(data) {
-        _SaveData__WEBPACK_IMPORTED_MODULE_6__["saveData"].receive(data.body);
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(`${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_待处理')} ${_Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.length}`, 1, false);
+        _SaveData__WEBPACK_IMPORTED_MODULE_6__.saveData.receive(data.body);
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log(`${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_待处理')} ${_Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.length}`, 1, false);
         // 当抓取完一个文章之后，如果还有等待抓取的文章就继续抓取
         // 否则当前抓取线程结束。等待所有抓取线程完成之后，文章数据就全部获取了
-        const postId = _Store__WEBPACK_IMPORTED_MODULE_3__["store"].postIdList.shift();
+        const postId = _Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.shift();
         if (postId) {
             this.fetchPost(postId);
         }
@@ -2323,26 +2249,26 @@ class InitPageBase {
     }
     // 抓取完毕
     crawlFinished() {
-        if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].skipDueToFee > 0) {
-            _Log__WEBPACK_IMPORTED_MODULE_4__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_因为价格限制而跳过的投稿数量') + _Store__WEBPACK_IMPORTED_MODULE_3__["store"].skipDueToFee);
+        if (_Store__WEBPACK_IMPORTED_MODULE_3__.store.skipDueToFee > 0) {
+            _Log__WEBPACK_IMPORTED_MODULE_4__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_因为价格限制而跳过的投稿数量') + _Store__WEBPACK_IMPORTED_MODULE_3__.store.skipDueToFee);
         }
-        if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length === 0) {
+        if (_Store__WEBPACK_IMPORTED_MODULE_3__.store.result.length === 0) {
             return this.noResult();
         }
         // 把抓取结果按照 postid 升序排列
-        _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.sort(_utils_Utils__WEBPACK_IMPORTED_MODULE_11__["Utils"].sortByProperty('postId', 'asc'));
-        _Store__WEBPACK_IMPORTED_MODULE_3__["store"].date = new Date();
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取文件数量', _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length.toString()));
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取完毕'), 2);
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlFinish');
+        _Store__WEBPACK_IMPORTED_MODULE_3__.store.result.sort(_utils_Utils__WEBPACK_IMPORTED_MODULE_11__.Utils.sortByProperty('postId', 'asc'));
+        _Store__WEBPACK_IMPORTED_MODULE_3__.store.date = new Date();
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取文件数量', _Store__WEBPACK_IMPORTED_MODULE_3__.store.result.length.toString()));
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取完毕'), 2);
+        _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('crawlFinish');
         // console.log(store.result)
     }
     // 抓取结果为 0 时输出提示
     noResult() {
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlFinish');
-        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('crawlEmpty');
-        _Log__WEBPACK_IMPORTED_MODULE_4__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取结果为零'), 2);
-        _MsgBox__WEBPACK_IMPORTED_MODULE_9__["msgBox"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取结果为零'));
+        _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('crawlFinish');
+        _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('crawlEmpty');
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取结果为零'), 2);
+        _MsgBox__WEBPACK_IMPORTED_MODULE_9__.msgBox.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取结果为零'));
     }
 }
 
@@ -2354,12 +2280,12 @@ class InitPageBase {
 /*!************************************!*\
   !*** ./src/ts/InitPostListPage.ts ***!
   \************************************/
-/*! exports provided: InitPostListPage */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitPostListPage", function() { return InitPostListPage; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InitPostListPage: () => (/* binding */ InitPostListPage)
+/* harmony export */ });
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
@@ -2372,21 +2298,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
+class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPageBase {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取该用户的投稿').addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_2__.Tools.addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.bgBlue, '_抓取该用户的投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     async nextStep() {
-        _Log__WEBPACK_IMPORTED_MODULE_5__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取该用户的投稿'));
+        _Log__WEBPACK_IMPORTED_MODULE_5__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取该用户的投稿'));
         this.postListURLs = [];
-        const creatorId = _API__WEBPACK_IMPORTED_MODULE_4__["API"].getCreatorId(location.href);
+        const creatorId = _API__WEBPACK_IMPORTED_MODULE_4__.API.getCreatorId(location.href);
         await this.getPostListURLs(creatorId);
         this.FetchPostList();
     }
@@ -2400,12 +2326,12 @@ class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitP
 /*!********************************!*\
   !*** ./src/ts/InitPostPage.ts ***!
   \********************************/
-/*! exports provided: InitPostPage */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitPostPage", function() { return InitPostPage; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InitPostPage: () => (/* binding */ InitPostPage)
+/* harmony export */ });
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
@@ -2426,45 +2352,45 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
+class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPageBase {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取这篇投稿').addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_2__.Tools.addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.bgBlue, '_抓取这篇投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     initAny() {
-        _EVT__WEBPACK_IMPORTED_MODULE_6__["EVT"].bindOnce('quickCrawl', _EVT__WEBPACK_IMPORTED_MODULE_6__["EVT"].list.quickCrawl, () => {
-            if (!_States__WEBPACK_IMPORTED_MODULE_7__["states"].busy) {
+        _EVT__WEBPACK_IMPORTED_MODULE_6__.EVT.bindOnce('quickCrawl', _EVT__WEBPACK_IMPORTED_MODULE_6__.EVT.list.quickCrawl, () => {
+            if (!_States__WEBPACK_IMPORTED_MODULE_7__.states.busy) {
                 this.readyCrawl();
             }
         });
     }
     destroy() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].clearSlot('crawlBtns');
+        _Tools__WEBPACK_IMPORTED_MODULE_2__.Tools.clearSlot('crawlBtns');
     }
     nextStep() {
         this.getPostDataThreadNum = 1;
         this.fetchPost();
     }
     async fetchPost() {
-        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__["crawlInterval"].wait();
+        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__.crawlInterval.wait();
         try {
-            const data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].getURLPathField(window.location.pathname, 'posts'));
-            _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__["crawlInterval"].addTime();
+            const data = await _API__WEBPACK_IMPORTED_MODULE_4__.API.getPost(_utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.getURLPathField(window.location.pathname, 'posts'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__.crawlInterval.addTime();
             this.afterFetchPost(data);
         }
         catch (error) {
             console.log(error);
             if (error.message) {
-                _Log__WEBPACK_IMPORTED_MODULE_8__["log"].error(error.message);
+                _Log__WEBPACK_IMPORTED_MODULE_8__.log.error(error.message);
             }
-            _Log__WEBPACK_IMPORTED_MODULE_8__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_请求失败下载器会重试这个请求'));
-            _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__["crawlInterval"].addTime('long');
+            _Log__WEBPACK_IMPORTED_MODULE_8__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_请求失败下载器会重试这个请求'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_9__.crawlInterval.addTime('long');
             this.fetchPost();
         }
     }
@@ -2478,12 +2404,12 @@ class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageB
 /*!*******************************!*\
   !*** ./src/ts/InitTagPage.ts ***!
   \*******************************/
-/*! exports provided: InitTagPage */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitTagPage", function() { return InitTagPage; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InitTagPage: () => (/* binding */ InitTagPage)
+/* harmony export */ });
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
@@ -2498,25 +2424,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBase"] {
+class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPageBase {
     constructor() {
         super();
         this.init();
     }
     // 添加中间按钮
     addCrawlBtns() {
-        _Tools__WEBPACK_IMPORTED_MODULE_2__["Tools"].addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].bgBlue, '_抓取该tag的投稿').addEventListener('click', () => {
+        _Tools__WEBPACK_IMPORTED_MODULE_2__.Tools.addBtn('crawlBtns', _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.bgBlue, '_抓取该tag的投稿').addEventListener('click', () => {
             this.readyCrawl();
         });
     }
     async FetchPostList() {
-        _Log__WEBPACK_IMPORTED_MODULE_6__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取该tag的投稿'));
+        _Log__WEBPACK_IMPORTED_MODULE_6__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取该tag的投稿'));
         let data;
         if (this.nextUrl) {
-            data = (await _API__WEBPACK_IMPORTED_MODULE_4__["API"].request(this.nextUrl));
+            data = (await _API__WEBPACK_IMPORTED_MODULE_4__.API.request(this.nextUrl));
         }
         else {
-            data = await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getTagPostListByUser(await _API__WEBPACK_IMPORTED_MODULE_4__["API"].getUserId(_API__WEBPACK_IMPORTED_MODULE_4__["API"].getCreatorId(location.href)), _utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].getURLPathField(window.location.pathname, 'tags'));
+            data = await _API__WEBPACK_IMPORTED_MODULE_4__.API.getTagPostListByUser(await _API__WEBPACK_IMPORTED_MODULE_4__.API.getUserId(_API__WEBPACK_IMPORTED_MODULE_4__.API.getCreatorId(location.href)), _utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.getURLPathField(window.location.pathname, 'tags'));
         }
         this.afterFetchPostListOld(data);
     }
@@ -2530,12 +2456,12 @@ class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__["InitPageBa
 /*!************************!*\
   !*** ./src/ts/Lang.ts ***!
   \************************/
-/*! exports provided: lang */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lang", function() { return lang; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   lang: () => (/* binding */ lang)
+/* harmony export */ });
 /* harmony import */ var _langText__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./langText */ "./src/ts/langText.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 
@@ -2558,7 +2484,7 @@ class Lang {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.settingChange, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.settingChange, (ev) => {
             const data = ev.detail.data;
             if (data.name !== 'userSetLang') {
                 return;
@@ -2566,7 +2492,7 @@ class Lang {
             const old = this.type;
             this.type = data.value === 'auto' ? this.getHtmlLangType() : data.value;
             if (this.type !== old) {
-                _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].fire('langChange');
+                _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('langChange');
                 this.elList.forEach((el) => {
                     this.handleMark(el);
                 });
@@ -2595,7 +2521,7 @@ class Lang {
     }
     // translate
     transl(name, ...arg) {
-        let content = _langText__WEBPACK_IMPORTED_MODULE_0__["langText"][name][this.flagIndex.get(this.type)];
+        let content = _langText__WEBPACK_IMPORTED_MODULE_0__.langText[name][this.flagIndex.get(this.type)];
         arg.forEach((val) => (content = content.replace('{}', val)));
         return content;
     }
@@ -2685,10 +2611,8 @@ const lang = new Lang();
 /*!************************************!*\
   !*** ./src/ts/ListenPageSwitch.ts ***!
   \************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 
@@ -2713,7 +2637,7 @@ class ListenPageSwitch {
         ;
         ['pushState', 'popstate', 'replaceState'].forEach((item) => {
             window.addEventListener(item, () => {
-                _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('pageSwitch');
+                _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('pageSwitch');
             });
         });
     }
@@ -2727,12 +2651,12 @@ new ListenPageSwitch();
 /*!***********************!*\
   !*** ./src/ts/Log.ts ***!
   \***********************/
-/*! exports provided: log */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "log", function() { return log; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   log: () => (/* binding */ log)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 
@@ -2762,9 +2686,9 @@ class Log {
         /**不同日志等级的文字颜色 */
         this.levelColor = [
             'inherit',
-            _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textSuccess,
-            _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textWarning,
-            _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textError,
+            _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.textSuccess,
+            _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.textWarning,
+            _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.textError,
         ];
         // 因为日志区域限制了最大高度，可能会出现滚动条
         // 所以使用定时器，使日志总是滚动到底部
@@ -2774,7 +2698,7 @@ class Log {
                 this.toBottom = false;
             }
         }, 500);
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.clearLog, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.clearLog, () => {
             this.removeAll();
         });
     }
@@ -2892,12 +2816,12 @@ const log = new Log();
 /*!**************************!*\
   !*** ./src/ts/MsgBox.ts ***!
   \**************************/
-/*! exports provided: msgBox */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "msgBox", function() { return msgBox; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   msgBox: () => (/* binding */ msgBox)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -2912,20 +2836,22 @@ __webpack_require__.r(__webpack_exports__);
 class MsgBox {
     constructor() {
         this.typeColor = {
-            success: _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textSuccess,
-            warning: _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textWarning,
-            error: _Colors__WEBPACK_IMPORTED_MODULE_1__["Colors"].textError,
+            success: _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.textSuccess,
+            warning: _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.textWarning,
+            error: _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.textError,
         };
         this.onceFlags = [];
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.showMsg, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.showMsg, (ev) => {
             const msg = ev.detail.data;
             this.create(msg);
         });
     }
-    /** 在当前标签页中只会显示一次的消息
+    /** 在当前标签页中只会显示一次的消息。
+     *
+     * 如果要再次显示该消息，需要先手动调用 resetOnce() 方法清除该标记，然后再次显示消息
      */
     once(flag, msg, type = 'show', arg) {
         if (this.onceFlags.includes(flag)) {
@@ -2979,11 +2905,11 @@ class MsgBox {
             colorStyle = `style="color:${data.color}"`;
         }
         wrap.innerHTML = `
-        <p class="title" ${colorStyle}>${data.title || _Config__WEBPACK_IMPORTED_MODULE_4__["Config"].appName}</p>
-        <p class="content" ${colorStyle}>${data.msg}</p>
-        <button class="btn" type="button">${data.btn || _Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_确定')}</button>
+        <p class="title" ${colorStyle}>${data.title || _Config__WEBPACK_IMPORTED_MODULE_4__.Config.appName}</p>
+        <div class="content" ${colorStyle}>${data.msg}</div>
+        <button class="btn" type="button">${data.btn || _Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_确定')}</button>
       `;
-        _Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].register(wrap);
+        _Lang__WEBPACK_IMPORTED_MODULE_2__.lang.register(wrap);
         const btn = wrap.querySelector('.btn');
         if (btn) {
             wrap.addEventListener('click', (ev) => {
@@ -2992,13 +2918,13 @@ class MsgBox {
             btn.addEventListener('click', () => {
                 this.remove(wrap);
             });
-            window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.closeCenterPanel, () => {
+            window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.closeCenterPanel, () => {
                 this.remove(wrap);
             });
         }
         document.body.append(wrap);
         btn.focus();
-        _BG__WEBPACK_IMPORTED_MODULE_3__["bg"].useBG(wrap);
+        _BG__WEBPACK_IMPORTED_MODULE_3__.bg.useBG(wrap);
     }
     remove(el) {
         el && el.parentNode && el.parentNode.removeChild(el);
@@ -3014,10 +2940,8 @@ const msgBox = new MsgBox();
 /*!***********************************!*\
   !*** ./src/ts/OpenCenterPanel.ts ***!
   \***********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -3040,19 +2964,19 @@ class OpenCenterPanel {
   <use xlink:href="#icon-dakai"></use>
 </svg>`;
         document.body.append(this.btn);
-        _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].register(this.btn);
+        _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.register(this.btn);
     }
     bindEvents() {
         // 这里阻止事件冒泡是为了配合 CenterPanel 的“点击页面其他部分隐藏 CenterPanel”的效果
         this.btn.addEventListener('click', (e) => {
             const ev = e || window.event;
             ev.stopPropagation();
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('openCenterPanel');
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('openCenterPanel');
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.centerPanelClosed, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.centerPanelClosed, () => {
             this.show();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.centerPanelOpened, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.centerPanelOpened, () => {
             this.hide();
         });
     }
@@ -3072,10 +2996,8 @@ new OpenCenterPanel();
 /*!*******************************!*\
   !*** ./src/ts/OutputPanel.ts ***!
   \*******************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -3095,7 +3017,7 @@ __webpack_require__.r(__webpack_exports__);
 class OutputPanel {
     constructor() {
         this.addOutPutPanel();
-        _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].register(this.outputPanel);
+        _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.register(this.outputPanel);
         this.bindEvents();
     }
     bindEvents() {
@@ -3111,7 +3033,7 @@ class OutputPanel {
                 this.close();
             }
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.closeCenterPanel, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.closeCenterPanel, () => {
             this.close();
         });
         // 复制输出内容
@@ -3121,9 +3043,9 @@ class OutputPanel {
             window.getSelection().removeAllRanges();
             window.getSelection().addRange(range);
             document.execCommand('copy');
-            _Toast__WEBPACK_IMPORTED_MODULE_6__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_已复制到剪贴板'));
+            _Toast__WEBPACK_IMPORTED_MODULE_6__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_已复制到剪贴板'));
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.output, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.output, (ev) => {
             this.output(ev.detail.data);
         });
     }
@@ -3148,11 +3070,11 @@ class OutputPanel {
     // 输出内容
     output(data) {
         if (!data.content) {
-            return _Toast__WEBPACK_IMPORTED_MODULE_6__["toast"].error(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_没有数据可供使用'));
+            return _Toast__WEBPACK_IMPORTED_MODULE_6__.toast.error(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_没有数据可供使用'));
         }
-        if (_Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length < _Config__WEBPACK_IMPORTED_MODULE_4__["Config"].outputMax) {
+        if (_Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length < _Config__WEBPACK_IMPORTED_MODULE_4__.Config.outputMax) {
             this.copyBtn.disabled = false;
-            _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].updateText(this.outputTitle, data.title);
+            _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.updateText(this.outputTitle, data.title);
             this.outputContent.innerHTML = data.content;
             this.outputPanel.style.display = 'block';
         }
@@ -3163,16 +3085,16 @@ class OutputPanel {
             });
             const url = URL.createObjectURL(file);
             const fileName = `Output-${new Date().toLocaleString()}.txt`;
-            _utils_Utils__WEBPACK_IMPORTED_MODULE_3__["Utils"].downloadFile(url, fileName);
+            _utils_Utils__WEBPACK_IMPORTED_MODULE_3__.Utils.downloadFile(url, fileName);
             this.copyBtn.disabled = true;
-            _MsgBox__WEBPACK_IMPORTED_MODULE_5__["msgBox"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_输出内容太多已经为你保存到文件'));
+            _MsgBox__WEBPACK_IMPORTED_MODULE_5__.msgBox.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_输出内容太多已经为你保存到文件'));
         }
     }
     // 关闭输出面板
     close() {
         this.outputPanel.style.display = 'none';
         this.outputContent.innerHTML = '';
-        _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].updateText(this.outputTitle, '_输出信息');
+        _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.updateText(this.outputTitle, '_输出信息');
     }
 }
 new OutputPanel();
@@ -3184,12 +3106,12 @@ new OutputPanel();
 /*!****************************!*\
   !*** ./src/ts/PageType.ts ***!
   \****************************/
-/*! exports provided: pageType */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pageType", function() { return pageType; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   pageType: () => (/* binding */ pageType)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 // 获取页面类型
 
@@ -3214,7 +3136,7 @@ class PageType {
         this.list = PageName;
         this.type = this.getType();
         // 页面切换时检查新旧页面是否不同
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.pageSwitch, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.pageSwitch, () => {
             this.checkTypeChange();
         });
     }
@@ -3281,10 +3203,10 @@ class PageType {
         const old = this.type;
         this.type = this.getType();
         if (this.type !== old) {
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('pageSwitchedTypeChange', this.type);
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('pageSwitchedTypeChange', this.type);
         }
         else {
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('pageSwitchedTypeNotChange', this.type);
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('pageSwitchedTypeNotChange', this.type);
         }
     }
 }
@@ -3298,12 +3220,12 @@ const pageType = new PageType();
 /*!*******************************!*\
   !*** ./src/ts/ProgressBar.ts ***!
   \*******************************/
-/*! exports provided: progressBar */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "progressBar", function() { return progressBar; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   progressBar: () => (/* binding */ progressBar)
+/* harmony export */ });
 /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Store */ "./src/ts/Store.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -3342,16 +3264,16 @@ class ProgressBar {
   </div>
   </li>`;
         this.allProgressBar = [];
-        this.wrap = _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].useSlot('progressBar', this.wrapHTML);
+        this.wrap = _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.useSlot('progressBar', this.wrapHTML);
         this.downloadedEl = this.wrap.querySelector('.downloaded');
         this.progressColorEl = this.wrap.querySelector('.progress1');
         this.listWrap = this.wrap.querySelector('.progressBarList');
         this.totalNumberEl = this.wrap.querySelector('.totalNumber');
-        _Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].register(this.wrap);
+        _Lang__WEBPACK_IMPORTED_MODULE_2__.lang.register(this.wrap);
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.crawlStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__.EVT.list.crawlStart, () => {
             this.hide();
         });
     }
@@ -3363,7 +3285,7 @@ class ProgressBar {
         }
         // 重置总进度条
         this.setTotalProgress(downloaded);
-        this.totalNumberEl.textContent = _Store__WEBPACK_IMPORTED_MODULE_0__["store"].result.length.toString();
+        this.totalNumberEl.textContent = _Store__WEBPACK_IMPORTED_MODULE_0__.store.result.length.toString();
         // 重置子进度条
         this.listWrap.innerHTML = this.barHTML.repeat(progressBarNum);
         this.show();
@@ -3381,7 +3303,7 @@ class ProgressBar {
     // 设置总进度条的进度
     setTotalProgress(downloaded) {
         this.downloadedEl.textContent = downloaded.toString();
-        const progress = (downloaded / _Store__WEBPACK_IMPORTED_MODULE_0__["store"].result.length) * 100;
+        const progress = (downloaded / _Store__WEBPACK_IMPORTED_MODULE_0__.store.result.length) * 100;
         this.progressColorEl.style.width = progress + '%';
     }
     // 设置子进度条的进度
@@ -3413,10 +3335,8 @@ const progressBar = new ProgressBar();
 /*!******************************!*\
   !*** ./src/ts/QuickCrawl.ts ***!
   \******************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -3431,7 +3351,7 @@ class QuickCrawl {
     constructor() {
         this.show = true; // 是否显示
         // 指定在哪些页面类型里启用
-        this.enablePageType = [_PageType__WEBPACK_IMPORTED_MODULE_2__["pageType"].list.Post];
+        this.enablePageType = [_PageType__WEBPACK_IMPORTED_MODULE_2__.pageType.list.Post];
         this.addBtn();
         this.setVisible();
         this.bindEvents();
@@ -3446,7 +3366,7 @@ class QuickCrawl {
   <use xlink:href="#icon-download"></use>
 </svg>`;
         document.body.append(this.btn);
-        _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].register(this.btn);
+        _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.register(this.btn);
     }
     bindEvents() {
         // 点击按钮启动快速抓取
@@ -3460,16 +3380,16 @@ class QuickCrawl {
             }
         }, false);
         // 页面类型改变时设置按钮的显示隐藏
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.pageSwitch, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.pageSwitch, () => {
             this.setVisible();
         });
     }
     sendDownload() {
-        _States__WEBPACK_IMPORTED_MODULE_3__["states"].quickCrawl = true;
-        _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('quickCrawl');
+        _States__WEBPACK_IMPORTED_MODULE_3__.states.quickCrawl = true;
+        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('quickCrawl');
     }
     setVisible() {
-        this.show = this.enablePageType.includes(_PageType__WEBPACK_IMPORTED_MODULE_2__["pageType"].type);
+        this.show = this.enablePageType.includes(_PageType__WEBPACK_IMPORTED_MODULE_2__.pageType.type);
         this.btn.style.display = this.show ? 'flex' : 'none';
     }
 }
@@ -3482,12 +3402,12 @@ new QuickCrawl();
 /*!****************************!*\
   !*** ./src/ts/SaveData.ts ***!
   \****************************/
-/*! exports provided: saveData */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveData", function() { return saveData; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   saveData: () => (/* binding */ saveData)
+/* harmony export */ });
 /* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter */ "./src/ts/Filter.ts");
 /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Store */ "./src/ts/Store.ts");
 /* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./setting/Settings */ "./src/ts/setting/Settings.ts");
@@ -3525,7 +3445,7 @@ class SaveData {
         const fee = data.feeRequired;
         const date = data.publishedDatetime;
         const title = data.title;
-        const check = _Filter__WEBPACK_IMPORTED_MODULE_0__["filter"].check({ id, creatorId, fee, date, title });
+        const check = _Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({ id, creatorId, fee, date, title });
         if (!check) {
             return;
         }
@@ -3557,7 +3477,7 @@ class SaveData {
         // 封面图和文本资源的序号是 0，其他文件的序号自增
         // 提取投稿的封面图片
         // 封面图片的序号设置为 0，所以它里面不需要对 index 进行操作
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].savePostCover) {
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.savePostCover) {
             const cover = data.coverImageUrl;
             if (cover) {
                 const { name, ext } = this.getUrlNameAndExt(cover);
@@ -3575,12 +3495,12 @@ class SaveData {
         }
         // 对于因为价格限制不能抓取文章，在此时返回，但是会保存封面图
         if (data.body === null) {
-            _Store__WEBPACK_IMPORTED_MODULE_1__["store"].skipDueToFee++;
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过文章因为', `<a href="https://www.fanbox.cc/@${creatorId}/posts/${id}" target="_blank">${title}</a>`) +
-                _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_价格限制') +
+            _Store__WEBPACK_IMPORTED_MODULE_1__.store.skipDueToFee++;
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_跳过文章因为', `<a href="https://www.fanbox.cc/@${creatorId}/posts/${id}" target="_blank">${title}</a>`) +
+                _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_价格限制') +
                 ` ${fee}`);
             if (result.files.length > 0) {
-                _Store__WEBPACK_IMPORTED_MODULE_1__["store"].addResult(result);
+                _Store__WEBPACK_IMPORTED_MODULE_1__.store.addResult(result);
             }
             return;
         }
@@ -3600,7 +3520,7 @@ class SaveData {
                 result.textContent.text = result.textContent.text.concat(links);
                 result.textContent.fileID = this.createFileId();
                 // 保存文章正文里的文字
-                if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveText) {
+                if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveText) {
                     result.textContent.text.push(text);
                 }
             }
@@ -3647,7 +3567,7 @@ class SaveData {
             if (result.textContent.text.length > 0) {
                 result.textContent.text.push('');
             }
-            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveText && text) {
+            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveText && text) {
                 result.textContent.text.push(text);
             }
             // 保存图片资源
@@ -3683,7 +3603,7 @@ class SaveData {
             result.textContent.text = result.textContent.text.concat(embedLinks);
             result.textContent.fileID = this.createFileId();
             // 保存嵌入的 URL，只能保存到文本
-            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveLink) {
+            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveLink) {
                 const urlArr = [];
                 for (const val of Object.values(data.body.urlEmbedMap)) {
                     if (val.type === 'default') {
@@ -3791,13 +3711,13 @@ class SaveData {
         if (result.textContent.text.length > 0) {
             const findURL = result.textContent.text.some((text) => text.includes('https://'));
             if (findURL) {
-                _MsgBox__WEBPACK_IMPORTED_MODULE_5__["msgBox"].once('tipLinktext', _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_提示有外链保存到txt'));
+                _MsgBox__WEBPACK_IMPORTED_MODULE_5__.msgBox.once('tipLinktext', _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_提示有外链保存到txt'));
             }
         }
-        _Store__WEBPACK_IMPORTED_MODULE_1__["store"].addResult(result);
+        _Store__WEBPACK_IMPORTED_MODULE_1__.store.addResult(result);
     }
     getImageData(imageData, index) {
-        if (_Filter__WEBPACK_IMPORTED_MODULE_0__["filter"].check({
+        if (_Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({
             ext: imageData.extension,
         })) {
             return {
@@ -3813,7 +3733,7 @@ class SaveData {
         return null;
     }
     getFileData(fileData, index) {
-        if (_Filter__WEBPACK_IMPORTED_MODULE_0__["filter"].check({
+        if (_Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({
             ext: fileData.extension,
             name: fileData.name,
         })) {
@@ -3832,7 +3752,7 @@ class SaveData {
     // 从文本里提取链接
     getTextLinks(text) {
         const links = [];
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveLink) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveLink) {
             return links;
         }
         // 一个段落里可能包含多个链接（啊好麻烦），所以用换行符来尝试分割一下
@@ -3852,7 +3772,7 @@ class SaveData {
     // 从嵌入的资源里，获取资源的原网址
     getEmbedLinks(dataArr, postId) {
         const links = [];
-        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].saveLink) {
+        if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveLink) {
             return links;
         }
         for (const data of dataArr) {
@@ -3894,10 +3814,8 @@ const saveData = new SaveData();
 /*!********************************!*\
   !*** ./src/ts/ShowHowToUse.ts ***!
   \********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
@@ -3914,20 +3832,20 @@ class ShowHowToUse {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__.EVT.list.settingInitialized, () => {
             this.check();
         });
     }
     check() {
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_4__["settings"].showHowToUse) {
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.showHowToUse) {
             this.show();
-            Object(_setting_Settings__WEBPACK_IMPORTED_MODULE_4__["setSetting"])('showHowToUse', false);
+            (0,_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.setSetting)('showHowToUse', false);
         }
     }
     show() {
-        _MsgBox__WEBPACK_IMPORTED_MODULE_2__["msgBox"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_HowToUse') + _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_账户可能被封禁的警告'), {
-            title: _Config__WEBPACK_IMPORTED_MODULE_1__["Config"].appName,
-            btn: _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_我知道了'),
+        _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.show(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_HowToUse') + _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_账户可能被封禁的警告'), {
+            title: _Config__WEBPACK_IMPORTED_MODULE_1__.Config.appName,
+            btn: _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_我知道了'),
         });
     }
 }
@@ -3940,10 +3858,8 @@ new ShowHowToUse();
 /*!************************************!*\
   !*** ./src/ts/ShowNotification.ts ***!
   \************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -3961,20 +3877,20 @@ class ShowNotification {
     }
     bindEvents() {
         // 当用户开启“下载完成后显示通知”的提示时，请求权限
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, (ev) => {
             const data = ev.detail.data;
             if (data.name === 'showNotificationAfterDownloadComplete' && data.value) {
                 this.requstPremission();
             }
         });
         // 当下载任务完毕时，显示通知
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete, () => {
             window.setTimeout(() => {
                 // 如果抓取标签列表没有完成，则不显示通知
                 // 在一次抓取多个标签时，当最后一个标签下载完之后会解除 crawlTagList 状态，这时可以显示一条通知
                 // 如果有等待下载的任务，则不显示通知
-                if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].showNotificationAfterDownloadComplete) {
-                    this.show(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载完毕2'), _Tools__WEBPACK_IMPORTED_MODULE_3__["Tools"].getPageTitle());
+                if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.showNotificationAfterDownloadComplete) {
+                    this.show(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_下载完毕2'), _Tools__WEBPACK_IMPORTED_MODULE_3__.Tools.getPageTitle());
                 }
             }, 0);
         });
@@ -4003,10 +3919,8 @@ new ShowNotification();
 /*!*********************************!*\
   !*** ./src/ts/ShowWhatIsNew.ts ***!
   \*********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
@@ -4025,17 +3939,22 @@ class ShowWhatIsNew {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__["EVT"].list.settingInitialized, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__.EVT.list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
             let msg = `
-      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取间隔')}</strong>
+      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取间隔')}</strong>
       <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_抓取间隔的说明')}
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取间隔的说明')}
       <br>
       <br>
-      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔')}</strong>
+      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_下载间隔')}</strong>
       <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔的说明')}
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_下载间隔的说明')}
+      <br>
+      <br>
+      <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_每天下载的文件大小限制')}</strong>
+      <br>
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_每天下载的文件大小限制的说明')}
       `;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
@@ -4045,17 +3964,17 @@ class ShowWhatIsNew {
             msg += `
       <br>
       <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_赞助方式提示')}`;
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_赞助方式提示')}`;
             this.show(msg);
         });
     }
     show(msg) {
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_4__["settings"].whatIsNewFlag !== this.flag) {
-            _MsgBox__WEBPACK_IMPORTED_MODULE_2__["msgBox"].show(msg, {
-                title: _Config__WEBPACK_IMPORTED_MODULE_1__["Config"].appName + ` ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_最近更新')}`,
-                btn: _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_我知道了'),
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.whatIsNewFlag !== this.flag) {
+            _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.show(msg, {
+                title: _Config__WEBPACK_IMPORTED_MODULE_1__.Config.appName + ` ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_最近更新')}`,
+                btn: _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_我知道了'),
             });
-            Object(_setting_Settings__WEBPACK_IMPORTED_MODULE_4__["setSetting"])('whatIsNewFlag', this.flag);
+            (0,_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.setSetting)('whatIsNewFlag', this.flag);
         }
     }
 }
@@ -4068,12 +3987,12 @@ new ShowWhatIsNew();
 /*!**************************!*\
   !*** ./src/ts/States.ts ***!
   \**************************/
-/*! exports provided: states */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "states", function() { return states; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   states: () => (/* binding */ states)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 
 // 储存需要跨模块使用的、会变化的状态
@@ -4103,21 +4022,21 @@ class States {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingInitialized, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingInitialized, () => {
             this.settingInitialized = true;
         });
         const idle = [
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlFinish,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadPause,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStop,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlFinish,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadPause,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStop,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete,
         ];
         idle.forEach((type) => {
             window.addEventListener(type, () => {
                 this.busy = false;
             });
         });
-        const busy = [_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlStart, _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStart];
+        const busy = [_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlStart, _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStart];
         busy.forEach((type) => {
             window.addEventListener(type, () => {
                 this.busy = true;
@@ -4125,23 +4044,23 @@ class States {
         });
         // 下载完成，或者下载中止时，复位快速下载类状态
         const resetQuickState = [
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlEmpty,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStop,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadPause,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlEmpty,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStop,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadPause,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete,
         ];
         for (const ev of resetQuickState) {
             window.addEventListener(ev, () => {
                 this.quickCrawl = false;
             });
         }
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStart, () => {
             this.downloading = true;
         });
         const downloadIdle = [
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadPause,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStop,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadPause,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStop,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete,
         ];
         for (const ev of downloadIdle) {
             window.addEventListener(ev, () => {
@@ -4160,12 +4079,12 @@ const states = new States();
 /*!*************************!*\
   !*** ./src/ts/Store.ts ***!
   \*************************/
-/*! exports provided: store */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "store", function() { return store; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   store: () => (/* binding */ store)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 
 // 存储抓取结果和状态
@@ -4183,7 +4102,7 @@ class Store {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlStart, () => {
             this.resetResult();
         });
     }
@@ -4233,10 +4152,8 @@ const store = new Store();
 /*!***********************!*\
   !*** ./src/ts/Tip.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (() => {
 
-"use strict";
 
 // 显示自定义的提示
 class Tip {
@@ -4292,12 +4209,12 @@ new Tip();
 /*!*************************!*\
   !*** ./src/ts/Toast.ts ***!
   \*************************/
-/*! exports provided: toast */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toast", function() { return toast; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   toast: () => (/* binding */ toast)
+/* harmony export */ });
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 
 // 轻提示，只显示文字和背景颜色
@@ -4306,8 +4223,8 @@ class Toast {
     constructor() {
         this.defaultCfg = {
             msg: '',
-            color: _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].white,
-            bgColor: _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgBrightBlue,
+            color: _Colors__WEBPACK_IMPORTED_MODULE_0__.Colors.white,
+            bgColor: _Colors__WEBPACK_IMPORTED_MODULE_0__.Colors.bgBrightBlue,
             dealy: 1500,
             enter: 'up',
             leave: 'fade',
@@ -4315,8 +4232,8 @@ class Toast {
         };
         this.successCfg = {
             msg: '',
-            color: _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].white,
-            bgColor: _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgSuccess,
+            color: _Colors__WEBPACK_IMPORTED_MODULE_0__.Colors.white,
+            bgColor: _Colors__WEBPACK_IMPORTED_MODULE_0__.Colors.bgSuccess,
             dealy: 1500,
             enter: 'up',
             leave: 'fade',
@@ -4324,8 +4241,8 @@ class Toast {
         };
         this.warningCfg = {
             msg: '',
-            color: _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].white,
-            bgColor: _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgWarning,
+            color: _Colors__WEBPACK_IMPORTED_MODULE_0__.Colors.white,
+            bgColor: _Colors__WEBPACK_IMPORTED_MODULE_0__.Colors.bgWarning,
             dealy: 1500,
             enter: 'up',
             leave: 'fade',
@@ -4333,8 +4250,8 @@ class Toast {
         };
         this.errorCfg = {
             msg: '',
-            color: _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].white,
-            bgColor: _Colors__WEBPACK_IMPORTED_MODULE_0__["Colors"].bgError,
+            color: _Colors__WEBPACK_IMPORTED_MODULE_0__.Colors.white,
+            bgColor: _Colors__WEBPACK_IMPORTED_MODULE_0__.Colors.bgError,
             dealy: 1500,
             enter: 'up',
             leave: 'fade',
@@ -4491,12 +4408,12 @@ const toast = new Toast();
 /*!*************************!*\
   !*** ./src/ts/Tools.ts ***!
   \*************************/
-/*! exports provided: Tools */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Tools", function() { return Tools; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Tools: () => (/* binding */ Tools)
+/* harmony export */ });
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 
 class Tools {
@@ -4556,7 +4473,7 @@ class Tools {
         textFlag && e.setAttribute('data-xztext', textFlag);
         titleFlag && e.setAttribute('data-xztitle', titleFlag);
         this.useSlot(slot, e);
-        _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].register(e);
+        _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.register(e);
         return e;
     }
     /**获取页面标题 */
@@ -4581,10 +4498,8 @@ class Tools {
 /*!******************************!*\
   !*** ./src/ts/UnifiedURL.ts ***!
   \******************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 
@@ -4593,7 +4508,7 @@ class UnifiedURL {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, (ev) => {
             const data = ev.detail.data;
             if (data.name === 'unifiedURL' && data.value) {
                 this.check();
@@ -4645,72 +4560,16 @@ new UnifiedURL();
 
 /***/ }),
 
-/***/ "./src/ts/content.ts":
-/*!***************************!*\
-  !*** ./src/ts/content.ts ***!
-  \***************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _UnifiedURL__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UnifiedURL */ "./src/ts/UnifiedURL.ts");
-/* harmony import */ var _ListenPageSwitch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListenPageSwitch */ "./src/ts/ListenPageSwitch.ts");
-/* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PageType */ "./src/ts/PageType.ts");
-/* harmony import */ var _CenterPanel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CenterPanel */ "./src/ts/CenterPanel.ts");
-/* harmony import */ var _setting_Form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./setting/Form */ "./src/ts/setting/Form.ts");
-/* harmony import */ var _InitPage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./InitPage */ "./src/ts/InitPage.ts");
-/* harmony import */ var _QuickCrawl__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./QuickCrawl */ "./src/ts/QuickCrawl.ts");
-/* harmony import */ var _Tip__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Tip */ "./src/ts/Tip.ts");
-/* harmony import */ var _Tip__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_Tip__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _OutputPanel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./OutputPanel */ "./src/ts/OutputPanel.ts");
-/* harmony import */ var _download_DownloadControl__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./download/DownloadControl */ "./src/ts/download/DownloadControl.ts");
-/* harmony import */ var _download_ShowStatusOnTitle__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./download/ShowStatusOnTitle */ "./src/ts/download/ShowStatusOnTitle.ts");
-/* harmony import */ var _download_Resume__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./download/Resume */ "./src/ts/download/Resume.ts");
-/* harmony import */ var _ShowNotification__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ShowNotification */ "./src/ts/ShowNotification.ts");
-/* harmony import */ var _ShowHowToUse__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./ShowHowToUse */ "./src/ts/ShowHowToUse.ts");
-/* harmony import */ var _ShowWhatIsNew__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ShowWhatIsNew */ "./src/ts/ShowWhatIsNew.ts");
-/* harmony import */ var _CheckUnsupportBrowser__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./CheckUnsupportBrowser */ "./src/ts/CheckUnsupportBrowser.ts");
-/*
- * project: Pixiv Fanbox Downloader
- * author:  xuejianxianzun; 雪见仙尊
- * license: GPL-3.0-or-later; http://www.gnu.org/licenses/gpl-3.0.txt
- * Github： https://github.com/xuejianxianzun/PixivFanboxDownloader
- * Releases: https://github.com/xuejianxianzun/PixivFanboxDownloader/releases
- * Wiki:    https://github.com/xuejianxianzun/PixivFanboxDownloader/wiki
- * E-mail:  xuejianxianzun@gmail.com
- * QQ group:  853021998
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***/ }),
-
 /***/ "./src/ts/download/Download.ts":
 /*!*************************************!*\
   !*** ./src/ts/download/Download.ts ***!
   \*************************************/
-/*! exports provided: Download */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Download", function() { return Download; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Download: () => (/* binding */ Download)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _FileName__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../FileName */ "./src/ts/FileName.ts");
 /* harmony import */ var _ProgressBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ProgressBar */ "./src/ts/ProgressBar.ts");
@@ -4737,7 +4596,7 @@ class Download {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadSuccess, (event) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadSuccess, (event) => {
             const donwloadSuccessData = event.detail.data;
             if (donwloadSuccessData.url === this.arg.data.url) {
                 this.setProgressBar(1024, 1024);
@@ -4747,15 +4606,15 @@ class Download {
     // 跳过下载这个文件。可以传入用于提示的文本
     skipDownload(data, msg) {
         if (msg) {
-            _Log__WEBPACK_IMPORTED_MODULE_5__["log"].warning(msg);
+            _Log__WEBPACK_IMPORTED_MODULE_5__.log.warning(msg);
         }
-        if (_States__WEBPACK_IMPORTED_MODULE_6__["states"].downloading) {
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('skipDownload', data);
+        if (_States__WEBPACK_IMPORTED_MODULE_6__.states.downloading) {
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('skipDownload', data);
         }
     }
     // 设置进度条信息
     setProgressBar(loaded, total) {
-        _ProgressBar__WEBPACK_IMPORTED_MODULE_2__["progressBar"].setProgress(this.progressBarIndex, {
+        _ProgressBar__WEBPACK_IMPORTED_MODULE_2__.progressBar.setProgress(this.progressBarIndex, {
             name: this.fileName,
             loaded: loaded,
             total: total,
@@ -4763,19 +4622,19 @@ class Download {
     }
     // 下载文件
     async download(arg) {
-        this.fileName = _FileName__WEBPACK_IMPORTED_MODULE_1__["fileName"].getFileName(arg.data);
+        this.fileName = _FileName__WEBPACK_IMPORTED_MODULE_1__.fileName.getFileName(arg.data);
         // 检查是否是重复文件
         const url = arg.data.url;
         if (!url.startsWith('blob')) {
-            const duplicate = await _DownloadRecord__WEBPACK_IMPORTED_MODULE_3__["downloadRecord"].checkDeduplication(arg.data);
+            const duplicate = await _DownloadRecord__WEBPACK_IMPORTED_MODULE_3__.downloadRecord.checkDeduplication(arg.data);
             if (duplicate) {
                 return this.skipDownload({
                     id: arg.id,
                     reason: 'duplicate',
-                }, _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_跳过下载因为重复文件', this.fileName));
+                }, _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_跳过下载因为重复文件', this.fileName));
             }
         }
-        await _DownloadInterval__WEBPACK_IMPORTED_MODULE_7__["downloadInterval"].wait();
+        await _DownloadInterval__WEBPACK_IMPORTED_MODULE_7__.downloadInterval.wait();
         // 重设当前下载栏的信息
         this.setProgressBar(0, 0);
         // 向浏览器发送下载任务
@@ -4802,10 +4661,8 @@ class Download {
 /*!********************************************!*\
   !*** ./src/ts/download/DownloadControl.ts ***!
   \********************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Tools */ "./src/ts/Tools.ts");
@@ -4822,7 +4679,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _DownloadStates__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./DownloadStates */ "./src/ts/download/DownloadStates.ts");
 /* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../Toast */ "./src/ts/Toast.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
+/* harmony import */ var _GetTotalDownload__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./GetTotalDownload */ "./src/ts/download/GetTotalDownload.ts");
 // 下载控制
+
 
 
 
@@ -4852,14 +4711,14 @@ class DownloadControl {
         this.createDownloadArea();
         this.bindEvents();
         const skipTipWrap = this.wrapper.querySelector('.skip_tip');
-        new _ShowSkipCount__WEBPACK_IMPORTED_MODULE_10__["ShowSkipCount"](skipTipWrap);
+        new _ShowSkipCount__WEBPACK_IMPORTED_MODULE_10__.ShowSkipCount(skipTipWrap);
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlStart, () => {
             this.hideDownloadArea();
             this.reset();
         });
-        for (const ev of [_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlFinish, _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.resume]) {
+        for (const ev of [_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlFinish, _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.resume]) {
             window.addEventListener(ev, (ev) => {
                 // 当恢复了未完成的抓取数据时，将下载状态设置为暂停
                 this.pause = ev.type === 'resume';
@@ -4869,7 +4728,7 @@ class DownloadControl {
                 }, 0);
             });
         }
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.skipDownload, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.skipDownload, (ev) => {
             // 跳过下载的文件不会触发 downloadSuccess 事件
             const data = ev.detail.data;
             this.downloadSuccess(data);
@@ -4883,12 +4742,12 @@ class DownloadControl {
             // 丢失文件名的情况。对于下载器动态创建的 Blob URL，文件名会是 UUID
             // 对于 Fanbox 原有的 URL，文件名会是 URL 最后一段路径（浏览器会把这段作为默认的文件名）
             if ((_a = msg.data) === null || _a === void 0 ? void 0 : _a.uuid) {
-                _Log__WEBPACK_IMPORTED_MODULE_3__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_uuid'), 1, false, 'filenameUUID');
-                _MsgBox__WEBPACK_IMPORTED_MODULE_11__["msgBox"].once('uuidTip', _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_uuid'), 'show');
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 1, false, 'filenameUUID');
+                _MsgBox__WEBPACK_IMPORTED_MODULE_11__.msgBox.once('uuidTip', _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 'show');
             }
             // 文件下载成功
             if (msg.msg === 'downloaded') {
-                _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('downloadSuccess', msg.data);
+                _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadSuccess', msg.data);
                 this.downloadSuccess(msg.data);
             }
             else if (msg.msg === 'download_err') {
@@ -4897,46 +4756,46 @@ class DownloadControl {
                 // 用户在浏览器弹出“另存为”对话框时取消保存
                 // 用户让 IDM 转接这个下载时
                 if (msg.err === 'USER_CANCELED') {
-                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_user_canceled_tip', msg.data.url, msg.err || 'unknown'));
+                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_user_canceled_tip', msg.data.url, msg.err || 'unknown'));
                     this.downloadSuccess(msg.data);
                     return;
                 }
                 else if (msg.err === 'SERVER_BAD_CONTENT') {
                     // 404 错误不重试下载
-                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`);
+                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(`${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`);
                 }
                 else if (msg.err === 'SERVER_FAILED') {
                     // 通常是 500 错误，尝试重试下载
-                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. This is a server-side error, not a downloader bug. The downloader will retry the download.`);
+                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(`${msg.data.url} Download error! Code: ${msg.err}. This is a server-side error, not a downloader bug. The downloader will retry the download.`);
                     this.downloadError(msg.data, msg.err);
                 }
                 else {
                     // 其他错误
-                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`);
+                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(`${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`);
                     // 重新下载这个文件
                     this.downloadError(msg.data, msg.err);
                 }
-                _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('downloadError');
+                _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadError');
             }
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete, () => {
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_下载完毕'), 2);
-            _Toast__WEBPACK_IMPORTED_MODULE_13__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_下载完毕2'), {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete, () => {
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕'), 2);
+            _Toast__WEBPACK_IMPORTED_MODULE_13__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕2'), {
                 position: 'topCenter',
             });
         });
     }
     setDownloaded() {
-        this.downloaded = _DownloadStates__WEBPACK_IMPORTED_MODULE_12__["downloadStates"].downloadedCount();
-        const text = `${this.downloaded} / ${_Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length}`;
-        _Log__WEBPACK_IMPORTED_MODULE_3__["log"].log(text, 2, false);
+        this.downloaded = _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.downloadedCount();
+        const text = `${this.downloaded} / ${_Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length}`;
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(text, 2, false);
         // 设置总下载进度条
-        _ProgressBar__WEBPACK_IMPORTED_MODULE_7__["progressBar"].setTotalProgress(this.downloaded);
+        _ProgressBar__WEBPACK_IMPORTED_MODULE_7__.progressBar.setTotalProgress(this.downloaded);
         // 所有文件正常下载完毕（跳过下载的文件也算正常下载）
-        if (this.downloaded === _Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length) {
+        if (this.downloaded === _Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length) {
             window.setTimeout(() => {
                 // 延后触发下载完成的事件。因为下载完成事件是由上游事件（跳过下载，或下载成功事件）派生的，如果这里不延迟触发，可能导致其他模块先接收到下载完成事件，后接收到上游事件。
-                _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('downloadComplete');
+                _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadComplete');
             }, 0);
             this.reset();
         }
@@ -4966,10 +4825,10 @@ class DownloadControl {
     createDownloadArea() {
         const html = `<div class="download_area">
     <div class="centerWrap_btns">
-    <button class="startDownload" type="button" style="background:${_Colors__WEBPACK_IMPORTED_MODULE_5__["Colors"].bgBlue};" data-xztext="_开始下载"></button>
-    <button class="pauseDownload" type="button" style="background:${_Colors__WEBPACK_IMPORTED_MODULE_5__["Colors"].bgYellow};" data-xztext="_暂停下载"></button>
-    <button class="stopDownload" type="button" style="background:${_Colors__WEBPACK_IMPORTED_MODULE_5__["Colors"].bgRed};" data-xztext="_停止下载"></button>
-    <button class="previewFileName" type="button" style="background:${_Colors__WEBPACK_IMPORTED_MODULE_5__["Colors"].bgGreen};" data-xztext="_预览文件名"></button>
+    <button class="startDownload" type="button" style="background:${_Colors__WEBPACK_IMPORTED_MODULE_5__.Colors.bgBlue};" data-xztext="_开始下载"></button>
+    <button class="pauseDownload" type="button" style="background:${_Colors__WEBPACK_IMPORTED_MODULE_5__.Colors.bgYellow};" data-xztext="_暂停下载"></button>
+    <button class="stopDownload" type="button" style="background:${_Colors__WEBPACK_IMPORTED_MODULE_5__.Colors.bgRed};" data-xztext="_停止下载"></button>
+    <button class="previewFileName" type="button" style="background:${_Colors__WEBPACK_IMPORTED_MODULE_5__.Colors.bgGreen};" data-xztext="_预览文件名"></button>
     </div>
     <div class="download_status_text_wrap">
     <span data-xztext="_当前状态"></span>
@@ -4977,8 +4836,8 @@ class DownloadControl {
     <span class="skip_tip warn"></span>
     </div>
     </div>`;
-        this.wrapper = _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].useSlot('downloadArea', html);
-        _Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].register(this.wrapper);
+        this.wrapper = _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.useSlot('downloadArea', html);
+        _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.register(this.wrapper);
         this.downStatusEl = this.wrapper.querySelector('.down_status');
         this.wrapper
             .querySelector('.startDownload')
@@ -4998,77 +4857,78 @@ class DownloadControl {
         this.wrapper
             .querySelector('.previewFileName')
             .addEventListener('click', () => {
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('previewFileName');
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('previewFileName');
         });
     }
     // 下载线程设置
     setDownloadThread() {
-        const setThread = _setting_Settings__WEBPACK_IMPORTED_MODULE_8__["settings"].downloadThread;
+        const setThread = _setting_Settings__WEBPACK_IMPORTED_MODULE_8__.settings.downloadThread;
         if (setThread < 1 ||
-            setThread > _Config__WEBPACK_IMPORTED_MODULE_14__["Config"].downloadThreadMax ||
+            setThread > _Config__WEBPACK_IMPORTED_MODULE_14__.Config.downloadThreadMax ||
             isNaN(setThread)) {
             // 如果数值非法，则重设为默认值
-            this.downloadThread = _Config__WEBPACK_IMPORTED_MODULE_14__["Config"].downloadThreadMax;
+            this.downloadThread = _Config__WEBPACK_IMPORTED_MODULE_14__.Config.downloadThreadMax;
         }
         else {
             this.downloadThread = setThread; // 设置为用户输入的值
         }
         // 如果剩余任务数量少于下载线程数
-        if (_Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length - this.downloaded < this.downloadThread) {
-            this.downloadThread = _Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length - this.downloaded;
+        if (_Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length - this.downloaded < this.downloadThread) {
+            this.downloadThread = _Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length - this.downloaded;
         }
         // 重设下载进度条
-        _ProgressBar__WEBPACK_IMPORTED_MODULE_7__["progressBar"].reset(this.downloadThread, this.downloaded);
+        _ProgressBar__WEBPACK_IMPORTED_MODULE_7__.progressBar.reset(this.downloadThread, this.downloaded);
     }
     // 抓取完毕之后，已经可以开始下载时，根据一些状态进行处理
     readyDownload() {
-        if (_States__WEBPACK_IMPORTED_MODULE_9__["states"].busy || _Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length === 0) {
+        if (_States__WEBPACK_IMPORTED_MODULE_9__.states.busy || _Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length === 0) {
             return;
         }
         this.showDownloadArea();
         this.setDownloaded();
         this.setDownloadThread();
         // 视情况自动开始下载
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_8__["settings"].autoStartDownload || _States__WEBPACK_IMPORTED_MODULE_9__["states"].quickCrawl) {
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_8__.settings.autoStartDownload || _States__WEBPACK_IMPORTED_MODULE_9__.states.quickCrawl) {
             this.startDownload();
         }
     }
     // 开始下载
     startDownload() {
         // 如果正在下载中，或无图片，则不予处理
-        if (_States__WEBPACK_IMPORTED_MODULE_9__["states"].busy || _Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length === 0) {
+        if (_States__WEBPACK_IMPORTED_MODULE_9__.states.busy || _Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length === 0) {
             return;
         }
         if (this.pause) {
             // 从上次中断的位置继续下载
             // 把“使用中”的下载状态重置为“未使用”
-            _DownloadStates__WEBPACK_IMPORTED_MODULE_12__["downloadStates"].resume();
+            _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.resume();
         }
         else {
             // 如果之前没有暂停任务，也没有进入恢复模式，则重新下载
             // 初始化下载状态列表
-            _DownloadStates__WEBPACK_IMPORTED_MODULE_12__["downloadStates"].init();
+            _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.init();
         }
         // 重置一些条件
         this.reset();
         this.setDownloaded();
         this.taskBatch = new Date().getTime(); // 修改本批下载任务的标记
         this.setDownloadThread();
-        _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('downloadStart');
+        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadStart');
+        _MsgBox__WEBPACK_IMPORTED_MODULE_11__.msgBox.resetOnce('totalDownloadLimit');
         // 启动或继续下载，建立并发下载线程
         for (let i = 0; i < this.downloadThread; i++) {
             this.createDownload(i);
         }
-        this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_正在下载中'));
-        _Log__WEBPACK_IMPORTED_MODULE_3__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_正在下载中'));
-        if (_Config__WEBPACK_IMPORTED_MODULE_14__["Config"].mobile) {
-            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_移动端浏览器可能不会建立文件夹的说明'));
+        this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_正在下载中'));
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_正在下载中'));
+        if (_Config__WEBPACK_IMPORTED_MODULE_14__.Config.mobile) {
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_移动端浏览器可能不会建立文件夹的说明'));
         }
     }
     // 暂停下载
     pauseDownload() {
         clearTimeout(this.reTryTimer);
-        if (_Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length === 0) {
+        if (_Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length === 0) {
             return;
         }
         // 停止的优先级高于暂停。点击停止可以取消暂停状态，但点击暂停不能取消停止状态
@@ -5077,11 +4937,11 @@ class DownloadControl {
         }
         if (this.pause === false) {
             // 如果正在下载中
-            if (_States__WEBPACK_IMPORTED_MODULE_9__["states"].busy) {
+            if (_States__WEBPACK_IMPORTED_MODULE_9__.states.busy) {
                 this.pause = true; // 发出暂停信号
-                _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('downloadPause');
-                this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_已暂停'), '#f00');
-                _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_已暂停'), 2);
+                _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadPause');
+                this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已暂停'), '#f00');
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已暂停'), 2);
             }
             else {
                 // 不在下载中的话不允许启用暂停功能
@@ -5092,13 +4952,13 @@ class DownloadControl {
     // 停止下载
     stopDownload() {
         clearTimeout(this.reTryTimer);
-        if (_Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length === 0 || this.stop) {
+        if (_Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length === 0 || this.stop) {
             return;
         }
         this.stop = true;
-        _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('downloadStop');
-        this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_已停止'), '#f00');
-        _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_已停止'), 2);
+        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadStop');
+        this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已停止'), '#f00');
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已停止'), 2);
         this.pause = false;
     }
     downloadError(data, err) {
@@ -5107,18 +4967,33 @@ class DownloadControl {
         }
         const task = this.taskList[data.id];
         // 复位这个任务的状态
-        _DownloadStates__WEBPACK_IMPORTED_MODULE_12__["downloadStates"].setState(task.index, -1);
+        _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.setState(task.index, -1);
         // 建立下载任务，再次下载它
         // 如果出现了服务端错误，可能是获取原图时出现错误，改为使用缩略图进行下载
         this.createDownload(task.progressBarIndex, err === 'SERVER_FAILED');
     }
-    downloadSuccess(data) {
+    async downloadSuccess(data) {
         const task = this.taskList[data.id];
         // 更改这个任务状态为“已完成”
-        _DownloadStates__WEBPACK_IMPORTED_MODULE_12__["downloadStates"].setState(task.index, 1);
+        _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.setState(task.index, 1);
         // 增加已下载数量
         this.setDownloaded();
         // 是否继续下载
+        // 检查下载总体积限制
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_8__.settings.totalDownloadLimitSwitch) {
+            const total = await _GetTotalDownload__WEBPACK_IMPORTED_MODULE_15__.getTotalDownload.getToday();
+            if (total > _setting_Settings__WEBPACK_IMPORTED_MODULE_8__.settings.totalDownloadLimitByte) {
+                this.pauseDownload();
+                const msg = _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载已暂停原因') +
+                    '<br>' +
+                    _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_每天下载的文件大小限制');
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(msg, 1, false, 'totalDownloadLimit');
+                _MsgBox__WEBPACK_IMPORTED_MODULE_11__.msgBox.once('totalDownloadLimit', msg, 'warning', {
+                    title: _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已暂停'),
+                });
+            }
+        }
+        // 检查是否还有未完成的下载
         const no = task.progressBarIndex;
         if (this.checkContinueDownload()) {
             this.createDownload(no);
@@ -5127,13 +5002,13 @@ class DownloadControl {
     // 当一个文件下载完成后，检查是否还有后续下载任务
     checkContinueDownload() {
         // 如果没有全部下载完毕
-        if (this.downloaded < _Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length) {
+        if (this.downloaded < _Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length) {
             // 如果任务已停止
             if (this.pause || this.stop) {
                 return false;
             }
             // 如果已完成的数量 加上 线程中未完成的数量，仍然没有达到文件总数，继续添加任务
-            if (this.downloaded + this.downloadThread - 1 < _Store__WEBPACK_IMPORTED_MODULE_2__["store"].result.length) {
+            if (this.downloaded + this.downloadThread - 1 < _Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length) {
                 return true;
             }
             else {
@@ -5147,12 +5022,12 @@ class DownloadControl {
     // 查找需要进行下载的作品，建立下载
     // 可选第二个参数：使用缩略图 url 而不是原图 url 进行下载
     createDownload(progressBarIndex, useThumb = false) {
-        const index = _DownloadStates__WEBPACK_IMPORTED_MODULE_12__["downloadStates"].getFirstDownloadItem();
+        const index = _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.getFirstDownloadItem();
         if (index === undefined) {
             throw new Error('There are no data to download');
         }
         else {
-            let result = _Store__WEBPACK_IMPORTED_MODULE_2__["store"].result[index];
+            let result = _Store__WEBPACK_IMPORTED_MODULE_2__.store.result[index];
             // 对于文本数据，此时创建其 URL
             if (result.text && result.text.length > 0) {
                 const text = result.text.join('\r\n');
@@ -5169,12 +5044,13 @@ class DownloadControl {
                     [result.url, result.retryUrl] = [result.retryUrl, result.url];
                 }
                 else {
-                    _Log__WEBPACK_IMPORTED_MODULE_3__["log"].error(`${result.url} Unable to retry, this file has been skipped.`);
+                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(`${result.url} Unable to retry, this file has been skipped.`);
                     const data = {
                         url: result.url,
                         id: result.fileID,
                         tabId: 0,
                         uuid: false,
+                        size: -1,
                     };
                     return this.downloadSuccess(data);
                 }
@@ -5192,7 +5068,7 @@ class DownloadControl {
                 progressBarIndex: progressBarIndex,
             };
             // 建立下载
-            new _Download__WEBPACK_IMPORTED_MODULE_6__["Download"](progressBarIndex, data);
+            new _Download__WEBPACK_IMPORTED_MODULE_6__.Download(progressBarIndex, data);
         }
     }
 }
@@ -5205,12 +5081,12 @@ new DownloadControl();
 /*!*********************************************!*\
   !*** ./src/ts/download/DownloadInterval.ts ***!
   \*********************************************/
-/*! exports provided: downloadInterval */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "downloadInterval", function() { return downloadInterval; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   downloadInterval: () => (/* binding */ downloadInterval)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
@@ -5228,7 +5104,7 @@ class DownloadInterval {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, (ev) => {
             const data = ev.detail.data;
             if (data.name === 'downloadInterval') {
                 if (data.value === 0) {
@@ -5237,24 +5113,24 @@ class DownloadInterval {
             }
         });
         const resetEvents = [
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlFinish,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStart,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadPause,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStop,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlFinish,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStart,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadPause,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStop,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete,
         ];
         resetEvents.forEach((evt) => {
             window.addEventListener(evt, () => {
                 this.reset();
             });
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStart, () => {
             // 在开始下载时，如果应用了间隔时间，则显示一条日志提醒
-            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval > 0) {
-                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载间隔') +
-                    `: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval} ` +
-                    _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_秒');
-                _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(msg, 1, false, 'downloadInterval');
+            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.downloadInterval > 0) {
+                const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_下载间隔') +
+                    `: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.downloadInterval} ` +
+                    _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_秒');
+                _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(msg, 1, false, 'downloadInterval');
             }
         });
     }
@@ -5264,13 +5140,13 @@ class DownloadInterval {
     addTime() {
         // 对 settings.downloadInterval 进行随机，生成它的 0.8 倍至 1.2 倍之间的数字
         const randomFactor = 0.8 + Math.random() * 0.4;
-        const interval = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval * 1000 * randomFactor;
+        const interval = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.downloadInterval * 1000 * randomFactor;
         this.allowDownloadTime = new Date().getTime() + interval;
     }
     wait() {
         return new Promise(async (resolve) => {
             // 首先检查此设置不应该生效的情况，立即放行
-            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval === 0) {
+            if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.downloadInterval === 0) {
                 return resolve(true);
             }
             // 可以立即开始下载
@@ -5299,12 +5175,12 @@ const downloadInterval = new DownloadInterval();
 /*!*******************************************!*\
   !*** ./src/ts/download/DownloadRecord.ts ***!
   \*******************************************/
-/*! exports provided: downloadRecord */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "downloadRecord", function() { return downloadRecord; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   downloadRecord: () => (/* binding */ downloadRecord)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
@@ -5327,7 +5203,7 @@ class DownloadRecord {
         this.DBName = 'DLRecord';
         this.DBVer = 1;
         this.storeName = 'record';
-        this.IDB = new _utils_IndexedDB__WEBPACK_IMPORTED_MODULE_4__["IndexedDB"]();
+        this.IDB = new _utils_IndexedDB__WEBPACK_IMPORTED_MODULE_4__.IndexedDB();
         this.init();
     }
     async init() {
@@ -5355,7 +5231,7 @@ class DownloadRecord {
     }
     bindEvents() {
         // 当有文件下载完成时，存储这个任务的记录
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadSuccess, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadSuccess, (ev) => {
             const successData = ev.detail.data;
             // 如果是 Blob URL 则不保存这个下载记录
             // 如果文件名异常，不保存这个下载记录，以便用户之后重新下载这个文件
@@ -5370,12 +5246,12 @@ class DownloadRecord {
             const btn = document.querySelector('#importDownloadRecord');
             if (btn) {
                 btn.addEventListener('click', () => {
-                    _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('importDownloadRecord');
+                    _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('importDownloadRecord');
                 });
             }
         }
         // 监听导入下载记录的事件
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.importDownloadRecord, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.importDownloadRecord, () => {
             this.importRecordFromJSON();
         });
         // 导出下载记录的按钮
@@ -5383,12 +5259,12 @@ class DownloadRecord {
             const btn = document.querySelector('#exportDownloadRecord');
             if (btn) {
                 btn.addEventListener('click', () => {
-                    _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('exportDownloadRecord');
+                    _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('exportDownloadRecord');
                 });
             }
         }
         // 监听导出下载记录的事件
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.exportDownloadRecord, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.exportDownloadRecord, () => {
             this.exportRecord();
         });
         // 清空下载记录的按钮
@@ -5396,12 +5272,12 @@ class DownloadRecord {
             const btn = document.querySelector('#clearDownloadRecord');
             if (btn) {
                 btn.addEventListener('click', () => {
-                    _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('clearDownloadRecord');
+                    _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('clearDownloadRecord');
                 });
             }
         }
         // 监听清空下载记录的事件
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.clearDownloadRecord, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.clearDownloadRecord, () => {
             this.clearRecords();
         });
     }
@@ -5416,7 +5292,7 @@ class DownloadRecord {
     async checkDeduplication(result) {
         return new Promise(async (resolve, reject) => {
             // 如果未启用去重，直接返回不重复
-            if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].deduplication) {
+            if (!_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.deduplication) {
                 return resolve(false);
             }
             // 在数据库进行查找
@@ -5427,31 +5303,31 @@ class DownloadRecord {
     // 清空下载记录
     clearRecords() {
         this.IDB.clear(this.storeName);
-        _Toast__WEBPACK_IMPORTED_MODULE_6__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_下载记录已清除'));
+        _Toast__WEBPACK_IMPORTED_MODULE_6__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_下载记录已清除'));
     }
     // 导出下载记录
     async exportRecord() {
         const record = (await this.IDB.getAll(this.storeName));
-        const blob = _utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].json2BlobSafe(record);
+        const blob = _utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.json2BlobSafe(record);
         const url = URL.createObjectURL(blob);
-        _utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].downloadFile(url, `record-${_utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].replaceUnsafeStr(new Date().toLocaleString())}.json`);
-        _Toast__WEBPACK_IMPORTED_MODULE_6__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_导出成功'));
+        _utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.downloadFile(url, `record-${_utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.replaceUnsafeStr(new Date().toLocaleString())}.json`);
+        _Toast__WEBPACK_IMPORTED_MODULE_6__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_导出成功'));
     }
     // 导入下载记录
     async importRecord(record) {
-        _Log__WEBPACK_IMPORTED_MODULE_2__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_导入下载记录'));
-        _Log__WEBPACK_IMPORTED_MODULE_2__["log"].log(record.length.toString());
+        _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_导入下载记录'));
+        _Log__WEBPACK_IMPORTED_MODULE_2__.log.log(record.length.toString());
         await this.IDB.batchAddData(this.storeName, record, 'url');
-        _Log__WEBPACK_IMPORTED_MODULE_2__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_导入成功'));
-        _Toast__WEBPACK_IMPORTED_MODULE_6__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_导入成功'));
-        _MsgBox__WEBPACK_IMPORTED_MODULE_7__["msgBox"].success(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_导入成功'), {
-            title: _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_导入下载记录'),
+        _Log__WEBPACK_IMPORTED_MODULE_2__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_导入成功'));
+        _Toast__WEBPACK_IMPORTED_MODULE_6__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_导入成功'));
+        _MsgBox__WEBPACK_IMPORTED_MODULE_7__.msgBox.success(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_导入成功'), {
+            title: _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_导入下载记录'),
         });
     }
     // 从 json 文件导入
     async importRecordFromJSON() {
-        const record = (await _utils_Utils__WEBPACK_IMPORTED_MODULE_5__["Utils"].loadJSONFile().catch((err) => {
-            _MsgBox__WEBPACK_IMPORTED_MODULE_7__["msgBox"].error(err);
+        const record = (await _utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.loadJSONFile().catch((err) => {
+            _MsgBox__WEBPACK_IMPORTED_MODULE_7__.msgBox.error(err);
             return;
         }));
         if (!record) {
@@ -5459,7 +5335,7 @@ class DownloadRecord {
         }
         // 判断格式是否符合要求
         if (Array.isArray(record) === false || record[0].url === undefined) {
-            return _MsgBox__WEBPACK_IMPORTED_MODULE_7__["msgBox"].error(_Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl('_格式错误'));
+            return _MsgBox__WEBPACK_IMPORTED_MODULE_7__.msgBox.error(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_格式错误'));
         }
         this.importRecord(record);
     }
@@ -5474,12 +5350,12 @@ const downloadRecord = new DownloadRecord();
 /*!*******************************************!*\
   !*** ./src/ts/download/DownloadStates.ts ***!
   \*******************************************/
-/*! exports provided: downloadStates */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "downloadStates", function() { return downloadStates; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   downloadStates: () => (/* binding */ downloadStates)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Store */ "./src/ts/Store.ts");
 
@@ -5492,13 +5368,13 @@ class DownloadStates {
     }
     bindEvents() {
         // 初始化下载状态
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlFinish, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlFinish, () => {
             this.init();
         });
     }
     // 创建新的状态列表
     init() {
-        this.states = new Array(_Store__WEBPACK_IMPORTED_MODULE_1__["store"].result.length).fill(-1);
+        this.states = new Array(_Store__WEBPACK_IMPORTED_MODULE_1__.store.result.length).fill(-1);
     }
     // 统计下载完成的数量
     downloadedCount() {
@@ -5551,14 +5427,89 @@ const downloadStates = new DownloadStates();
 
 /***/ }),
 
+/***/ "./src/ts/download/GetTotalDownload.ts":
+/*!*********************************************!*\
+  !*** ./src/ts/download/GetTotalDownload.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getTotalDownload: () => (/* binding */ getTotalDownload)
+/* harmony export */ });
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../MsgBox */ "./src/ts/MsgBox.ts");
+
+
+
+class GetTotalDownload {
+    constructor() {
+        this.bindEvents();
+    }
+    bindEvents() {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.totalDownloadHistory, (ev) => {
+            this.getHistory30Day();
+        });
+    }
+    async getToday() {
+        return new Promise((resolve, reject) => {
+            chrome.runtime.sendMessage({
+                msg: 'getTotalDownload',
+            }, (response) => {
+                // response: { total: number }
+                const total = (response === null || response === void 0 ? void 0 : response.total) || -1;
+                return resolve(total);
+            });
+        });
+    }
+    getHistory30Day() {
+        chrome.runtime.sendMessage({
+            msg: 'getTotalDownloadHistory30',
+        }, (response) => {
+            // response.history 例如：
+            // [{date: '2025-08-03', bytes: 18431824}]
+            if (response.history.length === 0) {
+                _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.warning('_没有数据可供使用');
+            }
+            const array = [];
+            response.history.forEach(({ date, bytes }) => {
+                // 选择显示单位
+                let size = '';
+                const MiB = bytes / 1024 / 1024;
+                const GiB = MiB / 1024;
+                if (GiB < 1) {
+                    size = `${MiB.toFixed(2)} MiB`;
+                }
+                else {
+                    size = `${GiB.toFixed(2)} GiB`;
+                }
+                array.push(`<p><span>${date}</span> <span>${size}</span></p>`);
+            });
+            const html = `<div id="downloadTotal30Day">
+        <style>
+          #downloadTotal30Day span{width:30%;display: inline-block;}
+        </style>
+        ${array.join('')}
+        </div>`;
+            _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.show(html, {
+                title: _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_最近30天内的下载记录'),
+            });
+        });
+    }
+}
+const getTotalDownload = new GetTotalDownload();
+
+
+
+/***/ }),
+
 /***/ "./src/ts/download/Resume.ts":
 /*!***********************************!*\
   !*** ./src/ts/download/Resume.ts ***!
   \***********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
@@ -5585,13 +5536,13 @@ class Resume {
         this.statesName = 'taskStates'; // 下载状态列表的表名
         this.putStatesTime = 1000; // 每隔指定时间存储一次最新的下载状态
         this.needPutStates = false; // 指示是否需要更新存储的下载状态
-        this.IDB = new _utils_IndexedDB__WEBPACK_IMPORTED_MODULE_6__["IndexedDB"]();
+        this.IDB = new _utils_IndexedDB__WEBPACK_IMPORTED_MODULE_6__.IndexedDB();
         this.init();
     }
     async init() {
         await this.initDB();
         this.bindEvents();
-        if (_States__WEBPACK_IMPORTED_MODULE_4__["states"].settingInitialized) {
+        if (_States__WEBPACK_IMPORTED_MODULE_4__.states.settingInitialized) {
             this.restoreData();
         }
         this.regularPutStates();
@@ -5623,7 +5574,7 @@ class Resume {
     // 恢复未完成任务的数据
     async restoreData() {
         // 如果下载器在抓取或者在下载，则不恢复数据
-        if (_States__WEBPACK_IMPORTED_MODULE_4__["states"].busy) {
+        if (_States__WEBPACK_IMPORTED_MODULE_4__.states.busy) {
             return;
         }
         // 恢复抓取结果
@@ -5632,56 +5583,56 @@ class Resume {
         if (taskData === null) {
             return;
         }
-        _Log__WEBPACK_IMPORTED_MODULE_1__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_正在恢复抓取结果'));
-        _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result = taskData.data;
-        _Store__WEBPACK_IMPORTED_MODULE_3__["store"].date = taskData.date;
+        _Log__WEBPACK_IMPORTED_MODULE_1__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_正在恢复抓取结果'));
+        _Store__WEBPACK_IMPORTED_MODULE_3__.store.result = taskData.data;
+        _Store__WEBPACK_IMPORTED_MODULE_3__.store.date = taskData.date;
         this.taskId = taskData.id;
         // 恢复下载状态
         const taskStates = (await this.IDB.get(this.statesName, this.taskId, 'id'));
         if (taskStates) {
-            _DownloadStates__WEBPACK_IMPORTED_MODULE_5__["downloadStates"].replace(taskStates.states);
+            _DownloadStates__WEBPACK_IMPORTED_MODULE_5__.downloadStates.replace(taskStates.states);
         }
         // 恢复完成
-        _Log__WEBPACK_IMPORTED_MODULE_1__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_已恢复抓取结果'), 2);
-        _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('resume');
+        _Log__WEBPACK_IMPORTED_MODULE_1__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_已恢复抓取结果'), 2);
+        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('resume');
     }
     bindEvents() {
         // 抓取完成时，保存这次任务的数据
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlFinish, async () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlFinish, async () => {
             this.saveData();
         });
         // 当有文件下载完成或者跳过下载时，更新下载状态
-        const saveEv = [_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadSuccess, _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.skipDownload];
+        const saveEv = [_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadSuccess, _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.skipDownload];
         saveEv.forEach((val) => {
             window.addEventListener(val, () => {
                 this.needPutStates = true;
             });
         });
         // 任务下载完毕时，以及停止任务时，清除这次任务的数据
-        const clearDataEv = [_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete, _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStop];
+        const clearDataEv = [_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete, _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStop];
         for (const ev of clearDataEv) {
             window.addEventListener(ev, async () => {
                 this.clearData();
             });
         }
         // 切换页面时，重新检查恢复数据
-        const restoreEvt = [_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.pageSwitch, _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingInitialized];
+        const restoreEvt = [_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.pageSwitch, _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingInitialized];
         restoreEvt.forEach((evt) => {
             window.addEventListener(evt, () => {
                 this.restoreData();
             });
         });
         // 清空已保存的抓取结果
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.clearSavedCrawl, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.clearSavedCrawl, () => {
             this.clearSavedCrawl();
         });
     }
     // 存储抓取结果
     async saveData() {
-        if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length === 0) {
+        if (_Store__WEBPACK_IMPORTED_MODULE_3__.store.result.length === 0) {
             return;
         }
-        this.taskId = _Store__WEBPACK_IMPORTED_MODULE_3__["store"].date.getTime();
+        this.taskId = _Store__WEBPACK_IMPORTED_MODULE_3__.store.date.getTime();
         const url = this.getURL();
         // 首先检查这个网址下是否已经存在数据，如果有数据，则清除之前的数据，保持每个网址只有一份数据
         const taskData = (await this.IDB.get(this.dataName, url, 'url'));
@@ -5690,16 +5641,16 @@ class Resume {
             await this.IDB.delete(this.statesName, taskData.id);
         }
         // 如果此时本次任务已经完成，就不进行保存了
-        if (_DownloadStates__WEBPACK_IMPORTED_MODULE_5__["downloadStates"].downloadedCount() === _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length) {
+        if (_DownloadStates__WEBPACK_IMPORTED_MODULE_5__.downloadStates.downloadedCount() === _Store__WEBPACK_IMPORTED_MODULE_3__.store.result.length) {
             return;
         }
         // 保存本次任务的数据
-        _Log__WEBPACK_IMPORTED_MODULE_1__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_正在保存抓取结果'));
+        _Log__WEBPACK_IMPORTED_MODULE_1__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_正在保存抓取结果'));
         const resultData = {
             id: this.taskId,
             url: url,
-            data: _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result,
-            date: _Store__WEBPACK_IMPORTED_MODULE_3__["store"].date,
+            data: _Store__WEBPACK_IMPORTED_MODULE_3__.store.result,
+            date: _Store__WEBPACK_IMPORTED_MODULE_3__.store.date,
         };
         try {
             await this.IDB.add(this.dataName, resultData);
@@ -5709,16 +5660,16 @@ class Resume {
             console.error(error);
             if (error.target && error.target.error && error.target.error.message) {
                 const msg = error.target.error.message;
-                _Log__WEBPACK_IMPORTED_MODULE_1__["log"].error('IndexedDB: ' + msg);
+                _Log__WEBPACK_IMPORTED_MODULE_1__.log.error('IndexedDB: ' + msg);
             }
         }
         // 保存 states 数据
         const statesData = {
             id: this.taskId,
-            states: _DownloadStates__WEBPACK_IMPORTED_MODULE_5__["downloadStates"].states,
+            states: _DownloadStates__WEBPACK_IMPORTED_MODULE_5__.downloadStates.states,
         };
         this.IDB.add(this.statesName, statesData);
-        _Log__WEBPACK_IMPORTED_MODULE_1__["log"].success(_Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_已保存抓取结果'), 2);
+        _Log__WEBPACK_IMPORTED_MODULE_1__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_已保存抓取结果'), 2);
     }
     // 定时 put 下载状态
     async regularPutStates() {
@@ -5726,11 +5677,11 @@ class Resume {
             if (this.needPutStates) {
                 const statesData = {
                     id: this.taskId,
-                    states: _DownloadStates__WEBPACK_IMPORTED_MODULE_5__["downloadStates"].states,
+                    states: _DownloadStates__WEBPACK_IMPORTED_MODULE_5__.downloadStates.states,
                 };
                 this.needPutStates = false;
                 // 如果此时本次任务已经完成，就不进行保存了
-                if (_DownloadStates__WEBPACK_IMPORTED_MODULE_5__["downloadStates"].downloadedCount() === _Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length) {
+                if (_DownloadStates__WEBPACK_IMPORTED_MODULE_5__.downloadStates.downloadedCount() === _Store__WEBPACK_IMPORTED_MODULE_3__.store.result.length) {
                     return;
                 }
                 this.IDB.put(this.statesName, statesData);
@@ -5788,7 +5739,7 @@ class Resume {
             this.IDB.clear(this.dataName),
             this.IDB.clear(this.statesName),
         ]);
-        _Toast__WEBPACK_IMPORTED_MODULE_7__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_数据清除完毕'));
+        _Toast__WEBPACK_IMPORTED_MODULE_7__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_数据清除完毕'));
     }
     // 处理本页面的 url
     getURL() {
@@ -5804,12 +5755,12 @@ new Resume();
 /*!******************************************!*\
   !*** ./src/ts/download/ShowSkipCount.ts ***!
   \******************************************/
-/*! exports provided: ShowSkipCount */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShowSkipCount", function() { return ShowSkipCount; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ShowSkipCount: () => (/* binding */ ShowSkipCount)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 
@@ -5819,37 +5770,37 @@ class ShowSkipCount {
     constructor(el) {
         this.count = 0; // 跳过下载的数量
         this.el = el;
-        _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].register(this.el);
+        _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.register(this.el);
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.crawlStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.crawlStart, () => {
             this.reset();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStop, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStop, () => {
             // 重置计数但不清空提示文字，因为用户还需要看
             this.count = 0;
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.skipDownload, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.skipDownload, () => {
             this.addCount();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadStart, () => {
             if (this.count === 0) {
                 this.reset();
             }
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.downloadComplete, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete, () => {
             // 重置计数但不清空提示文字，因为用户还需要看
             this.count = 0;
         });
     }
     addCount() {
         this.count++;
-        _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].updateText(this.el, '_已跳过n个文件', this.count.toString());
+        _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.updateText(this.el, '_已跳过n个文件', this.count.toString());
     }
     reset() {
         this.count = 0;
-        _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].updateText(this.el, '');
+        _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.updateText(this.el, '');
     }
 }
 
@@ -5861,10 +5812,8 @@ class ShowSkipCount {
 /*!**********************************************!*\
   !*** ./src/ts/download/ShowStatusOnTitle.ts ***!
   \**********************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../PageType */ "./src/ts/PageType.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
@@ -5900,18 +5849,18 @@ class ShowStatusOnTitle {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.crawlStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.crawlStart, () => {
             this.set(Flags.crawling);
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.worksUpdate, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.worksUpdate, () => {
             this.set(Flags.waiting);
         });
-        for (const ev of [_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.crawlFinish, _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.resume]) {
+        for (const ev of [_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.crawlFinish, _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.resume]) {
             window.addEventListener(ev, () => {
                 this.set(Flags.readyDownload);
             });
         }
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.downloadStart, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.downloadStart, () => {
             this.set(Flags.downloading);
         });
         // 切换了页面之后，标题可能会被 pixiv 修改，这样就没有标记了
@@ -5919,29 +5868,29 @@ class ShowStatusOnTitle {
         // 回调函数应该在 pixiv 修改标题之后执行
         // 但是 pageSwitch 触发时，标题尚未被 pixiv 修改。pixiv 是在 pageSwitch 之后修改标题的。
         // 所以我使用定时器来检查标题是否被 pixiv 修改了
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.pageSwitch, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.pageSwitch, () => {
             window.clearInterval(this.pageSwitchTimer);
-            if (!_States__WEBPACK_IMPORTED_MODULE_2__["states"].downloading) {
+            if (!_States__WEBPACK_IMPORTED_MODULE_2__.states.downloading) {
                 return;
             }
-            const nowTitle = _Tools__WEBPACK_IMPORTED_MODULE_3__["Tools"].getPageTitle();
+            const nowTitle = _Tools__WEBPACK_IMPORTED_MODULE_3__.Tools.getPageTitle();
             this.pageSwitchTimer = window.setInterval(() => {
-                if (_Tools__WEBPACK_IMPORTED_MODULE_3__["Tools"].getPageTitle() !== nowTitle) {
+                if (_Tools__WEBPACK_IMPORTED_MODULE_3__.Tools.getPageTitle() !== nowTitle) {
                     this.set(Flags.downloading);
                     window.clearInterval(this.pageSwitchTimer);
                 }
             }, 500);
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.downloadComplete, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.downloadComplete, () => {
             this.set(Flags.completed);
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.downloadPause, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.downloadPause, () => {
             this.set(Flags.paused);
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.downloadStop, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.downloadStop, () => {
             this.set(Flags.stopped);
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.crawlEmpty, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.crawlEmpty, () => {
             this.reset();
         });
     }
@@ -5966,9 +5915,9 @@ class ShowStatusOnTitle {
     // 重设 title
     reset() {
         window.clearInterval(this.flashingTimer);
-        const metaTagPage = [_PageType__WEBPACK_IMPORTED_MODULE_0__["pageType"].list.UserHome, _PageType__WEBPACK_IMPORTED_MODULE_0__["pageType"].list.UserPostList];
+        const metaTagPage = [_PageType__WEBPACK_IMPORTED_MODULE_0__.pageType.list.UserHome, _PageType__WEBPACK_IMPORTED_MODULE_0__.pageType.list.UserPostList];
         // 从 og:title 标签获取标题。og:title 标签是最早更新标题的。但不确定是否在所有页面上都可以直接使用 og:title 标签的内容，所以这里只在部分页面上使用
-        if (metaTagPage.includes(_PageType__WEBPACK_IMPORTED_MODULE_0__["pageType"].type)) {
+        if (metaTagPage.includes(_PageType__WEBPACK_IMPORTED_MODULE_0__.pageType.type)) {
             const ogTitle = document.querySelector('meta[property="og:title"]');
             if (ogTitle) {
                 document.title = ogTitle.content;
@@ -6030,12 +5979,12 @@ new ShowStatusOnTitle();
 /*!****************************!*\
   !*** ./src/ts/langText.ts ***!
   \****************************/
-/*! exports provided: langText */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "langText", function() { return langText; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   langText: () => (/* binding */ langText)
+/* harmony export */ });
 // 储存下载器使用的多语言文本
 // 在属性名前面加上下划线，和文本内容做出区别
 // {} 是占位符
@@ -6714,6 +6663,8 @@ So the file name set by the Downloader is lost, and the file name becomes the la
     <br><br>
     如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。
     <br><br>
+    如果你的浏览器在启动时停止响应，可能是因为浏览器的下载记录太多了导致的。你可以尝试清除浏览器的下载记录。
+    <br><br>
     下载器 QQ 群：853021998
     <br><br>
     如果你需要一个机场（梯子）的话，可以试试我现在用的机场：魔法喵 <a href="https://mofacgb.cc/register?code=GYjQWDob" title="魔法喵" target="_blank">https://mofacgb.cc</a>，性价比很高，9.9 元 768 GB 流量（倍率都是 1x），而且速度很快，下载国外网盘的文件时可以跑满我的带宽（70 MB/s）。
@@ -6725,10 +6676,10 @@ So the file name set by the Downloader is lost, and the file name becomes the la
     我的邀请码：GYjQWDob
     <br><br>
     `,
-        '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。<br><br>',
-        'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.<br><br>',
-        'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。<br><br>',
-        '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.<br><br>',
+        '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。<br><br>如果你的瀏覽器在啟動時停止響應，可能是因為瀏覽器的下載記錄太多了導致的。你可以嘗試清除瀏覽器的下載記錄。<br><br>',
+        `Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser\`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser\`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.<br><br>If your browser stops responding at startup, it may be because the browser has too many downloads. You can try clearing the browser's download history.<br><br>`,
+        'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。<br><br>ブラウザが起動時に応答しなくなる場合は、ダウンロード履歴が多すぎることが原因である可能性があります。ブラウザのダウンロード履歴を消去してみてください。<br><br>',
+        '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.<br><br>브라우저가 시작 시 응답하지 않는 경우, 브라우저에 다운로드가 너무 많기 때문일 수 있습니다. 브라우저의 다운로드 기록을 삭제해 보세요.<br><br>',
     ],
     _赞助我: ['赞助我', '贊助我', 'Sponsor me', '支援する', '후원하기'],
     _赞助方式提示: [
@@ -7313,19 +7264,19 @@ Additional notes: <br>
     _抓取间隔的说明: [
         `抓取投稿时，每个请求之间的间隔时间，单位是秒。<br>
 这是为了降低下载器发送请求的频率（特别是大量抓取时），从而减少账号被封的可能性。<br>
-你可以修改此设置，最小值是 0（即无限制）。<br>`,
+你可以修改此设置，最小值是 0（即无限制）。`,
         `抓取投稿時，每個請求之間的間隔時間，單位是秒。<br>
 這是為了降低下載器傳送請求的頻率（特別是大量抓取時），從而減少賬號被封的可能性。<br>
-你可以修改此設定，最小值是 0（即無限制）。<br>`,
+你可以修改此設定，最小值是 0（即無限制）。`,
         `The time interval between each request when crawling posts, in seconds. <br>
 This is intended to reduce the frequency of requests sent by the downloader (especially when crawling large volumes), thereby reducing the likelihood of your account being blocked. <br>
-You can modify this setting; the minimum value is 0 (no limit). <br>`,
+You can modify this setting; the minimum value is 0 (no limit). `,
         `投稿をクロールする際の各リクエスト間の時間間隔（秒単位）。<br>
 これは、ダウンローダーから送信されるリクエストの頻度を減らすことを目的としています（特に大量の投稿をクロールする場合）。これにより、アカウントがブロックされる可能性が低減されます。<br>
-この設定は変更できます。最小値は 0（制限なし）です。<br>`,
+この設定は変更できます。最小値は 0（制限なし）です。`,
         `게시물을 크롤링할 때 각 요청 사이의 시간 간격(초)입니다. <br>
 이 설정은 다운로더가 보내는 요청 빈도를 줄이기 위한 것입니다(특히 대용량 게시물을 크롤링할 때). 따라서 계정이 차단될 가능성이 줄어듭니다. <br>
-이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. `,
     ],
     _下载间隔: [
         '下载<span class="key">间隔</span>',
@@ -7334,7 +7285,7 @@ You can modify this setting; the minimum value is 0 (no limit). <br>`,
         'ダウンロード<span class="key">間隔</span>',
         '다운로드 <span class="key">간격</span>',
     ],
-    _秒: ['秒', '秒', 'seconds', '秒', '초',],
+    _秒: ['秒', '秒', 'seconds', '秒', '초'],
     _间隔时间: [
         '间隔时间：',
         '間隔時間：',
@@ -7347,23 +7298,23 @@ You can modify this setting; the minimum value is 0 (no limit). <br>`,
         `每隔一定时间开始一次下载，单位是秒。<br>
 默认值为 1，即每小时最多会从 Fanbox 下载 3600 个文件。<br>
 这是为了降低从 Fanbox 下载文件的频率（特别是下载体积较小的图片时），从而减少账号被封的可能性。<br>
-你可以修改此设置，最小值是 0（即无限制）。<br>`,
+你可以修改此设置，最小值是 0（即无限制）。`,
         `每隔一定時間開始一次下載，單位是秒。<br>
 預設值為 1，即每小時最多會從 Fanbox 下載 3600 個檔案。<br>
 這是為了降低從 Fanbox 下載檔案的頻率（特別是下載體積較小的圖片時），從而減少賬號被封的可能性。<br>
-你可以修改此設定，最小值是 0（即無限制）。<br>`,
+你可以修改此設定，最小值是 0（即無限制）。`,
         `The interval at which downloads are initiated, measured in seconds. <br>
 The default value is 1, meaning a maximum of 3,600 files will be downloaded from Fanbox per hour. <br>
 This is intended to reduce the frequency of downloads from Fanbox (especially when downloading small images), thereby reducing the likelihood of your account being blocked. <br>
-You can modify this setting; the minimum value is 0 (no limit). <br>`,
+You can modify this setting; the minimum value is 0 (no limit). `,
         `ダウンロードを開始する間隔（秒単位）。<br>
 デフォルト値は1で、Fanboxから1時間あたり最大3,600個のファイルがダウンロードされます。<br>
 これは、Fanboxからのダウンロード頻度（特に小さな画像をダウンロードする場合）を減らし、アカウントがブロックされる可能性を減らすことを目的としています。<br>
-この設定は変更できます。最小値は0（制限なし）です。<br>`,
+この設定は変更できます。最小値は0（制限なし）です。`,
         `다운로드 시작 간격(초)입니다. <br>
 기본값은 1이며, Fanbox에서 시간당 최대 3,600개의 파일이 다운로드됩니다. <br>
 이 설정은 Fanbox에서 다운로드 빈도(특히 작은 이미지 다운로드 시)를 줄여 계정이 차단될 가능성을 줄이기 위한 것입니다. <br>
-이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. `,
     ],
     _已有抓取结果时进行提醒: [
         '这个标签页里已经有抓取结果了，重新开始抓取会清空这些抓取结果。\n请确认是否要重新开始抓取？',
@@ -7403,6 +7354,72 @@ Downloader는 기본적으로 다운로드 및 스크래핑 속도를 늦춥니�
         `リクエストが失敗しました。ダウンローダーがリクエストを再試行するため、手動処理は必要ありません。`,
         `요청이 실패했습니다. 다운로더가 요청을 다시 시도하며, 수동 처리는 필요하지 않습니다.`,
     ],
+    _每天下载的文件大小限制: [
+        `每天下载的文件<span class="key">大小</span>限制`,
+        `每天下載的檔案<span class="key">大小</span>限制`,
+        `Daily download <span class="key">file size</span> limit`,
+        '1日のダウンロードファイルサイズ制限',
+        '일일 다운로드 파일 크기 제한',
+    ],
+    _每天下载的文件大小限制的说明: [
+        `每当下载完一个文件之后，下载器都会检查今天下载的文件的总体积。<br>
+    如果达到了限制，下载器会自动暂停下载。<br>
+    此功能是为了避免下载过多的文件，导致账号被封禁。<br>
+    <br>
+    说明：<br>
+    1. “今天”指自然天，而非最近 24 小时。<br>
+    2. 下载器只会统计下载成功的文件的体积。
+    `,
+        `每當下載完一個檔案之後，下載器都會檢查今天下載的檔案的總體積。<br>
+    如果達到了限制，下載器會自動暫停下載。<br>
+    此功能是為了避免下載過多的檔案，導致賬號被封禁。<br>
+    <br>
+    說明：<br>
+    1. “今天”指自然天，而非最近 24 小時。<br>
+    2. 下載器只會統計下載成功的檔案的體積。`,
+        `After each file download, the downloader will check the total size of files downloaded today. <br>
+If the limit is reached, the downloader will automatically pause the download. <br>
+This feature is to prevent your account from being banned due to excessive file downloads. <br>
+<br>
+Note: <br>
+1. "Today" refers to the calendar day, not the last 24 hours. <br>
+2. The downloader only counts the size of successfully downloaded files.`,
+        `各ファイルのダウンロード後、ダウンローダーは今日ダウンロードされたファイルの合計サイズを確認します。<br>
+制限に達した場合、ダウンローダーは自動的にダウンロードを一時停止します。<br>
+この機能は、過剰なファイルダウンロードによるアカウント停止を防ぐためのものです。<br>
+<br>
+注: <br>
+1. 「今日」とは、過去24時間ではなく、暦日を指します。<br>
+2. ダウンローダーは、正常にダウンロードされたファイルのサイズのみをカウントします。`,
+        `각 파일을 다운로드할 때마다 다운로더는 오늘 다운로드된 파일의 총 크기를 확인합니다. <br>
+한도에 도달하면 다운로더는 자동으로 다운로드를 일시 중지합니다. <br>
+이 기능은 과도한 파일 다운로드로 인해 계정이 정지되는 것을 방지하기 위한 것입니다. <br>
+<br>
+참고: <br>
+1. "오늘"은 지난 24시간이 아닌 해당 날짜를 의미합니다. <br>
+2. 다운로더는 성공적으로 다운로드된 파일의 크기만 계산합니다.`,
+    ],
+    _下载已暂停原因: [
+        `下载已暂停，原因：`,
+        `下載已暫停，原因：`,
+        `Downloads paused due to:`,
+        `ダウンロードが一時停止された理由:`,
+        `다운로드가 일시 중지된 이유:`,
+    ],
+    _查看历史数据: [
+        '查看历史数据',
+        `檢視歷史資料`,
+        `View historical data`,
+        `履歴データの表示`,
+        `이전 데이터 보기`,
+    ],
+    _最近30天内的下载记录: [
+        '最近 30 天内下载的文件的体积',
+        `最近 30 天內下載的檔案的體積`,
+        `File size downloaded in the last 30 days`,
+        `過去30日間にダウンロードされたファイルサイズ`,
+        `지난 30일 동안 다운로드된 파일 크기`,
+    ],
 };
 
 
@@ -7413,10 +7430,8 @@ Downloader는 기본적으로 다운로드 및 스크래핑 속도를 늦춥니�
 /*!********************************!*\
   !*** ./src/ts/setting/Form.ts ***!
   \********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Tools */ "./src/ts/Tools.ts");
@@ -7453,13 +7468,13 @@ class Form {
                 settingName: 'tipCreateFolder',
             },
         ];
-        this.form = _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].useSlot('form', _FormHTML__WEBPACK_IMPORTED_MODULE_2__["formHtml"]);
-        _Lang__WEBPACK_IMPORTED_MODULE_7__["lang"].register(this.form);
+        this.form = _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.useSlot('form', _FormHTML__WEBPACK_IMPORTED_MODULE_2__.formHtml);
+        _Lang__WEBPACK_IMPORTED_MODULE_7__.lang.register(this.form);
         this.getElements();
         const allOptions = this.form.querySelectorAll('.option');
-        _Options__WEBPACK_IMPORTED_MODULE_8__["options"].init(allOptions);
-        new _SaveNamingRule__WEBPACK_IMPORTED_MODULE_4__["SaveNamingRule"](this.form.userSetName);
-        new _FormSettings__WEBPACK_IMPORTED_MODULE_5__["FormSettings"](this.form);
+        _Options__WEBPACK_IMPORTED_MODULE_8__.options.init(allOptions);
+        new _SaveNamingRule__WEBPACK_IMPORTED_MODULE_4__.SaveNamingRule(this.form.userSetName);
+        new _FormSettings__WEBPACK_IMPORTED_MODULE_5__.FormSettings(this.form);
         this.bindEvents();
     }
     getElements() {
@@ -7508,7 +7523,7 @@ class Form {
             });
         }
         // 设置变化或者重置时，重新设置美化状态
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, _utils_Utils__WEBPACK_IMPORTED_MODULE_6__["Utils"].debounce(() => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, _utils_Utils__WEBPACK_IMPORTED_MODULE_6__.Utils.debounce(() => {
             this.initFormBeautify();
             this.showTips();
         }, 50));
@@ -7517,7 +7532,7 @@ class Form {
             if (item.wrap) {
                 const btn = item.wrap.querySelector('button');
                 btn.addEventListener('click', () => {
-                    Object(_setting_Settings__WEBPACK_IMPORTED_MODULE_3__["setSetting"])(item.settingName, false);
+                    (0,_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.setSetting)(item.settingName, false);
                 });
             }
         }
@@ -7526,7 +7541,7 @@ class Form {
             const el = this.form.querySelector('#selectBG');
             if (el) {
                 el.addEventListener('click', () => {
-                    _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('selectBG');
+                    _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('selectBG');
                 });
             }
         }
@@ -7535,7 +7550,7 @@ class Form {
             const el = this.form.querySelector('#clearBG');
             if (el) {
                 el.addEventListener('click', () => {
-                    _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('clearBG');
+                    _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('clearBG');
                 });
             }
         }
@@ -7544,9 +7559,9 @@ class Form {
             const el = this.form.querySelector('#resetSettings');
             if (el) {
                 el.addEventListener('click', () => {
-                    const result = window.confirm(_Lang__WEBPACK_IMPORTED_MODULE_7__["lang"].transl('_是否重置设置'));
+                    const result = window.confirm(_Lang__WEBPACK_IMPORTED_MODULE_7__.lang.transl('_是否重置设置'));
                     if (result) {
-                        _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('resetSettings');
+                        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('resetSettings');
                     }
                 });
             }
@@ -7556,7 +7571,7 @@ class Form {
             const el = this.form.querySelector('#exportSettings');
             if (el) {
                 el.addEventListener('click', () => {
-                    _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('exportSettings');
+                    _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('exportSettings');
                 });
             }
         }
@@ -7565,25 +7580,32 @@ class Form {
             const el = this.form.querySelector('#importSettings');
             if (el) {
                 el.addEventListener('click', () => {
-                    _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('importSettings');
+                    _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('importSettings');
                 });
             }
+        }
+        // 查看每天下载的文件大小的历史数据
+        {
+            const totalDownloadHistory = this.form.querySelector('#totalDownloadHistory');
+            totalDownloadHistory.addEventListener('click', () => {
+                _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('totalDownloadHistory');
+            });
         }
         // 显示不下载重复文件的提示
         const deduplicationHelp = this.form.querySelector('#deduplicationHelp');
         deduplicationHelp.addEventListener('click', () => {
-            _MsgBox__WEBPACK_IMPORTED_MODULE_9__["msgBox"].show(_Lang__WEBPACK_IMPORTED_MODULE_7__["lang"].transl('_不下载重复文件的提示'), {
-                title: _Lang__WEBPACK_IMPORTED_MODULE_7__["lang"].transl('_不下载重复文件'),
+            _MsgBox__WEBPACK_IMPORTED_MODULE_9__.msgBox.show(_Lang__WEBPACK_IMPORTED_MODULE_7__.lang.transl('_不下载重复文件的提示'), {
+                title: _Lang__WEBPACK_IMPORTED_MODULE_7__.lang.transl('_不下载重复文件'),
             });
         });
         // 显示命名字段提示
         this.form
             .querySelector('.showFileNameTip')
-            .addEventListener('click', () => _utils_Utils__WEBPACK_IMPORTED_MODULE_6__["Utils"].toggleEl(document.querySelector('.fileNameTip')));
+            .addEventListener('click', () => _utils_Utils__WEBPACK_IMPORTED_MODULE_6__.Utils.toggleEl(document.querySelector('.fileNameTip')));
         // 显示日期格式提示
         this.form
             .querySelector('.showDateTip')
-            .addEventListener('click', () => _utils_Utils__WEBPACK_IMPORTED_MODULE_6__["Utils"].toggleEl(document.querySelector('.dateFormatTip')));
+            .addEventListener('click', () => _utils_Utils__WEBPACK_IMPORTED_MODULE_6__.Utils.toggleEl(document.querySelector('.dateFormatTip')));
         // 输入框获得焦点时自动选择文本（文件名输入框例外）
         const centerInputs = this.form.querySelectorAll('input[type=text]');
         for (const el of centerInputs) {
@@ -7628,7 +7650,7 @@ class Form {
     // 是否显示提示
     showTips() {
         for (const item of this.tips) {
-            item.wrap.style.display = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"][item.settingName] ? 'block' : 'none';
+            item.wrap.style.display = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings[item.settingName] ? 'block' : 'none';
         }
     }
 }
@@ -7641,12 +7663,12 @@ new Form();
 /*!****************************************!*\
   !*** ./src/ts/setting/FormSettings.ts ***!
   \****************************************/
-/*! exports provided: FormSettings */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormSettings", function() { return FormSettings; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormSettings: () => (/* binding */ FormSettings)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Settings */ "./src/ts/setting/Settings.ts");
 /* harmony import */ var _utils_DateFormat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/DateFormat */ "./src/ts/utils/DateFormat.ts");
@@ -7686,6 +7708,7 @@ class FormSettings {
                 'titleCannotTextSwitch',
                 'fileNameIncludeSwitch',
                 'fileNameExcludeSwitch',
+                'totalDownloadLimitSwitch',
             ],
             text: [
                 'fee',
@@ -7701,6 +7724,7 @@ class FormSettings {
                 'fileNameExclude',
                 'downloadInterval',
                 'crawlInterval',
+                'totalDownloadLimit',
             ],
             radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
             textarea: [],
@@ -7708,13 +7732,13 @@ class FormSettings {
         };
         this.restoreTimer = 0;
         this.form = form;
-        _NameRuleManager__WEBPACK_IMPORTED_MODULE_3__["nameRuleManager"].registerInput(this.form.userSetName);
+        _NameRuleManager__WEBPACK_IMPORTED_MODULE_3__.nameRuleManager.registerInput(this.form.userSetName);
         this.bindEvents();
         this.restoreFormSettings();
         this.ListenChange();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, () => {
             window.clearTimeout(this.restoreTimer);
             this.restoreTimer = window.setTimeout(() => {
                 this.restoreFormSettings();
@@ -7763,14 +7787,14 @@ class FormSettings {
     saveTextInput(name) {
         const el = this.form[name];
         el.addEventListener('change', () => {
-            Object(_Settings__WEBPACK_IMPORTED_MODULE_1__["setSetting"])(name, el.value);
+            (0,_Settings__WEBPACK_IMPORTED_MODULE_1__.setSetting)(name, el.value);
         });
     }
     // 处理复选框： click 时保存 checked
     saveCheckBox(name) {
         const el = this.form[name];
         el.addEventListener('click', () => {
-            Object(_Settings__WEBPACK_IMPORTED_MODULE_1__["setSetting"])(name, el.checked);
+            (0,_Settings__WEBPACK_IMPORTED_MODULE_1__.setSetting)(name, el.checked);
         });
     }
     // 处理单选框： click 时保存 value
@@ -7778,28 +7802,28 @@ class FormSettings {
         const radios = this.form[name];
         for (const radio of radios) {
             radio.addEventListener('click', () => {
-                Object(_Settings__WEBPACK_IMPORTED_MODULE_1__["setSetting"])(name, radio.value);
+                (0,_Settings__WEBPACK_IMPORTED_MODULE_1__.setSetting)(name, radio.value);
             });
         }
     }
     // 恢复值为 Boolean 的设置项
     restoreBoolean(name) {
-        if (_Settings__WEBPACK_IMPORTED_MODULE_1__["settings"][name] !== undefined) {
-            this.form[name].checked = _Settings__WEBPACK_IMPORTED_MODULE_1__["settings"][name];
+        if (_Settings__WEBPACK_IMPORTED_MODULE_1__.settings[name] !== undefined) {
+            this.form[name].checked = _Settings__WEBPACK_IMPORTED_MODULE_1__.settings[name];
         }
     }
     // 恢复值为 string 的设置项
     restoreString(name) {
-        if (_Settings__WEBPACK_IMPORTED_MODULE_1__["settings"][name] !== undefined) {
-            this.form[name].value = _Settings__WEBPACK_IMPORTED_MODULE_1__["settings"][name].toString();
+        if (_Settings__WEBPACK_IMPORTED_MODULE_1__.settings[name] !== undefined) {
+            this.form[name].value = _Settings__WEBPACK_IMPORTED_MODULE_1__.settings[name].toString();
         }
     }
     // 恢复日期、时间设置项
     restoreDate(name) {
-        if (_Settings__WEBPACK_IMPORTED_MODULE_1__["settings"][name] !== undefined) {
+        if (_Settings__WEBPACK_IMPORTED_MODULE_1__.settings[name] !== undefined) {
             // 把时间戳转换成 input 使用的字符串
-            const date = _Settings__WEBPACK_IMPORTED_MODULE_1__["settings"][name];
-            this.form[name].value = _utils_DateFormat__WEBPACK_IMPORTED_MODULE_2__["DateFormat"].format(date, 'YYYY-MM-DDThh:mm');
+            const date = _Settings__WEBPACK_IMPORTED_MODULE_1__.settings[name];
+            this.form[name].value = _utils_DateFormat__WEBPACK_IMPORTED_MODULE_2__.DateFormat.format(date, 'YYYY-MM-DDThh:mm');
         }
     }
 }
@@ -7812,12 +7836,12 @@ class FormSettings {
 /*!*******************************************!*\
   !*** ./src/ts/setting/NameRuleManager.ts ***!
   \*******************************************/
-/*! exports provided: nameRuleManager */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nameRuleManager", function() { return nameRuleManager; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   nameRuleManager: () => (/* binding */ nameRuleManager)
+/* harmony export */ });
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/Utils */ "./src/ts/utils/Utils.ts");
@@ -7837,9 +7861,9 @@ class NameRuleManager {
     }
     bindEvents() {
         const evts = [
-            _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.settingInitialized,
-            _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.resetSettingsEnd,
-            _EVT__WEBPACK_IMPORTED_MODULE_1__["EVT"].list.pageSwitchedTypeChange,
+            _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.settingInitialized,
+            _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.resetSettingsEnd,
+            _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.pageSwitchedTypeChange,
         ];
         evts.forEach((evt) => {
             window.addEventListener(evt, () => {
@@ -7848,13 +7872,13 @@ class NameRuleManager {
         });
     }
     get rule() {
-        return _Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].userSetName;
+        return _Settings__WEBPACK_IMPORTED_MODULE_3__.settings.userSetName;
     }
     set rule(str) {
         // 检查传递的命名规则的合法性
         // 替换特殊字符
-        str = this.handleUserSetName(str) || _Config__WEBPACK_IMPORTED_MODULE_0__["Config"].defaultNameRule;
-        Object(_Settings__WEBPACK_IMPORTED_MODULE_3__["setSetting"])('userSetName', str);
+        str = this.handleUserSetName(str) || _Config__WEBPACK_IMPORTED_MODULE_0__.Config.defaultNameRule;
+        (0,_Settings__WEBPACK_IMPORTED_MODULE_3__.setSetting)('userSetName', str);
         this.setInputValue();
     }
     // 注册命名规则输入框
@@ -7888,8 +7912,8 @@ class NameRuleManager {
         this.inputList.forEach((input) => {
             input.value = rule;
         });
-        if (rule !== _Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].userSetName) {
-            Object(_Settings__WEBPACK_IMPORTED_MODULE_3__["setSetting"])('userSetName', rule);
+        if (rule !== _Settings__WEBPACK_IMPORTED_MODULE_3__.settings.userSetName) {
+            (0,_Settings__WEBPACK_IMPORTED_MODULE_3__.setSetting)('userSetName', rule);
         }
     }
     // 处理用命名规则的非法字符和非法规则
@@ -7898,7 +7922,7 @@ class NameRuleManager {
     // /{page_tag}/|/{user}////<//{rank}/{px}/{sl}/{page_tag}///{id}-{user}-{user_id}""-?{tags_transl_only}////
     handleUserSetName(str) {
         // 替换命名规则里可能存在的非法字符
-        str = _utils_Utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].replaceUnsafeStr(str);
+        str = _utils_Utils__WEBPACK_IMPORTED_MODULE_2__.Utils.replaceUnsafeStr(str);
         // replaceUnsafeStr 会把斜线 / 替换成全角的斜线 ／，这里再替换回来，否则就不能建立文件夹了
         str = str.replace(/／/g, '/');
         // 处理连续的 /
@@ -7923,12 +7947,12 @@ const nameRuleManager = new NameRuleManager();
 /*!***********************************!*\
   !*** ./src/ts/setting/Options.ts ***!
   \***********************************/
-/*! exports provided: options */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "options", function() { return options; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   options: () => (/* binding */ options)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Settings */ "./src/ts/setting/Settings.ts");
@@ -7951,15 +7975,15 @@ class Options {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, (ev) => {
             const data = ev.detail.data;
             if (data.name === 'showAdvancedSettings') {
                 this.handleShowAdvancedSettings();
             }
         });
         const list = [
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.pageSwitchedTypeNotChange,
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.pageSwitchedTypeChange,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.pageSwitchedTypeNotChange,
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.pageSwitchedTypeChange,
         ];
         list.forEach((ev) => {
             window.addEventListener(ev, () => {
@@ -7977,7 +8001,7 @@ class Options {
             }
             const no = Number.parseInt(option.dataset.no);
             // 如果需要隐藏高级设置
-            if (!_Settings__WEBPACK_IMPORTED_MODULE_2__["settings"].showAdvancedSettings) {
+            if (!_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.showAdvancedSettings) {
                 // 如果在白名单中，并且当前页面不需要隐藏它，那么它就是显示的
                 if (this.whiteList.includes(no) && !this.hiddenList.includes(no)) {
                     this.showOption([no]);
@@ -8033,16 +8057,16 @@ class Options {
     }
     // 设置 “抓取多少作品/页面” 选项的提示和预设值
     setWantPageTip(arg) {
-        _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].updateText(this.wantPageEls.text, arg.text);
+        _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.updateText(this.wantPageEls.text, arg.text);
         this.wantPageEls.wrap.dataset.xztip = arg.tip;
-        this.wantPageEls.wrap.dataset.tip = _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].transl(arg.tip);
+        this.wantPageEls.wrap.dataset.tip = _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl(arg.tip);
         // rangTip 可能需要翻译
         if (arg.rangTip.startsWith('_')) {
-            _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].updateText(this.wantPageEls.rangTip, arg.rangTip);
+            _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.updateText(this.wantPageEls.rangTip, arg.rangTip);
         }
         else {
             // 也可能直接传递了字符串，不需要翻译
-            _Lang__WEBPACK_IMPORTED_MODULE_1__["lang"].updateText(this.wantPageEls.rangTip, '');
+            _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.updateText(this.wantPageEls.rangTip, '');
             this.wantPageEls.rangTip.textContent = arg.rangTip;
         }
     }
@@ -8057,12 +8081,12 @@ const options = new Options();
 /*!******************************************!*\
   !*** ./src/ts/setting/SaveNamingRule.ts ***!
   \******************************************/
-/*! exports provided: SaveNamingRule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SaveNamingRule", function() { return SaveNamingRule; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SaveNamingRule: () => (/* binding */ SaveNamingRule)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Tools */ "./src/ts/Tools.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
@@ -8087,9 +8111,9 @@ class SaveNamingRule {
   <ul class="namingRuleList"></ul>
   </div>`;
         this.ruleInput = ruleInput;
-        _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].clearSlot('saveNamingRule');
-        const wrap = _Tools__WEBPACK_IMPORTED_MODULE_1__["Tools"].useSlot('saveNamingRule', this.html);
-        _Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].register(wrap);
+        _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.clearSlot('saveNamingRule');
+        const wrap = _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.useSlot('saveNamingRule', this.html);
+        _Lang__WEBPACK_IMPORTED_MODULE_2__.lang.register(wrap);
         this.saveBtn = wrap.querySelector('button.nameSave');
         this.loadBtn = wrap.querySelector('button.nameLoad');
         this.listWrap = wrap.querySelector('ul.namingRuleList');
@@ -8114,7 +8138,7 @@ class SaveNamingRule {
             this.show = false;
         });
         // 设置发生变化时重新创建列表
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, (ev) => {
             const data = ev.detail.data;
             if (data.name === 'namingRuleList') {
                 this.createList();
@@ -8122,36 +8146,36 @@ class SaveNamingRule {
         });
     }
     add(rule) {
-        if (_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].namingRuleList.length === this.limit) {
+        if (_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.namingRuleList.length === this.limit) {
             this.delete(0);
         }
         // 如果这个规则已存在，不会重复添加它
-        if (!_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].namingRuleList.includes(rule)) {
-            const list = Array.from(_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].namingRuleList);
+        if (!_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.namingRuleList.includes(rule)) {
+            const list = Array.from(_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.namingRuleList);
             list.push(rule);
-            Object(_Settings__WEBPACK_IMPORTED_MODULE_3__["setSetting"])('namingRuleList', list);
+            (0,_Settings__WEBPACK_IMPORTED_MODULE_3__.setSetting)('namingRuleList', list);
         }
-        _Toast__WEBPACK_IMPORTED_MODULE_4__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_2__["lang"].transl('_已保存命名规则'));
+        _Toast__WEBPACK_IMPORTED_MODULE_4__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_已保存命名规则'));
     }
     delete(index) {
-        const list = Array.from(_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].namingRuleList);
+        const list = Array.from(_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.namingRuleList);
         list.splice(index, 1);
-        Object(_Settings__WEBPACK_IMPORTED_MODULE_3__["setSetting"])('namingRuleList', list);
+        (0,_Settings__WEBPACK_IMPORTED_MODULE_3__.setSetting)('namingRuleList', list);
     }
     select(rule) {
         this.ruleInput.value = rule;
-        _NameRuleManager__WEBPACK_IMPORTED_MODULE_5__["nameRuleManager"].rule = rule;
+        _NameRuleManager__WEBPACK_IMPORTED_MODULE_5__.nameRuleManager.rule = rule;
     }
     createList() {
         const htmlArr = [];
-        for (let i = 0; i < _Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].namingRuleList.length; i++) {
+        for (let i = 0; i < _Settings__WEBPACK_IMPORTED_MODULE_3__.settings.namingRuleList.length; i++) {
             const html = `<li>
-      <span class="rule">${_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].namingRuleList[i]}</span>
+      <span class="rule">${_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.namingRuleList[i]}</span>
       <button class="delete textButton" type="button" data-index="${i}">×</button>
     </li>`;
             htmlArr.push(html);
         }
-        if (_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].namingRuleList.length === 0) {
+        if (_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.namingRuleList.length === 0) {
             htmlArr.push(`<li><i>&nbsp;&nbsp;&nbsp;&nbsp;no data</i></li>`);
         }
         this.listWrap.innerHTML = htmlArr.join('');
@@ -8186,13 +8210,13 @@ class SaveNamingRule {
 /*!************************************!*\
   !*** ./src/ts/setting/Settings.ts ***!
   \************************************/
-/*! exports provided: settings, setSetting */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "settings", function() { return settings; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSetting", function() { return setSetting; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setSetting: () => (/* binding */ setSetting),
+/* harmony export */   settings: () => (/* binding */ settings)
+/* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/Utils */ "./src/ts/utils/Utils.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../MsgBox */ "./src/ts/MsgBox.ts");
@@ -8251,7 +8275,7 @@ class Settings {
             saveText: false,
             userSetName: 'fanbox/{user}/{date}-{title}/{index}',
             autoStartDownload: true,
-            downloadThread: 3,
+            downloadThread: 2,
             dateFormat: 'YYYY-MM-DD',
             savePostCover: true,
             userSetLang: 'auto',
@@ -8280,12 +8304,16 @@ class Settings {
             fileNameExclude: [],
             downloadInterval: 1,
             crawlInterval: 1,
+            totalDownloadLimitSwitch: true,
+            totalDownloadLimit: 10,
+            totalDownloadLimitByte: 10737418240,
         };
         this.allSettingKeys = Object.keys(this.defaultSettings);
         // 值为浮点数的选项
         this.floatNumberKey = [
             'downloadInterval',
             'crawlInterval',
+            'totalDownloadLimit',
         ];
         // 值为整数的选项不必单独列出
         // 值为数字数组的选项
@@ -8299,11 +8327,11 @@ class Settings {
             'fileNameExclude',
         ];
         // 以默认设置作为初始设置
-        this.settings = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].deepCopy(this.defaultSettings);
-        this.store = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].debounce(() => {
+        this.settings = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.deepCopy(this.defaultSettings);
+        this.store = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.debounce(() => {
             // chrome.storage.local 的储存上限是 5 MiB（5242880 Byte）
             chrome.storage.local.set({
-                [_Config__WEBPACK_IMPORTED_MODULE_3__["Config"].settingStoreName]: this.settings,
+                [_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName]: this.settings,
             });
         }, 50);
         this.restore();
@@ -8311,16 +8339,16 @@ class Settings {
     }
     bindEvents() {
         // 当设置发生变化时进行本地存储
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.settingChange, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.settingChange, () => {
             this.store();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.resetSettings, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.resetSettings, () => {
             this.reset();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.exportSettings, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.exportSettings, () => {
             this.exportSettings();
         });
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].list.importSettings, () => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.importSettings, () => {
             this.importSettings();
         });
     }
@@ -8328,19 +8356,19 @@ class Settings {
     restore() {
         let restoreData = this.defaultSettings;
         // 首先从 chrome.storage 获取配置
-        chrome.storage.local.get(_Config__WEBPACK_IMPORTED_MODULE_3__["Config"].settingStoreName, (result) => {
-            if (result[_Config__WEBPACK_IMPORTED_MODULE_3__["Config"].settingStoreName]) {
-                restoreData = result[_Config__WEBPACK_IMPORTED_MODULE_3__["Config"].settingStoreName];
+        chrome.storage.local.get(_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName, (result) => {
+            if (result[_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName]) {
+                restoreData = result[_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName];
             }
             else {
                 // 如无数据则尝试从 localStorage 获取配置，因为旧版本的配置储存在 localStorage 中
-                const savedSettings = localStorage.getItem(_Config__WEBPACK_IMPORTED_MODULE_3__["Config"].settingStoreName);
+                const savedSettings = localStorage.getItem(_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName);
                 if (savedSettings) {
                     restoreData = JSON.parse(savedSettings);
                 }
             }
             this.assignSettings(restoreData);
-            _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('settingInitialized');
+            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('settingInitialized');
         });
     }
     // 接收整个设置项，通过循环将其更新到 settings 上
@@ -8348,31 +8376,31 @@ class Settings {
     // 1. 进行类型转换，如某些设置项是 number ，但是数据来源里是 string，setSetting 可以把它们转换到正确的类型
     // 2. 某些选项在旧版本里没有，所以不能用旧的设置整个覆盖
     assignSettings(data) {
-        const origin = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].deepCopy(data);
+        const origin = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.deepCopy(data);
         for (const [key, value] of Object.entries(origin)) {
             this.setSetting(key, value);
         }
     }
     exportSettings() {
-        const blob = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].json2Blob(this.settings);
+        const blob = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.json2Blob(this.settings);
         const url = URL.createObjectURL(blob);
-        _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].downloadFile(url, _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].appName + ` Settings.json`);
-        _Toast__WEBPACK_IMPORTED_MODULE_4__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_导出成功'));
+        _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.downloadFile(url, _Config__WEBPACK_IMPORTED_MODULE_3__.Config.appName + ` Settings.json`);
+        _Toast__WEBPACK_IMPORTED_MODULE_4__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_导出成功'));
     }
     async importSettings() {
-        const loadedJSON = (await _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].loadJSONFile().catch((err) => {
-            return _MsgBox__WEBPACK_IMPORTED_MODULE_2__["msgBox"].error(err);
+        const loadedJSON = (await _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.loadJSONFile().catch((err) => {
+            return _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.error(err);
         }));
         if (!loadedJSON) {
             return;
         }
         // 检查是否存在设置里的属性
         if (loadedJSON.downloadThread === undefined) {
-            return _MsgBox__WEBPACK_IMPORTED_MODULE_2__["msgBox"].error(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_格式错误'));
+            return _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.error(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_格式错误'));
         }
         // 开始恢复导入的设置
         this.reset(loadedJSON);
-        _Toast__WEBPACK_IMPORTED_MODULE_4__["toast"].success(_Lang__WEBPACK_IMPORTED_MODULE_5__["lang"].transl('_导入成功'), {
+        _Toast__WEBPACK_IMPORTED_MODULE_4__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_5__.lang.transl('_导入成功'), {
             position: 'center',
         });
     }
@@ -8380,10 +8408,10 @@ class Settings {
     // 可选参数：传递一份设置数据，用于从配置文件导入，恢复设置
     reset(data) {
         this.assignSettings(data ? data : this.defaultSettings);
-        _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('resetSettingsEnd');
+        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('resetSettingsEnd');
     }
     tipError(key) {
-        _MsgBox__WEBPACK_IMPORTED_MODULE_2__["msgBox"].error(`${key}: Invalid value`);
+        _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.error(`${key}: Invalid value`);
     }
     // 更改设置项
     // 其他模块应该通过这个方法更改设置
@@ -8432,21 +8460,36 @@ class Settings {
             value = !!value;
         }
         if (key === 'downloadThread' &&
-            value > _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax) {
-            value = _Config__WEBPACK_IMPORTED_MODULE_3__["Config"].downloadThreadMax;
+            value > _Config__WEBPACK_IMPORTED_MODULE_3__.Config.downloadThreadMax) {
+            value = _Config__WEBPACK_IMPORTED_MODULE_3__.Config.downloadThreadMax;
         }
-        if ((key === 'downloadInterval' || key === 'crawlInterval') && value < 0) {
+        if ((key === 'downloadInterval' || key === 'crawlInterval') &&
+            value < 0) {
             value = 0;
         }
-        if ((key === 'downloadInterval' || key === 'crawlInterval') && value > 3600) {
+        if ((key === 'downloadInterval' || key === 'crawlInterval') &&
+            value > 3600) {
             value = 3600;
+        }
+        // 每天下载的文件大小限制
+        if (key === 'totalDownloadLimit') {
+            if (value < 0) {
+                value = 0;
+            }
+            // 设置的最大值不得超过 102400 GiB，也就是 100 TB
+            if (value > 102400) {
+                value = 1024;
+            }
+            // 将 GiB 转换为 byte
+            this.settings.totalDownloadLimitByte =
+                value * 1024 * 1024 * 1024;
         }
         // 处理数组类型的值
         if (Array.isArray(this.defaultSettings[key])) {
             if (this.stringArrayKeys.includes(key)) {
                 // 字符串转换成 string[]
                 if (valueType === 'string') {
-                    value = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].string2array(value);
+                    value = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.string2array(value);
                 }
             }
             if (this.numberArrayKeys.includes(key)) {
@@ -8470,7 +8513,7 @@ class Settings {
         ;
         this.settings[key] = value;
         // 触发设置变化的事件
-        _EVT__WEBPACK_IMPORTED_MODULE_0__["EVT"].fire('settingChange', { name: key, value: value });
+        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('settingChange', { name: key, value: value });
     }
 }
 const self = new Settings();
@@ -8485,12 +8528,12 @@ const setSetting = self.setSetting.bind(self);
 /*!************************************!*\
   !*** ./src/ts/utils/DateFormat.ts ***!
   \************************************/
-/*! exports provided: DateFormat */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DateFormat", function() { return DateFormat; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DateFormat: () => (/* binding */ DateFormat)
+/* harmony export */ });
 // 格式化日期（和时间）
 class DateFormat {
     // format 参数可以由以下格式组合：
@@ -8572,12 +8615,12 @@ DateFormat.Months = [
 /*!***********************************!*\
   !*** ./src/ts/utils/IndexedDB.ts ***!
   \***********************************/
-/*! exports provided: IndexedDB */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IndexedDB", function() { return IndexedDB; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   IndexedDB: () => (/* binding */ IndexedDB)
+/* harmony export */ });
 // 封装操作 IndexedDB 的一些公共方法，仅满足本程序使用，并不完善
 class IndexedDB {
     async open(DBName, DBVer, onUpgrade) {
@@ -8827,12 +8870,12 @@ class IndexedDB {
 /*!*******************************!*\
   !*** ./src/ts/utils/Utils.ts ***!
   \*******************************/
-/*! exports provided: Utils */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Utils", function() { return Utils; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Utils: () => (/* binding */ Utils)
+/* harmony export */ });
 class Utils {
     // reg 预先创建，而不是运行时创建，因为运行时重复创建太多次了
     // 用正则去掉不安全的字符
@@ -9086,5 +9129,127 @@ Utils.fullWidthDict = [
 
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
+/*!***************************!*\
+  !*** ./src/ts/content.ts ***!
+  \***************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UnifiedURL__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UnifiedURL */ "./src/ts/UnifiedURL.ts");
+/* harmony import */ var _ListenPageSwitch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListenPageSwitch */ "./src/ts/ListenPageSwitch.ts");
+/* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PageType */ "./src/ts/PageType.ts");
+/* harmony import */ var _CenterPanel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CenterPanel */ "./src/ts/CenterPanel.ts");
+/* harmony import */ var _setting_Form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./setting/Form */ "./src/ts/setting/Form.ts");
+/* harmony import */ var _InitPage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./InitPage */ "./src/ts/InitPage.ts");
+/* harmony import */ var _QuickCrawl__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./QuickCrawl */ "./src/ts/QuickCrawl.ts");
+/* harmony import */ var _Tip__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Tip */ "./src/ts/Tip.ts");
+/* harmony import */ var _Tip__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_Tip__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _OutputPanel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./OutputPanel */ "./src/ts/OutputPanel.ts");
+/* harmony import */ var _download_DownloadControl__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./download/DownloadControl */ "./src/ts/download/DownloadControl.ts");
+/* harmony import */ var _download_ShowStatusOnTitle__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./download/ShowStatusOnTitle */ "./src/ts/download/ShowStatusOnTitle.ts");
+/* harmony import */ var _download_Resume__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./download/Resume */ "./src/ts/download/Resume.ts");
+/* harmony import */ var _ShowNotification__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ShowNotification */ "./src/ts/ShowNotification.ts");
+/* harmony import */ var _ShowHowToUse__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./ShowHowToUse */ "./src/ts/ShowHowToUse.ts");
+/* harmony import */ var _ShowWhatIsNew__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ShowWhatIsNew */ "./src/ts/ShowWhatIsNew.ts");
+/* harmony import */ var _CheckUnsupportBrowser__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./CheckUnsupportBrowser */ "./src/ts/CheckUnsupportBrowser.ts");
+/*
+ * project: Pixiv Fanbox Downloader
+ * author:  xuejianxianzun; 雪见仙尊
+ * license: GPL-3.0-or-later; http://www.gnu.org/licenses/gpl-3.0.txt
+ * Github： https://github.com/xuejianxianzun/PixivFanboxDownloader
+ * Releases: https://github.com/xuejianxianzun/PixivFanboxDownloader/releases
+ * Wiki:    https://github.com/xuejianxianzun/PixivFanboxDownloader/wiki
+ * E-mail:  xuejianxianzun@gmail.com
+ * QQ group:  853021998
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+})();
+
+/******/ })()
+;
 //# sourceMappingURL=content.js.map

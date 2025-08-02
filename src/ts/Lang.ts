@@ -84,7 +84,7 @@ class Lang {
   private handleMark(wrap: HTMLElement) {
     // 设置 innerHTML
     const textEl = wrap.querySelectorAll(
-      '*[data-xztext]'
+      '*[data-xztext]',
     ) as NodeListOf<HTMLElement>
     for (const el of textEl) {
       // 因为有些文本中含有 html 标签，所以这里需要使用 innerHTML 而不是 textContent
@@ -98,7 +98,7 @@ class Lang {
 
     // 设置带参数的 innerHTML
     const textArgsEl = wrap.querySelectorAll(
-      '*[data-xztextargs]'
+      '*[data-xztextargs]',
     ) as NodeListOf<HTMLElement>
     textArgsEl.forEach((el) => this.handleTextArgs(el))
     // 元素自身存在 xztextargs 标记的情况
@@ -109,7 +109,7 @@ class Lang {
 
     // 设置 tip
     const tipEl = wrap.querySelectorAll(
-      '*[data-xztip]'
+      '*[data-xztip]',
     ) as NodeListOf<HTMLElement>
     for (const el of tipEl) {
       el.dataset.tip = this.transl(el.dataset.xztip! as any)
@@ -117,18 +117,18 @@ class Lang {
 
     // 设置 placeholder
     const placeholderEl = wrap.querySelectorAll(
-      '*[data-xzplaceholder]'
+      '*[data-xzplaceholder]',
     ) as NodeListOf<HTMLElement>
     for (const el of placeholderEl) {
       el.setAttribute(
         'placeholder',
-        this.transl(el.dataset.xzplaceholder! as any)
+        this.transl(el.dataset.xzplaceholder! as any),
       )
     }
 
     // 设置 title
     const titleEl = wrap.querySelectorAll(
-      '*[data-xztitle]'
+      '*[data-xztitle]',
     ) as NodeListOf<HTMLElement>
     for (const el of titleEl) {
       el.setAttribute('title', this.transl(el.dataset.xztitle! as any))

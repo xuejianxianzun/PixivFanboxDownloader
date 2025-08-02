@@ -107,6 +107,11 @@ interface XzSetting {
   /**设置下载一个文件后，需要等待多久才能开始下一次下载。值为 0 - 3600 秒，允许小数 */
   downloadInterval: number
   crawlInterval: number
+  totalDownloadLimitSwitch: boolean
+  /** 每天下载的文件大小限制，单位 GiB */
+  totalDownloadLimit: number
+  /**每天下载的文件大小限制，这是转换为 byte 的值 */
+  totalDownloadLimitByte: number
 }
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
@@ -141,7 +146,7 @@ class Settings {
     saveText: false,
     userSetName: 'fanbox/{user}/{date}-{title}/{index}',
     autoStartDownload: true,
-    downloadThread: 3,
+    downloadThread: 2,
     dateFormat: 'YYYY-MM-DD',
     savePostCover: true,
     userSetLang: 'auto',
@@ -170,12 +175,19 @@ class Settings {
     fileNameExclude: [],
     downloadInterval: 1,
     crawlInterval: 1,
+    totalDownloadLimitSwitch: true,
+    totalDownloadLimit: 10,
+    totalDownloadLimitByte: 10737418240,
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)
 
   // 值为浮点数的选项
-  private floatNumberKey: string[] = ['downloadInterval', 'crawlInterval']
+  private floatNumberKey: string[] = [
+    'downloadInterval',
+    'crawlInterval',
+    'totalDownloadLimit',
+  ]
 
   // 值为整数的选项不必单独列出
 
@@ -354,6 +366,20 @@ class Settings {
       (value as number) > 3600
     ) {
       value = 3600
+    }
+
+    // 每天下载的文件大小限制
+    if (key === 'totalDownloadLimit') {
+      if ((value as number) < 0) {
+        value = 0
+      }
+      // 设置的最大值不得超过 102400 GiB，也就是 100 TB
+      if ((value as number) > 102400) {
+        value = 1024
+      }
+      // 将 GiB 转换为 byte
+      this.settings.totalDownloadLimitByte =
+        (value as number) * 1024 * 1024 * 1024
     }
 
     // 处理数组类型的值

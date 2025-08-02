@@ -22,7 +22,7 @@ class BoldKeywords {
 
   private setClassName() {
     this.wrap.classList[settings.boldKeywords ? 'add' : 'remove'](
-      this.className
+      this.className,
     )
   }
 }

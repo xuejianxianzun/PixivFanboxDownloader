@@ -34,7 +34,7 @@ class SaveData {
   private readonly extractTextReg = new RegExp(/<[^<>]+>/g)
 
   protected readonly matchImgSrc = new RegExp(
-    /(?<=src=")https.*?(jpeg|jpg|png|gif|bmp)/g
+    /(?<=src=")https.*?(jpeg|jpg|png|gif|bmp)/g,
   )
 
   public receive(data: PostBody) {
@@ -107,10 +107,10 @@ class SaveData {
       log.warning(
         lang.transl(
           '_跳过文章因为',
-          `<a href="https://www.fanbox.cc/@${creatorId}/posts/${id}" target="_blank">${title}</a>`
+          `<a href="https://www.fanbox.cc/@${creatorId}/posts/${id}" target="_blank">${title}</a>`,
         ) +
           lang.transl('_价格限制') +
-          ` ${fee}`
+          ` ${fee}`,
       )
       if (result.files.length > 0) {
         store.addResult(result)
@@ -240,7 +240,7 @@ class SaveData {
               if (url.includes('preview?usp=embed_googleplus')) {
                 url = url.replace(
                   'preview?usp=embed_googleplus',
-                  'edit?usp=drive_link'
+                  'edit?usp=drive_link',
                 )
               }
               if (url.includes('embeddedfolderview?id=')) {
@@ -256,7 +256,7 @@ class SaveData {
         }
         if (urlArr.length > 0) {
           result.textContent.text = result.textContent.text.concat(
-            urlArr.join('\n\n')
+            urlArr.join('\n\n'),
           )
           result.textContent.fileID = this.createFileId()
         }
@@ -345,7 +345,7 @@ class SaveData {
 
     if (result.textContent.text.length > 0) {
       const findURL = result.textContent.text.some((text) =>
-        text.includes('https://')
+        text.includes('https://'),
       )
       if (findURL) {
         msgBox.once('tipLinktext', lang.transl('_提示有外链保存到txt'))

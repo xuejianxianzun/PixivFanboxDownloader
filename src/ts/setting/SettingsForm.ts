@@ -48,4 +48,6 @@ export interface SettingsForm extends HTMLFormElement {
   fileNameExclude: HTMLInputElement
   downloadInterval: HTMLInputElement
   crawlInterval: HTMLInputElement
+  totalDownloadLimitSwitch: HTMLInputElement
+  totalDownloadLimit: HTMLInputElement
 }

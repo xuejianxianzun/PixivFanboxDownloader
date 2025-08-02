@@ -60,6 +60,7 @@ class FormSettings {
       'titleCannotTextSwitch',
       'fileNameIncludeSwitch',
       'fileNameExcludeSwitch',
+      'totalDownloadLimitSwitch',
     ],
     text: [
       'fee',
@@ -75,6 +76,7 @@ class FormSettings {
       'fileNameExclude',
       'downloadInterval',
       'crawlInterval',
+      'totalDownloadLimit',
     ],
     radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
     textarea: [],

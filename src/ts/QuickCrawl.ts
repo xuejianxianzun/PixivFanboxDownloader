@@ -38,7 +38,7 @@ class QuickCrawl {
       () => {
         this.sendDownload()
       },
-      false
+      false,
     )
 
     // 使用快捷键 Alt + q 启动快速抓取
@@ -49,7 +49,7 @@ class QuickCrawl {
           this.sendDownload()
         }
       },
-      false
+      false,
     )
 
     // 页面类型改变时设置按钮的显示隐藏

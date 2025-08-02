@@ -18,16 +18,16 @@ class ProgressBar {
   constructor() {
     this.wrap = Tools.useSlot('progressBar', this.wrapHTML) as HTMLDivElement
     this.downloadedEl = this.wrap.querySelector(
-      '.downloaded'
+      '.downloaded',
     ) as HTMLSpanElement
     this.progressColorEl = this.wrap.querySelector(
-      '.progress1'
+      '.progress1',
     ) as HTMLDivElement
     this.listWrap = this.wrap.querySelector(
-      '.progressBarList'
+      '.progressBarList',
     ) as HTMLUListElement
     this.totalNumberEl = this.wrap.querySelector(
-      '.totalNumber'
+      '.totalNumber',
     ) as HTMLSpanElement
 
     lang.register(this.wrap)

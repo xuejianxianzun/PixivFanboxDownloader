@@ -68,7 +68,7 @@ class Log {
     level: number,
     br: number,
     keepShow: boolean,
-    refreshFlag: string = 'default'
+    refreshFlag: string = 'default',
   ) {
     this.createLogArea()
     let span = document.createElement('span')
@@ -109,7 +109,7 @@ class Log {
     str: string,
     br: number = 1,
     keepShow: boolean = true,
-    refreshFlag = 'default'
+    refreshFlag = 'default',
   ) {
     this.add(str, 0, br, keepShow, refreshFlag)
   }
@@ -118,7 +118,7 @@ class Log {
     str: string,
     br: number = 1,
     keepShow: boolean = true,
-    refreshFlag = 'default'
+    refreshFlag = 'default',
   ) {
     this.add(str, 1, br, keepShow, refreshFlag)
   }
@@ -127,7 +127,7 @@ class Log {
     str: string,
     br: number = 1,
     keepShow: boolean = true,
-    refreshFlag = 'default'
+    refreshFlag = 'default',
   ) {
     this.add(str, 2, br, keepShow, refreshFlag)
   }
@@ -136,7 +136,7 @@ class Log {
     str: string,
     br: number = 1,
     keepShow: boolean = true,
-    refreshFlag = 'default'
+    refreshFlag = 'default',
   ) {
     this.add(str, 3, br, keepShow, refreshFlag)
   }
@@ -181,13 +181,13 @@ class Log {
 
   public showAll() {
     const allLogWrap = document.querySelectorAll(
-      `.${this.logWrapFlag}`
+      `.${this.logWrapFlag}`,
     ) as NodeListOf<HTMLDListElement>
     allLogWrap.forEach((wrap) => {
       wrap.style.display = 'block'
       // 把内容滚动到底部
       const logContent = wrap.querySelector(
-        `.${this.logContentClassName}`
+        `.${this.logContentClassName}`,
       ) as HTMLDivElement
       if (logContent) {
         logContent.scrollTop = logContent.scrollHeight
@@ -198,7 +198,7 @@ class Log {
   public hideAll() {
     const allLogWrap = document.querySelectorAll(`.${this.logWrapFlag}`)
     allLogWrap.forEach(
-      (wrap) => ((wrap as HTMLDListElement).style.display = 'none')
+      (wrap) => ((wrap as HTMLDListElement).style.display = 'none'),
     )
   }
 }

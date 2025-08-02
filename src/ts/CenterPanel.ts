@@ -95,7 +95,7 @@ class CenterPanel {
           this.toggle()
         }
       },
-      false
+      false,
     )
 
     // 关闭按钮
@@ -149,7 +149,7 @@ class CenterPanel {
       .addEventListener('click', () =>
         msgBox.show(lang.transl('_赞助方式提示'), {
           title: lang.transl('_赞助我'),
-        })
+        }),
       )
 
     this.centerPanel.addEventListener('click', (e) => {

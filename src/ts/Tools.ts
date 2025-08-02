@@ -60,7 +60,7 @@ class Tools {
     slot: string,
     bg: string = '',
     textFlag: string = '',
-    titleFlag: string = ''
+    titleFlag: string = '',
   ) {
     const e = document.createElement('button')
     e.type = 'button'

@@ -677,6 +677,8 @@ So the file name set by the Downloader is lost, and the file name becomes the la
     <br><br>
     如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。
     <br><br>
+    如果你的浏览器在启动时停止响应，可能是因为浏览器的下载记录太多了导致的。你可以尝试清除浏览器的下载记录。
+    <br><br>
     下载器 QQ 群：853021998
     <br><br>
     如果你需要一个机场（梯子）的话，可以试试我现在用的机场：魔法喵 <a href="https://mofacgb.cc/register?code=GYjQWDob" title="魔法喵" target="_blank">https://mofacgb.cc</a>，性价比很高，9.9 元 768 GB 流量（倍率都是 1x），而且速度很快，下载国外网盘的文件时可以跑满我的带宽（70 MB/s）。
@@ -688,10 +690,10 @@ So the file name set by the Downloader is lost, and the file name becomes the la
     我的邀请码：GYjQWDob
     <br><br>
     `,
-    '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。<br><br>',
-    'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.<br><br>',
-    'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。<br><br>',
-    '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.<br><br>',
+    '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。<br><br>如果你的瀏覽器在啟動時停止響應，可能是因為瀏覽器的下載記錄太多了導致的。你可以嘗試清除瀏覽器的下載記錄。<br><br>',
+    `Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser\`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser\`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.<br><br>If your browser stops responding at startup, it may be because the browser has too many downloads. You can try clearing the browser's download history.<br><br>`,
+    'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。<br><br>ブラウザが起動時に応答しなくなる場合は、ダウンロード履歴が多すぎることが原因である可能性があります。ブラウザのダウンロード履歴を消去してみてください。<br><br>',
+    '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.<br><br>브라우저가 시작 시 응답하지 않는 경우, 브라우저에 다운로드가 너무 많기 때문일 수 있습니다. 브라우저의 다운로드 기록을 삭제해 보세요.<br><br>',
   ],
   _赞助我: ['赞助我', '贊助我', 'Sponsor me', '支援する', '후원하기'],
   _赞助方式提示: [
@@ -1277,19 +1279,19 @@ Additional notes: <br>
   _抓取间隔的说明: [
     `抓取投稿时，每个请求之间的间隔时间，单位是秒。<br>
 这是为了降低下载器发送请求的频率（特别是大量抓取时），从而减少账号被封的可能性。<br>
-你可以修改此设置，最小值是 0（即无限制）。<br>`,
+你可以修改此设置，最小值是 0（即无限制）。`,
     `抓取投稿時，每個請求之間的間隔時間，單位是秒。<br>
 這是為了降低下載器傳送請求的頻率（特別是大量抓取時），從而減少賬號被封的可能性。<br>
-你可以修改此設定，最小值是 0（即無限制）。<br>`,
+你可以修改此設定，最小值是 0（即無限制）。`,
     `The time interval between each request when crawling posts, in seconds. <br>
 This is intended to reduce the frequency of requests sent by the downloader (especially when crawling large volumes), thereby reducing the likelihood of your account being blocked. <br>
-You can modify this setting; the minimum value is 0 (no limit). <br>`,
+You can modify this setting; the minimum value is 0 (no limit). `,
     `投稿をクロールする際の各リクエスト間の時間間隔（秒単位）。<br>
 これは、ダウンローダーから送信されるリクエストの頻度を減らすことを目的としています（特に大量の投稿をクロールする場合）。これにより、アカウントがブロックされる可能性が低減されます。<br>
-この設定は変更できます。最小値は 0（制限なし）です。<br>`,
+この設定は変更できます。最小値は 0（制限なし）です。`,
     `게시물을 크롤링할 때 각 요청 사이의 시간 간격(초)입니다. <br>
 이 설정은 다운로더가 보내는 요청 빈도를 줄이기 위한 것입니다(특히 대용량 게시물을 크롤링할 때). 따라서 계정이 차단될 가능성이 줄어듭니다. <br>
-이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. `,
   ],
   _下载间隔: [
     '下载<span class="key">间隔</span>',
@@ -1311,23 +1313,23 @@ You can modify this setting; the minimum value is 0 (no limit). <br>`,
     `每隔一定时间开始一次下载，单位是秒。<br>
 默认值为 1，即每小时最多会从 Fanbox 下载 3600 个文件。<br>
 这是为了降低从 Fanbox 下载文件的频率（特别是下载体积较小的图片时），从而减少账号被封的可能性。<br>
-你可以修改此设置，最小值是 0（即无限制）。<br>`,
+你可以修改此设置，最小值是 0（即无限制）。`,
     `每隔一定時間開始一次下載，單位是秒。<br>
 預設值為 1，即每小時最多會從 Fanbox 下載 3600 個檔案。<br>
 這是為了降低從 Fanbox 下載檔案的頻率（特別是下載體積較小的圖片時），從而減少賬號被封的可能性。<br>
-你可以修改此設定，最小值是 0（即無限制）。<br>`,
+你可以修改此設定，最小值是 0（即無限制）。`,
     `The interval at which downloads are initiated, measured in seconds. <br>
 The default value is 1, meaning a maximum of 3,600 files will be downloaded from Fanbox per hour. <br>
 This is intended to reduce the frequency of downloads from Fanbox (especially when downloading small images), thereby reducing the likelihood of your account being blocked. <br>
-You can modify this setting; the minimum value is 0 (no limit). <br>`,
+You can modify this setting; the minimum value is 0 (no limit). `,
     `ダウンロードを開始する間隔（秒単位）。<br>
 デフォルト値は1で、Fanboxから1時間あたり最大3,600個のファイルがダウンロードされます。<br>
 これは、Fanboxからのダウンロード頻度（特に小さな画像をダウンロードする場合）を減らし、アカウントがブロックされる可能性を減らすことを目的としています。<br>
-この設定は変更できます。最小値は0（制限なし）です。<br>`,
+この設定は変更できます。最小値は0（制限なし）です。`,
     `다운로드 시작 간격(초)입니다. <br>
 기본값은 1이며, Fanbox에서 시간당 최대 3,600개의 파일이 다운로드됩니다. <br>
 이 설정은 Fanbox에서 다운로드 빈도(특히 작은 이미지 다운로드 시)를 줄여 계정이 차단될 가능성을 줄이기 위한 것입니다. <br>
-이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. `,
   ],
   _已有抓取结果时进行提醒: [
     '这个标签页里已经有抓取结果了，重新开始抓取会清空这些抓取结果。\n请确认是否要重新开始抓取？',
@@ -1366,6 +1368,72 @@ Downloader는 기본적으로 다운로드 및 스크래핑 속도를 늦춥니�
     `The request failed. The downloader will retry the request, no manual processing is required.`,
     `リクエストが失敗しました。ダウンローダーがリクエストを再試行するため、手動処理は必要ありません。`,
     `요청이 실패했습니다. 다운로더가 요청을 다시 시도하며, 수동 처리는 필요하지 않습니다.`,
+  ],
+  _每天下载的文件大小限制: [
+    `每天下载的文件<span class="key">大小</span>限制`,
+    `每天下載的檔案<span class="key">大小</span>限制`,
+    `Daily download <span class="key">file size</span> limit`,
+    '1日のダウンロードファイルサイズ制限',
+    '일일 다운로드 파일 크기 제한',
+  ],
+  _每天下载的文件大小限制的说明: [
+    `每当下载完一个文件之后，下载器都会检查今天下载的文件的总体积。<br>
+    如果达到了限制，下载器会自动暂停下载。<br>
+    此功能是为了避免下载过多的文件，导致账号被封禁。<br>
+    <br>
+    说明：<br>
+    1. “今天”指自然天，而非最近 24 小时。<br>
+    2. 下载器只会统计下载成功的文件的体积。
+    `,
+    `每當下載完一個檔案之後，下載器都會檢查今天下載的檔案的總體積。<br>
+    如果達到了限制，下載器會自動暫停下載。<br>
+    此功能是為了避免下載過多的檔案，導致賬號被封禁。<br>
+    <br>
+    說明：<br>
+    1. “今天”指自然天，而非最近 24 小時。<br>
+    2. 下載器只會統計下載成功的檔案的體積。`,
+    `After each file download, the downloader will check the total size of files downloaded today. <br>
+If the limit is reached, the downloader will automatically pause the download. <br>
+This feature is to prevent your account from being banned due to excessive file downloads. <br>
+<br>
+Note: <br>
+1. "Today" refers to the calendar day, not the last 24 hours. <br>
+2. The downloader only counts the size of successfully downloaded files.`,
+    `各ファイルのダウンロード後、ダウンローダーは今日ダウンロードされたファイルの合計サイズを確認します。<br>
+制限に達した場合、ダウンローダーは自動的にダウンロードを一時停止します。<br>
+この機能は、過剰なファイルダウンロードによるアカウント停止を防ぐためのものです。<br>
+<br>
+注: <br>
+1. 「今日」とは、過去24時間ではなく、暦日を指します。<br>
+2. ダウンローダーは、正常にダウンロードされたファイルのサイズのみをカウントします。`,
+    `각 파일을 다운로드할 때마다 다운로더는 오늘 다운로드된 파일의 총 크기를 확인합니다. <br>
+한도에 도달하면 다운로더는 자동으로 다운로드를 일시 중지합니다. <br>
+이 기능은 과도한 파일 다운로드로 인해 계정이 정지되는 것을 방지하기 위한 것입니다. <br>
+<br>
+참고: <br>
+1. "오늘"은 지난 24시간이 아닌 해당 날짜를 의미합니다. <br>
+2. 다운로더는 성공적으로 다운로드된 파일의 크기만 계산합니다.`,
+  ],
+  _下载已暂停原因: [
+    `下载已暂停，原因：`,
+    `下載已暫停，原因：`,
+    `Downloads paused due to:`,
+    `ダウンロードが一時停止された理由:`,
+    `다운로드가 일시 중지된 이유:`,
+  ],
+  _查看历史数据: [
+    '查看历史数据',
+    `檢視歷史資料`,
+    `View historical data`,
+    `履歴データの表示`,
+    `이전 데이터 보기`,
+  ],
+  _最近30天内的下载记录: [
+    '最近 30 天内下载的文件的体积',
+    `最近 30 天內下載的檔案的體積`,
+    `File size downloaded in the last 30 days`,
+    `過去30日間にダウンロードされたファイルサイズ`,
+    `지난 30일 동안 다운로드된 파일 크기`,
   ],
 }
 

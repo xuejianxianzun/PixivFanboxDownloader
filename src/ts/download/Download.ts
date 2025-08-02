@@ -38,7 +38,7 @@ class Download {
         if (donwloadSuccessData.url === this.arg.data.url) {
           this.setProgressBar(1024, 1024)
         }
-      }
+      },
     )
   }
 
@@ -75,7 +75,7 @@ class Download {
             id: arg.id,
             reason: 'duplicate',
           },
-          lang.transl('_跳过下载因为重复文件', this.fileName)
+          lang.transl('_跳过下载因为重复文件', this.fileName),
         )
       }
     }
@@ -94,7 +94,7 @@ class Download {
     url: string,
     fileName: string,
     id: string,
-    taskBatch: number
+    taskBatch: number,
   ) {
     const sendData: SendToBackEndData = {
       msg: 'send_download',

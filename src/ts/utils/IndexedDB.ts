@@ -5,7 +5,7 @@ class IndexedDB {
   public async open(
     DBName: string,
     DBVer: number,
-    onUpgrade?: (db: IDBDatabase) => void
+    onUpgrade?: (db: IDBDatabase) => void,
   ) {
     return new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open(DBName, DBVer)
@@ -73,7 +73,11 @@ class IndexedDB {
   }
 
   // 向一个存储库中批量添加数据
-  public async batchAddData(storeName: string, dataList: any[], key: any) {
+  public async batchAddData(
+    storeName: string,
+    dataList: any[],
+    key: any,
+  ): Promise<void> {
     return new Promise(async (resolve, reject) => {
       if (dataList.length === 0) {
         resolve()
@@ -81,7 +85,7 @@ class IndexedDB {
 
       // 获取已存在的 key
       const existedKeys: string[] = (await this.getAllKeys(
-        storeName
+        storeName,
       )) as string[]
 
       // 使用事务
@@ -101,7 +105,7 @@ class IndexedDB {
       }
 
       async function insert(data: any) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
           if (existedKeys.includes(data[key])) {
             resolve()
           } else {
@@ -229,7 +233,7 @@ class IndexedDB {
   }
 
   public async clear(storeNames: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       if (this.db === undefined) {
         reject('Database is not defined')
         return
@@ -252,9 +256,9 @@ class IndexedDB {
 
   public async openCursor(
     storeNames: string,
-    CB: (c: IDBCursorWithValue | null) => void
+    CB: (c: IDBCursorWithValue | null) => void,
   ) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       if (this.db === undefined) {
         reject('Database is not defined')
         return

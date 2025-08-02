@@ -18,7 +18,7 @@ class Tip {
     this.tipEl = document.getElementById('tip') as HTMLDivElement
 
     const tips = document.querySelectorAll(
-      '.has_tip'
+      '.has_tip',
     ) as NodeListOf<HTMLElement>
     for (const el of tips) {
       for (const ev of ['mouseenter', 'mouseleave']) {

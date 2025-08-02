@@ -17,7 +17,7 @@ class InitPostListPage extends InitPageBase {
     Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
-      '_抓取该用户的投稿'
+      '_抓取该用户的投稿',
     ).addEventListener('click', () => {
       this.readyCrawl()
     })

@@ -40,13 +40,15 @@ class MsgBox {
 
   private onceFlags: string[] = []
 
-  /** 在当前标签页中只会显示一次的消息
+  /** 在当前标签页中只会显示一次的消息。
+   *
+   * 如果要再次显示该消息，需要先手动调用 resetOnce() 方法清除该标记，然后再次显示消息
    */
   public once(
     flag: string,
     msg: string,
     type: 'show' | 'warning' | 'success' | 'error' = 'show',
-    arg?: MsgOptional
+    arg?: MsgOptional,
   ) {
     if (this.onceFlags.includes(flag)) {
       return
@@ -88,19 +90,19 @@ class MsgBox {
 
   public success(msg: string, arg?: MsgOptional) {
     this.create(
-      Object.assign({ color: this.typeColor.success }, arg, { msg: msg })
+      Object.assign({ color: this.typeColor.success }, arg, { msg: msg }),
     )
   }
 
   public warning(msg: string, arg?: MsgOptional) {
     this.create(
-      Object.assign({ color: this.typeColor.warning }, arg, { msg: msg })
+      Object.assign({ color: this.typeColor.warning }, arg, { msg: msg }),
     )
   }
 
   public error(msg: string, arg?: MsgOptional) {
     this.create(
-      Object.assign({ color: this.typeColor.error }, arg, { msg: msg })
+      Object.assign({ color: this.typeColor.error }, arg, { msg: msg }),
     )
   }
 
@@ -115,7 +117,7 @@ class MsgBox {
 
     wrap.innerHTML = `
         <p class="title" ${colorStyle}>${data.title || Config.appName}</p>
-        <p class="content" ${colorStyle}>${data.msg}</p>
+        <div class="content" ${colorStyle}>${data.msg}</div>
         <button class="btn" type="button">${
           data.btn || lang.transl('_确定')
         }</button>

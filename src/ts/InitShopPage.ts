@@ -15,7 +15,7 @@ class InitShopPage extends InitPageBase {
     Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
-      '_抓取商品的封面图'
+      '_抓取商品的封面图',
     ).addEventListener('click', () => {
       this.readyCrawl()
     })

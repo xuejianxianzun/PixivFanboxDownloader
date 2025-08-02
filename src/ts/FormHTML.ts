@@ -326,7 +326,6 @@ export const formHtml = `<form class="settingForm">
     <span data-xztext="_间隔时间"></span>
     <input type="text" name="crawlInterval" class="setinput_style1 blue" value="1">
     <span data-xztext="_秒"></span>
-    </span>
     </p>
     
     <p class="option" data-no="56">
@@ -338,7 +337,21 @@ export const formHtml = `<form class="settingForm">
     <span data-xztext="_间隔时间"></span>
     <input type="text" name="downloadInterval" class="setinput_style1 blue" value="1">
     <span data-xztext="_秒"></span>
+    </p>
+    
+    <p class="option" data-no="58">
+    <span class="has_tip settingNameStyle1"  data-xztip="_每天下载的文件大小限制的说明">
+    <span data-xztext="_每天下载的文件大小限制"></span>
+    <span class="gray1"> ? </span>
     </span>
+    <input type="checkbox" name="totalDownloadLimitSwitch" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch" tabindex="0"></span>
+    
+    <span class="subOptionWrap" data-show="totalDownloadLimitSwitch">
+    <input type="text" name="totalDownloadLimit" class="setinput_style1 blue" value="10">
+    <span>GiB</span>
+    </span>
+    <button class="textButton gray1" type="button" id="totalDownloadHistory" data-xztext="_查看历史数据"></button>
     </p>
       
     <p class="option" data-no="28">

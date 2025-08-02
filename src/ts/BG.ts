@@ -89,7 +89,7 @@ class BG {
   private async restore() {
     const data: BGData | null = (await this.IDB.get(
       this.storeName,
-      this.keyName
+      this.keyName,
     )) as any
     if (!data || !data.file) {
       return
@@ -159,7 +159,7 @@ class BG {
       o.wrap.classList.remove(this.bgModeflagClassName)
     } else {
       o.wrap.classList[settings.bgDisplay ? 'add' : 'remove'](
-        this.bgModeflagClassName
+        this.bgModeflagClassName,
       )
     }
   }

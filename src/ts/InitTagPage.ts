@@ -18,7 +18,7 @@ class InitTagPage extends InitPageBase {
     Tools.addBtn(
       'crawlBtns',
       Colors.bgBlue,
-      '_抓取该tag的投稿'
+      '_抓取该tag的投稿',
     ).addEventListener('click', () => {
       this.readyCrawl()
     })
@@ -32,7 +32,7 @@ class InitTagPage extends InitPageBase {
     } else {
       data = await API.getTagPostListByUser(
         await API.getUserId(API.getCreatorId(location.href)),
-        Utils.getURLPathField(window.location.pathname, 'tags')
+        Utils.getURLPathField(window.location.pathname, 'tags'),
       )
     }
     this.afterFetchPostListOld(data)

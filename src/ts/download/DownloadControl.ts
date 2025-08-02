@@ -19,6 +19,7 @@ import { msgBox } from '../MsgBox'
 import { downloadStates } from './DownloadStates'
 import { toast } from '../Toast'
 import { Config } from '../Config'
+import { getTotalDownload } from './GetTotalDownload'
 
 interface TaskList {
   [id: string]: {
@@ -34,7 +35,7 @@ class DownloadControl {
     this.bindEvents()
 
     const skipTipWrap = this.wrapper.querySelector(
-      '.skip_tip'
+      '.skip_tip',
     ) as HTMLSpanElement
     new ShowSkipCount(skipTipWrap)
   }
@@ -108,8 +109,8 @@ class DownloadControl {
             lang.transl(
               '_user_canceled_tip',
               msg.data.url,
-              msg.err || 'unknown'
-            )
+              msg.err || 'unknown',
+            ),
           )
 
           this.downloadSuccess(msg.data)
@@ -117,19 +118,19 @@ class DownloadControl {
         } else if (msg.err === 'SERVER_BAD_CONTENT') {
           // 404 错误不重试下载
           log.error(
-            `${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`
+            `${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`,
           )
         } else if (msg.err === 'SERVER_FAILED') {
           // 通常是 500 错误，尝试重试下载
           log.error(
-            `${msg.data.url} Download error! Code: ${msg.err}. This is a server-side error, not a downloader bug. The downloader will retry the download.`
+            `${msg.data.url} Download error! Code: ${msg.err}. This is a server-side error, not a downloader bug. The downloader will retry the download.`,
           )
 
           this.downloadError(msg.data, msg.err)
         } else {
           // 其他错误
           log.error(
-            `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`
+            `${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`,
           )
 
           // 重新下载这个文件
@@ -211,7 +212,7 @@ class DownloadControl {
     lang.register(this.wrapper)
 
     this.downStatusEl = this.wrapper.querySelector(
-      '.down_status'
+      '.down_status',
     ) as HTMLSpanElement
 
     this.wrapper
@@ -304,6 +305,7 @@ class DownloadControl {
     this.setDownloadThread()
 
     EVT.fire('downloadStart')
+    msgBox.resetOnce('totalDownloadLimit')
 
     // 启动或继续下载，建立并发下载线程
     for (let i = 0; i < this.downloadThread; i++) {
@@ -376,7 +378,7 @@ class DownloadControl {
     this.createDownload(task.progressBarIndex, err === 'SERVER_FAILED')
   }
 
-  private downloadSuccess(data: DonwloadSuccessData) {
+  private async downloadSuccess(data: DonwloadSuccessData) {
     const task = this.taskList[data.id]
     // 更改这个任务状态为“已完成”
     downloadStates.setState(task.index, 1)
@@ -385,6 +387,24 @@ class DownloadControl {
     this.setDownloaded()
 
     // 是否继续下载
+
+    // 检查下载总体积限制
+    if (settings.totalDownloadLimitSwitch) {
+      const total = await getTotalDownload.getToday()
+      if (total > settings.totalDownloadLimitByte) {
+        this.pauseDownload()
+        const msg =
+          lang.transl('_下载已暂停原因') +
+          '<br>' +
+          lang.transl('_每天下载的文件大小限制')
+        log.warning(msg, 1, false, 'totalDownloadLimit')
+        msgBox.once('totalDownloadLimit', msg, 'warning', {
+          title: lang.transl('_已暂停'),
+        })
+      }
+    }
+
+    // 检查是否还有未完成的下载
     const no = task.progressBarIndex
     if (this.checkContinueDownload()) {
       this.createDownload(no)
@@ -436,7 +456,7 @@ class DownloadControl {
           ;[result.url, result.retryUrl] = [result.retryUrl, result.url]
         } else {
           log.error(
-            `${result.url} Unable to retry, this file has been skipped.`
+            `${result.url} Unable to retry, this file has been skipped.`,
           )
 
           const data: DonwloadSuccessData = {
@@ -444,6 +464,7 @@ class DownloadControl {
             id: result.fileID,
             tabId: 0,
             uuid: false,
+            size: -1,
           }
           return this.downloadSuccess(data)
         }

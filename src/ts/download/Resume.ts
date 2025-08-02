@@ -90,7 +90,7 @@ class Resume {
     const taskData = (await this.IDB.get(
       this.dataName,
       url,
-      'url'
+      'url',
     )) as TaskData | null
     if (taskData === null) {
       return
@@ -106,7 +106,7 @@ class Resume {
     const taskStates = (await this.IDB.get(
       this.statesName,
       this.taskId,
-      'id'
+      'id',
     )) as TaskStates
 
     if (taskStates) {
@@ -167,7 +167,7 @@ class Resume {
     const taskData = (await this.IDB.get(
       this.dataName,
       url,
-      'url'
+      'url',
     )) as TaskData | null
 
     if (taskData) {
@@ -181,7 +181,7 @@ class Resume {
     }
 
     // 保存本次任务的数据
-    log.warning(lang.transl('_正在保存抓取结果'))
+    log.log(lang.transl('_正在保存抓取结果'))
 
     const resultData: TaskData = {
       id: this.taskId,
@@ -192,7 +192,7 @@ class Resume {
 
     try {
       await this.IDB.add(this.dataName, resultData)
-    } catch (error) {
+    } catch (error: Error | any) {
       // 当存储失败时
       console.error(error)
       if (error.target && error.target.error && error.target.error.message) {
@@ -240,7 +240,7 @@ class Resume {
     const taskData = (await this.IDB.get(
       this.dataName,
       this.taskId,
-      'id'
+      'id',
     )) as TaskData | null
 
     if (!taskData) {

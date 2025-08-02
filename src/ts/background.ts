@@ -1,4 +1,5 @@
 import { DonwloadListData, SendToBackEndData } from './download/DownloadType'
+import { totalDownload } from './TotalDownload'
 
 // 当点击扩展图标时，显示/隐藏下载面板
 chrome.action.onClicked.addListener(function (tab) {
@@ -13,11 +14,13 @@ chrome.action.onClicked.addListener(function (tab) {
 })
 
 // 当扩展被安装、被更新、或者浏览器升级时，初始化数据
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
   chrome.storage.local.set({ dlData: {}, batchNo: {} })
 })
 
-// 存储每个下载任务的数据，这是因为下载完成的顺序和前台发送的顺序可能不一致，所以需要把数据保存起来以供使用
+/**存储每个下载任务的数据。
+ *
+ * 因为下载完成的顺序和前台发送的顺序可能不一致，所以需要把数据保存起来以供查询 */
 let dlData: DonwloadListData = {}
 // 当浏览器开始下载一个由前台传递的文件时，会把一些数据保存到 dlData 里
 // 当浏览器把这个文件下载完毕之后，从 dlData 里取出保存的数据，发送给前台
@@ -25,11 +28,10 @@ let dlData: DonwloadListData = {}
 // 导致 dlData 被清空，所以需要持久化储存 dlData
 
 type batchNoType = { [key: string]: number }
-
-// 使用每个页面的 tabId 作为索引，储存此页面里当前下载任务的编号。用来判断不同批次的下载
+/**使用每个页面的 tabId 作为索引，储存当前下载任务的批次编号（在该页面里）。用来判断不同批次的下载 */
 let batchNo: batchNoType = {}
 
-// 储存每个 URL 对于的文件名，用于下载后判断实际的文件名是否符合预期
+// 储存每个 URL 对应的文件名，用于下载后判断实际的文件名是否符合预期
 type url = string
 type name = string
 const fileNameList: Map<url, name> = new Map()
@@ -37,7 +39,7 @@ const fileNameList: Map<url, name> = new Map()
 // 接收下载请求
 chrome.runtime.onMessage.addListener(async function (
   msg: SendToBackEndData,
-  sender
+  sender,
 ) {
   // 接收下载任务
   if (msg.msg === 'send_download') {
@@ -73,10 +75,13 @@ chrome.runtime.onMessage.addListener(async function (
           id: msg.id,
           tabId: tabId,
           uuid: false,
+          size: -1,
         }
         chrome.storage.local.set({ dlData })
-      }
+      },
     )
+
+    return false
   }
 })
 
@@ -88,6 +93,7 @@ const UUIDRegexp =
 // 每个下载会触发两次 onChanged 事件
 chrome.downloads.onChanged.addListener(async function (detail) {
   // 根据 detail.id 取出保存的数据
+  // 如果有数据，就是本扩展建立的下载，所以不会监听到非本扩展建立的下载
   let data = dlData[detail.id]
   if (!data) {
     const getData = await chrome.storage.local.get(['dlData'])
@@ -154,6 +160,23 @@ chrome.downloads.onChanged.addListener(async function (detail) {
 
     if (detail.state && detail.state.current === 'complete') {
       msg = 'downloaded'
+      // 下载完成后，查询下载项的体积
+      // 查询花费的时间：在下载记录不是很多的情况下，查询耗时多为 2 - 5 ms
+      chrome.downloads.search({ id: detail.id }, (results) => {
+        if (results && results.length > 0) {
+          const downloadItem = results[0]
+          const fileSize = downloadItem.fileSize // 文件大小（字节）
+          if (fileSize !== -1) {
+            data.size = fileSize
+            totalDownload.addDownload(fileSize)
+            // console.log(`文件下载完成，大小: ${fileSize} 字节`)
+          } else {
+            // console.log("文件下载完成，但大小未知")
+          }
+        } else {
+          // console.error("未找到下载项")
+        }
+      })
     }
 
     if (detail.error && detail.error.current) {

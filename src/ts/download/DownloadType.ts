@@ -23,6 +23,7 @@ export interface DonwloadSuccessData {
   id: string
   tabId: number
   uuid: boolean
+  size: number
 }
 
 export interface DonwloadSkipData {

@@ -130,7 +130,7 @@ class DownloadRecord {
       // 在数据库进行查找
       const data = (await this.IDB.get(
         this.storeName,
-        this.removeHttp(result.url)
+        this.removeHttp(result.url),
       )) as Record | null
       return resolve(!!data)
     })
@@ -149,7 +149,7 @@ class DownloadRecord {
     const url = URL.createObjectURL(blob)
     Utils.downloadFile(
       url,
-      `record-${Utils.replaceUnsafeStr(new Date().toLocaleString())}.json`
+      `record-${Utils.replaceUnsafeStr(new Date().toLocaleString())}.json`,
     )
 
     toast.success(lang.transl('_导出成功'))

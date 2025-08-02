@@ -1,97 +1,178 @@
-/******/ (function(modules) { // webpackBootstrap
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/ts/TotalDownload.ts":
+/*!*********************************!*\
+  !*** ./src/ts/TotalDownload.ts ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   totalDownload: () => (/* binding */ totalDownload)
+/* harmony export */ });
+class TotalDownload {
+    constructor() {
+        /** 记录每天的下载总体积。key 是当天的 date，value 是当天的下载总量（字节数） */
+        this.data = {};
+        this.init();
+    }
+    init() {
+        // 初始化存储
+        chrome.runtime.onInstalled.addListener((details) => {
+            if (details.reason === 'install') {
+                chrome.storage.local.set({ totalDownload: {} }, () => {
+                    if (chrome.runtime.lastError) {
+                        console.error('初始化存储失败:', chrome.runtime.lastError.message);
+                    }
+                    else {
+                        console.log('totalDownload 初始化成功');
+                    }
+                });
+            }
+        });
+        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+            if (request.msg === 'getTotalDownload') {
+                // 返回今天的数据
+                sendResponse({ total: this.data[this.getDate()] });
+            }
+            else if (request.msg === 'getTotalDownloadHistory30') {
+                // 返回最近 30 天的数据（虽然可以返回所有数据，但是天数太多的话，前台不好展示）
+                this.getLast30DaysData().then((history) => {
+                    sendResponse({ history });
+                });
+                // 由于这个 sendResponse 是异步，所以需要返回 true 让消息端口不要关闭
+                // Return true to keep the message port open for async response
+                return true;
+            }
+            else {
+                // Return false for unhandled messages
+                return false;
+            }
+        });
+        // 加载 totalDownload
+        this.loadTotalDownload();
+    }
+    loadTotalDownload() {
+        // 使用 setTimeout 延迟加载
+        setTimeout(() => {
+            chrome.storage.local.get(['totalDownload'], (result) => {
+                // 确保 result.totalDownload 是对象
+                this.data = result.totalDownload || {};
+                // console.log('loaded totalDownload', this.data)
+            });
+        }, 300);
+    }
+    /** 生成 YYYY-MM-DD 格式的当前日期 */
+    getDate() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    // 添加下载量
+    addDownload(bytes) {
+        const date = this.getDate();
+        this.data[date] = (this.data[date] || 0) + bytes;
+        chrome.storage.local.set({ totalDownload: this.data }, () => {
+            // console.log(`更新 ${date} 的下载量: ${this.data[date]} 字节`)
+        });
+    }
+    /**
+     * 获取最近 30 天的数据（包括今天），以数组形式返回
+     */
+    async getLast30DaysData() {
+        const today = new Date();
+        const thirtyDaysAgo = new Date(today);
+        thirtyDaysAgo.setDate(today.getDate() - 29);
+        const result = Object.entries(this.data)
+            .filter(([dateStr]) => {
+            // 添加 T00:00:00 使日期初始化为本地时间 0 点
+            // 如果不带 T 部分，JavaScript 会假设时间为 UTC 时间的 00:00:00
+            // 然后，Date 对象会将这个 UTC 时间转换为本地时区（如香港标准时间为 GMT+0800）
+            // 如果带 T，且不带时区标识符（如 Z 或 +08:00）时，JavaScript 会假定它是本地时间
+            // 也就是 GMT+0000
+            // 由于下载器在储存记录时，是使用 new Date() 来获取年月日的，这是本地时间
+            // 所以这里对比时间时，也要初始化为本地时间，即指明 T00:00:00
+            const date = new Date(dateStr + 'T00:00:00');
+            return !isNaN(date.getTime()) && date >= thirtyDaysAgo && date <= today;
+        })
+            .map(([date, bytes]) => ({ date, bytes }));
+        return result;
+    }
+}
+const totalDownload = new TotalDownload();
+
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
 /******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/ts/background.ts");
-/******/ })
+/******/ 	
 /************************************************************************/
-/******/ ({
-
-/***/ "./src/ts/background.ts":
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!******************************!*\
   !*** ./src/ts/background.ts ***!
   \******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TotalDownload__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TotalDownload */ "./src/ts/TotalDownload.ts");
 
 // 当点击扩展图标时，显示/隐藏下载面板
 chrome.action.onClicked.addListener(function (tab) {
@@ -104,12 +185,14 @@ chrome.action.onClicked.addListener(function (tab) {
     });
 });
 // 当扩展被安装、被更新、或者浏览器升级时，初始化数据
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
     chrome.storage.local.set({ dlData: {}, batchNo: {} });
 });
-// 存储每个下载任务的数据，这是因为下载完成的顺序和前台发送的顺序可能不一致，所以需要把数据保存起来以供使用
+/**存储每个下载任务的数据。
+ *
+ * 因为下载完成的顺序和前台发送的顺序可能不一致，所以需要把数据保存起来以供查询 */
 let dlData = {};
-// 使用每个页面的 tabId 作为索引，储存此页面里当前下载任务的编号。用来判断不同批次的下载
+/**使用每个页面的 tabId 作为索引，储存当前下载任务的批次编号（在该页面里）。用来判断不同批次的下载 */
 let batchNo = {};
 const fileNameList = new Map();
 // 接收下载请求
@@ -143,9 +226,11 @@ chrome.runtime.onMessage.addListener(async function (msg, sender) {
                 id: msg.id,
                 tabId: tabId,
                 uuid: false,
+                size: -1,
             };
             chrome.storage.local.set({ dlData });
         });
+        return false;
     }
 });
 // 判断文件名是否变成了 UUID 格式。因为文件名处于整个绝对路径的中间，所以没加首尾标记 ^ $
@@ -155,6 +240,7 @@ const UUIDRegexp = /[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}
 chrome.downloads.onChanged.addListener(async function (detail) {
     var _a, _b, _c;
     // 根据 detail.id 取出保存的数据
+    // 如果有数据，就是本扩展建立的下载，所以不会监听到非本扩展建立的下载
     let data = dlData[detail.id];
     if (!data) {
         const getData = await chrome.storage.local.get(['dlData']);
@@ -212,6 +298,25 @@ chrome.downloads.onChanged.addListener(async function (detail) {
         }
         if (detail.state && detail.state.current === 'complete') {
             msg = 'downloaded';
+            // 下载完成后，查询下载项的体积
+            // 查询花费的时间：在下载记录不是很多的情况下，查询耗时多为 2 - 5 ms
+            chrome.downloads.search({ id: detail.id }, (results) => {
+                if (results && results.length > 0) {
+                    const downloadItem = results[0];
+                    const fileSize = downloadItem.fileSize; // 文件大小（字节）
+                    if (fileSize !== -1) {
+                        data.size = fileSize;
+                        _TotalDownload__WEBPACK_IMPORTED_MODULE_0__.totalDownload.addDownload(fileSize);
+                        // console.log(`文件下载完成，大小: ${fileSize} 字节`)
+                    }
+                    else {
+                        // console.log("文件下载完成，但大小未知")
+                    }
+                }
+                else {
+                    // console.error("未找到下载项")
+                }
+            });
         }
         if (detail.error && detail.error.current) {
             // 下载被取消或者失败时，这里是能捕获到错误的，detail.error.current 包含错误类型：
@@ -230,8 +335,8 @@ chrome.downloads.onChanged.addListener(async function (detail) {
     }
 });
 
+})();
 
-/***/ })
-
-/******/ });
+/******/ })()
+;
 //# sourceMappingURL=background.js.map

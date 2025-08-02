@@ -21,7 +21,7 @@ class InitPostPage extends InitPageBase {
       'click',
       () => {
         this.readyCrawl()
-      }
+      },
     )
   }
 
@@ -47,14 +47,14 @@ class InitPostPage extends InitPageBase {
 
     try {
       const data = await API.getPost(
-        Utils.getURLPathField(window.location.pathname, 'posts')
+        Utils.getURLPathField(window.location.pathname, 'posts'),
       )
       crawlInterval.addTime()
       this.afterFetchPost(data)
     } catch (error) {
       console.log(error)
-      if (error.message) {
-        log.error(error.message)
+      if ((error as Error).message) {
+        log.error((error as Error).message)
       }
       log.error(lang.transl('_请求失败下载器会重试这个请求'))
       crawlInterval.addTime('long')

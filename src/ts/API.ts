@@ -12,7 +12,7 @@ class API {
   // 组装 url 的查询参数。当该参数有值时，将其添加到 url 里
   static assembleURL(
     baseURL: string,
-    args: { [key: string]: string | number }
+    args: { [key: string]: string | number },
   ) {
     const temp = new URL(baseURL)
     for (const [key, value] of Object.entries(args)) {
@@ -95,7 +95,7 @@ class API {
   static async getPostListSupporting(
     limit = 10,
     maxPublishedDatetime = '',
-    maxId = ''
+    maxId = '',
   ): Promise<SupportPostList> {
     const baseURL = 'https://api.fanbox.cc/post.listSupporting'
     const url = this.assembleURL(baseURL, {
@@ -110,7 +110,7 @@ class API {
     creatorId: string,
     limit = 10,
     maxPublishedDatetime = '',
-    maxId = ''
+    maxId = '',
   ): Promise<PostList> {
     const baseURL = `https://api.fanbox.cc/post.listCreator?creatorId=${creatorId}`
     const url = this.assembleURL(baseURL, {
@@ -124,7 +124,7 @@ class API {
 
   static async getTagPostListByUser(
     userId: string,
-    tag: string
+    tag: string,
   ): Promise<TagPostList> {
     const url = `https://api.fanbox.cc/post.listTagged?tag=${tag}&userId=${userId}`
     return this.request(url)

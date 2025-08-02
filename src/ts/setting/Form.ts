@@ -20,7 +20,7 @@ class Form {
     this.getElements()
 
     const allOptions = this.form.querySelectorAll(
-      '.option'
+      '.option',
     ) as NodeListOf<HTMLElement>
     options.init(allOptions)
 
@@ -58,10 +58,10 @@ class Form {
   private getElements() {
     // 获取所有的美化控件和它们对应的 span 元素
     const allCheckBox = this.form.querySelectorAll(
-      'input[type="checkbox"]'
+      'input[type="checkbox"]',
     ) as NodeListOf<HTMLInputElement>
     const allRadio = this.form.querySelectorAll(
-      'input[type="radio"]'
+      'input[type="radio"]',
     ) as NodeListOf<HTMLInputElement>
     const checkboxAndRadio = [allCheckBox, allRadio]
     for (const arr of checkboxAndRadio) {
@@ -69,7 +69,7 @@ class Form {
         let subOption = null
         if (input.classList.contains('checkbox_switch')) {
           subOption = this.form.querySelector(
-            `.subOptionWrap[data-show="${input.name}"]`
+            `.subOptionWrap[data-show="${input.name}"]`,
           ) as HTMLSpanElement
         }
         this.allBeautifyInput.push({
@@ -84,7 +84,7 @@ class Form {
     // 获取所有在表单上直接显示的提示元素
     for (const item of this.tips) {
       const wrap: HTMLSpanElement = this.form.querySelector(
-        '#' + item.wrapID
+        '#' + item.wrapID,
       ) as HTMLSpanElement
       if (wrap) {
         item.wrap = wrap
@@ -121,7 +121,7 @@ class Form {
       Utils.debounce(() => {
         this.initFormBeautify()
         this.showTips()
-      }, 50)
+      }, 50),
     )
 
     // 用户点击“我知道了”按钮之后不再显示对应的提示
@@ -187,9 +187,19 @@ class Form {
       }
     }
 
+    // 查看每天下载的文件大小的历史数据
+    {
+      const totalDownloadHistory = this.form.querySelector(
+        '#totalDownloadHistory',
+      ) as HTMLButtonElement
+      totalDownloadHistory.addEventListener('click', () => {
+        EVT.fire('totalDownloadHistory')
+      })
+    }
+
     // 显示不下载重复文件的提示
     const deduplicationHelp = this.form.querySelector(
-      '#deduplicationHelp'
+      '#deduplicationHelp',
     ) as HTMLButtonElement
     deduplicationHelp.addEventListener('click', () => {
       msgBox.show(lang.transl('_不下载重复文件的提示'), {
@@ -201,14 +211,16 @@ class Form {
     this.form
       .querySelector('.showFileNameTip')!
       .addEventListener('click', () =>
-        Utils.toggleEl(document.querySelector('.fileNameTip')! as HTMLElement)
+        Utils.toggleEl(document.querySelector('.fileNameTip')! as HTMLElement),
       )
 
     // 显示日期格式提示
     this.form
       .querySelector('.showDateTip')!
       .addEventListener('click', () =>
-        Utils.toggleEl(document.querySelector('.dateFormatTip')! as HTMLElement)
+        Utils.toggleEl(
+          document.querySelector('.dateFormatTip')! as HTMLElement,
+        ),
       )
 
     // 输入框获得焦点时自动选择文本（文件名输入框例外）

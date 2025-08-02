@@ -25,7 +25,7 @@ class InitHomePage extends InitPageBase {
       Tools.addBtn(
         'crawlBtns',
         Colors.bgBlue,
-        '_抓取赞助的所有用户的投稿'
+        '_抓取赞助的所有用户的投稿',
       ).addEventListener('click', () => {
         this.crawlFlag = 'supporting'
         this.readyCrawl()
@@ -39,10 +39,10 @@ class InitHomePage extends InitPageBase {
       Tools.addBtn(
         'crawlBtns',
         Colors.bgBlue,
-        '_抓取关注的所有用户的投稿'
+        '_抓取关注的所有用户的投稿',
       ).addEventListener('click', () => {
         const confirm = window.confirm(
-          lang.transl('_抓取关注的所有用户的投稿的提示')
+          lang.transl('_抓取关注的所有用户的投稿的提示'),
         )
         if (!confirm) {
           return
@@ -56,7 +56,7 @@ class InitHomePage extends InitPageBase {
       Tools.addBtn(
         'crawlBtns',
         Colors.bgGreen,
-        '_清空已保存的抓取结果'
+        '_清空已保存的抓取结果',
       ).addEventListener('click', () => {
         EVT.fire('clearSavedCrawl')
       })

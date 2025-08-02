@@ -69,6 +69,7 @@ class EVENT {
     clearDownloadRecord: 'clearDownloadRecord',
     resume: 'resume',
     clearSavedCrawl: 'clearSavedCrawl',
+    totalDownloadHistory: 'totalDownloadHistory',
   }
 
   public fire(type: eventNames, data: object | string | number | boolean = '') {

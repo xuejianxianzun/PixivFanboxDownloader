@@ -109,7 +109,7 @@ class SaveNamingRule {
     }
 
     const deleteEls = this.listWrap.querySelectorAll(
-      '.delete'
+      '.delete',
     ) as NodeListOf<HTMLButtonElement>
     for (const el of deleteEls) {
       el.addEventListener('click', () => {
