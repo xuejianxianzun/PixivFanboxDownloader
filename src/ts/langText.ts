@@ -686,11 +686,12 @@ So the file name set by the Downloader is lost, and the file name becomes the la
     你也可以查看我写的使用体验：<a href="https://saber.love/?p=12736" title="魔法喵使用体验" target="_blank">魔法喵使用体验</a>
     <br>
     我的邀请码：GYjQWDob
+    <br><br>
     `,
-    '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。',
-    'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.',
-    'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。',
-    '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.',
+    '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。<br><br>',
+    'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.<br><br>',
+    'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。<br><br>',
+    '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.<br><br>',
   ],
   _赞助我: ['赞助我', '贊助我', 'Sponsor me', '支援する', '후원하기'],
   _赞助方式提示: [
@@ -826,6 +827,13 @@ So the file name set by the Downloader is lost, and the file name becomes the la
     'Show <span class="key">notification</span> after download is complete',
     'ダウンロードが完了した後に通知を表示する',
     '다운로드가 완료되면 <span class="key">알림</span> 표시',
+  ],
+  _下载完成后显示通知的说明: [
+    '当所有文件下载完成后显示一条系统通知。可能会请求通知权限。',
+    '當所有檔案下載完成後顯示一條系統通知。可能會請求通知許可權。',
+    'Show a system notification when all files have been downloaded. May require notification permission.',
+    'すべてのファイルのダウンロードが完了したらシステム通知を表示します。通知の許可が必要になる場合があります。',
+    '모든 파일이 다운로드되면 시스템 알림을 표시합니다. 알림 권한이 필요할 수 있습니다.',
   ],
   _下载完毕2: [
     '下载完毕',
@@ -1280,22 +1288,53 @@ Additional notes: <br>
 默认值为 1，即每小时最多会从 Fanbox 下载 3600 个文件。<br>
 这是为了降低从 Fanbox 下载文件的频率（特别是下载体积较小的图片时），从而减少账号被封的可能性。<br>
 你可以修改此设置，最小值是 0（即无限制）。<br>`,
-`每隔一定時間開始一次下載，單位是秒。<br>
+    `每隔一定時間開始一次下載，單位是秒。<br>
 預設值為 1，即每小時最多會從 Fanbox 下載 3600 個檔案。<br>
 這是為了降低從 Fanbox 下載檔案的頻率（特別是下載體積較小的圖片時），從而減少賬號被封的可能性。<br>
 你可以修改此設定，最小值是 0（即無限制）。<br>`,
-`The interval at which downloads are initiated, measured in seconds. <br>
+    `The interval at which downloads are initiated, measured in seconds. <br>
 The default value is 1, meaning a maximum of 3,600 files will be downloaded from Fanbox per hour. <br>
 This is intended to reduce the frequency of downloads from Fanbox (especially when downloading small images), thereby reducing the likelihood of your account being blocked. <br>
 You can modify this setting; the minimum value is 0 (no limit). <br>`,
-`ダウンロードを開始する間隔（秒単位）。<br>
+    `ダウンロードを開始する間隔（秒単位）。<br>
 デフォルト値は1で、Fanboxから1時間あたり最大3,600個のファイルがダウンロードされます。<br>
 これは、Fanboxからのダウンロード頻度（特に小さな画像をダウンロードする場合）を減らし、アカウントがブロックされる可能性を減らすことを目的としています。<br>
 この設定は変更できます。最小値は0（制限なし）です。<br>`,
-`다운로드 시작 간격(초)입니다. <br>
+    `다운로드 시작 간격(초)입니다. <br>
 기본값은 1이며, Fanbox에서 시간당 최대 3,600개의 파일이 다운로드됩니다. <br>
 이 설정은 Fanbox에서 다운로드 빈도(특히 작은 이미지 다운로드 시)를 줄여 계정이 차단될 가능성을 줄이기 위한 것입니다. <br>
 이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+  ],
+  _已有抓取结果时进行提醒: [
+    '这个标签页里已经有抓取结果了，重新开始抓取会清空这些抓取结果。\n请确认是否要重新开始抓取？',
+    '這個標籤頁裡已經有抓取結果了，重新開始抓取會清空這些抓取結果。\n請確認是否要重新開始抓取？',
+    'There are already crawl results on this tab. Restarting the crawl will clear these crawl results. \nPlease confirm that you want to restart the crawl?',
+    'このタブにはすでにクロール結果があります。クロールを再開すると、これらのクロール結果は消去されます。 \nクロールを再開するかどうかを確認してください?',
+    '이 탭에는 이미 크롤링 결과가 있습니다. 크롤링을 다시 시작하면 크롤링 결과가 지워집니다. \n크롤링을 다시 시작할 것인지 확인해주세요.',
+  ],
+  _账户可能被封禁的警告: [
+    `<strong>警告</strong>：频繁和大量的抓取、下载可能会导致你的账号被封禁。<br>
+下载器默认会减慢抓取和下载的速度。但如果你的账户依然被封禁，下载器不会承担任何责任。<br>
+当你需要下载很多文件时，建议设置比较大的下载间隔时间。<br><br>`,
+    `<strong>警告</strong>：頻繁和大量的抓取、下載可能會導致你的賬號被封禁。<br>
+下載器預設會減慢抓取和下載的速度。但如果你的賬戶依然被封禁，下載器不會承擔任何責任。<br>
+當你需要下載很多檔案時，建議設定比較大的下載間隔時間。<br><br>`,
+    `<strong>Warning</strong>: Frequent and heavy downloading and scraping may result in your account being banned. <br>
+Downloader will slow down the download and scraping speeds by default. However, if your account is still banned, Downloadloader will not be held responsible. <br>
+If you need to download a lot of files, it is recommended to set a longer download interval. <br>`,
+    `<strong>警告</strong>: 頻繁かつ大量のダウンロードやスクレイピングを行うと、アカウントが停止される可能性があります。<br>
+Downloader はデフォルトでダウンロードとスクレイピングの速度を低下させます。それでもアカウントが停止された場合、Downloadloader は責任を負いません。<br>
+大量のファイルをダウンロードする必要がある場合は、ダウンロード間隔を長めに設定することをお勧めします。<br>`,
+    `<strong>경고</strong>: 잦은 다운로드 및 스크래핑은 계정 정지로 이어질 수 있습니다. <br>
+Downloader는 기본적으로 다운로드 및 스크래핑 속도를 늦춥니다. 하지만 계정 정지가 해제되지 않은 경우에도 Downloadloader는 책임을 지지 않습니다. <br>
+많은 파일을 다운로드해야 하는 경우, 다운로드 간격을 더 길게 설정하는 것이 좋습니다. <br>`,
+  ],
+  _移动端浏览器可能不会建立文件夹的说明: [
+    `如果你使用的是移动端的浏览器，它可能不会建立文件夹。这不是下载器的问题。<br>如果你遇到了这种情况，需要修改命名规则以避免文件名重复。一个简单的方法是把默认命名规则里的 '/' 修改成 '-'。`,
+    `如果你使用的是移動端的瀏覽器，它可能不會建立資料夾。這不是下載器的問題。<br>如果你遇到了這種情況，需要修改命名規則以避免檔名重複。一個簡單的方法是把預設命名規則裡的 '/' 修改成 '-'。`,
+    `If you are using a mobile browser, it may not create a folder. This is not a problem with the downloader. If this happens, you need to modify the naming rules to avoid duplicate file names. A simple way to do this is to change the '/' in the default naming rules to '-'.`,
+    `モバイルブラウザをご利用の場合、フォルダが作成されない場合があります。これはダウンローダーの問題ではありません。このような場合は、ファイル名の重複を避けるために命名規則を変更する必要があります。簡単な方法としては、デフォルトの命名規則の「/」を「-」に変更することです。`,
+    `모바일 브라우저를 사용하는 경우 폴더가 생성되지 않을 수 있습니다. 이는 다운로더 문제가 아닙니다. 이 경우 파일 이름 중복을 방지하기 위해 파일 이름 지정 규칙을 수정해야 합니다. 간단한 방법은 기본 파일 이름 지정 규칙에서 '/'를 '-'로 변경하는 것입니다.`,
   ],
 }
 

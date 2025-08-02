@@ -22,6 +22,14 @@ abstract class InitPageBase {
     window.addEventListener(EVT.list.pageSwitchedTypeChange, () => {
       this.destroy()
     })
+    
+    EVT.bindOnce('crawlCompleteTime', EVT.list.crawlFinish, () => {
+      states.crawlCompleteTime = new Date().getTime()
+    })
+
+    EVT.bindOnce('downloadCompleteTime', EVT.list.downloadComplete, () => {
+      states.downloadCompleteTime = new Date().getTime()
+    })
   }
 
   // 各个子类私有的初始化内容
@@ -48,10 +56,27 @@ abstract class InitPageBase {
 
   protected postListURLs: string[] = []
 
+  protected confirmRecrawl() {
+    if (store.result.length > 0) {
+      // 如果已经有抓取结果，则检查这些抓取结果是否已被下载过
+      // 如果没有被下载过，则显示提醒
+      if (states.crawlCompleteTime > states.downloadCompleteTime) {
+        const _confirm = window.confirm(lang.transl('_已有抓取结果时进行提醒'))
+        return _confirm
+      }
+    }
+
+    return true
+  }
+
   // 准备抓取，进行抓取之前的一些检查工作。必要时可以在子类中改写
   protected async readyCrawl() {
     if (states.busy) {
       window.alert(lang.transl('_当前任务尚未完成2'))
+      return
+    }
+
+    if (!this.confirmRecrawl()) {
       return
     }
 

@@ -551,9 +551,16 @@ class CenterPanel {
         // 显示常见问题
         this.centerPanel
             .querySelector('#showDownTip')
-            .addEventListener('click', () => _MsgBox__WEBPACK_IMPORTED_MODULE_6__["msgBox"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_常见问题说明'), {
-            title: _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_常见问题'),
-        }));
+            .addEventListener('click', () => {
+            let msg = _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_常见问题说明') + _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_账户可能被封禁的警告');
+            if (_Config__WEBPACK_IMPORTED_MODULE_7__["Config"].mobile) {
+                msg =
+                    msg + '<br><br>' + _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_移动端浏览器可能不会建立文件夹的说明');
+            }
+            _MsgBox__WEBPACK_IMPORTED_MODULE_6__["msgBox"].show(msg, {
+                title: _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_常见问题'),
+            });
+        });
         this.centerPanel
             .querySelector('#showPatronTip')
             .addEventListener('click', () => _MsgBox__WEBPACK_IMPORTED_MODULE_6__["msgBox"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_赞助方式提示'), {
@@ -745,6 +752,8 @@ Config.fileType = {
 /**默认的命名规则 */
 Config.defaultNameRule = '{user}/{date}-{title}/{index}';
 Config.defaultNameRuleForNonImages = '{user}/{date}-{title}/{name}';
+/**浏览器是否处于移动端模式 */
+Config.mobile = navigator.userAgent.includes('Mobile');
 
 
 
@@ -1670,14 +1679,18 @@ const formHtml = `<form class="settingForm">
     </p>
 
     <p class="option" data-no="16">
-    <span class="settingNameStyle1"">
+    <span class="has_tip settingNameStyle1"  data-xztip="_线程数字">
     <span data-xztext="_下载线程"></span>
+    <span class="gray1"> ? </span>
     </span>
     <input type="text" name="downloadThread" class="has_tip setinput_style1 blue" data-xztip="_线程数字" value="3">
     </p>
 
     <p class="option" data-no="52">
-    <span class="settingNameStyle1" data-xztext="_下载完成后显示通知"></span>
+    <span class="has_tip settingNameStyle1"  data-xztip="_下载完成后显示通知的说明">
+    <span data-xztext="_下载完成后显示通知"></span>
+    <span class="gray1"> ? </span>
+    </span>
     <input type="checkbox" name="showNotificationAfterDownloadComplete" class="need_beautify checkbox_switch">
     <span class="beautify_switch" tabindex="0"></span>
     </p>
@@ -2015,6 +2028,12 @@ class InitPageBase {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].list.pageSwitchedTypeChange, () => {
             this.destroy();
         });
+        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].bindOnce('crawlCompleteTime', _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].list.crawlFinish, () => {
+            _States__WEBPACK_IMPORTED_MODULE_8__["states"].crawlCompleteTime = new Date().getTime();
+        });
+        _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].bindOnce('downloadCompleteTime', _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].list.downloadComplete, () => {
+            _States__WEBPACK_IMPORTED_MODULE_8__["states"].downloadCompleteTime = new Date().getTime();
+        });
     }
     // 各个子类私有的初始化内容
     initAny() { }
@@ -2026,10 +2045,24 @@ class InitPageBase {
     addCrawlBtns() { }
     // 添加其他元素（如果有）
     addAnyElement() { }
+    confirmRecrawl() {
+        if (_Store__WEBPACK_IMPORTED_MODULE_3__["store"].result.length > 0) {
+            // 如果已经有抓取结果，则检查这些抓取结果是否已被下载过
+            // 如果没有被下载过，则显示提醒
+            if (_States__WEBPACK_IMPORTED_MODULE_8__["states"].crawlCompleteTime > _States__WEBPACK_IMPORTED_MODULE_8__["states"].downloadCompleteTime) {
+                const _confirm = window.confirm(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_已有抓取结果时进行提醒'));
+                return _confirm;
+            }
+        }
+        return true;
+    }
     // 准备抓取，进行抓取之前的一些检查工作。必要时可以在子类中改写
     async readyCrawl() {
         if (_States__WEBPACK_IMPORTED_MODULE_8__["states"].busy) {
             window.alert(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_当前任务尚未完成2'));
+            return;
+        }
+        if (!this.confirmRecrawl()) {
             return;
         }
         _EVT__WEBPACK_IMPORTED_MODULE_5__["EVT"].fire('clearLog');
@@ -3787,7 +3820,7 @@ class ShowHowToUse {
         }
     }
     show() {
-        _MsgBox__WEBPACK_IMPORTED_MODULE_2__["msgBox"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_HowToUse'), {
+        _MsgBox__WEBPACK_IMPORTED_MODULE_2__["msgBox"].show(_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_HowToUse') + _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_账户可能被封禁的警告'), {
             title: _Config__WEBPACK_IMPORTED_MODULE_1__["Config"].appName,
             btn: _Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_我知道了'),
         });
@@ -3892,7 +3925,6 @@ class ShowWhatIsNew {
             let msg = `
       <strong>${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔')}</strong>
       <br>
-      <br>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__["lang"].transl('_下载间隔的说明')}`;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
@@ -3958,6 +3990,9 @@ class States {
         this.quickCrawl = false;
         /**是否处于下载中 */
         this.downloading = false;
+        // 保存每次抓取完成和下载完成的时间戳，用来判断这次抓取结果是否已被下载完毕
+        this.crawlCompleteTime = 1;
+        this.downloadCompleteTime = 0;
         /**指示下一次抓取在什么时候进行 */
         this.nextCrawlTime = 0;
         this.bindEvents();
@@ -4949,6 +4984,9 @@ class DownloadControl {
         }
         this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_正在下载中'));
         _Log__WEBPACK_IMPORTED_MODULE_3__["log"].log(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_正在下载中'));
+        if (_Config__WEBPACK_IMPORTED_MODULE_14__["Config"].mobile) {
+            _Log__WEBPACK_IMPORTED_MODULE_3__["log"].warning(_Lang__WEBPACK_IMPORTED_MODULE_4__["lang"].transl('_移动端浏览器可能不会建立文件夹的说明'));
+        }
     }
     // 暂停下载
     pauseDownload() {
@@ -5150,7 +5188,6 @@ class DownloadInterval {
         // 对 settings.downloadInterval 进行随机，生成它的 0.8 倍至 1.2 倍之间的数字
         const randomFactor = 0.8 + Math.random() * 0.4; // Generates a number between 0.8 and 1.2
         const interval = _setting_Settings__WEBPACK_IMPORTED_MODULE_3__["settings"].downloadInterval * 1000 * randomFactor;
-        console.log(interval);
         this.allowDownloadTime = new Date().getTime() + interval;
     }
     wait() {
@@ -6609,11 +6646,12 @@ So the file name set by the Downloader is lost, and the file name becomes the la
     你也可以查看我写的使用体验：<a href="https://saber.love/?p=12736" title="魔法喵使用体验" target="_blank">魔法喵使用体验</a>
     <br>
     我的邀请码：GYjQWDob
+    <br><br>
     `,
-        '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。',
-        'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.',
-        'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。',
-        '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.',
+        '下載器不能繞過付費限制。<br><br>下載的檔案儲存在瀏覽器的下載目錄裡。<br><br>請不要在瀏覽器的下載選項裡選取「下載每個檔案前先詢問儲存位置」。<br><br>如果下載後的檔名異常，請停用其他有下載功能的瀏覽器擴充功能。<br><br>',
+        'Downloaders cannot bypass paid restrictions.<br><br>The downloaded file is saved in the browser`s download directory. <br><br>It is recommended to turn off "Ask where to save each file before downloading" in the browser`s download settings.<br><br>If the file name after downloading is abnormal, disable other browser extensions that have download capabilities.<br><br>',
+        'ダウンローダーは、有料の制限を回避できません。<br><br>ダウンロードしたファイルは、ブラウザのダウンロードディレクトリに保存されます。<br><br>ブラウザのダウンロード設定で 「 ダウンロード前に各ファイルの保存場所を確認する 」 をオフにすることをお勧めします。<br><br>ダウンロード後のファイル名が異常な場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。<br><br>',
+        '다운로더는 유료 제한을 우회할 수 없습니다.<br><br>다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.<br><br>브라우저의 다운로드 설정에서 "다운로드 전에 각 파일의 저장 위치 확인"을 끄는 것이 좋습니다.<br><br>다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.<br><br>',
     ],
     _赞助我: ['赞助我', '贊助我', 'Sponsor me', '支援する', '후원하기'],
     _赞助方式提示: [
@@ -6748,6 +6786,13 @@ So the file name set by the Downloader is lost, and the file name becomes the la
         'Show <span class="key">notification</span> after download is complete',
         'ダウンロードが完了した後に通知を表示する',
         '다운로드가 완료되면 <span class="key">알림</span> 표시',
+    ],
+    _下载完成后显示通知的说明: [
+        '当所有文件下载完成后显示一条系统通知。可能会请求通知权限。',
+        '當所有檔案下載完成後顯示一條系統通知。可能會請求通知許可權。',
+        'Show a system notification when all files have been downloaded. May require notification permission.',
+        'すべてのファイルのダウンロードが完了したらシステム通知を表示します。通知の許可が必要になる場合があります。',
+        '모든 파일이 다운로드되면 시스템 알림을 표시합니다. 알림 권한이 필요할 수 있습니다.',
     ],
     _下载完毕2: [
         '下载完毕',
@@ -7218,6 +7263,37 @@ You can modify this setting; the minimum value is 0 (no limit). <br>`,
 기본값은 1이며, Fanbox에서 시간당 최대 3,600개의 파일이 다운로드됩니다. <br>
 이 설정은 Fanbox에서 다운로드 빈도(특히 작은 이미지 다운로드 시)를 줄여 계정이 차단될 가능성을 줄이기 위한 것입니다. <br>
 이 설정은 수정할 수 있으며, 최소값은 0(제한 없음)입니다. <br>`,
+    ],
+    _已有抓取结果时进行提醒: [
+        '这个标签页里已经有抓取结果了，重新开始抓取会清空这些抓取结果。\n请确认是否要重新开始抓取？',
+        '這個標籤頁裡已經有抓取結果了，重新開始抓取會清空這些抓取結果。\n請確認是否要重新開始抓取？',
+        'There are already crawl results on this tab. Restarting the crawl will clear these crawl results. \nPlease confirm that you want to restart the crawl?',
+        'このタブにはすでにクロール結果があります。クロールを再開すると、これらのクロール結果は消去されます。 \nクロールを再開するかどうかを確認してください?',
+        '이 탭에는 이미 크롤링 결과가 있습니다. 크롤링을 다시 시작하면 크롤링 결과가 지워집니다. \n크롤링을 다시 시작할 것인지 확인해주세요.',
+    ],
+    _账户可能被封禁的警告: [
+        `<strong>警告</strong>：频繁和大量的抓取、下载可能会导致你的账号被封禁。<br>
+下载器默认会减慢抓取和下载的速度。但如果你的账户依然被封禁，下载器不会承担任何责任。<br>
+当你需要下载很多文件时，建议设置比较大的下载间隔时间。<br><br>`,
+        `<strong>警告</strong>：頻繁和大量的抓取、下載可能會導致你的賬號被封禁。<br>
+下載器預設會減慢抓取和下載的速度。但如果你的賬戶依然被封禁，下載器不會承擔任何責任。<br>
+當你需要下載很多檔案時，建議設定比較大的下載間隔時間。<br><br>`,
+        `<strong>Warning</strong>: Frequent and heavy downloading and scraping may result in your account being banned. <br>
+Downloader will slow down the download and scraping speeds by default. However, if your account is still banned, Downloadloader will not be held responsible. <br>
+If you need to download a lot of files, it is recommended to set a longer download interval. <br>`,
+        `<strong>警告</strong>: 頻繁かつ大量のダウンロードやスクレイピングを行うと、アカウントが停止される可能性があります。<br>
+Downloader はデフォルトでダウンロードとスクレイピングの速度を低下させます。それでもアカウントが停止された場合、Downloadloader は責任を負いません。<br>
+大量のファイルをダウンロードする必要がある場合は、ダウンロード間隔を長めに設定することをお勧めします。<br>`,
+        `<strong>경고</strong>: 잦은 다운로드 및 스크래핑은 계정 정지로 이어질 수 있습니다. <br>
+Downloader는 기본적으로 다운로드 및 스크래핑 속도를 늦춥니다. 하지만 계정 정지가 해제되지 않은 경우에도 Downloadloader는 책임을 지지 않습니다. <br>
+많은 파일을 다운로드해야 하는 경우, 다운로드 간격을 더 길게 설정하는 것이 좋습니다. <br>`,
+    ],
+    _移动端浏览器可能不会建立文件夹的说明: [
+        `如果你使用的是移动端的浏览器，它可能不会建立文件夹。这不是下载器的问题。<br>如果你遇到了这种情况，需要修改命名规则以避免文件名重复。一个简单的方法是把默认命名规则里的 '/' 修改成 '-'。`,
+        `如果你使用的是移動端的瀏覽器，它可能不會建立資料夾。這不是下載器的問題。<br>如果你遇到了這種情況，需要修改命名規則以避免檔名重複。一個簡單的方法是把預設命名規則裡的 '/' 修改成 '-'。`,
+        `If you are using a mobile browser, it may not create a folder. This is not a problem with the downloader. If this happens, you need to modify the naming rules to avoid duplicate file names. A simple way to do this is to change the '/' in the default naming rules to '-'.`,
+        `モバイルブラウザをご利用の場合、フォルダが作成されない場合があります。これはダウンローダーの問題ではありません。このような場合は、ファイル名の重複を避けるために命名規則を変更する必要があります。簡単な方法としては、デフォルトの命名規則の「/」を「-」に変更することです。`,
+        `모바일 브라우저를 사용하는 경우 폴더가 생성되지 않을 수 있습니다. 이는 다운로더 문제가 아닙니다. 이 경우 파일 이름 중복을 방지하기 위해 파일 이름 지정 규칙을 수정해야 합니다. 간단한 방법은 기본 파일 이름 지정 규칙에서 '/'를 '-'로 변경하는 것입니다.`,
     ],
 };
 

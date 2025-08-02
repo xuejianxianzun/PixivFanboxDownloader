@@ -30,6 +30,10 @@ class States {
   /**是否处于下载中 */
   public downloading = false
 
+    // 保存每次抓取完成和下载完成的时间戳，用来判断这次抓取结果是否已被下载完毕
+  public crawlCompleteTime = 1
+  public downloadCompleteTime = 0
+
   /**指示下一次抓取在什么时候进行 */
   private nextCrawlTime = 0
   public async awaitNextCrawl() {

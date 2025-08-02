@@ -23,6 +23,8 @@ class Config {
   /**默认的命名规则 */
   static readonly defaultNameRule = '{user}/{date}-{title}/{index}'
   static readonly defaultNameRuleForNonImages = '{user}/{date}-{title}/{name}'
+  /**浏览器是否处于移动端模式 */
+  static readonly mobile = navigator.userAgent.includes('Mobile')
 }
 
 export { Config }

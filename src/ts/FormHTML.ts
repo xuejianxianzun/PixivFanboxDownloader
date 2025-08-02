@@ -301,14 +301,18 @@ export const formHtml = `<form class="settingForm">
     </p>
 
     <p class="option" data-no="16">
-    <span class="settingNameStyle1"">
+    <span class="has_tip settingNameStyle1"  data-xztip="_线程数字">
     <span data-xztext="_下载线程"></span>
+    <span class="gray1"> ? </span>
     </span>
     <input type="text" name="downloadThread" class="has_tip setinput_style1 blue" data-xztip="_线程数字" value="3">
     </p>
 
     <p class="option" data-no="52">
-    <span class="settingNameStyle1" data-xztext="_下载完成后显示通知"></span>
+    <span class="has_tip settingNameStyle1"  data-xztip="_下载完成后显示通知的说明">
+    <span data-xztext="_下载完成后显示通知"></span>
+    <span class="gray1"> ? </span>
+    </span>
     <input type="checkbox" name="showNotificationAfterDownloadComplete" class="need_beautify checkbox_switch">
     <span class="beautify_switch" tabindex="0"></span>
     </p>
