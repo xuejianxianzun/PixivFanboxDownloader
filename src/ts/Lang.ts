@@ -1,7 +1,7 @@
 import { langText } from './langText'
 import { EVT } from './EVT'
 
-type LangTypes = 'zh-cn' | 'zh-tw' | 'en' | 'ja' | 'ko'
+type LangTypes = 'zh-cn' | 'zh-tw' | 'en' | 'ja' | 'ko' | 'ru'
 
 // 语言类
 class Lang {
@@ -12,7 +12,7 @@ class Lang {
 
   public type!: LangTypes
 
-  public readonly langTypes = ['zh-cn', 'zh-tw', 'en', 'ja', 'ko']
+  public readonly langTypes = ['zh-cn', 'zh-tw', 'en', 'ja', 'ko', 'ru']
 
   private readonly flagIndex: Map<LangTypes, number> = new Map([
     ['zh-cn', 0],
@@ -20,6 +20,7 @@ class Lang {
     ['en', 2],
     ['ja', 3],
     ['ko', 4],
+    ['ru', 5],
   ])
 
   private bindEvents() {
@@ -41,6 +42,17 @@ class Lang {
 
   // 获取页面使用的语言，返回语言标记
   private getHtmlLangType(): LangTypes {
+    // 单独对俄语进行一次检测
+    // 因为 Fanbox 官方没有提供俄语选项，因此无法从 html 标签上获取到 ru 属性
+    // 因此需要从 navigator.language 判断是否为俄语用户
+    if (
+      navigator.language.startsWith('ru') ||
+      navigator.languages.includes('ru') ||
+      navigator.languages.includes('ru-RU')
+    ) {
+      return 'ru'
+    }
+
     const flag = document.documentElement.lang
     switch (flag) {
       case 'zh':
@@ -58,6 +70,10 @@ class Lang {
 
       case 'ko':
         return 'ko' // 한국어
+
+      case 'ru':
+      case 'ru-RU':
+        return 'ru' // Русский
 
       default:
         return 'en' // English
