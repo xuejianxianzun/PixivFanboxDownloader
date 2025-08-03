@@ -1,16 +1,5 @@
 .logWrap {
-  font-family:
-    win-bug-omega,
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    Ubuntu,
-    Cantarell,
-    'Noto Sans',
-    'Hiragino Kaku Gothic ProN',
-    Meiryo,
-    sans-serif;
+  font-family: "Noto Sans SC", "Noto Sans", "Segeo UI Mono", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   position: relative;
   z-index: 1;
   width: 100%;
