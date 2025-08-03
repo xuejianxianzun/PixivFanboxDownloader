@@ -4779,6 +4779,7 @@ class DownloadControl {
             }
         });
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete, () => {
+            this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕2'), _Colors__WEBPACK_IMPORTED_MODULE_5__.Colors.textSuccess);
             _Log__WEBPACK_IMPORTED_MODULE_3__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕'), 2);
             _Toast__WEBPACK_IMPORTED_MODULE_13__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕2'), {
                 position: 'topCenter',
@@ -5487,6 +5488,7 @@ class GetTotalDownload {
                 }
                 array.push(`<p><span>${date}</span> <span>${size}</span></p>`);
             });
+            // 显示历史记录
             const html = `<div id="downloadTotal30Day">
         <style>
           #downloadTotal30Day span{width:30%;display: inline-block;}

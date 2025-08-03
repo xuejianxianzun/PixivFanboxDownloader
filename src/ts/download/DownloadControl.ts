@@ -141,6 +141,7 @@ class DownloadControl {
     })
 
     window.addEventListener(EVT.list.downloadComplete, () => {
+      this.setDownStateText(lang.transl('_下载完毕2'), Colors.textSuccess)
       log.success(lang.transl('_下载完毕'), 2)
       toast.success(lang.transl('_下载完毕2'), {
         position: 'topCenter',
