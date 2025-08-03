@@ -2508,7 +2508,9 @@ class Lang {
         // 单独对俄语进行一次检测
         // 因为 Fanbox 官方没有提供俄语选项，因此无法从 html 标签上获取到 ru 属性
         // 因此需要从 navigator.language 判断是否为俄语用户
-        if (navigator.language.startsWith('ru') || navigator.languages.includes('ru') || navigator.languages.includes('ru-RU')) {
+        if (navigator.language.startsWith('ru') ||
+            navigator.languages.includes('ru') ||
+            navigator.languages.includes('ru-RU')) {
             return 'ru';
         }
         const flag = document.documentElement.lang;
@@ -3856,7 +3858,9 @@ class ShowHowToUse {
         }
     }
     show() {
-        _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.show(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_HowToUse') + '<br><br>' + _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_账户可能被封禁的警告'), {
+        _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.show(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_HowToUse') +
+            '<br><br>' +
+            _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_账户可能被封禁的警告'), {
             title: _Config__WEBPACK_IMPORTED_MODULE_1__.Config.appName,
             btn: _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_我知道了'),
         });
@@ -6017,22 +6021,8 @@ const langText = {
         '크롤링 시작',
         'Начать сканирование',
     ],
-    _或者: [
-        ' 或者 ',
-        ' 或是 ',
-        ' or ',
-        ' または ',
-        ' 또는 ',
-        ' или ',
-    ],
-    _并且: [
-        ' 并且 ',
-        ' 並且 ',
-        ' and ',
-        ' かつ ',
-        ' 그리고 ',
-        ' и ',
-    ],
+    _或者: [' 或者 ', ' 或是 ', ' or ', ' または ', ' 또는 ', ' или '],
+    _并且: [' 并且 ', ' 並且 ', ' and ', ' かつ ', ' 그리고 ', ' и '],
     _任务开始: [
         '任务开始',
         '工作開始',
@@ -6065,14 +6055,7 @@ const langText = {
         '현재 작업이 아직 완료되지 않았습니다. 완료 후 다운로드를 시작해주세요.',
         'Текущая задача еще не завершена, пожалуйста, дождитесь завершения перед загрузкой.',
     ],
-    _关闭: [
-        '关闭',
-        '關閉',
-        'close',
-        '閉じる',
-        '닫기',
-        'Закрыть',
-    ],
+    _关闭: ['关闭', '關閉', 'close', '閉じる', '닫기', 'Закрыть'],
     _输出信息: [
         '输出信息',
         '輸出資訊',
@@ -6081,14 +6064,7 @@ const langText = {
         '출력 정보',
         'Вывод информации',
     ],
-    _复制: [
-        '复制',
-        '複製',
-        'Copy',
-        'コピー',
-        '복사',
-        'Копировать',
-    ],
+    _复制: ['复制', '複製', 'Copy', 'コピー', '복사', 'Копировать'],
     _已复制到剪贴板: [
         '已复制到剪贴板，可直接粘贴',
         '已複製至剪貼簿，可直接貼上',
@@ -6129,30 +6105,9 @@ const langText = {
         'Pixiv 다운로더',
         'Загрузчик Pixiv',
     ],
-    _抓取: [
-        '抓取',
-        '擷取',
-        'Crawl',
-        '保存',
-        '긁어오기',
-        'Сканировать',
-    ],
-    _下载: [
-        '下载',
-        '下載',
-        'Download',
-        'ダウンロード',
-        '다운로드',
-        'Скачать',
-    ],
-    _其他: [
-        '其他',
-        '其他',
-        'Other',
-        'その他',
-        '그 외',
-        'Другое',
-    ],
+    _抓取: ['抓取', '擷取', 'Crawl', '保存', '긁어오기', 'Сканировать'],
+    _下载: ['下载', '下載', 'Download', 'ダウンロード', '다운로드', 'Скачать'],
+    _其他: ['其他', '其他', 'Other', 'その他', '그 외', 'Другое'],
     _快捷键切换显示隐藏: [
         '使用 Alt + X，可以显示和隐藏下载面板',
         '使用 Alt + X，可以顯示和隱藏下載面板',
@@ -6455,22 +6410,8 @@ So the file name set by the downloader is lost, and the file name becomes the la
         '게시물 ID를 입력하여 그보다 새롭거나 오래된 게시물을 크롤링할 수 있습니다.',
         'Вы можете ввести ID публикации, чтобы собрать публикации, которые новее или старее этой.',
     ],
-    _大于: [
-        '大于',
-        '大於',
-        'Greater than',
-        'より大きい',
-        '보다 큼',
-        'Больше',
-    ],
-    _小于: [
-        '小于',
-        '小於',
-        'Less than',
-        'より小さい',
-        '보다 작음',
-        'Меньше',
-    ],
+    _大于: ['大于', '大於', 'Greater than', 'より大きい', '보다 큼', 'Больше'],
+    _小于: ['小于', '小於', 'Less than', 'より小さい', '보다 작음', 'Меньше'],
     _投稿时间: [
         '投稿<span class="key">时间</span>',
         '投稿<span class="key">時間</span>',
@@ -6519,30 +6460,9 @@ So the file name set by the downloader is lost, and the file name becomes the la
         '<span class="key">파일</span> 유형',
         '<span class="key">Тип</span> файла',
     ],
-    _图片: [
-        '图片',
-        '圖片',
-        'Image',
-        '画像',
-        '이미지',
-        'Изображение',
-    ],
-    _视频: [
-        '视频',
-        '影片',
-        'Video',
-        '映像',
-        '동영상',
-        'Видео',
-    ],
-    _音乐: [
-        '音频',
-        '音訊',
-        'Audio',
-        '音声',
-        '오디오',
-        'Аудио',
-    ],
+    _图片: ['图片', '圖片', 'Image', '画像', '이미지', 'Изображение'],
+    _视频: ['视频', '影片', 'Video', '映像', '동영상', 'Видео'],
+    _音乐: ['音频', '音訊', 'Audio', '音声', '오디오', 'Аудио'],
     _压缩文件: [
         '压缩文件',
         '壓縮檔',
@@ -6615,22 +6535,8 @@ So the file name set by the downloader is lost, and the file name becomes the la
         '{}개의 파일을 획득하였습니다',
         'Получено {} файлов',
     ],
-    _早于: [
-        '早于',
-        '早於',
-        'Earlier than',
-        'より前',
-        '보다 이전',
-        'Ранее',
-    ],
-    _晚于: [
-        '晚于',
-        '晚於',
-        'Later than',
-        'より後',
-        '보다 이후',
-        'Позже',
-    ],
+    _早于: ['早于', '早於', 'Earlier than', 'より前', '보다 이전', 'Ранее'],
+    _晚于: ['晚于', '晚於', 'Later than', 'より後', '보다 이후', 'Позже'],
     _抓取赞助的所有用户的投稿: [
         '抓取赞助的所有用户的投稿',
         '擷取所有贊助用戶的投稿',
@@ -6815,14 +6721,7 @@ So the file name set by the downloader is lost, and the file name becomes the la
         '작업 완료 날짜. 예: 2020-10-21',
         'Время завершения задачи сканирования. Например: 2020-10-21',
     ],
-    _提示: [
-        '提示',
-        '提示',
-        'Tip',
-        'ヒント',
-        '팁',
-        'Подсказка',
-    ],
+    _提示: ['提示', '提示', 'Tip', 'ヒント', '팁', 'Подсказка'],
     _保存投稿中的封面图片: [
         '保存投稿中的<span class="key">封面</span>图片',
         '儲存投稿中的<span class="key">封面</span>圖片',
@@ -6911,14 +6810,7 @@ So the file name set by the downloader is lost, and the file name becomes the la
         '내보내기 성공',
         'Успешный экспорт',
     ],
-    _确定: [
-        '确定',
-        '確定',
-        'Confirm',
-        '確定',
-        '확인',
-        'Подтвердить',
-    ],
+    _确定: ['确定', '確定', 'Confirm', '確定', '확인', 'Подтвердить'],
     _时间范围: [
         '时间范围',
         '時間範圍',
@@ -6959,22 +6851,8 @@ So the file name set by the downloader is lost, and the file name becomes the la
         '정렬 방식',
         'Выравнивание',
     ],
-    _顶部: [
-        '顶部',
-        '頂部',
-        'Top',
-        '上揃え',
-        '상단',
-        'Верх',
-    ],
-    _居中: [
-        '居中',
-        '居中',
-        'Center',
-        '中央揃え',
-        '중앙',
-        'Центр',
-    ],
+    _顶部: ['顶部', '頂部', 'Top', '上揃え', '상단', 'Верх'],
+    _居中: ['居中', '居中', 'Center', '中央揃え', '중앙', 'Центр'],
     _常见问题说明: [
         `下载器不能绕过付费限制。
     <br><br>
@@ -7097,7 +6975,14 @@ You can sponsor me on Patreon: <br>
         '<span class="key">강조</span> 키워드 표시',
         '<span class="key">Выделить</span> ключевые слова',
     ],
-    _导出: ['导出', '匯出', 'Export', 'エクスポート', '내보내기', 'Экспортировать'],
+    _导出: [
+        '导出',
+        '匯出',
+        'Export',
+        'エクスポート',
+        '내보내기',
+        'Экспортировать',
+    ],
     _导入: ['导入', '匯入', 'Import', 'インポート', '불러오기', 'Импортировать'],
     _清除: ['清除', '清除', 'Clear', 'クリア', '비우기', 'Очистить'],
     _提示2: ['提示', '提示', 'Tip', '？', '팁', 'Подсказка'],
@@ -7455,7 +7340,7 @@ You can sponsor me on Patreon: <br>
     _因为价格限制不能抓取投稿: [
         '因为价格限制，无法抓取投稿：',
         '因為價格限制，無法抓取投稿：',
-        'Can\'t crawl post due to price limit: ',
+        "Can't crawl post due to price limit: ",
         '価格制限のため投稿をクロールできません: ',
         '가격 제한으로 인해 게시물을 크롤링할 수 없음: ',
         'Из-за ограничения по цене невозможно сканировать публикации:',
@@ -7890,12 +7775,12 @@ You can sponsor me on Patreon: <br>
         `Размер файлов, загруженных за последние 30 дней`,
     ],
     _添加了俄语文本: [
-        '下载器的 Language 设置里添加了俄语选项。',
-        `下載器的 Language 設定裡添加了俄語選項。`,
-        `Added Russian language option to the Language setting of the downloader.`,
-        `ダウンローダーの言語設定にロシア語のオプションを追加しました。`,
-        `다운로더의 언어 설정에 러시아어 옵션이 추가되었습니다.`,
-        `В настройки языка загрузчика добавлена опция русского языка.`,
+        '下载器的 Language 设置里添加了俄语选项',
+        `下載器的 Language 設定裡添加了俄語選項`,
+        `Added Russian language option to the Language setting of the downloader`,
+        `ダウンローダーの言語設定にロシア語のオプションを追加しました`,
+        `다운로더의 언어 설정에 러시아어 옵션이 추가되었습니다`,
+        `В настройки языка загрузчика добавлена опция русского языка`,
     ],
 };
 
