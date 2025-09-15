@@ -8,7 +8,7 @@
 
 **注意：** このプログラムはFanbox上の有料コンテンツを直接解除することはできません。有料コンテンツをダウンロードするには、まず購入する必要があります。
 
-![screenshot](screenshot/ui-2.png)
+![screenshot](screenshot/ui-4.png)
 
 # インストール
 
