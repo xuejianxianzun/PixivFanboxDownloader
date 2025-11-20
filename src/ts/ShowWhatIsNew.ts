@@ -10,7 +10,7 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '4.7.0'
+  private flag = '4.7.1'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
