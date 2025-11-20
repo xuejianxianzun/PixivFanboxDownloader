@@ -213,7 +213,7 @@ abstract class InitPageBase {
     }
 
     if (this.nextUrl) {
-      this.FetchPostList()
+      this.FetchPostList(this.nextUrl)
     } else {
       this.FetchPostListFinished()
     }
