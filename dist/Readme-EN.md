@@ -1,10 +1,11 @@
 <!-- TOC -->
 
 - [Introduction](#introduction)
-- [Install](#install)
-  - [Install online](#install-online)
-  - [Offline installation](#offline-installation)
-- [How to use](#how-to-use)
+- [Installation](#installation)
+  - [Online Installation](#online-installation)
+  - [Offline Installation](#offline-installation)
+  - [Using on Android](#using-on-android)
+- [How to Use](#how-to-use)
 - [Patreon](#patreon)
 
 <!-- /TOC -->
@@ -17,37 +18,40 @@ This is a Chrome browser extension for batch downloading files on Pixiv Fanbox.
 
 Supports filtering file types, custom file names, and multiple languages.
 
-Note: This program cannot directly unlock paid content on Fanbox. If you want to download paid content, you must first purchase it.
+**Note:** This program cannot directly unlock paid content on Fanbox. If you want to download paid content, you must first purchase it.
 
 ![screenshot](screenshot/ui-3.png)
 
-# Install
+# Installation
 
-It is recommended to use the **Chrome** browser latest version or the new **Edge** browser.
+We recommend using Chrome or Edge browsers.
 
-## Install online
+## Online Installation
 
-You can install this extension from the Chrome Web Store. 
+You can install this extension from the Chrome Web Store:
 
-[Chrome Web Store page](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
+[Pixiv Fanbox Downloader](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
 
-## Offline installation
+## Offline Installation
 
-If you cannot install this extension from the Chrome Web Store, you can install it offline.
+You can refer to the offline installation tutorial for the Pixiv Downloader:
+[Offline Installation](https://xuejianxianzun.github.io/PBDWiki/#/en/OfflineInstallation)
 
-1. Download the latest version of the installation package from [Releases page](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) and unzip it to a folder.
-2. Enter the extension management. Chrome clicks "More Tools"-"Extensions Management" in the menu; Edge clicks "Extensions" in the menu.
-3. On the extension management page, enable "Developer Mode".
-4. Click the button "Load unpacked" and select the folder where the installation package is unzipped.
+There is only one difference: the tutorial above will ask you to download the zip file for the Pixiv Downloader. Instead, download the zip file for the Fanbox Downloader. You can download pixivfanboxDownloader.zip from the [releases page](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) of this repository.
 
-Note: The offline installation method will not be automatically updated. When you want to update, you need to delete this extension first, and then install the new version.
+## Using on Android
 
-# How to use
+You can refer to this tutorial:
+[Installing on Microsoft Edge Canary Browser](https://xuejianxianzun.github.io/PBDWiki/#/en/MicrosoftEdgeCanary)
 
-- After installing this extension, refresh the fanbox page, you can see a blue download button on the right side of the page, click this button to start using it.
-- The downloaded file will be saved in the download directory of the browser.
-- Please turn off the "Ask where to save each file before downloading" option in the browser settings to avoid pop-up windows when downloading.
-- If the file name after downloading is abnormal, please disable other browser extensions with download function.
+There is only one difference: the tutorial above will ask you to download the crx file for the Pixiv Downloader. Instead, download the crx file for the Fanbox Downloader. You can download Pixiv-Fanbox-Downloader.crx from the [releases page](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) of this repository.
+
+# How to Use
+
+- After installing this extension, refresh the fanbox page. You will see a blue download button on the right side of the page. Click this button to start using it.
+- Downloaded files will be saved in the browser's download directory. If you want to save them to a different location, you need to change the browser's download directory.
+- Please disable the browser setting "Ask where to save each file before downloading" to avoid the save-as dialog during downloads.
+- If the filename of the downloaded file is abnormal, please disable other browser extensions with download functions.
 
 # Patreon
 
