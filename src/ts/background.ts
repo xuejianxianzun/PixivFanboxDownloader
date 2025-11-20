@@ -47,8 +47,8 @@ chrome.runtime.onMessage.addListener(async function (
     // 之后每当要使用这两个数据时，从变量读取，而不是从存储中获得。这样就解决了数据不同步的问题，而且性能更高
     if (Object.keys(batchNo).length === 0) {
       const data = await chrome.storage.local.get(['batchNo', 'dlData'])
-      batchNo = data.batchNo
-      dlData = data.dlData
+      batchNo = (data.batchNo as batchNoType) || {}
+      dlData = (data.dlData as DonwloadListData) || {}
     }
 
     const tabId = sender.tab!.id!
@@ -97,7 +97,7 @@ chrome.downloads.onChanged.addListener(async function (detail) {
   let data = dlData[detail.id]
   if (!data) {
     const getData = await chrome.storage.local.get(['dlData'])
-    dlData = getData.dlData
+    dlData = (getData.dlData as DonwloadListData) || {}
     data = dlData[detail.id]
   }
 
