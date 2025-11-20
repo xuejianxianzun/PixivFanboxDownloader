@@ -159,6 +159,36 @@ abstract class InitPageBase {
     }
   }
 
+  protected async FetchPostListOld(url?: string) {
+    await crawlInterval.wait()
+
+    if (url === undefined) {
+      url = this.postListURLs.shift()
+      if (url === undefined) {
+        log.error(
+          `Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`,
+        )
+        return this.FetchPostListFinished()
+      }
+    }
+
+    try {
+      const data: SupportPostList | TagPostList = (await API.request(url)) as
+        | SupportPostList
+        | TagPostList
+      crawlInterval.addTime()
+      this.afterFetchPostListOld(data)
+    } catch (error) {
+      console.log(error)
+      if ((error as Error).message) {
+        log.error((error as Error).message)
+      }
+      log.error(lang.transl('_请求失败下载器会重试这个请求'))
+      crawlInterval.addTime('long')
+      this.FetchPostListOld(url)
+    }
+  }
+
   /**保存符合过滤条件的文章的 ID，之后会抓取这些文章的详细数据 */
   protected afterFetchPostList(data: PostList) {
     if (data.body.length === 0) {
@@ -213,7 +243,7 @@ abstract class InitPageBase {
     }
 
     if (this.nextUrl) {
-      this.FetchPostList(this.nextUrl)
+      this.FetchPostListOld(this.nextUrl)
     } else {
       this.FetchPostListFinished()
     }
