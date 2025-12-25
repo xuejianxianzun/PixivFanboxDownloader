@@ -231,12 +231,12 @@ class Settings {
     // 首先从 chrome.storage 获取配置
     chrome.storage.local.get(Config.settingStoreName, (result) => {
       if (result[Config.settingStoreName]) {
-        restoreData = result[Config.settingStoreName]
+        restoreData = result[Config.settingStoreName] as XzSetting
       } else {
         // 如无数据则尝试从 localStorage 获取配置，因为旧版本的配置储存在 localStorage 中
         const savedSettings = localStorage.getItem(Config.settingStoreName)
         if (savedSettings) {
-          restoreData = JSON.parse(savedSettings)
+          restoreData = JSON.parse(savedSettings) as XzSetting
         }
       }
       this.assignSettings(restoreData)

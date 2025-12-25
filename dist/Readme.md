@@ -4,6 +4,7 @@
 - [安装](#安装)
   - [在线安装](#在线安装)
   - [离线安装](#离线安装)
+  - [在 Android 上使用](#在-android-上使用)
 - [如何使用](#如何使用)
 - [支持和捐助](#支持和捐助)
 
@@ -12,6 +13,8 @@
 [View English introduction](Readme-EN.md)
 
 [查看繁体中文介绍](Readme-ZH-TW.md)
+
+[日本語の紹介を見る](Readme-JA.md)
 
 [한국어 소개 보기](Readme-KO.md)
 
@@ -23,61 +26,54 @@
 
 支持过滤文件类型、自定义文件名，支持多种语言。
 
-注意：本程序并不能直接解锁 Fanbox 上的付费内容。如果你想要下载付费内容，必须先购买它。
-
-QQ 群：853021998
+**注意：** 本程序并不能直接解锁 Fanbox 上的付费内容。如果你想要下载付费内容，必须先购买它。
 
 ![screenshot](screenshot/ui-1.png)
 
 # 安装
 
-推荐使用 Chrome 浏览器最新版，或者新版 Edge 浏览器。
+推荐使用 Chrome 或者 Edge 浏览器。
 
 ## 在线安装
 
-您可以从 Chrome Web Store 安装本扩展。
+您可以从 Chrome Web Store 安装本扩展程序：
 
-[Chrome Web Store 页面](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
-
-这个下载器是为 PC 设计的。如果你想在安卓上使用，请参考该文档：
-
-[在安卓上通过kiwi浏览器使用此扩展.md](./docs/在安卓上通过kiwi浏览器使用此扩展.md)
+[Pixiv Fanbox Downloader](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
 
 ## 离线安装
 
-如果您无法从 Chrome Web Store 安装本扩展，您可以离线安装。
+你可以参考 Pixiv 下载器的离线安装教程：
+[离线安装](https://xuejianxianzun.github.io/PBDWiki/#/zh-cn/%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85)
 
-1. 进入扩展程序管理。Chrome 点击菜单的“更多工具” - “扩展管理”；Edge 点击菜单的 “扩展”。
-2. 如果你之前已经安装了这个扩展，就先停止它，或者删除它。
-3. 下载最新版本的安装包，并解压出来，里面是一个文件夹。你可以从 [Releases 页面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 下载安装包。
-4. 在扩展管理页面，启用“开发者模式"。
-5. 点击按钮 “加载已解压的扩展程序”，选择刚才解压得到的文件夹。
-6. 你应该已经成功的离线安装了这个扩展程序。
-7. 如果你此时已经有打开的 fanbox.cc 的页面，需要刷新它们，这样才能让它们使用扩展程序的新版本。你也可以直接重启浏览器。
+只有一点不同：上面的教程里会让你下载 Pixiv 下载器的 zip 文件，改为 Fanbox 下载器的 zip 文件即可。你可以本仓库的 [releases 页面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 里下载 pixivfanboxDownloader.zip。
 
-注意：使用离线安装方式，不会自动更新。当你想要更新时，需要先删除这个扩展，然后安装新版本。
+## 在 Android 上使用
+
+你可以参考这个教程：
+[在 Microsoft Edge Canary 浏览器上安装](https://xuejianxianzun.github.io/PBDWiki/#/zh-cn/MicrosoftEdgeCanary)
+
+只有一点不同：上面的教程里会让你下载 Pixiv 下载器的 crx 文件，改为 Fanbox 下载器的 crx 文件即可。你可以本仓库的 [releases 页面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 里下载 Pixiv-Fanbox-Downloader.crx。
 
 # 如何使用
 
 - 安装这个扩展程序之后，刷新 fanbox 页面，在页面右侧可以看到蓝色的下载按钮，点击这个按钮开始使用。
-- 下载的文件会保存在浏览器的下载目录里。
-- 请关闭浏览器设置中的“下载前询问每个文件的保存位置”选项，以免在下载时出现弹窗。
+- 下载的文件会保存在浏览器的下载目录里。如果你想保存到其他位置，需要修改浏览器的下载目录。
+- 请关闭浏览器设置中的“下载前询问每个文件的保存位置”选项，以免在下载时出现另存为窗口。
 - 如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。
-- 如果使用 ssr、v2ray 等工具，下载时开启“全局代理”以提高下载速度。
 - 如有其他问题或建议，欢迎加 QQ 群 853021998 进行交流。
 
 # 支持和捐助
 
-如果您感觉本工具帮到了您，您可以对我进行支持和捐助，不胜感激 (*╹▽╹*)
+如果您感觉本脚本帮到了您，您可以对我进行支持和捐助，不胜感激 (*╹▽╹*)
 
-1. 国内的众筹赞助平台“爱发电”（类似于 patreon）。
+1. 爱发电：
 
-[https://afdian.com/@xuejianxianzun](https://afdian.com/@xuejianxianzun)
+[https://afdian.com/a/xuejianxianzun](https://afdian.com/a/xuejianxianzun)
 
-2. Patreon
+2. Patreon：
 
-<a href='https://www.patreon.com/xuejianxianzun'><img src='https://c5.patreon.com/external/logo/become_a_patron_button.png' alt='Become a patron' width='140px' /></a>
+[https://www.patreon.com/xuejianxianzun](https://www.patreon.com/xuejianxianzun)
 
-3. 可通过微信和支付宝扫码转账
+3. 你可以通过微信或支付宝扫码转账：
 
-![支付宝](https://i.loli.net/2019/04/04/5ca5627614396.png) ![微信](https://i.loli.net/2019/04/04/5ca5627630bb4.png)
+![微信](https://xuejianxianzun.github.io/PBDWiki/zh-cn/images/weixin.png) ![支付宝](https://xuejianxianzun.github.io/PBDWiki/zh-cn/images/alipay.png)

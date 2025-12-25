@@ -4,7 +4,8 @@
 - [설치](#설치)
   - [온라인 설치](#온라인-설치)
   - [오프라인 설치](#오프라인-설치)
-- [사용하는 방법](#사용하는-방법)
+  - [안드로이드에서 사용](#안드로이드에서-사용)
+- [사용 방법](#사용-방법)
 - [Patreon](#patreon)
 
 <!-- /TOC -->
@@ -17,37 +18,40 @@
 
 파일 형식 필터링, 사용자 정의 파일명 및 다국어를 지원합니다.
 
-참고: 이 프로그램은 Fanbox의 유료 콘텐츠를 직접 잠금 해제할 수 없습니다. 유료 콘텐츠를 다운로드하려면 먼저 구매해야 합니다.
+**참고:** 이 프로그램은 Fanbox의 유료 콘텐츠를 직접 잠금 해제할 수 없습니다. 유료 콘텐츠를 다운로드하려면 먼저 구매해야 합니다.
 
 ![screenshot](screenshot/ui-5.png)
 
 # 설치
 
-최신 버전의 **Chrome** 브라우저 또는 새로운 **Edge** 브라우저를 사용하는 것이 좋습니다.
+Chrome 또는 Edge 브라우저를 사용하는 것을 권장합니다.
 
 ## 온라인 설치
 
-이 확장 프로그램은 Chrome 웹 스토어에서 설치할 수 있습니다.
+Chrome Web Store에서 이 확장 프로그램을 설치할 수 있습니다:
 
-[Chrome 웹 스토어](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
+[Pixiv Fanbox Downloader](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
 
 ## 오프라인 설치
 
-만약 당신이 Chrome 웹 스토어에서 이 확장 프로그램을 설치할 수 없는 경우 오프라인으로 설치할 수 있습니다.
+Pixiv 다운로더의 오프라인 설치 튜토리얼을 참고할 수 있습니다:
+[오프라인 설치](https://xuejianxianzun.github.io/PBDWiki/#/en/OfflineInstallation)
 
-1. [Releases](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases)에서 설치 패키지의 최신 버전을 다운로드하고, 디렉토리에 압축을 해제합니다.
-2. 확장 프로그램으로 접근합니다. Chrome 브라우저는 메뉴에서 "도구 더보기"-"확장 프로그램"을 클릭하고, Edge 브라우저는 메뉴에서 "확장"을 클릭합니다.
-3. 확장 프로그램에서 "개발자 모드"를 활성화합니다.
-4. "압축해제된 확장 프로그램을 로드합니다." 버튼을 클릭하고, 설치 패키지가 압축 해제된 디렉토리를 선택합니다.
+한 가지 차이점만 있습니다: 위 튜토리얼에서는 Pixiv 다운로더의 zip 파일을 다운로드하라고 안내하지만, 대신 Fanbox 다운로더의 zip 파일을 다운로드하면 됩니다. 이 저장소의 [releases 페이지](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases)에서 pixivfanboxDownloader.zip을 다운로드할 수 있습니다.
 
-참고: 오프라인 설치 방법은 자동으로 업데이트되지 않습니다. 업데이트하려면 먼저 이 확장 프로그램을 삭제한 다음 새 버전을 설치해야 합니다.
+## 안드로이드에서 사용
 
-# 사용하는 방법
+다음 튜토리얼을 참고할 수 있습니다:
+[Microsoft Edge Canary 브라우저에 설치](https://xuejianxianzun.github.io/PBDWiki/#/en/MicrosoftEdgeCanary)
 
-- 이 확장 프로그램을 설치한 후 Fanbox 페이지를 새로고침 하면 페이지 오른쪽에 파란색 다운로드 버튼이 나타납니다. 이 버튼을 클릭하여 사용을 시작해주세요.
-- 다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다.
-- 다운로드 시 팝업이 표시되지 않도록 브라우저 설정에서 "다운로드 전에 각 파일의 저장 위치 확인" 옵션을 꺼주세요.
-- 다운로드 후 파일명이 이상할 경우 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화해주세요.
+한 가지 차이점만 있습니다: 위 튜토리얼에서는 Pixiv 다운로더의 crx 파일을 다운로드하라고 안내하지만, 대신 Fanbox 다운로더의 crx 파일을 다운로드하면 됩니다. 이 저장소의 [releases 페이지](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases)에서 Pixiv-Fanbox-Downloader.crx를 다운로드할 수 있습니다.
+
+# 사용 방법
+
+- 이 확장 프로그램을 설치한 후 fanbox 페이지를 새로고침하면 페이지 오른쪽에 파란색 다운로드 버튼이 표시됩니다. 이 버튼을 클릭하여 사용을 시작하세요.
+- 다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다. 다른 위치에 저장하려면 브라우저의 다운로드 디렉토리를 변경해야 합니다.
+- 다운로드 시 "각 파일을 저장할 위치를 물어보기" 브라우저 설정을 비활성화하여 저장 위치를 묻는 창이 나타나지 않도록 하세요.
+- 다운로드한 파일 이름이 비정상적인 경우, 다운로드 기능을 가진 다른 브라우저 확장 프로그램을 비활성화하세요.
 
 # Patreon
 

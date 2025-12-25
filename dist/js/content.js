@@ -407,7 +407,7 @@ class CenterPanel {
       <div class="help_bar gray1"> 
       <button class="textButton gray1" id="showDownTip" type="button" data-xztext="_常见问题"></button>
       <a class="gray1" href="https://discord.gg/u4wVMy7xJM" target="_blank">Discord</a>
-      <a class="gray1" href="https://chrome.google.com/webstore/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank" data-xztext="_pixivDownloader"></a>
+      <a class="gray1" href="https://pixiv.download" target="_blank" data-xztext="_pixivDownloader"></a>
       <button class="textButton gray1" id="showPatronTip" type="button" data-xztext="_赞助我"></button>
       </div>
       
@@ -2143,6 +2143,30 @@ class InitPageBase {
             this.FetchPostList(url);
         }
     }
+    async FetchPostListOld(url) {
+        await _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.wait();
+        if (url === undefined) {
+            url = this.postListURLs.shift();
+            if (url === undefined) {
+                _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(`Error in crawling: internal error \n FetchPostList url is undefined\n End Crawling`);
+                return this.FetchPostListFinished();
+            }
+        }
+        try {
+            const data = (await _API__WEBPACK_IMPORTED_MODULE_7__.API.request(url));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.addTime();
+            this.afterFetchPostListOld(data);
+        }
+        catch (error) {
+            console.log(error);
+            if (error.message) {
+                _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(error.message);
+            }
+            _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_请求失败下载器会重试这个请求'));
+            _CrawlInterval__WEBPACK_IMPORTED_MODULE_12__.crawlInterval.addTime('long');
+            this.FetchPostListOld(url);
+        }
+    }
     /**保存符合过滤条件的文章的 ID，之后会抓取这些文章的详细数据 */
     afterFetchPostList(data) {
         if (data.body.length === 0) {
@@ -2192,7 +2216,7 @@ class InitPageBase {
             }
         }
         if (this.nextUrl) {
-            this.FetchPostList();
+            this.FetchPostListOld(this.nextUrl);
         }
         else {
             this.FetchPostListFinished();
@@ -3952,7 +3976,7 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.7.0';
+        this.flag = '4.7.1';
         this.bindEvents();
     }
     bindEvents() {

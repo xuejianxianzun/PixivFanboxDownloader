@@ -46,7 +46,7 @@ class TotalDownload {
 
   private async restore() {
     const result = await chrome.storage.local.get(['totalDownload'])
-    this.data = result.totalDownload || {}
+    this.data = (result.totalDownload as { [key: string]: number }) || {}
   }
 
   /** 生成 YYYY-MM-DD 格式的当前日期 */
