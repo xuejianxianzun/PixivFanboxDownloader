@@ -2529,14 +2529,6 @@ class Lang {
     }
     // 获取页面使用的语言，返回语言标记
     getHtmlLangType() {
-        // 单独对俄语进行一次检测
-        // 因为 Fanbox 官方没有提供俄语选项，因此无法从 html 标签上获取到 ru 属性
-        // 因此需要从 navigator.language 判断是否为俄语用户
-        if (navigator.language.startsWith('ru') ||
-            navigator.languages.includes('ru') ||
-            navigator.languages.includes('ru-RU')) {
-            return 'ru';
-        }
         const flag = document.documentElement.lang;
         switch (flag) {
             case 'zh':
@@ -3191,7 +3183,8 @@ class PageType {
             // 自己主页
             return PageName.Home;
         }
-        else if (path === '/creators/supporting') {
+        else if (path === '/home/supporting' || path === '/creators/supporting') {
+            // https://www.fanbox.cc/home/supporting
             // https://www.fanbox.cc/creators/supporting
             // 正在赞助的创作者
             return PageName.Supporting;
@@ -4788,6 +4781,7 @@ class DownloadControl {
             if ((_a = msg.data) === null || _a === void 0 ? void 0 : _a.uuid) {
                 _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 1, false, 'filenameUUID');
                 _MsgBox__WEBPACK_IMPORTED_MODULE_11__.msgBox.once('uuidTip', _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 'show');
+                this.pauseDownload();
             }
             // 文件下载成功
             if (msg.msg === 'downloaded') {
@@ -8350,7 +8344,7 @@ __webpack_require__.r(__webpack_exports__);
 class Options {
     constructor() {
         // 保持显示的选项的 id
-        this.whiteList = [2, 21, 51, 13, 17, 33];
+        this.whiteList = [2, 21, 32, 51, 13, 17, 33];
         // 某些页面类型需要隐藏某些选项。当调用 hideOption 方法时，把选项 id 保存起来
         // 优先级高于 whiteList
         this.hiddenList = [];
@@ -8655,8 +8649,10 @@ class Settings {
             idRangeInput: 0,
             idRange: '>',
             postDate: false,
-            postDateStart: 946684800000,
-            postDateEnd: 4102444800000,
+            // 默认的起始时间：2018-01-01
+            postDateStart: 1514764800000,
+            // 默认的结束时间：2030-01-01
+            postDateEnd: 1893456000000,
             saveLink: true,
             saveText: false,
             userSetName: 'fanbox/{user}/{date}-{title}/{index}',

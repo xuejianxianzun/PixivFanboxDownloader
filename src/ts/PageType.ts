@@ -43,7 +43,8 @@ class PageType {
       // https://www.fanbox.cc/
       // 自己主页
       return PageName.Home
-    } else if (path === '/creators/supporting') {
+    } else if (path === '/home/supporting' || path === '/creators/supporting') {
+      // https://www.fanbox.cc/home/supporting
       // https://www.fanbox.cc/creators/supporting
       // 正在赞助的创作者
       return PageName.Supporting

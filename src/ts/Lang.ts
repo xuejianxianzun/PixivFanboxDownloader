@@ -42,17 +42,6 @@ class Lang {
 
   // 获取页面使用的语言，返回语言标记
   private getHtmlLangType(): LangTypes {
-    // 单独对俄语进行一次检测
-    // 因为 Fanbox 官方没有提供俄语选项，因此无法从 html 标签上获取到 ru 属性
-    // 因此需要从 navigator.language 判断是否为俄语用户
-    if (
-      navigator.language.startsWith('ru') ||
-      navigator.languages.includes('ru') ||
-      navigator.languages.includes('ru-RU')
-    ) {
-      return 'ru'
-    }
-
     const flag = document.documentElement.lang
     switch (flag) {
       case 'zh':

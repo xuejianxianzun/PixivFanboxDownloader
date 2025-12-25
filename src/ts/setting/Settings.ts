@@ -140,8 +140,10 @@ class Settings {
     idRangeInput: 0,
     idRange: '>',
     postDate: false,
-    postDateStart: 946684800000,
-    postDateEnd: 4102444800000,
+    // 默认的起始时间：2018-01-01
+    postDateStart: 1514764800000,
+    // 默认的结束时间：2030-01-01
+    postDateEnd: 1893456000000,
     saveLink: true,
     saveText: false,
     userSetName: 'fanbox/{user}/{date}-{title}/{index}',
