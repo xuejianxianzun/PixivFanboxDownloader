@@ -1765,14 +1765,16 @@ You can sponsor me on Patreon: <br>
     `지난 30일 동안 다운로드된 파일 크기`,
     `Размер файлов, загруженных за последние 30 дней`,
   ],
-  _添加了俄语文本: [
-    '下载器的 Language 设置里添加了俄语选项',
-    `下載器的 Language 設定裡添加了俄語選項`,
-    `Added Russian language option to the Language setting of the downloader`,
-    `ダウンローダーの言語設定にロシア語のオプションを追加しました`,
-    `다운로더의 언어 설정에 러시아어 옵션이 추가되었습니다`,
-    `В настройки языка загрузчика добавлена опция русского языка`,
+  _图片尺寸: [
+    '图片<span class="key">尺寸</span>',
+    '圖片<span class="key">尺寸</span>',
+    'Image <span class="key">size</span>',
+    '画像<span class="key">サイズ</span>',
+    '이미지 <span class="key">크기</span>',
+    '<span class="key">Размер</span> изображения',
   ],
+  _原图: ['原图', '原圖', 'Original', 'Original', '원본', 'Оригинал'],
+  _缩略图: ['缩略图', '縮圖', 'Thumbnail', 'サムネイル', '썸네일', 'Миниатюра'],
 }
 
 export { langText }

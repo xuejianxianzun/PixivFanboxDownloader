@@ -1373,7 +1373,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 
-// 已使用的最大编号为 57
+// 已使用的最大编号为 59
 const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -1471,15 +1471,26 @@ const formHtml = `<form class="settingForm">
     </span>
     </p>
 
-    <p class="option" data-no="19">
-    <span class="settingNameStyle1" data-xztext="_保存投稿中的外部链接"></span>
-    <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
-    <span class="beautify_switch"></span>
+    <p class="option" data-no="59">
+    <span class="settingNameStyle1" data-xztext="_图片尺寸"></span>
+    <input type="radio" name="imageSize" id="imageSize1" class="need_beautify radio" value="original" checked>
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="imageSize1" data-xztext="_原图"></label>
+    <input type="radio" name="imageSize" id="imageSize2" class="need_beautify radio" value="thumbnail">
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="imageSize2" data-xztext="_缩略图"></label>
+    <label for="imageSize2" class="gray1">(1200px)</label>
     </p>
     
     <p class="option" data-no="22">
     <span class="settingNameStyle1" data-xztext="_保存投稿中的封面图片"></span>
     <input type="checkbox" name="savePostCover" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch"></span>
+    </p>
+
+    <p class="option" data-no="19">
+    <span class="settingNameStyle1" data-xztext="_保存投稿中的外部链接"></span>
+    <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
     <span class="beautify_switch"></span>
     </p>
 
@@ -3765,7 +3776,7 @@ class SaveData {
                 ext: imageData.extension,
                 size: null,
                 index,
-                url: imageData.originalUrl,
+                url: imageData[_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.imageSize === 'original' ? 'originalUrl' : 'thumbnailUrl'],
                 retryUrl: imageData.thumbnailUrl,
             };
         }
@@ -3996,9 +4007,6 @@ class ShowWhatIsNew {
       <strong class="blue">${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_每天下载的文件大小限制')}</strong>
       <br>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_每天下载的文件大小限制的说明')}
-      <br>
-      <br>
-      <strong class="blue"> ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_添加了俄语文本')}</strong>
       `;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
@@ -7799,13 +7807,22 @@ You can sponsor me on Patreon: <br>
         `지난 30일 동안 다운로드된 파일 크기`,
         `Размер файлов, загруженных за последние 30 дней`,
     ],
-    _添加了俄语文本: [
-        '下载器的 Language 设置里添加了俄语选项',
-        `下載器的 Language 設定裡添加了俄語選項`,
-        `Added Russian language option to the Language setting of the downloader`,
-        `ダウンローダーの言語設定にロシア語のオプションを追加しました`,
-        `다운로더의 언어 설정에 러시아어 옵션이 추가되었습니다`,
-        `В настройки языка загрузчика добавлена опция русского языка`,
+    _图片尺寸: [
+        '图片<span class="key">尺寸</span>',
+        '圖片<span class="key">尺寸</span>',
+        'Image <span class="key">size</span>',
+        '画像<span class="key">サイズ</span>',
+        '이미지 <span class="key">크기</span>',
+        '<span class="key">Размер</span> изображения',
+    ],
+    _原图: ['原图', '原圖', 'Original', 'Original', '원본', 'Оригинал'],
+    _缩略图: [
+        '缩略图',
+        '縮圖',
+        'Thumbnail',
+        'サムネイル',
+        '썸네일',
+        'Миниатюра',
     ],
 };
 
@@ -8113,7 +8130,7 @@ class FormSettings {
                 'crawlInterval',
                 'totalDownloadLimit',
             ],
-            radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
+            radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang', 'imageSize'],
             textarea: [],
             datetime: ['postDateStart', 'postDateEnd'],
         };
@@ -8696,6 +8713,7 @@ class Settings {
             totalDownloadLimitSwitch: true,
             totalDownloadLimit: 10,
             totalDownloadLimitByte: 10737418240,
+            imageSize: 'original',
         };
         this.allSettingKeys = Object.keys(this.defaultSettings);
         // 值为浮点数的选项

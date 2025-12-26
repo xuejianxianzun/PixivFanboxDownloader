@@ -78,7 +78,7 @@ class FormSettings {
       'crawlInterval',
       'totalDownloadLimit',
     ],
-    radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang'],
+    radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang', 'imageSize'],
     textarea: [],
     datetime: ['postDateStart', 'postDateEnd'],
   }

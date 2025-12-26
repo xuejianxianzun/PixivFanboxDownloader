@@ -50,4 +50,5 @@ export interface SettingsForm extends HTMLFormElement {
   crawlInterval: HTMLInputElement
   totalDownloadLimitSwitch: HTMLInputElement
   totalDownloadLimit: HTMLInputElement
+  imageSize: RadioNodeList
 }

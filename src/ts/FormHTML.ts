@@ -1,6 +1,6 @@
 import { Config } from './Config'
 
-// 已使用的最大编号为 57
+// 已使用的最大编号为 59
 export const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -98,15 +98,26 @@ export const formHtml = `<form class="settingForm">
     </span>
     </p>
 
-    <p class="option" data-no="19">
-    <span class="settingNameStyle1" data-xztext="_保存投稿中的外部链接"></span>
-    <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
-    <span class="beautify_switch"></span>
+    <p class="option" data-no="59">
+    <span class="settingNameStyle1" data-xztext="_图片尺寸"></span>
+    <input type="radio" name="imageSize" id="imageSize1" class="need_beautify radio" value="original" checked>
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="imageSize1" data-xztext="_原图"></label>
+    <input type="radio" name="imageSize" id="imageSize2" class="need_beautify radio" value="thumbnail">
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="imageSize2" data-xztext="_缩略图"></label>
+    <label for="imageSize2" class="gray1">(1200px)</label>
     </p>
     
     <p class="option" data-no="22">
     <span class="settingNameStyle1" data-xztext="_保存投稿中的封面图片"></span>
     <input type="checkbox" name="savePostCover" class="need_beautify checkbox_switch" checked>
+    <span class="beautify_switch"></span>
+    </p>
+
+    <p class="option" data-no="19">
+    <span class="settingNameStyle1" data-xztext="_保存投稿中的外部链接"></span>
+    <input type="checkbox" name="saveLink" class="need_beautify checkbox_switch" checked>
     <span class="beautify_switch"></span>
     </p>
 

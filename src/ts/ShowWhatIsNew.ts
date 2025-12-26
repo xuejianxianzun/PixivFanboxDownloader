@@ -35,9 +35,6 @@ class ShowWhatIsNew {
       )}</strong>
       <br>
       ${lang.transl('_每天下载的文件大小限制的说明')}
-      <br>
-      <br>
-      <strong class="blue"> ${lang.transl('_添加了俄语文本')}</strong>
       `
 
       // <strong>${lang.transl('_新增设置项')}: ${lang.transl(

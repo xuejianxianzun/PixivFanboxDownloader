@@ -367,7 +367,9 @@ class SaveData {
         ext: imageData.extension,
         size: null,
         index,
-        url: imageData.originalUrl,
+        url: imageData[
+          settings.imageSize === 'original' ? 'originalUrl' : 'thumbnailUrl'
+        ],
         retryUrl: imageData.thumbnailUrl,
       }
     }

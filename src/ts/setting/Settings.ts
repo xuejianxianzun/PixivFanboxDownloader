@@ -112,6 +112,8 @@ interface XzSetting {
   totalDownloadLimit: number
   /**每天下载的文件大小限制，这是转换为 byte 的值 */
   totalDownloadLimitByte: number
+  /** 保存图片的缩略图还是原图 */
+  imageSize: 'original' | 'thumbnail'
 }
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
@@ -180,6 +182,7 @@ class Settings {
     totalDownloadLimitSwitch: true,
     totalDownloadLimit: 10,
     totalDownloadLimitByte: 10737418240,
+    imageSize: 'original',
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)
