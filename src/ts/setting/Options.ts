@@ -15,6 +15,11 @@ interface WantPageEls {
   input: HTMLInputElement
 }
 
+type NewOption = {
+  id: number
+  time: number
+}
+
 // 控制每个设置的隐藏、显示
 // 设置页数/个数的提示文本
 class Options {
@@ -35,6 +40,17 @@ class Options {
   // 某些页面类型需要隐藏某些选项。当调用 hideOption 方法时，把选项 id 保存起来
   // 优先级高于 whiteList
   private hiddenList: number[] = []
+// 90 天内添加的设置项，显示 new 角标
+  private readonly now = Date.now()
+  private readonly newRange = 1000 * 60 * 60 * 24 * 90
+  private readonly newOptions: NewOption[] = [
+    {
+      // 图片尺寸
+      id: 59,
+      // 2025-12-27
+      time: 1766767774489,
+    },
+  ]
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingChange, (ev: CustomEventInit) => {
@@ -59,6 +75,8 @@ class Options {
   }
 
   private handleShowAdvancedSettings() {
+    this.showNewIcon()
+
     for (const option of this.allOption) {
       if (option.dataset.no === undefined) {
         continue
@@ -86,6 +104,16 @@ class Options {
         }
       }
     }
+  }
+
+  /**显示 new 角标 */
+  private showNewIcon() {
+    this.newOptions.forEach((option) => {
+      if (this.now - option.time <= this.newRange) {
+        const el = this.getOption(option.id)
+        el.classList.add('new')
+      }
+    })
   }
 
   // 使用编号获取指定选项的元素

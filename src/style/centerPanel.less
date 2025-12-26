@@ -192,7 +192,7 @@
     .showFileNameTip:focus,
     .textButton:hover,
     .textButton:focus,
-    .help_bar > *:hover,
+    .help_bar>*:hover,
     .updateActiveClass {
       color: @themeBlue !important;
       fill: @themeBlue !important;
@@ -202,6 +202,23 @@
       position: relative;
       // 表单区域设置最大宽度，使其与右侧滚动条保持距离，否则里面的内容会紧贴着滚动条，很难看
       max-width: 650px;
+
+      p.option {
+        position: relative;
+
+        // 在左上角显示 new 标记
+        &.new::before {
+          content: '✨';
+          position: absolute;
+          z-index: 1;
+          width: 24px;
+          left: -22px;
+          height: 26px;
+          top: -1px;
+          text-align: center;
+          font-size: 1.1em;
+        }
+      }
 
       input[type='range'] {
         appearance: auto;
@@ -224,8 +241,8 @@
         line-height: 1;
       }
 
-      p > *,
-      p .subOptionWrap > * {
+      p>*,
+      p .subOptionWrap>* {
         vertical-align: middle;
       }
 
@@ -328,11 +345,11 @@
         transition: all 0.3s;
       }
 
-      .checkbox_switch:checked + .beautify_switch {
+      .checkbox_switch:checked+.beautify_switch {
         background: @beautifyBlue;
       }
 
-      .checkbox_switch:checked + .beautify_switch::before {
+      .checkbox_switch:checked+.beautify_switch::before {
         margin-left: 12px;
       }
 
@@ -367,7 +384,7 @@
         transform-origin: center;
       }
 
-      .checkbox_common:checked + .beautify_checkbox {
+      .checkbox_common:checked+.beautify_checkbox {
         background: @beautifyBlue;
         border: 1px solid @beautifyBlue;
       }
@@ -376,11 +393,11 @@
         border: 1px solid @beautifyBlue;
       }
 
-      .checkbox_common:checked + .beautify_checkbox::after {
+      .checkbox_common:checked+.beautify_checkbox::after {
         transform: rotate(45deg) scaleY(1);
       }
 
-      .checkbox_common:focus + .beautify_checkbox {
+      .checkbox_common:focus+.beautify_checkbox {
         border: 1px solid @beautifyBlue;
       }
 
@@ -410,7 +427,7 @@
         transition: transform 0.15s ease-in;
       }
 
-      .radio:checked + .beautify_radio {
+      .radio:checked+.beautify_radio {
         background: @beautifyBlue;
         border: 1px solid @beautifyBlue;
       }
@@ -419,7 +436,7 @@
         border: 1px solid @beautifyBlue;
       }
 
-      .radio:checked + .beautify_radio::after {
+      .radio:checked+.beautify_radio::after {
         transform: translate(-50%, -50%) scale(1);
       }
 
@@ -641,7 +658,7 @@
           line-height: 26px;
           margin-bottom: 4px;
 
-          & > * {
+          &>* {
             padding-right: 5px;
           }
 
@@ -694,7 +711,7 @@
           align-items: center;
           min-width: 500px;
 
-          & > * {
+          &>* {
             min-height: @liHeight;
             line-height: @liHeight;
           }
@@ -739,7 +756,7 @@
       line-height: 24px;
       margin: 8px 0 4px;
 
-      & > * {
+      &>* {
         padding: 0 3px;
       }
     }
@@ -781,6 +798,10 @@
     box-shadow: @darkBoxShadow 0px 0px 15px;
     color: #fff;
 
+    p.option.new::before {
+      color: #fff !important;
+    }
+
     button,
     .tip {
       color: #fff;
@@ -805,7 +826,7 @@
     .showFileNameTip:focus,
     .textButton:hover,
     .textButton:focus,
-    .help_bar > *:hover,
+    .help_bar>*:hover,
     .updateActiveClass {
       color: @beautifyBlue !important;
       fill: @beautifyBlue !important;
@@ -856,6 +877,7 @@
 }
 
 .xzBG {
+
   // 当设置了背景图片时，不管是什么主题，都把中间面板的样式修改为 Dark 主题的样式，并且添加文字阴影，使文字更容易阅读
   &.centerWrap {
     // text-shadow: 0px 0px 5px #015d88;
@@ -864,6 +886,10 @@
     box-shadow: @darkBoxShadow 0px 0px 15px;
     background: #222;
     color: #fff;
+
+    p.option.new::before {
+      color: #fff !important;
+    }
 
     button,
     .tip {
@@ -895,7 +921,7 @@
     .showFileNameTip:focus,
     .textButton:hover,
     .textButton:focus,
-    .help_bar > *:hover,
+    .help_bar>*:hover,
     .updateActiveClass {
       color: #fff !important;
       fill: #fff !important;
