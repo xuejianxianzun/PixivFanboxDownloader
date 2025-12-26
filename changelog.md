@@ -1,5 +1,11 @@
 # 4.8.0 2025/12/26
 
+### 🔧“价格范围”现在可以设置 <= 了
+
+现在有三种判断条件了：`<=` `=` `>=`。
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/82
+
 ### 🐞修复了在首页点击“只显示赞助中的创作者”之后，下载器没有抓取按钮的问题
 
 首页点击“只显示赞助中的创作者”之后，URL 是 https://www.fanbox.cc/home/supporting ，之前下载器没有判断这个网址的页面类型，所以不会显示抓取按钮。

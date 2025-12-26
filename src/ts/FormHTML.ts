@@ -48,13 +48,17 @@ export const formHtml = `<form class="settingForm">
     <span class="beautify_switch"></span>
     <span class="subOptionWrap" data-show="feeSwitch">
 
-    <input type="radio" name="feeRange" id="feeRange1" class="need_beautify radio" value=">=" checked>
+    <input type="radio" name="feeRange" id="feeRange0" class="need_beautify radio" value="<=" checked>
     <span class="beautify_radio" tabindex="0"></span>
-    <label for="feeRange1">&gt;=</label>
+    <label for="feeRange0">&lt;=</label>
 
     <input type="radio" name="feeRange" id="feeRange2" class="need_beautify radio" value="=">
     <span class="beautify_radio" tabindex="0"></span>
     <label for="feeRange2">=</label>
+
+    <input type="radio" name="feeRange" id="feeRange1" class="need_beautify radio" value=">=" checked>
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="feeRange1">&gt;=</label>
     
     <input type="text" name="fee" class="setinput_style1 blue" value="500"> ¥
 

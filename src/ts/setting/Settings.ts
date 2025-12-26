@@ -65,7 +65,7 @@ interface XzSetting {
   free: boolean
   pay: boolean
   feeSwitch: boolean
-  feeRange: '>=' | '='
+  feeRange: '>=' | '=' | '<='
   fee: number
   idRangeSwitch: boolean
   idRangeInput: number

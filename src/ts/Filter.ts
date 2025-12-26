@@ -264,6 +264,8 @@ class Filter {
 
     if (settings.feeRange === '>=') {
       return fee >= settings.fee
+    }else if (settings.feeRange === '<=') {
+      return fee <= settings.fee
     } else {
       return fee === settings.fee
     }
