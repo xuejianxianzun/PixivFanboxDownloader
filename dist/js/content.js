@@ -4025,31 +4025,26 @@ __webpack_require__.r(__webpack_exports__);
 // 显示最近更新内容
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.7.1';
+        this.flag = '4.8.0';
         this.bindEvents();
     }
     bindEvents() {
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__.EVT.list.settingInitialized, () => {
             // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
             let msg = `
-      <strong class="blue">${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取间隔')}</strong>
-      <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取间隔的说明')}
+      ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_更新说明480')}
       <br>
       <br>
-      <strong class="blue">${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_下载间隔')}</strong>
-      <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_下载间隔的说明')}
+      🐞${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_修复bug')}
       <br>
       <br>
-      <strong class="blue">${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_新增设置项')}: ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_每天下载的文件大小限制')}</strong>
-      <br>
-      ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_每天下载的文件大小限制的说明')}
+      😊${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_优化用户体验')}
       `;
             // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
             //   '_非图片的命名规则'
             // )}</strong>
-            // ${lang.transl('_新增非图片命名规则的说明')}
+            // 🐞${lang.transl('_修复bug')}
+            // 😊${lang.transl('_优化用户体验')}
             // 在更新说明的下方显示赞助提示
             msg += `
       <br>
@@ -7822,6 +7817,14 @@ You can sponsor me on Patreon: <br>
         '버그 수정',
         'Исправление ошибок',
     ],
+    _优化用户体验: [
+        `优化用户体验`,
+        `優化用戶體驗`,
+        `Optimize User Experience`,
+        `ユーザーエクスペリエンスの最適化`,
+        `사용자 경험 최적화`,
+        `Оптимизация пользовательского опыта`,
+    ],
     _不支持的浏览器: [
         '你的浏览器不能正常使用这个扩展程序，主要原因可能是浏览器内核版本太低，或者存在兼容性问题。<br>建议您更换成最新版本的 Chrome 或 Edge 浏览器。',
         '你的瀏覽器不能正常使用這個擴充套件程式，主要原因可能是瀏覽器核心版本太低，或者存在相容性問題。<br>建議您更換成最新版本的 Chrome 或 Edge 瀏覽器。',
@@ -8264,6 +8267,68 @@ Selecting "No" will hide the username.`,
         `ファンのカードの保存が完了しました`,
         `팬 카드 저장 완료`,
         `Фанатская карта сохранена`,
+    ],
+    _更新说明480: [
+        `<strong class="blue">✨新增设置项: 图片尺寸</strong>
+      <br>
+      下载投稿里的图片时，之前下载器总是会下载原图，现在可以选择下载缩略图了。
+      <br>
+      <br>
+      <strong class="blue">✨新功能：保存粉丝卡</strong>
+      <br>
+      你可以保存自己正在赞助的创作者的粉丝卡。
+      <br>
+      在 Fanbox 的首页和创作者的主页里，下载器的面板上会显示保存粉丝卡的按钮。`,
+        `<strong class="blue">✨新增設置項: 圖片尺寸</strong>
+      <br>
+      下載投稿裡的圖片時，之前下載器總是會下載原圖，現在可以選擇下載縮略圖了。
+      <br>
+      <br>
+      <strong class="blue">✨新功能：保存粉絲卡</strong>
+      <br>
+      你可以保存自己正在贊助的創作者的粉絲卡。
+      <br>
+      在 Fanbox 的首頁和創作者的主頁裡，下載器的面板上會顯示保存粉絲卡的按鈕。`,
+        `<strong class="blue">✨New Setting: Image Size</strong>
+      <br>
+      When downloading images in the post, the downloader used to always download the original image, but now you can choose to download thumbnails.
+      <br>
+      <br>
+      <strong class="blue">✨New Feature: Save Fan Card</strong>
+      <br>
+      You can save the fan card of the creator you are sponsoring.
+      <br>
+      On the Fanbox homepage and the creator's homepage, the downloader's panel will display a button to save the fan card.`,
+        `<strong class="blue">✨新設定項目: 画像サイズ</strong>
+      <br>
+      投稿内の画像をダウンロードする際、以前はダウンロードツールが常に原画像をダウンロードしていましたが、今はサムネイルのダウンロードを選択できます。
+      <br>
+      <br>
+      <strong class="blue">✨新機能：ファンのカードを保存</strong>
+      <br>
+      現在スポンサーしているクリエイターのファンのカードを保存できます。
+      <br>
+      Fanbox のホームページとクリエイターページで、ダウンロードツールのパネルにファンのカードを保存するボタンが表示されます。`,
+        `<strong class="blue">✨새 설정 항목: 이미지 크기</strong>
+      <br>
+      게시물 내 이미지를 다운로드할 때, 이전에는 다운로더가 항상 원본 이미지를 다운로드했지만, 이제 썸네일을 다운로드할 수 있습니다.
+      <br>
+      <br>
+      <strong class="blue">✨새 기능: 팬 카드 저장</strong>
+      <br>
+      현재 후원 중인 크리에이터의 팬 카드를 저장할 수 있습니다.
+      <br>
+      Fanbox 홈페이지와 크리에이터 홈페이지에서 다운로더 패널에 팬 카드 저장 버튼이 표시됩니다.`,
+        `<strong class="blue">✨Новый параметр: Размер изображения</strong>
+      <br>
+      При скачивании изображений в посте загрузчик ранее всегда скачивал оригинальное изображение, но теперь можно выбрать скачивание миниатюр.
+      <br>
+      <br>
+      <strong class="blue">✨Новая функция: Сохранение фан-карты</strong>
+      <br>
+      Вы можете сохранить фан-карту спонсируемого вами создателя.
+      <br>
+      На главной странице Fanbox и странице создателя в панели загрузчика будет отображаться кнопка для сохранения фан-карты.`,
     ],
 };
 

@@ -10,38 +10,27 @@ class ShowWhatIsNew {
     this.bindEvents()
   }
 
-  private flag = '4.7.1'
+  private flag = '4.8.0'
 
   private bindEvents() {
     window.addEventListener(EVT.list.settingInitialized, () => {
       // 消息文本要写在 settingInitialized 事件回调里，否则它们可能会被翻译成错误的语言
       let msg = `
-      <strong class="blue">${lang.transl('_新增设置项')}: ${lang.transl(
-        '_抓取间隔',
-      )}</strong>
-      <br>
-      ${lang.transl('_抓取间隔的说明')}
+      ${lang.transl('_更新说明480')}
       <br>
       <br>
-      <strong class="blue">${lang.transl('_新增设置项')}: ${lang.transl(
-        '_下载间隔',
-      )}</strong>
-      <br>
-      ${lang.transl('_下载间隔的说明')}
+      🐞${lang.transl('_修复bug')}
       <br>
       <br>
-      <strong class="blue">${lang.transl('_新增设置项')}: ${lang.transl(
-        '_每天下载的文件大小限制',
-      )}</strong>
-      <br>
-      ${lang.transl('_每天下载的文件大小限制的说明')}
+      😊${lang.transl('_优化用户体验')}
       `
 
       // <strong>${lang.transl('_新增设置项')}: ${lang.transl(
       //   '_非图片的命名规则'
       // )}</strong>
 
-      // ${lang.transl('_新增非图片命名规则的说明')}
+      // 🐞${lang.transl('_修复bug')}
+      // 😊${lang.transl('_优化用户体验')}
 
       // 在更新说明的下方显示赞助提示
       msg += `
