@@ -40,7 +40,7 @@ class Options {
   // 某些页面类型需要隐藏某些选项。当调用 hideOption 方法时，把选项 id 保存起来
   // 优先级高于 whiteList
   private hiddenList: number[] = []
-// 90 天内添加的设置项，显示 new 角标
+  // 90 天内添加的设置项，显示 new 角标
   private readonly now = Date.now()
   private readonly newRange = 1000 * 60 * 60 * 24 * 90
   private readonly newOptions: NewOption[] = [

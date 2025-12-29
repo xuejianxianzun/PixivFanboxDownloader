@@ -6,6 +6,8 @@ import {
   CreatorData,
   SupportPostList,
   TagPostList,
+  AllSupportingPlan,
+  SupportInfo,
 } from './CrawlResult.d'
 
 class API {
@@ -89,6 +91,20 @@ class API {
     const baseURL = `https://api.fanbox.cc/creator.get?creatorId=${creatorId}`
     const res = (await this.request(baseURL)) as CreatorData
     return res.body.user.userId
+  }
+
+  /** 获取自己所有的赞助方案，但是不包含背景图片、开始日期等属于自己的附加数据 */
+  static async getAllSupportingPlan(): Promise<AllSupportingPlan> {
+    const url = `https://api.fanbox.cc/plan.listSupporting`
+    return this.request(url)
+  }
+
+  /** 获取自己对某个创作者的赞助计划详情，包含背景图片、开始日期等自己的数据，这是创建粉丝卡的必要数据 */
+  static async getSupportingPlanForOneCreator(
+    creatorId: string,
+  ): Promise<SupportInfo> {
+    const url = `https://api.fanbox.cc/legacy/support/creator?creatorId=${creatorId}`
+    return this.request(url)
   }
 
   /**获取赞助的用户的文章列表 */

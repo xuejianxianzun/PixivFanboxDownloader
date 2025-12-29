@@ -82,6 +82,14 @@ chrome.runtime.onMessage.addListener(async function (
     )
 
     return false
+  } else if (msg.msg === 'save_file_no_replay') {
+    // 保存不需要返回下载状态的文件
+    chrome.downloads.download({
+      url: msg.fileUrl,
+      filename: msg.fileName,
+      conflictAction: 'overwrite',
+      saveAs: false,
+    })
   }
 })
 

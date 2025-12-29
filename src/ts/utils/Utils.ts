@@ -274,6 +274,10 @@ class Utils {
     const nameArray = name.split('.')
     return nameArray[nameArray.length - 1]
   }
+
+  static async sleep(time: number) {
+    return new Promise((res) => window.setTimeout(res, time))
+  }
 }
 
 export { Utils }

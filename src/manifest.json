@@ -40,7 +40,8 @@
     {
       "resources": [
         "lib/listen_history_change.js",
-        "icon/logo128.png"
+        "icon/logo128.png",
+        "images/cardMask.png"
       ],
       "matches": ["*://*.fanbox.cc/*"]
     }

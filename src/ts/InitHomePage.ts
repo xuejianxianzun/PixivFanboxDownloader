@@ -7,6 +7,7 @@ import { API } from './API'
 import { EVT } from './EVT'
 import { log } from './Log'
 import { pageType } from './PageType'
+import { saveFanCard } from './download/SaveFanCard'
 
 class InitHomePage extends InitPageBase {
   constructor() {
@@ -49,6 +50,19 @@ class InitHomePage extends InitPageBase {
         }
         this.crawlFlag = 'following'
         this.readyCrawl()
+      })
+    }
+
+    if (
+      pageType.type === pageType.list.Home ||
+      pageType.type === pageType.list.Supporting
+    ) {
+      Tools.addBtn(
+        'crawlBtns',
+        Colors.bgGreen,
+        '_保存所有粉丝卡',
+      ).addEventListener('click', () => {
+        saveFanCard.save('all')
       })
     }
 

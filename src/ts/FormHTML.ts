@@ -99,7 +99,11 @@ export const formHtml = `<form class="settingForm">
     </p>
 
     <p class="option" data-no="59">
-    <span class="settingNameStyle1" data-xztext="_图片尺寸"></span>
+      <span class="has_tip settingNameStyle1" data-xztip="_图片尺寸的提示">
+      <span data-xztext="_图片尺寸"></span>
+      <span class="gray1"> ? </span>
+    </span>
+
     <input type="radio" name="imageSize" id="imageSize1" class="need_beautify radio" value="original" checked>
     <span class="beautify_radio" tabindex="0"></span>
     <label for="imageSize1" data-xztext="_原图"></label>
@@ -192,7 +196,7 @@ export const formHtml = `<form class="settingForm">
       <select name="fileNameSelect" class="beautify_scrollbar">
         <option value="default">…</option>
         <option value="{user}">{user}</option>
-        <option value="{create_id}">{create_id}</option>
+        <option value="{creator_id}">{creator_id}</option>
         <option value="{user_id}">{user_id}</option>
         <option value="{title}">{title}</option>
         <option value="{post_id}">{post_id}</option>
@@ -227,11 +231,11 @@ export const formHtml = `<form class="settingForm">
       <span class="blue">{user}</span>
     <span data-xztext="_命名标记user"></span>
       <br>
-      <span class="blue">{create_id}</span>
-    <span data-xztext="_命名标记create_id"></span>
-      <br>
       <span class="blue">{user_id}</span>
     <span data-xztext="_命名标记uid"></span>
+      <br>
+      <span class="blue">{creator_id}</span>
+    <span data-xztext="_命名标记creator_id"></span>
       <br>
       <span class="blue">{title}</span>
     <span data-xztext="_命名标记title"></span>

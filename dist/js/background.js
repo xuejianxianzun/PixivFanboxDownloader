@@ -233,6 +233,15 @@ chrome.runtime.onMessage.addListener(async function (msg, sender) {
         });
         return false;
     }
+    else if (msg.msg === 'save_file_no_replay') {
+        // 保存不需要返回下载状态的文件
+        chrome.downloads.download({
+            url: msg.fileUrl,
+            filename: msg.fileName,
+            conflictAction: 'overwrite',
+            saveAs: false,
+        });
+    }
 });
 // 判断文件名是否变成了 UUID 格式。因为文件名处于整个绝对路径的中间，所以没加首尾标记 ^ $
 const UUIDRegexp = /[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/;

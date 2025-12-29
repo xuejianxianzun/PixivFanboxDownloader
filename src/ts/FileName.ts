@@ -111,7 +111,13 @@ class FileName {
         value: data.user,
         safe: false,
       },
+      // {create_id} 是历史遗留，已经被 {creator_id} 取代。
+      // 为了保持兼容性，继续保留它
       '{create_id}': {
+        value: data.createID,
+        safe: true,
+      },
+      '{creator_id}': {
         value: data.createID,
         safe: true,
       },
