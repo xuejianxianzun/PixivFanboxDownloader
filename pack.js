@@ -4,7 +4,7 @@ const path = require('path')
 const copy = require('recursive-copy')
 const archiver = require('archiver')
 
-const packName = 'pixivfanboxDownloader'
+const packName = 'PixivFanboxDownloader'
 
 // 复制一些文件到 dist 目录
 async function copys() {
