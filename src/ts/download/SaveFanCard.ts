@@ -69,6 +69,9 @@ class SaveFanCard {
     for (const createId of createIds) {
       const data: FanCardData | null = await this.getFanCardData(createId)
       if (data) {
+        if (!data.backgroundURL) {
+          lang.transl('_没有获取到背景图片的URL')
+        }
         await this.generateSupporterCard(
           data.backgroundURL,
           data.title,
@@ -124,7 +127,10 @@ class SaveFanCard {
       ...supportInfo.body.plan,
       creatorName: supportInfo.body.plan.user.name,
       yourName: supportInfo.body.supportTransactions[0].supporter.name,
-      backgroundURL: supportInfo.body.plan.coverImageUrl,
+      // coverImageUrl 可能为 null，这是因为创作者没有为该赞助等级设置图片
+      backgroundURL:
+        supportInfo.body.plan.coverImageUrl ||
+        supportInfo.body.supporterCardImageUrl,
       sinceDate: supportInfo.body.supportStartDatetime,
     }
   }

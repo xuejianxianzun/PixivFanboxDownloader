@@ -1883,67 +1883,21 @@ Selecting "No" will hide the username.`,
     `팬 카드 저장 완료`,
     `Фанатская карта сохранена`,
   ],
-  _更新说明480: [
-    `<strong class="blue">✨新增设置项: 图片尺寸</strong>
-      <br>
-      下载投稿里的图片时，之前下载器总是会下载原图，现在可以选择下载缩略图了。
-      <br>
-      <br>
-      <strong class="blue">✨新功能：保存粉丝卡</strong>
-      <br>
-      你可以保存自己正在赞助的创作者的粉丝卡。
-      <br>
-      在 Fanbox 的首页和创作者的主页里，下载器的面板上会显示保存粉丝卡的按钮。`,
-    `<strong class="blue">✨新增設置項: 圖片尺寸</strong>
-      <br>
-      下載投稿裡的圖片時，之前下載器總是會下載原圖，現在可以選擇下載縮略圖了。
-      <br>
-      <br>
-      <strong class="blue">✨新功能：保存粉絲卡</strong>
-      <br>
-      你可以保存自己正在贊助的創作者的粉絲卡。
-      <br>
-      在 Fanbox 的首頁和創作者的主頁裡，下載器的面板上會顯示保存粉絲卡的按鈕。`,
-    `<strong class="blue">✨New Setting: Image Size</strong>
-      <br>
-      When downloading images in the post, the downloader used to always download the original image, but now you can choose to download thumbnails.
-      <br>
-      <br>
-      <strong class="blue">✨New Feature: Save Fan Card</strong>
-      <br>
-      You can save the fan card of the creator you are sponsoring.
-      <br>
-      On the Fanbox homepage and the creator's homepage, the downloader's panel will display a button to save the fan card.`,
-    `<strong class="blue">✨新設定項目: 画像サイズ</strong>
-      <br>
-      投稿内の画像をダウンロードする際、以前はダウンロードツールが常に原画像をダウンロードしていましたが、今はサムネイルのダウンロードを選択できます。
-      <br>
-      <br>
-      <strong class="blue">✨新機能：ファンのカードを保存</strong>
-      <br>
-      現在スポンサーしているクリエイターのファンのカードを保存できます。
-      <br>
-      Fanbox のホームページとクリエイターページで、ダウンロードツールのパネルにファンのカードを保存するボタンが表示されます。`,
-    `<strong class="blue">✨새 설정 항목: 이미지 크기</strong>
-      <br>
-      게시물 내 이미지를 다운로드할 때, 이전에는 다운로더가 항상 원본 이미지를 다운로드했지만, 이제 썸네일을 다운로드할 수 있습니다.
-      <br>
-      <br>
-      <strong class="blue">✨새 기능: 팬 카드 저장</strong>
-      <br>
-      현재 후원 중인 크리에이터의 팬 카드를 저장할 수 있습니다.
-      <br>
-      Fanbox 홈페이지와 크리에이터 홈페이지에서 다운로더 패널에 팬 카드 저장 버튼이 표시됩니다.`,
-    `<strong class="blue">✨Новый параметр: Размер изображения</strong>
-      <br>
-      При скачивании изображений в посте загрузчик ранее всегда скачивал оригинальное изображение, но теперь можно выбрать скачивание миниатюр.
-      <br>
-      <br>
-      <strong class="blue">✨Новая функция: Сохранение фан-карты</strong>
-      <br>
-      Вы можете сохранить фан-карту спонсируемого вами создателя.
-      <br>
-      На главной странице Fanbox и странице создателя в панели загрузчика будет отображаться кнопка для сохранения фан-карты.`,
+  _没有获取到背景图片的URL: [
+    `没有获取到背景图片的 URL`,
+    `沒有獲取到背景圖片的 URL`,
+    `Failed to obtain the background image URL`,
+    `背景画像の URL を取得できませんでした`,
+    `배경 이미지 URL을 가져오지 못했습니다`,
+    `Не удалось получить URL фонового изображения`,
+  ],
+  _更新说明481: [
+    `<strong class="blue">🐞修复了无法保存某些创作者的粉丝卡的 BUG</strong>`,
+    `<strong class="blue">🐞修復了無法保存某些創作者的粉絲卡的 BUG</strong>`,
+    `<strong class="blue">🐞Fixed the bug where fan cards of certain creators could not be saved</strong>`,
+    `<strong class="blue">🐞一部のクリエイターのファンのカードを保存できないバグを修正</strong>`,
+    `<strong class="blue">🐞일부 크리에이터의 팬 카드를 저장할 수 없는 버그 수정</strong>`,
+    `<strong class="blue">🐞Исправлена ошибка, из-за которой нельзя было сохранить фан-карты некоторых создателей</strong>`,
   ],
 }
 
