@@ -85,7 +85,8 @@ class SaveData {
     // 提取投稿的封面图片
     // 封面图片的序号设置为 0，所以它里面不需要对 index 进行操作
     if (settings.savePostCover) {
-      const cover = data.coverImageUrl
+      // 移除这部分路径，得到的就是缩略图的原图链接
+      const cover = data.coverImageUrl?.replace('/c/1200x630_90_a2_g5', '')
       if (cover) {
         const { name, ext } = this.getUrlNameAndExt(cover)
         const r: FileResult = {

@@ -2,7 +2,7 @@ import { lang } from './Lang'
 import { Colors } from './Colors'
 import { Tools } from './Tools'
 import { InitPageBase } from './InitPageBase'
-import { Creator, SupportPostList } from './CrawlResult.d'
+import { ListFollowing, SupportPostList } from './CrawlResult.d'
 import { API } from './API'
 import { EVT } from './EVT'
 import { log } from './Log'
@@ -111,15 +111,15 @@ class InitHomePage extends InitPageBase {
     log.log(lang.transl('_抓取关注的所有用户的投稿'))
     // 获取关注的用户列表
     const url = 'https://api.fanbox.cc/creator.listFollowing'
-    const json: { body: Creator[] } = await API.request(url)
-    if (json?.body?.length > 0) {
+    const json: ListFollowing = await API.request(url)
+    if (json?.body?.creators.length > 0) {
       const userList: {
         creatorId: string
         name: string
-      }[] = json.body.map((user) => {
+      }[] = json.body.creators.map((item) => {
         return {
-          creatorId: user.creatorId,
-          name: user.user.name,
+          creatorId: item.creatorId,
+          name: item.user.name,
         }
       })
 

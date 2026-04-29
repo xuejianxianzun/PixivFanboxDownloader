@@ -1956,11 +1956,11 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPageBa
         // 获取关注的用户列表
         const url = 'https://api.fanbox.cc/creator.listFollowing';
         const json = await _API__WEBPACK_IMPORTED_MODULE_4__.API.request(url);
-        if (((_a = json === null || json === void 0 ? void 0 : json.body) === null || _a === void 0 ? void 0 : _a.length) > 0) {
-            const userList = json.body.map((user) => {
+        if (((_a = json === null || json === void 0 ? void 0 : json.body) === null || _a === void 0 ? void 0 : _a.creators.length) > 0) {
+            const userList = json.body.creators.map((item) => {
                 return {
-                    creatorId: user.creatorId,
-                    name: user.user.name,
+                    creatorId: item.creatorId,
+                    name: item.user.name,
                 };
             });
             _Log__WEBPACK_IMPORTED_MODULE_6__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_正在关注的创作者') + ':');
@@ -3527,6 +3527,7 @@ class SaveData {
         this.parsePost(data);
     }
     parsePost(data) {
+        var _a;
         // 针对投稿进行检查，决定是否保留它
         const id = data.id;
         const creatorId = data.creatorId;
@@ -3566,7 +3567,8 @@ class SaveData {
         // 提取投稿的封面图片
         // 封面图片的序号设置为 0，所以它里面不需要对 index 进行操作
         if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.savePostCover) {
-            const cover = data.coverImageUrl;
+            // 移除这部分路径，得到的就是缩略图的原图链接
+            const cover = (_a = data.coverImageUrl) === null || _a === void 0 ? void 0 : _a.replace('/c/1200x630_90_a2_g5', '');
             if (cover) {
                 const { name, ext } = this.getUrlNameAndExt(cover);
                 const r = {

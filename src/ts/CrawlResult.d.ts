@@ -298,29 +298,30 @@ interface TagPostList {
   }
 }
 
-interface Creator {
-  user: {
-    userId: string
-    name: string
-    iconUrl: string
-  }
-  creatorId: string
-  description: string
-  hasAdultContent: boolean
-  coverImageUrl: string | null
-  profileLinks: string[]
-  profileItems: []
-  isFollowed: boolean
-  isSupported: boolean
-  isStopped: boolean
-  hasBoothShop: boolean
-  isAcceptingRequest: boolean
-  hasPublishedPost: boolean
-  category: string
-}
-
+/**
+ * 某一位创作者的数据
+ */
 interface CreatorData {
-  body: Creator
+  body: {
+    user: {
+      userId: string
+      name: string
+      iconUrl: string
+    }
+    creatorId: string
+    description: string
+    hasAdultContent: boolean
+    coverImageUrl: string | null
+    profileLinks: string[]
+    profileItems: []
+    isFollowed: boolean
+    isSupported: boolean
+    isStopped: boolean
+    hasBoothShop: boolean
+    isAcceptingRequest: boolean
+    hasPublishedPost: boolean
+    category: string
+  }
 }
 
 /** 赞助方案的数据 */
@@ -395,6 +396,35 @@ interface SupportInfo {
   }
 }
 
+interface ListFollowing {
+  body: {
+    creators: {
+      category: 'illustrations' | string
+      coverImageUrl: string
+      /** 创作者的唯一标识，通常是字母或字母与数字的混合
+       * 注意：这不是 user.userId 的纯数字 Id */
+      creatorId: string
+      description: string
+      hasAdultContent: boolean
+      hasBoothShop: boolean
+      hasPublishedPost: boolean
+      isAcceptingRequest: boolean
+      isFollowed: boolean
+      isStopped: boolean
+      isSupported: boolean
+      profileItems: []
+      profileLinks: string[]
+      user: {
+        /** 数字 id，如 "37062" */
+        userId: string
+        name: string
+        /** 头像 URL */
+        iconUrl: string
+      }
+    }[]
+  }
+}
+
 export {
   PostBody,
   Post,
@@ -413,4 +443,5 @@ export {
   AllSupportingPlan,
   SupportInfo,
   Plan,
+  ListFollowing,
 }

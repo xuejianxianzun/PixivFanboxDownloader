@@ -1,3 +1,13 @@
+# next
+
+### 🐞修复了无法抓取已关注的用户的问题
+
+Fanbox 的 API 变化导致此功能失效，现在修复。
+
+### 🖼️保存投稿的缩略图时会保存原图
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/86
+
 # 4.8.1 2026-02-13
 
 ### 🐞修复了无法保存某些创作者的粉丝卡的 BUG
