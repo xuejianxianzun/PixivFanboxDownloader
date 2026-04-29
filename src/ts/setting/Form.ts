@@ -9,12 +9,14 @@ import { Utils } from '../utils/Utils'
 import { lang } from '../Lang'
 import { options } from './Options'
 import { msgBox } from '../MsgBox'
+import { theme } from '../Theme'
 
 // 设置表单
 class Form {
   constructor() {
     this.form = Tools.useSlot('form', formHtml) as SettingsForm
 
+    theme.register(this.form)
     lang.register(this.form)
 
     this.getElements()

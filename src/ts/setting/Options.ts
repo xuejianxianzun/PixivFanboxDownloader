@@ -35,7 +35,7 @@ class Options {
   private wantPageEls!: WantPageEls
 
   // 保持显示的选项的 id
-  private readonly whiteList: number[] = [2, 21, 32, 51, 13, 17, 33]
+  private readonly whiteList: number[] = [2, 21, 32, 51, 13, 17, 33, 60]
 
   // 某些页面类型需要隐藏某些选项。当调用 hideOption 方法时，把选项 id 保存起来
   // 优先级高于 whiteList
@@ -45,10 +45,10 @@ class Options {
   private readonly newRange = 1000 * 60 * 60 * 24 * 90
   private readonly newOptions: NewOption[] = [
     {
-      // 图片尺寸
-      id: 59,
-      // 2025-12-27
-      time: 1766767774489,
+      // 颜色主题
+      id: 60,
+      // 2026-04-29
+      time: 1777455427080,
     },
   ]
 

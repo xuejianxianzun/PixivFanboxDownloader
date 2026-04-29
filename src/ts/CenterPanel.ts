@@ -7,11 +7,13 @@ import { BoldKeywords } from './BoldKeywords'
 import { states } from './States'
 import { msgBox } from './MsgBox'
 import { Config } from './Config'
+import { theme } from './Theme'
 
 // 中间面板
 class CenterPanel {
   constructor() {
     this.addCenterPanel()
+    theme.register(this.centerPanel)
     lang.register(this.centerPanel)
 
     bg.useBG(this.centerPanel)

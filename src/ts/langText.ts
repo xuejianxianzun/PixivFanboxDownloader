@@ -1899,6 +1899,14 @@ Selecting "No" will hide the username.`,
     `<strong class="blue">🐞일부 크리에이터의 팬 카드를 저장할 수 없는 버그 수정</strong>`,
     `<strong class="blue">🐞Исправлена ошибка, из-за которой нельзя было сохранить фан-карты некоторых создателей</strong>`,
   ],
+  _颜色主题: [
+    '颜色<span class="key">主题</span>',
+    '色彩<span class="key">主題</span>',
+    'Color <span class="key">theme</span>',
+    '<span class="key">カラー</span>テーマ',
+    '<span class="key">테마</span>',
+    'Цветовая <span class="key">тема</span>',
+  ],
 }
 
 export { langText }

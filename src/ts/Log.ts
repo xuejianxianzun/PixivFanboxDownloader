@@ -1,5 +1,6 @@
 import { EVT } from './EVT'
 import { Colors } from './Colors'
+import { theme } from './Theme'
 
 // 日志
 class Log {
@@ -167,6 +168,7 @@ class Log {
 
       // 添加到 body 前面
       this.logWrap = logWrap
+      theme.register(this.logWrap)
       this.logContent = logContent
       document.body.insertAdjacentElement('beforebegin', this.logWrap)
     }

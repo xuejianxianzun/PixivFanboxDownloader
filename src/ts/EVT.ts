@@ -70,6 +70,8 @@ class EVENT {
     resume: 'resume',
     clearSavedCrawl: 'clearSavedCrawl',
     totalDownloadHistory: 'totalDownloadHistory',
+    /**当获取到页面的主题颜色时触发 */
+    getPageTheme: 'getPageTheme',
   }
 
   public fire(type: eventNames, data: object | string | number | boolean = '') {

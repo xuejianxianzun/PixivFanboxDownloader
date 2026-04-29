@@ -3,6 +3,7 @@ import { Colors } from './Colors'
 import { lang } from './Lang'
 import { bg } from './BG'
 import { Config } from './Config'
+import { theme } from './Theme'
 
 interface MsgOptional {
   btn?: string
@@ -123,6 +124,7 @@ class MsgBox {
         }</button>
       `
 
+    theme.register(wrap)
     lang.register(wrap)
 
     const btn = wrap.querySelector('.btn') as HTMLButtonElement

@@ -5,6 +5,7 @@ import { Utils } from './utils/Utils'
 import { Config } from './Config'
 import { msgBox } from './MsgBox'
 import { toast } from './Toast'
+import { theme } from './Theme'
 
 export type OutputData = {
   content: string
@@ -16,6 +17,7 @@ class OutputPanel {
   constructor() {
     this.addOutPutPanel()
 
+    theme.register(this.outputPanel)
     lang.register(this.outputPanel)
 
     this.bindEvents()

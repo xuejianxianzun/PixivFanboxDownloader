@@ -4,6 +4,7 @@ import { lang } from '../Lang'
 import { settings, setSetting } from './Settings'
 import { toast } from '../Toast'
 import { nameRuleManager } from './NameRuleManager'
+import { theme } from '../Theme'
 
 // 保存和加载命名规则列表
 class SaveNamingRule {
@@ -12,6 +13,7 @@ class SaveNamingRule {
 
     Tools.clearSlot('saveNamingRule')
     const wrap = Tools.useSlot('saveNamingRule', this.html) as HTMLElement
+    theme.register(wrap)
     lang.register(wrap)
 
     this.saveBtn = wrap.querySelector('button.nameSave')! as HTMLButtonElement

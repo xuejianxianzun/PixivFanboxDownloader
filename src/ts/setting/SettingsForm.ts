@@ -51,4 +51,5 @@ export interface SettingsForm extends HTMLFormElement {
   totalDownloadLimitSwitch: HTMLInputElement
   totalDownloadLimit: HTMLInputElement
   imageSize: RadioNodeList
+  theme: RadioNodeList
 }

@@ -1,6 +1,6 @@
 import { Config } from './Config'
 
-// 已使用的最大编号为 59
+// 已使用的最大编号为 60
 export const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -425,6 +425,19 @@ export const formHtml = `<form class="settingForm">
     </span>
     </p>
     
+    <p class="option" data-no="60">
+      <span class="settingNameStyle1" data-xztext="_颜色主题"></span>
+      <input type="radio" name="theme" id="theme1" class="need_beautify radio" value="auto" checked>
+      <span class="beautify_radio" tabindex="0"></span>
+      <label for="theme1" data-xztext="_自动检测"></label>
+      <input type="radio" name="theme" id="theme2" class="need_beautify radio" value="white">
+      <span class="beautify_radio" tabindex="0"></span>
+      <label for="theme2">White</label>
+      <input type="radio" name="theme" id="theme3" class="need_beautify radio" value="dark">
+      <span class="beautify_radio" tabindex="0"></span>
+      <label for="theme3">Dark</label>
+    </p>
+
     <p class="option" data-no="32">
     <span class="settingNameStyle1"><span class="key">Language</span></span>
     <input type="radio" name="userSetLang" id="userSetLang1" class="need_beautify radio" value="auto" checked>

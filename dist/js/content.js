@@ -363,7 +363,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./States */ "./src/ts/States.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./MsgBox */ "./src/ts/MsgBox.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
+/* harmony import */ var _Theme__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Theme */ "./src/ts/Theme.ts");
 // 用户界面
+
 
 
 
@@ -378,6 +380,7 @@ class CenterPanel {
         this.centerPanel = document.createElement('div'); // 中间面板
         this.allLangFlag = [];
         this.addCenterPanel();
+        _Theme__WEBPACK_IMPORTED_MODULE_8__.theme.register(this.centerPanel);
         _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.register(this.centerPanel);
         _BG__WEBPACK_IMPORTED_MODULE_3__.bg.useBG(this.centerPanel);
         new _BoldKeywords__WEBPACK_IMPORTED_MODULE_4__.BoldKeywords(this.centerPanel);
@@ -825,6 +828,8 @@ class EVENT {
             resume: 'resume',
             clearSavedCrawl: 'clearSavedCrawl',
             totalDownloadHistory: 'totalDownloadHistory',
+            /**当获取到页面的主题颜色时触发 */
+            getPageTheme: 'getPageTheme',
         };
     }
     // 只绑定某个事件一次，用于防止事件重复绑定
@@ -1389,7 +1394,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 
-// 已使用的最大编号为 59
+// 已使用的最大编号为 60
 const formHtml = `<form class="settingForm">
     <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -1812,6 +1817,19 @@ const formHtml = `<form class="settingForm">
     </span>
     </p>
     
+    <p class="option" data-no="60">
+      <span class="settingNameStyle1" data-xztext="_颜色主题"></span>
+      <input type="radio" name="theme" id="theme1" class="need_beautify radio" value="auto" checked>
+      <span class="beautify_radio" tabindex="0"></span>
+      <label for="theme1" data-xztext="_自动检测"></label>
+      <input type="radio" name="theme" id="theme2" class="need_beautify radio" value="white">
+      <span class="beautify_radio" tabindex="0"></span>
+      <label for="theme2">White</label>
+      <input type="radio" name="theme" id="theme3" class="need_beautify radio" value="dark">
+      <span class="beautify_radio" tabindex="0"></span>
+      <label for="theme3">Dark</label>
+    </p>
+
     <p class="option" data-no="32">
     <span class="settingNameStyle1"><span class="key">Language</span></span>
     <input type="radio" name="userSetLang" id="userSetLang1" class="need_beautify radio" value="auto" checked>
@@ -2746,6 +2764,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
+/* harmony import */ var _Theme__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Theme */ "./src/ts/Theme.ts");
+
 
 
 // 日志
@@ -2868,6 +2888,7 @@ class Log {
             logWrap.append(logContent);
             // 添加到 body 前面
             this.logWrap = logWrap;
+            _Theme__WEBPACK_IMPORTED_MODULE_2__.theme.register(this.logWrap);
             this.logContent = logContent;
             document.body.insertAdjacentElement('beforebegin', this.logWrap);
         }
@@ -2914,6 +2935,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _BG__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./BG */ "./src/ts/BG.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
+/* harmony import */ var _Theme__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Theme */ "./src/ts/Theme.ts");
+
 
 
 
@@ -2996,6 +3019,7 @@ class MsgBox {
         <div class="content" ${colorStyle}>${data.msg}</div>
         <button class="btn" type="button">${data.btn || _Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_确定')}</button>
       `;
+        _Theme__WEBPACK_IMPORTED_MODULE_5__.theme.register(wrap);
         _Lang__WEBPACK_IMPORTED_MODULE_2__.lang.register(wrap);
         const btn = wrap.querySelector('.btn');
         if (btn) {
@@ -3093,6 +3117,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MsgBox */ "./src/ts/MsgBox.ts");
 /* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Toast */ "./src/ts/Toast.ts");
+/* harmony import */ var _Theme__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Theme */ "./src/ts/Theme.ts");
+
 
 
 
@@ -3104,6 +3130,7 @@ __webpack_require__.r(__webpack_exports__);
 class OutputPanel {
     constructor() {
         this.addOutPutPanel();
+        _Theme__WEBPACK_IMPORTED_MODULE_7__.theme.register(this.outputPanel);
         _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.register(this.outputPanel);
         this.bindEvents();
     }
@@ -4224,6 +4251,135 @@ class Store {
     }
 }
 const store = new Store();
+
+
+
+/***/ }),
+
+/***/ "./src/ts/Theme.ts":
+/*!*************************!*\
+  !*** ./src/ts/Theme.ts ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   theme: () => (/* binding */ theme)
+/* harmony export */ });
+/* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
+/* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+
+
+// 下载器的主题默认跟随页面主题。如果用户设置了下载器主题，则不再跟随页面主题
+class Theme {
+    constructor() {
+        this.allTheme = ['white', 'dark'];
+        this.defaultTheme = 'white'; // 默认主题
+        this.theme = 'white'; // 保存当前使用的主题
+        this.settingTheme = ''; // 保存用户设置的下载器主题
+        this.elList = []; // 保存已注册的元素
+        // 主题标记以及对应的 className
+        // 把需要响应主题变化的元素注册到这个组件里，元素会被添加当前主题的 className
+        this.classNameMap = new Map([
+            ['white', 'theme-white'],
+            ['dark', 'theme-dark'],
+        ]);
+        // 页面上储存的主题标记，与本组件里的主题的对应关系
+        this.htmlFlagMap = new Map([
+            ['', 'white'],
+            ['default', 'white'],
+            ['light', 'white'],
+            ['dark', 'dark'],
+        ]);
+        this.selector = 'html'; // 通过这个选择器查找含有主题标记的元素
+        this.timer = 0;
+        this.bindEvents();
+    }
+    bindEvents() {
+        // 主题设置变化时修改主题
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.list.settingChange, (ev) => {
+            const data = ev.detail.data;
+            if (data.name === 'theme') {
+                this.settingTheme = data.value;
+                this.setTheme(data.value);
+            }
+        });
+        // 使用定时器查找标记元素
+        this.timer = window.setInterval(() => {
+            this.findFlag();
+        }, 300);
+    }
+    // 查找含有 pixiv 主题标记的元素，并监听其变化
+    findFlag() { }
+    getThemeFromHtml() {
+        if (_Config__WEBPACK_IMPORTED_MODULE_0__.Config.mobile) {
+            // 移动端需要使用不同的方法来获取主题
+            const dark = document.body.classList.contains('dark');
+            const pageTheme = dark ? 'dark' : 'white';
+            _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('getPageTheme', pageTheme);
+            return pageTheme;
+        }
+        else {
+            // 桌面端
+            // html 标签上有 data-immersive-translate-page-theme="light" 属性
+            const el = document.querySelector(this.selector);
+            const htmlFlag = el.dataset.immersiveTranslatePageTheme;
+            if (el) {
+                const pageTheme = this.htmlFlagMap.get(htmlFlag) || 'white';
+                _EVT__WEBPACK_IMPORTED_MODULE_1__.EVT.fire('getPageTheme', pageTheme);
+                return pageTheme || this.defaultTheme;
+            }
+            // 根据 html 元素的背景颜色判断
+            // 目前不使用该方法
+            return this.defaultTheme;
+        }
+    }
+    setTheme(flag) {
+        // 如果用户设置了下载器主题，则始终使用下载器主题（忽略页面主题）
+        if (this.allTheme.includes(this.settingTheme)) {
+            flag = this.settingTheme;
+        }
+        let result = 'white'; // 储存根据标记所选择的主题
+        // 根据标记，设置要使用的主题
+        switch (flag) {
+            case 'white':
+                result = 'white';
+                break;
+            case 'dark':
+                result = 'dark';
+                break;
+            default:
+                // 如果传递的值是本模块不能识别的，包括 'auto'，就都自动获取
+                result = this.getThemeFromHtml() || this.defaultTheme;
+                break;
+        }
+        // 如果计算出的主题和当前主题不同，则执行变化
+        if (result !== this.theme) {
+            this.theme = result;
+            for (const el of this.elList) {
+                this.setClass(el);
+            }
+        }
+    }
+    // 把元素注册到本组件里
+    register(el) {
+        this.elList.push(el);
+        this.setClass(el);
+    }
+    // 给元素设置主题对应的 className
+    setClass(el) {
+        // 先清除所有主题颜色的 className
+        for (const className of this.classNameMap.values()) {
+            if (el.classList.contains(className)) {
+                el.classList.remove(className);
+            }
+        }
+        // 添加当前主题对应的 className
+        const name = this.classNameMap.get(this.theme);
+        name && el.classList.add(name);
+    }
+}
+const theme = new Theme();
 
 
 
@@ -8286,6 +8442,14 @@ Selecting "No" will hide the username.`,
         `<strong class="blue">🐞일부 크리에이터의 팬 카드를 저장할 수 없는 버그 수정</strong>`,
         `<strong class="blue">🐞Исправлена ошибка, из-за которой нельзя было сохранить фан-карты некоторых создателей</strong>`,
     ],
+    _颜色主题: [
+        '颜色<span class="key">主题</span>',
+        '色彩<span class="key">主題</span>',
+        'Color <span class="key">theme</span>',
+        '<span class="key">カラー</span>テーマ',
+        '<span class="key">테마</span>',
+        'Цветовая <span class="key">тема</span>',
+    ],
 };
 
 
@@ -8309,6 +8473,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Options__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Options */ "./src/ts/setting/Options.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../MsgBox */ "./src/ts/MsgBox.ts");
+/* harmony import */ var _Theme__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../Theme */ "./src/ts/Theme.ts");
+
 
 
 
@@ -8335,6 +8501,7 @@ class Form {
             },
         ];
         this.form = _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.useSlot('form', _FormHTML__WEBPACK_IMPORTED_MODULE_2__.formHtml);
+        _Theme__WEBPACK_IMPORTED_MODULE_10__.theme.register(this.form);
         _Lang__WEBPACK_IMPORTED_MODULE_7__.lang.register(this.form);
         this.getElements();
         const allOptions = this.form.querySelectorAll('.option');
@@ -8592,7 +8759,7 @@ class FormSettings {
                 'crawlInterval',
                 'totalDownloadLimit',
             ],
-            radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang', 'imageSize'],
+            radio: ['idRange', 'feeRange', 'bgPositionY', 'userSetLang', 'imageSize', 'theme'],
             textarea: [],
             datetime: ['postDateStart', 'postDateEnd'],
         };
@@ -8830,7 +8997,7 @@ __webpack_require__.r(__webpack_exports__);
 class Options {
     constructor() {
         // 保持显示的选项的 id
-        this.whiteList = [2, 21, 32, 51, 13, 17, 33];
+        this.whiteList = [2, 21, 32, 51, 13, 17, 33, 60];
         // 某些页面类型需要隐藏某些选项。当调用 hideOption 方法时，把选项 id 保存起来
         // 优先级高于 whiteList
         this.hiddenList = [];
@@ -8839,10 +9006,10 @@ class Options {
         this.newRange = 1000 * 60 * 60 * 24 * 90;
         this.newOptions = [
             {
-                // 图片尺寸
-                id: 59,
-                // 2025-12-27
-                time: 1766767774489,
+                // 颜色主题
+                id: 60,
+                // 2026-04-29
+                time: 1777455427080,
             },
         ];
     }
@@ -8980,6 +9147,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Settings */ "./src/ts/setting/Settings.ts");
 /* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Toast */ "./src/ts/Toast.ts");
 /* harmony import */ var _NameRuleManager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./NameRuleManager */ "./src/ts/setting/NameRuleManager.ts");
+/* harmony import */ var _Theme__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Theme */ "./src/ts/Theme.ts");
+
 
 
 
@@ -9000,6 +9169,7 @@ class SaveNamingRule {
         this.ruleInput = ruleInput;
         _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.clearSlot('saveNamingRule');
         const wrap = _Tools__WEBPACK_IMPORTED_MODULE_1__.Tools.useSlot('saveNamingRule', this.html);
+        _Theme__WEBPACK_IMPORTED_MODULE_6__.theme.register(wrap);
         _Lang__WEBPACK_IMPORTED_MODULE_2__.lang.register(wrap);
         this.saveBtn = wrap.querySelector('button.nameSave');
         this.loadBtn = wrap.querySelector('button.nameLoad');
@@ -9197,6 +9367,7 @@ class Settings {
             totalDownloadLimit: 10,
             totalDownloadLimitByte: 10737418240,
             imageSize: 'original',
+            theme: 'auto',
         };
         this.allSettingKeys = Object.keys(this.defaultSettings);
         // 值为浮点数的选项
