@@ -72,6 +72,8 @@ class EVENT {
     totalDownloadHistory: 'totalDownloadHistory',
     /**当获取到页面的主题颜色时触发 */
     getPageTheme: 'getPageTheme',
+    /** 显示最近更新 */
+    showRecentUpdates: 'showRecentUpdates',
   }
 
   public fire(type: eventNames, data: object | string | number | boolean = '') {

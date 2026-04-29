@@ -25,6 +25,7 @@ class Config {
   static readonly defaultNameRuleForNonImages = '{user}/{date}-{title}/{name}'
   /**浏览器是否处于移动端模式 */
   static readonly mobile = navigator.userAgent.includes('Mobile')
+  static readonly whatIsNewFlagDefault = 'xuejian&saber'
 }
 
 export { Config }

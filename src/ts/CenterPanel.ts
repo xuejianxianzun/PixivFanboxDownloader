@@ -58,8 +58,9 @@ class CenterPanel {
 
       <div class="help_bar gray1"> 
       <button class="textButton gray1" id="showDownTip" type="button" data-xztext="_常见问题"></button>
+      <button class="textButton gray1" id="showRecentUpdates" type="button" data-xztext="_最近更新"></button>
       <a class="gray1" href="https://discord.gg/u4wVMy7xJM" target="_blank">Discord</a>
-      <a class="gray1" href="https://pixiv.download" target="_blank" data-xztext="_pixivDownloader"></a>
+      <button class="textButton gray1" id="xzPixivDownloader" type="button" data-xztext="_pixivDownloader"></button>
       <button class="textButton gray1" id="showPatronTip" type="button" data-xztext="_赞助我"></button>
       </div>
       
@@ -153,6 +154,18 @@ class CenterPanel {
           title: lang.transl('_赞助我'),
         }),
       )
+
+    this.centerPanel
+      .querySelector('#xzPixivDownloader')!
+      .addEventListener('click', () =>
+        msgBox.show(lang.transl('_pixivDownloader的说明'), {
+          title: 'Powerful Pixiv Downloader',
+        }),
+      )
+
+    this.centerPanel
+      .querySelector('#showRecentUpdates')!
+      .addEventListener('click', () => EVT.fire('showRecentUpdates'))
 
     this.centerPanel.addEventListener('click', (e) => {
       const ev = e || window.event

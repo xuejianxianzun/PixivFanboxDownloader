@@ -1891,14 +1891,6 @@ Selecting "No" will hide the username.`,
     `배경 이미지 URL을 가져오지 못했습니다`,
     `Не удалось получить URL фонового изображения`,
   ],
-  _更新说明481: [
-    `<strong class="blue">🐞修复了无法保存某些创作者的粉丝卡的 BUG</strong>`,
-    `<strong class="blue">🐞修復了無法保存某些創作者的粉絲卡的 BUG</strong>`,
-    `<strong class="blue">🐞Fixed the bug where fan cards of certain creators could not be saved</strong>`,
-    `<strong class="blue">🐞一部のクリエイターのファンのカードを保存できないバグを修正</strong>`,
-    `<strong class="blue">🐞일부 크리에이터의 팬 카드를 저장할 수 없는 버그 수정</strong>`,
-    `<strong class="blue">🐞Исправлена ошибка, из-за которой нельзя было сохранить фан-карты некоторых создателей</strong>`,
-  ],
   _颜色主题: [
     '颜色<span class="key">主题</span>',
     '色彩<span class="key">主題</span>',
@@ -1906,6 +1898,50 @@ Selecting "No" will hide the username.`,
     '<span class="key">カラー</span>テーマ',
     '<span class="key">테마</span>',
     'Цветовая <span class="key">тема</span>',
+  ],
+  _提示可以在release页面查看更新日志: [
+    `你可以在本项目的 <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader/releases" target="_blank">GitHub Releases 页面</a> 查看更新日志（中文）。`,
+    `你可以在本項目的 <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader/releases" target="_blank">GitHub Releases 頁面</a> 查看更新日誌（中文）。`,
+    `You can view the update log (Chinese) on this project's <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader/releases" target="_blank">GitHub Releases page</a>.`,
+    `本プロジェクトの <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader/releases" target="_blank">GitHub Releases ページ</a> で更新ログ（中国語）を確認できます。`,
+    `본 프로젝트의 <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader/releases" target="_blank">GitHub Releases 페이지</a>에서 업데이트 로그(중국어)를 확인할 수 있습니다.`,
+    `Вы можете просмотреть журнал обновлений (на китайском) на странице <a href="https://github.com/xuejianxianzun/PixivFanboxDownloader/releases" target="_blank">GitHub Releases</a> этого проекта.`,
+  ],
+  _扩展程序升到x版本: [
+    '此扩展程序已经升级到 {} 版本。',
+    '此擴充程式已經升級到 {} 版本。',
+    'This extension has been upgraded to version {}.',
+    'この拡張機能はバージョン {} にアップグレードされました。',
+    '이 확장 프로그램이 {} 버전으로 업그레이드되었습니다.',
+    'Это расширение было обновлено до версии {}.',
+  ],
+  _pixivDownloader的说明: [
+    `如果你需要一个 Pixiv.net 下载器，可以尝试我制作的 Powerful Pixiv Downloader。<br><br>
+Chromium 内核的浏览器（例如 Chrome、Edge）可以从 Chrome Web Store 安装：<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
+Firefox 浏览器可以从 Firefox Add-ons 安装：<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
+    `如果你需要一個 Pixiv.net 下載器，可以試試我製作的 Powerful Pixiv Downloader。<br><br>
+Chromium 核心的瀏覽器（例如 Chrome、Edge）可以從 Chrome Web Store 安裝：<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
+Firefox 瀏覽器可以從 Firefox Add-ons 安裝：<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
+    `If you need a Pixiv.net downloader, you can try Powerful Pixiv Downloader made by me.<br><br>
+Browsers based on Chromium, such as Chrome and Edge, can install it from the Chrome Web Store:<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
+Firefox users can install it from Firefox Add-ons:<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
+    `Pixiv.net のダウンローダーが必要なら、私が作成した Powerful Pixiv Downloader を試してみてください。<br><br>
+Chromium ベースのブラウザ（Chrome、Edge など）は、Chrome Web Store からインストールできます。<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
+Firefox は Firefox Add-ons からインストールできます。<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
+    `Pixiv.net 다운로더가 필요하다면 제가 만든 Powerful Pixiv Downloader를 사용해 보세요.<br><br>
+Chromium 기반 브라우저(예: Chrome, Edge)는 Chrome Web Store에서 설치할 수 있습니다.<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
+Firefox 브라우저는 Firefox Add-ons에서 설치할 수 있습니다.<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
+    `Если вам нужен загрузчик для Pixiv.net, попробуйте Powerful Pixiv Downloader, который я сделал.<br><br>
+Браузеры на базе Chromium, например Chrome и Edge, можно установить из Chrome Web Store:<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
+Для Firefox его можно установить из Firefox Add-ons:<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
+  ],
+  _更新说明4_9_0: [
+    `<strong class="blue">🐞修复了无法保存某些创作者的粉丝卡的 BUG</strong>`,
+    `<strong class="blue">🐞修復了無法保存某些創作者的粉絲卡的 BUG</strong>`,
+    `<strong class="blue">🐞Fixed the bug where fan cards of certain creators could not be saved</strong>`,
+    `<strong class="blue">🐞一部のクリエイターのファンのカードを保存できないバグを修正</strong>`,
+    `<strong class="blue">🐞일부 크리에이터의 팬 카드를 저장할 수 없는 버그 수정</strong>`,
+    `<strong class="blue">🐞Исправлена ошибка, из-за которой нельзя было сохранить фан-карты некоторых создателей</strong>`,
   ],
 }
 
