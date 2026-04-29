@@ -132,6 +132,7 @@ class InitHomePage extends InitPageBase {
       // console.log(this.postListURLs)
 
       // 获取文章列表
+      log.log(lang.transl('_开始获取投稿列表'))
       this.FetchPostList()
     } else {
       log.error(lang.transl('_没有找到关注的用户'))

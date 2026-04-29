@@ -44,6 +44,7 @@ class InitPostListPage extends InitPageBase {
 
     await this.getPostListURLs(creatorId)
 
+    log.log(lang.transl('_开始获取投稿列表'))
     this.FetchPostList()
   }
 }
