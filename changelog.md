@@ -1,6 +1,16 @@
+# 4.9.1 2026-06-27
+
+### 🐞修复了在扩展名为 .jfif 时，下载器会误报文件名异常的问题
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/89
+
+在以前的代码里，当文件下载后的扩展名为 .jfif 时，下载器会认为文件名异常（文件名变成 UUID），但其实两者并无关联。现在不再检测扩展名是否为 .jfif。
+
 # 4.9.0 2026-04-29
 
 ### ✨新增设置：颜色主题
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/84
 
 因为有些用户希望使用暗色模式，所以我添加了此设置。
 

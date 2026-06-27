@@ -121,10 +121,6 @@ chrome.downloads.onChanged.addListener(async function (detail) {
         data.uuid = true
       }
 
-      if (changedName.endsWith('jfif')) {
-        data.uuid = true
-      }
-
       // 检查文件名是 URL 里最后一段的情况
 
       // Fanbox 下载器的多数文件是直接把原 URL 发送给浏览器下载的，因此很多时候即使受到其他扩展程序的影响，也不会是 UUID，而是原文件名，例如：

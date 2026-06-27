@@ -4068,8 +4068,8 @@ __webpack_require__.r(__webpack_exports__);
 // 显示版本更新说明
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.9.0';
-        this.textKey = '_更新说明4_9_0';
+        this.flag = '4.9.1';
+        this.textKey = '_更新说明4_9_1';
         // 在 settingInitialized 事件触发后显示消息。如果时间较早，文本可能会被翻译成错误的语言
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__.EVT.list.settingInitialized, () => {
             this.show();
@@ -8505,43 +8505,13 @@ Firefox 브라우저는 Firefox Add-ons에서 설치할 수 있습니다.<br><a 
 Браузеры на базе Chromium, например Chrome и Edge, можно установить из Chrome Web Store:<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
 Для Firefox его можно установить из Firefox Add-ons:<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
     ],
-    _更新说明4_9_0: [
-        `<strong class="blue">✨新增设置：颜色主题</strong><br>
-因为有些用户希望使用暗色模式，所以我添加了此设置。<br>
-默认的颜色主题是白色，如果你想使用暗色主题的话需要修改此设置。<br><br>
-<strong class="blue">🐞修复了无法抓取已关注的用户的问题</strong><br>
-Fanbox 的 API 变化导致此功能失效，现在修复。<br><br>
-<strong class="blue">🖼️保存投稿的缩略图时会保存原图</strong>`,
-        `<strong class="blue">✨新增設定：顏色主題</strong><br>
-因為有些使用者希望使用深色模式，所以我添加了這個設定。<br>
-預設的顏色主題是白色，如果你想使用深色主題，就需要修改這個設定。<br><br>
-<strong class="blue">🐞修復了無法抓取已關注使用者的問題</strong><br>
-Fanbox 的 API 變更導致此功能失效，現在已修復。<br><br>
-<strong class="blue">🖼️儲存投稿的縮圖時會儲存原圖</strong>`,
-        `<strong class="blue">✨New setting: Color theme</strong><br>
-Some users wanted a dark mode, so I added this setting.<br>
-The default color theme is light. If you want to use the dark theme, you need to change this setting.<br><br>
-<strong class="blue">🐞Fixed an issue where followed users could not be crawled</strong><br>
-Changes to the Fanbox API caused this feature to stop working, and it has now been fixed.<br><br>
-<strong class="blue">🖼️When saving a post's thumbnail, the original image will be saved</strong>`,
-        `<strong class="blue">✨新しい設定: カラーテーマ</strong><br>
-ダークモードを使いたいユーザーがいるため、この設定を追加しました。<br>
-デフォルトのカラーテーマは白です。ダークテーマを使いたい場合は、この設定を変更してください。<br><br>
-<strong class="blue">🐞フォロー中のユーザーをcrawlできない問題を修正</strong><br>
-Fanbox の API 変更によりこの機能が使えなくなっていましたが、修正しました。<br><br>
-<strong class="blue">🖼️投稿のサムネイルを保存するとき、元画像を保存するようにしました</strong>`,
-        `<strong class="blue">✨새 설정: 색상 테마</strong><br>
-일부 사용자가 다크 모드를 원해서 이 설정을 추가했습니다.<br>
-기본 색상 테마는 흰색이며, 다크 테마를 사용하려면 이 설정을 변경해야 합니다.<br><br>
-<strong class="blue">🐞팔로우한 사용자를 crawl할 수 없던 문제를 수정했습니다</strong><br>
-Fanbox API 변경으로 이 기능이 작동하지 않게 되었는데, 이제 수정되었습니다.<br><br>
-<strong class="blue">🖼️게시물의 썸네일을 저장할 때 원본 이미지를 저장합니다</strong>`,
-        `<strong class="blue">✨Новая настройка: цветовая тема</strong><br>
-Некоторые пользователи хотели использовать темный режим, поэтому я добавил эту настройку.<br>
-По умолчанию используется светлая тема. Если вы хотите включить темную тему, нужно изменить эту настройку.<br><br>
-<strong class="blue">🐞Исправлена проблема, из-за которой не удавалось crawl отслеживаемых пользователей</strong><br>
-Изменения в API Fanbox привели к тому, что эта функция перестала работать, теперь это исправлено.<br><br>
-<strong class="blue">🖼️При сохранении миниатюры публикации будет сохраняться исходное изображение</strong>`,
+    _更新说明4_9_1: [
+        `🐞修复 bug`,
+        `🐞修復 bug`,
+        `🐞Bug fixed`,
+        `🐞バグ修正`,
+        `🐞버그 수정`,
+        `🐞Исправлен баг`,
     ],
     _开始获取投稿列表: [
         `开始获取投稿列表`,

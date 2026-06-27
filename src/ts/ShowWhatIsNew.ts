@@ -18,8 +18,8 @@ class ShowWhatIsNew {
     })
   }
 
-  private flag = '4.9.0' as const
-  private textKey = '_更新说明4_9_0' as const
+  private flag = '4.9.1' as const
+  private textKey = '_更新说明4_9_1' as const
 
   private show() {
     // 如果这个标记是初始值，说明用户是首次安装这个扩展，或者重置了设置，此时不显示更新说明
