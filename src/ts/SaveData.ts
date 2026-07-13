@@ -38,6 +38,7 @@ class SaveData {
   )
 
   public receive(data: PostBody) {
+    // console.log(data)
     this.parsePost(data)
   }
 

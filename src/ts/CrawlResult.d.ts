@@ -264,7 +264,9 @@ type PostBody =
   | PostDataOfEntry
 
 interface Post {
-  body: PostBody
+  body: {
+    post: PostBody
+  }
 }
 
 // 投稿列表里 items 的数据

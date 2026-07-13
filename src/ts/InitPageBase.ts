@@ -290,7 +290,7 @@ abstract class InitPageBase {
   }
 
   protected afterFetchPost(data: Post) {
-    saveData.receive(data.body)
+    saveData.receive(data.body.post || data.body)
     log.log(`${lang.transl('_待处理')} ${store.postIdList.length}`, 1, false)
     // 当抓取完一个文章之后，如果还有等待抓取的文章就继续抓取
     // 否则当前抓取线程结束。等待所有抓取线程完成之后，文章数据就全部获取了
