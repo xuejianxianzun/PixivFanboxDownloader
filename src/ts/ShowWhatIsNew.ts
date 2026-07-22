@@ -18,7 +18,7 @@ class ShowWhatIsNew {
     })
   }
 
-  private flag = '4.9.3' as const
+  private flag = '4.9.4' as const
   private textKey = '_更新说明4_9_3' as const
 
   private show() {

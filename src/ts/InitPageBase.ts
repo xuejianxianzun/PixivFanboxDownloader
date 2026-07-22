@@ -107,22 +107,24 @@ abstract class InitPageBase {
   // 获取分页数据，然后构造出每次请求该作者 300 篇文章的 URL
   protected async getPostListURLs(creatorId: string) {
     const paginateData: {
-      body: string[]
+      body: {
+        pageUrls: string[]
+      }
     } = await API.request(
       `https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`,
     )
     // console.log(paginateData.body)
 
-    if (paginateData?.body.length > 0) {
+    if (paginateData?.body?.pageUrls?.length > 0) {
       // 分页数据里的 URL 格式如下：
       // https://api.fanbox.cc/post.listCreator?creatorId=usotukiya&maxPublishedDatetime=2024-08-04%2020%3A41%3A47&maxId=8345112&limit=10
       // 每次可以获取 10 个文章的数据，但是 limit 的最大值是 300，可以一次获取 300 篇文章的数据
       // 所以下面每隔 30 个网址保存一次，并把 limit 改成 300
 
       let index = 0
-      const total = paginateData.body.length
+      const total = paginateData.body.pageUrls.length
       while (index < total) {
-        const url = paginateData.body[index]
+        const url = paginateData.body.pageUrls[index]
         this.postListURLs.push(url.replace('limit=10', 'limit=300'))
         index = index + 30
       }

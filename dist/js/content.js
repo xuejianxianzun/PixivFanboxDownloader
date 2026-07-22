@@ -2178,17 +2178,18 @@ class InitPageBase {
     /**获取一个作者的文章列表分页网址 */
     // 获取分页数据，然后构造出每次请求该作者 300 篇文章的 URL
     async getPostListURLs(creatorId) {
+        var _a, _b;
         const paginateData = await _API__WEBPACK_IMPORTED_MODULE_7__.API.request(`https://api.fanbox.cc/post.paginateCreator?creatorId=${creatorId}`);
         // console.log(paginateData.body)
-        if ((paginateData === null || paginateData === void 0 ? void 0 : paginateData.body.length) > 0) {
+        if (((_b = (_a = paginateData === null || paginateData === void 0 ? void 0 : paginateData.body) === null || _a === void 0 ? void 0 : _a.pageUrls) === null || _b === void 0 ? void 0 : _b.length) > 0) {
             // 分页数据里的 URL 格式如下：
             // https://api.fanbox.cc/post.listCreator?creatorId=usotukiya&maxPublishedDatetime=2024-08-04%2020%3A41%3A47&maxId=8345112&limit=10
             // 每次可以获取 10 个文章的数据，但是 limit 的最大值是 300，可以一次获取 300 篇文章的数据
             // 所以下面每隔 30 个网址保存一次，并把 limit 改成 300
             let index = 0;
-            const total = paginateData.body.length;
+            const total = paginateData.body.pageUrls.length;
             while (index < total) {
-                const url = paginateData.body[index];
+                const url = paginateData.body.pageUrls[index];
                 this.postListURLs.push(url.replace('limit=10', 'limit=300'));
                 index = index + 30;
             }
@@ -4070,7 +4071,7 @@ __webpack_require__.r(__webpack_exports__);
 // 显示版本更新说明
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.9.3';
+        this.flag = '4.9.4';
         this.textKey = '_更新说明4_9_3';
         // 在 settingInitialized 事件触发后显示消息。如果时间较早，文本可能会被翻译成错误的语言
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__.EVT.list.settingInitialized, () => {
