@@ -191,11 +191,12 @@ abstract class InitPageBase {
 
   /**保存符合过滤条件的文章的 ID，之后会抓取这些文章的详细数据 */
   protected afterFetchPostList(data: PostList) {
-    if (data.body.length === 0) {
+    const useData = data.body.posts || data.body || []
+    if (useData.length === 0) {
       return this.noResult()
     }
 
-    for (const item of data.body) {
+    for (const item of useData) {
       if (item.body === null) {
         continue
       }

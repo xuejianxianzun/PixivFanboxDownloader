@@ -2246,10 +2246,11 @@ class InitPageBase {
     }
     /**保存符合过滤条件的文章的 ID，之后会抓取这些文章的详细数据 */
     afterFetchPostList(data) {
-        if (data.body.length === 0) {
+        const useData = data.body.posts || data.body || [];
+        if (useData.length === 0) {
             return this.noResult();
         }
-        for (const item of data.body) {
+        for (const item of useData) {
             if (item.body === null) {
                 continue;
             }
@@ -3313,7 +3314,7 @@ class PageType {
             return PageName.Post;
         }
         else if (userPage && path.includes('/tags/')) {
-            // https://eto13.fanbox.cc/tags/%E5%8B%95%E7%94%BB
+            // https://www.fanbox.cc/@xuejianxianzun/tags/image
             // tag 页面
             return PageName.Tags;
         }
@@ -4069,8 +4070,8 @@ __webpack_require__.r(__webpack_exports__);
 // 显示版本更新说明
 class ShowWhatIsNew {
     constructor() {
-        this.flag = '4.9.2';
-        this.textKey = '_更新说明4_9_2';
+        this.flag = '4.9.3';
+        this.textKey = '_更新说明4_9_3';
         // 在 settingInitialized 事件触发后显示消息。如果时间较早，文本可能会被翻译成错误的语言
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_3__.EVT.list.settingInitialized, () => {
             this.show();
@@ -8506,13 +8507,13 @@ Firefox 브라우저는 Firefox Add-ons에서 설치할 수 있습니다.<br><a 
 Браузеры на базе Chromium, например Chrome и Edge, можно установить из Chrome Web Store:<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
 Для Firefox его можно установить из Firefox Add-ons:<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
     ],
-    _更新说明4_9_2: [
-        `🐞Fanbox 的 API 变化导致下载器无法抓取文章，现在修复。`,
-        `🐞Fanbox 的 API 變化導致下載器無法抓取文章，現在修復。`,
-        `🐞Fanbox API changes caused the downloader to fail to fetch posts, now fixed.`,
-        `🐞Fanbox の API の変更により、ダウンローダーが投稿を取得できなくなっていましたが、修正されました。`,
-        `🐞Fanbox API 변경으로 인해 다운로더가 게시물을 가져올 수 없었지만, 이제 수정되었습니다.`,
-        `🐞Изменения в API Fanbox привели к тому, что загрузчик не мог получать публикации, теперь исправлено.`,
+    _更新说明4_9_3: [
+        `🐞Fanbox 的 API 变化导致下载器无法抓取文章列表，现在修复。`,
+        `🐞Fanbox 的 API 變化導致下載器無法抓取文章列表，現在修復。`,
+        `🐞The API change of Fanbox caused the downloader to fail to crawl the post list, now fixed.`,
+        `🐞Fanbox の API の変更により、ダウンローダーが投稿リストをクロールできなくなりましたが、現在修正されています。`,
+        `🐞Fanbox의 API 변경으로 인해 다운로더가 게시물 목록을 크롤링하지 못했지만 이제 수정되었습니다.`,
+        `🐞Изменение API Fanbox привело к тому, что загрузчик не смог сканировать список публикаций, теперь исправлено.`,
     ],
     _开始获取投稿列表: [
         `开始获取投稿列表`,

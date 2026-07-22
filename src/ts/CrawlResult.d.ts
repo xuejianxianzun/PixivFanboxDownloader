@@ -282,7 +282,9 @@ type PostListItem = (
 
 // 囊括所有类型的列表数据
 interface PostList {
-  body: PostListItem[]
+  body: {
+    posts: PostListItem[]
+  }
 }
 
 interface SupportPostList {

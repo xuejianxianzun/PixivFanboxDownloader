@@ -73,7 +73,7 @@ class PageType {
       // 投稿内容页
       return PageName.Post
     } else if (userPage && path.includes('/tags/')) {
-      // https://eto13.fanbox.cc/tags/%E5%8B%95%E7%94%BB
+      // https://www.fanbox.cc/@xuejianxianzun/tags/image
       // tag 页面
       return PageName.Tags
     } else if (userPage && path.endsWith('/shop')) {
