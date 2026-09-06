@@ -5,8 +5,8 @@ class Config {
   static readonly outputMax = 5000
   /**同时下载的文件数量的最大值 */
   static readonly downloadThreadMax = 3
-  /**下载某个文件出错时，最大重试次数 */
-  static readonly retryMax = 10
+  /**下载某个文件时，允许的累计失败次数。达到此上限后，跳过该文件 */
+  static readonly retryMax = 3
   /**程序名 */
   static readonly appName = 'Pixiv Fanbox Downloader'
   /**下载器设置在 localStorage 里储存时的 name */

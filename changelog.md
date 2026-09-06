@@ -1,12 +1,31 @@
+# next
+
+### 😊优化文件下载失败时的处理
+
+现在的处理方式如下：
+- 每个文件最多重试 3 次
+- 重试达到上限时，保存同名 txt 文件，记录错误信息
+- 在日志里显示更详细的错误提示和重试指引
+
+### 🐞修复问题：当后台脚本被回收时，点击“查看历史数据”按钮没反应
+
+由于后台脚本被回收，在第一次点击该按钮时，回调会产生错误。之后后台脚本被唤醒，所以第二次点击可以正常显示数据。
+
+现在进行修复：在出现这个错误时，稍等一下然后重试最多 3 次。
+
 # 5.0.0 2026-08-11
 
 ### ✨在保存投稿中的文字时，新增了 HTML 格式
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/87
 
 之前该设置只有 TXT 格式，查看时不会显示投稿里的图片、视频等内容。新增的 HTML 格式可以显示这些内容，阅读体验接近 Fanbox 的网页浏览效果。
 
 感谢 [Eganchiyu](https://github.com/Eganchiyu) 提交了该功能。
 
 ### ✨新增设置：保存投稿中的评论
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/79
 
 感谢 [Eganchiyu](https://github.com/Eganchiyu) 提交了该功能。
 
@@ -991,10 +1010,6 @@ https://xuejianxianzun.fanbox.cc/
 
 这个画师的免费投稿比较多：
 
-https://hmzz.fanbox.cc/
-
-这个画师有一些免费的大图：
-
 https://www.fanbox.cc/@itsuwa0815
 
 --------------
@@ -1018,13 +1033,16 @@ https://www.fanbox.cc/@itsuwa0815
 
 https://www.fanbox.cc/@sakichisuzu/tags/%E3%82%AA%E3%83%8A%E3%83%8B%E3%83%BC
 
---------------
-
-[さき千鈴](https://www.pixiv.net/fanbox/creator/236592/post)
-
-测试视频用
 
 ## 下载时的错误代码
+
+### NETWORK_FAILED
+
+这个文章里的第一张大图 `1.jpeg` 容易发生这个错误：
+
+https://www.fanbox.cc/@q3rfk7pb/posts/5565461
+
+浏览器下载这个文件可能会因为网络错误而失败，这个文件可以下载一部分，但最终无法成功完成。重试时，可能需要重试数次才能成功，但也有用户一直无法成功。
 
 ### SERVER_BAD_CONTENT
 

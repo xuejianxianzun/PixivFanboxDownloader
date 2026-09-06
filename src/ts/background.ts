@@ -73,6 +73,7 @@ chrome.runtime.onMessage.addListener(async function (
         dlData[id] = {
           url: msg.fileUrl,
           id: msg.id,
+          filename: msg.fileName,
           tabId: tabId,
           uuid: false,
           size: -1,

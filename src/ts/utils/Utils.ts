@@ -1,33 +1,34 @@
 class Utils {
   // 不安全的字符，这里多数是控制字符，需要替换掉
   static unsafeStr = new RegExp(
-    /[\u0000\u0001-\u001f\u007f-\u009f\u00ad\u0600-\u0605\u061c\u06dd\u070f\u08e2\u180e\u2000-\u200f\u202a-\u202f\u205f\u2060-\u2064\u2066-\u206f\ufdd0-\ufdef\ufeff\ufff9-\ufffb\ufffe\uffff]/g,
+    /[\u0000\u0001-\u001f\u007f-\u009f\u00A0\u00ad\u0600-\u0605\u061c\u06dd\u070f\u08e2\u180e\u2000-\u200f\u202a-\u202f\u205f\u2060-\u2064\u2066-\u206f\ufdd0-\ufdef\ufeff\ufff9-\ufffb\ufffe\uffff]/g,
   )
 
   // 一些需要替换成全角字符的符号，左边是正则表达式的字符
-  static readonly fullWidthDict: string[][] = [
-    ['\\\\', '＼'],
+  static readonly fullWidthDict = new Map<string, string>([
+    ['\\', '＼'],
     ['/', '／'],
     [':', '：'],
-    ['\\?', '？'],
+    ['?', '？'],
     ['"', '＂'],
     ['<', '＜'],
     ['>', '＞'],
-    ['\\*', '＊'],
-    ['\\|', '｜'],
+    ['*', '＊'],
+    ['|', '｜'],
     ['~', '～'],
-  ]
+  ])
 
-  // reg 预先创建，而不是运行时创建，因为运行时重复创建太多次了
-
-  // 用正则去掉不安全的字符
-  static replaceUnsafeStr(str: string) {
+  /**
+   * 移除控制字符，并把一些半角字符替换成全角版本。
+   * @param keepPathSeparator 是否保留路径分隔符 /。默认是 false，会把 / 替换成全角版本 ／。如果为 true，则会保留 /，适用于文件夹路径的命名。
+   */
+  static replaceUnsafeStr(str: string, keepPathSeparator = false) {
     str = str.replace(this.unsafeStr, '')
-    // 把一些特殊字符替换成全角字符
-    for (let index = 0; index < this.fullWidthDict.length; index++) {
-      const rule = this.fullWidthDict[index]
-      const reg = new RegExp(rule[0], 'g')
-      str = str.replace(reg, rule[1])
+    for (const [halfWidth, fullWidth] of this.fullWidthDict) {
+      if (keepPathSeparator && halfWidth === '/') {
+        continue
+      }
+      str = str.replaceAll(halfWidth, fullWidth)
     }
     return str
   }

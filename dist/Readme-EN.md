@@ -41,10 +41,7 @@ There is only one difference: the tutorial above will ask you to download the zi
 
 ## Using on Android
 
-You can refer to this tutorial:
-[Installing on Microsoft Edge Canary Browser](https://xuejianxianzun.github.io/PBDWiki/#/en/MicrosoftEdgeCanary)
-
-There is only one difference: the tutorial above will ask you to download the crx file for the Pixiv Downloader. Instead, download the crx file for the Fanbox Downloader. You can download Pixiv-Fanbox-Downloader.crx from the [releases page](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) of this repository.
+If you want to install this extension in a browser on Android, we recommend using the Quetta browser. It is a mobile browser with the Chromium core, and you can install extensions online from the Chrome Web Store — very convenient.
 
 # How to Use
 

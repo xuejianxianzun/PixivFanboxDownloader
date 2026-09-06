@@ -2,7 +2,7 @@ import { EVT } from '../EVT'
 import { lang } from '../Lang'
 import { log } from '../Log'
 import { settings } from '../setting/Settings'
-import { DonwloadSuccessData } from './DownloadType'
+import { DownloadSuccessData } from './DownloadType'
 import { IndexedDB } from '../utils/IndexedDB'
 import { Utils } from '../utils/Utils'
 import { toast } from '../Toast'
@@ -56,7 +56,7 @@ class DownloadRecord {
   private bindEvents() {
     // 当有文件下载完成时，存储这个任务的记录
     window.addEventListener(EVT.list.downloadSuccess, (ev: CustomEventInit) => {
-      const successData = ev.detail.data as DonwloadSuccessData
+      const successData = ev.detail.data as DownloadSuccessData
       // 如果是 Blob URL 则不保存这个下载记录
       // 如果文件名异常，不保存这个下载记录，以便用户之后重新下载这个文件
       if (!successData.url.startsWith('blob') && !successData.uuid) {

@@ -29,10 +29,7 @@ Pixivダウンローダーのオフラインインストールチュートリア
 
 ## Androidでの使用
 
-以下のチュートリアルを参照してください：
-[Microsoft Edge Canaryブラウザへのインストール](https://xuejianxianzun.github.io/PBDWiki/#/en/MicrosoftEdgeCanary)
-
-1点だけ異なる点があります：上記のチュートリアルではPixivダウンローダーのcrxファイルをダウンロードするよう指示されていますが、代わりにFanboxダウンローダーのcrxファイルをダウンロードしてください。このリポジトリの[releasesページ](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases)からPixiv-Fanbox-Downloader.crxをダウンロードできます。
+Android のブラウザにこの拡張機能をインストールしたい場合は、Quetta ブラウザをおすすめします。これは Chromium コアのモバイルブラウザで、Chrome Web Store からオンラインで拡張機能をインストールでき、とても便利です。
 
 # 使用方法
 

@@ -15,17 +15,6 @@ class FileName {
     })
   }
 
-  // 把一些特殊字符替换成全角字符
-  private replaceUnsafeStr(str: string) {
-    str = str.replace(Utils.unsafeStr, '')
-    for (let index = 0; index < Utils.fullWidthDict.length; index++) {
-      const rule = Utils.fullWidthDict[index]
-      const reg = new RegExp(rule[0], 'g')
-      str = str.replace(reg, rule[1])
-    }
-    return str
-  }
-
   // 生成 {index} 标记的值
   private createIndex(data: Result) {
     let index = data.index.toString()
@@ -115,7 +104,7 @@ class FileName {
     }
 
     // 替换命名规则里的特殊字符
-    result = this.replaceUnsafeStr(result)
+    result = Utils.replaceUnsafeStr(result)
     // 上一步会把斜线 / 替换成全角的斜线 ／，这里再替换回来，否则就不能建立文件夹了
     result = result.replace(/／/g, '/')
 
@@ -127,7 +116,7 @@ class FileName {
 
         // 处理标记值中的特殊字符
         if (!val.safe) {
-          once = this.replaceUnsafeStr(once)
+          once = Utils.replaceUnsafeStr(once)
         }
 
         result = result.replace(new RegExp(key, 'g'), once) // 将标记替换成最终值，如果有重复的标记，全部替换

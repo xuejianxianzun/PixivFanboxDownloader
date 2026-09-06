@@ -1,6 +1,5 @@
 import { EVT } from '../EVT'
 import { lang } from '../Lang'
-import { log } from '../Log'
 import { msgBox } from '../MsgBox'
 
 type History = { history: { date: string; bytes: number }[] }
@@ -11,20 +10,51 @@ class GetTotalDownload {
   }
 
   private bindEvents() {
-    window.addEventListener(
-      EVT.list.totalDownloadHistory,
-      (ev: CustomEventInit) => {
-        this.getHistory30Day()
-      },
-    )
+    window.addEventListener(EVT.list.totalDownloadHistory, () => {
+      this.getHistory30Day()
+    })
+  }
+
+  /**
+   * 向后台脚本发送消息，并等待其返回响应。
+   *
+   * 后台脚本是 MV3 的 Service Worker，可能已经被浏览器回收。当它被回收后，
+   * 第一次发送消息时它需要重新启动，此时可能拿不到响应（response 为 undefined
+   * 或 null，同时会设置 chrome.runtime.lastError）。等待片刻后重试即可成功，
+   * 所以这里在拿到响应之前会按指定次数自动重试。
+   */
+  private sendMessageWithRetry<T>(
+    msg: string,
+    maxRetry: number,
+    callback: (response: T | undefined) => void,
+  ) {
+    chrome.runtime.sendMessage({ msg }, (response) => {
+      // 后台脚本未就绪时，response 可能是 undefined 或 null，并且 lastError 会被设置
+      if (
+        chrome.runtime.lastError ||
+        response === undefined ||
+        response === null
+      ) {
+        if (maxRetry > 0) {
+          // 等待后台脚本完成启动，然后再次发送消息
+          window.setTimeout(() => {
+            this.sendMessageWithRetry(msg, maxRetry - 1, callback)
+          }, 500)
+        } else {
+          // 重试次数已用尽，此时以 undefined 告知调用方
+          callback(undefined)
+        }
+        return
+      }
+      callback(response as T)
+    })
   }
 
   public async getToday() {
-    return new Promise<number>((resolve, reject) => {
-      chrome.runtime.sendMessage(
-        {
-          msg: 'getTotalDownload',
-        },
+    return new Promise<number>((resolve) => {
+      this.sendMessageWithRetry<{ total?: number }>(
+        'getTotalDownload',
+        2,
         (response) => {
           // response: { total: number }
           const total = response?.total || -1
@@ -35,11 +65,16 @@ class GetTotalDownload {
   }
 
   private getHistory30Day() {
-    chrome.runtime.sendMessage(
-      {
-        msg: 'getTotalDownloadHistory30',
-      },
-      (response: History) => {
+    this.sendMessageWithRetry<History>(
+      'getTotalDownloadHistory30',
+      2,
+      (response) => {
+        // 多次重试后仍然没有获取到数据，此时不再提示，以免误导用户
+        if (!response) {
+          console.warn('获取最近 30 天的下载记录失败，请稍后重试')
+          return
+        }
+
         // response.history 例如：
         // [{date: '2025-08-03', bytes: 18431824}]
         if (response.history.length === 0) {

@@ -41,10 +41,7 @@ Pixiv 다운로더의 오프라인 설치 튜토리얼을 참고할 수 있습�
 
 ## 안드로이드에서 사용
 
-다음 튜토리얼을 참고할 수 있습니다:
-[Microsoft Edge Canary 브라우저에 설치](https://xuejianxianzun.github.io/PBDWiki/#/en/MicrosoftEdgeCanary)
-
-한 가지 차이점만 있습니다: 위 튜토리얼에서는 Pixiv 다운로더의 crx 파일을 다운로드하라고 안내하지만, 대신 Fanbox 다운로더의 crx 파일을 다운로드하면 됩니다. 이 저장소의 [releases 페이지](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases)에서 Pixiv-Fanbox-Downloader.crx를 다운로드할 수 있습니다.
+Android 브라우저에 이 확장 프로그램을 설치하려면 Quetta 브라우저를 권장합니다. Chromium 코어 기반의 모바일 브라우저로, Chrome Web Store에서 온라인으로 확장 프로그램을 설치할 수 있어 매우 편리합니다.
 
 # 사용 방법
 

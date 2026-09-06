@@ -20,9 +20,10 @@ export interface SendToBackEndData {
 }
 
 // 浏览器下载时每个任务的信息
-export interface DonwloadSuccessData {
+export interface DownloadSuccessData {
   url: string
   id: string
+  filename: string
   tabId: number
   uuid: boolean
   size: number
@@ -42,12 +43,12 @@ export interface DonwloadSkipData {
 
 // 所有任务的信息
 export interface DonwloadListData {
-  [key: number]: DonwloadSuccessData | null
+  [key: number]: DownloadSuccessData | null
 }
 
 // 下载完成后返回的信息
 export interface DownloadedMsg {
   msg: string
-  data: DonwloadSuccessData
+  data: DownloadSuccessData
   err?: string
 }

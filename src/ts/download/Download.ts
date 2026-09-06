@@ -1,10 +1,9 @@
-// 下载文件，并发送给浏览器下载
 import { EVT } from '../EVT'
 import { fileName } from '../FileName'
 import {
   downloadArgument,
   SendToBackEndData,
-  DonwloadSuccessData,
+  DownloadSuccessData,
   DonwloadSkipData,
 } from './DownloadType'
 import { progressBar } from '../ProgressBar'
@@ -33,7 +32,7 @@ class Download {
     window.addEventListener(
       EVT.list.downloadSuccess,
       (event: CustomEventInit) => {
-        const donwloadSuccessData = event.detail.data as DonwloadSuccessData
+        const donwloadSuccessData = event.detail.data as DownloadSuccessData
 
         if (donwloadSuccessData.url === this.arg.data.url) {
           this.setProgressBar(1024, 1024)

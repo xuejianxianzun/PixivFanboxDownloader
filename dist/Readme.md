@@ -49,10 +49,7 @@
 
 ## 在 Android 上使用
 
-你可以参考这个教程：
-[在 Microsoft Edge Canary 浏览器上安装](https://xuejianxianzun.github.io/PBDWiki/#/zh-cn/MicrosoftEdgeCanary)
-
-只有一点不同：上面的教程里会让你下载 Pixiv 下载器的 crx 文件，改为 Fanbox 下载器的 crx 文件即可。你可以本仓库的 [releases 页面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 里下载 Pixiv-Fanbox-Downloader.crx。
+如果你想在 Android 上的浏览器里安装这个扩展，推荐使用 Quetta 浏览器。它是一个 Chromium 内核的移动端浏览器，可以从 Chrome Web Store 在线安装扩展程序，非常方便。
 
 # 如何使用
 

@@ -674,8 +674,8 @@ class Config {
     static outputMax = 5000;
     /**同时下载的文件数量的最大值 */
     static downloadThreadMax = 3;
-    /**下载某个文件出错时，最大重试次数 */
-    static retryMax = 10;
+    /**下载某个文件时，允许的累计失败次数。达到此上限后，跳过该文件 */
+    static retryMax = 3;
     /**程序名 */
     static appName = 'Pixiv Fanbox Downloader';
     /**下载器设置在 localStorage 里储存时的 name */
@@ -902,16 +902,6 @@ class FileName {
             this.previewFileName();
         });
     }
-    // 把一些特殊字符替换成全角字符
-    replaceUnsafeStr(str) {
-        str = str.replace(_utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.unsafeStr, '');
-        for (let index = 0; index < _utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.fullWidthDict.length; index++) {
-            const rule = _utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.fullWidthDict[index];
-            const reg = new RegExp(rule[0], 'g');
-            str = str.replace(reg, rule[1]);
-        }
-        return str;
-    }
     // 生成 {index} 标记的值
     createIndex(data) {
         let index = data.index.toString();
@@ -998,7 +988,7 @@ class FileName {
             },
         };
         // 替换命名规则里的特殊字符
-        result = this.replaceUnsafeStr(result);
+        result = _utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.replaceUnsafeStr(result);
         // 上一步会把斜线 / 替换成全角的斜线 ／，这里再替换回来，否则就不能建立文件夹了
         result = result.replace(/／/g, '/');
         // 把命名规则的标记替换成实际值
@@ -1008,7 +998,7 @@ class FileName {
                 let once = String(val.value);
                 // 处理标记值中的特殊字符
                 if (!val.safe) {
-                    once = this.replaceUnsafeStr(once);
+                    once = _utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.replaceUnsafeStr(once);
                 }
                 result = result.replace(new RegExp(key, 'g'), once); // 将标记替换成最终值，如果有重复的标记，全部替换
             }
@@ -1379,44 +1369,6 @@ class Filter {
 }
 const filter = new Filter();
 
-
-
-/***/ }),
-
-/***/ "./src/ts/FormHTML.html":
-/*!******************************!*\
-  !*** ./src/ts/FormHTML.html ***!
-  \******************************/
-/***/ ((module) => {
-
-module.exports = "<form class=\"settingForm\">\n  <p class=\"option\" data-no=\"2\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_文件类型\"></span>\n\n    <input\n      type=\"checkbox\"\n      name=\"image\"\n      id=\"fileType1\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType1\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.image__\"\n      data-xztext=\"_图片\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"music\"\n      id=\"fileType2\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType2\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.music__\"\n      data-xztext=\"_音乐\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"video\"\n      id=\"fileType3\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType3\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.video__\"\n      data-xztext=\"_视频\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"compressed\"\n      id=\"fileType4\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType4\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.compressed__\"\n      data-xztext=\"_压缩文件\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"ps\"\n      id=\"fileType5\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType5\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.ps__\"\n      data-xztext=\"_PS文件\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"other\"\n      id=\"fileType6\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType6\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.other__\"\n      data-xztext=\"_其他\"\n    ></label>\n  </p>\n\n  <p class=\"option\" data-no=\"21\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_费用类型\"></span>\n\n    <input\n      type=\"checkbox\"\n      name=\"free\"\n      id=\"postType1\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label for=\"postType1\" data-xztext=\"_免费投稿\"></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"pay\"\n      id=\"postType2\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label for=\"postType2\" data-xztext=\"_付费投稿\"></label>\n  </p>\n\n  <p class=\"option\" data-no=\"9\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_价格范围\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"feeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"feeSwitch\">\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange0\"\n        class=\"need_beautify radio\"\n        value=\"<=\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange0\">&lt;=</label>\n\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange2\"\n        class=\"need_beautify radio\"\n        value=\"=\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange2\">=</label>\n\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange1\"\n        class=\"need_beautify radio\"\n        value=\">=\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange1\">&gt;=</label>\n\n      <input type=\"text\" name=\"fee\" class=\"setinput_style1 blue\" value=\"500\" />\n      ¥\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"7\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_设置id范围提示\">\n      <span data-xztext=\"_id范围\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"idRangeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"idRangeSwitch\">\n      <input\n        type=\"radio\"\n        name=\"idRange\"\n        id=\"idRange2\"\n        class=\"need_beautify radio\"\n        value=\"<\"\n        checked\n      />\n      <span class=\"beautify_radio\"></span>\n      <label for=\"idRange2\" data-xztext=\"_小于\"></label>\n      <input\n        type=\"radio\"\n        name=\"idRange\"\n        id=\"idRange1\"\n        class=\"need_beautify radio\"\n        value=\">\"\n      />\n      <span class=\"beautify_radio\"></span>\n      <label for=\"idRange1\" data-xztext=\"_大于\"></label>\n      <input\n        type=\"text\"\n        name=\"idRangeInput\"\n        class=\"setinput_style1 w100 blue\"\n        value=\"0\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"10\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_设置投稿时间提示\">\n      <span data-xztext=\"_投稿时间\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n\n    <input\n      type=\"checkbox\"\n      name=\"postDate\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"postDate\">\n      <input\n        type=\"datetime-local\"\n        name=\"postDateStart\"\n        placeholder=\"yyyy-MM-dd HH:mm\"\n        class=\"setinput_style1 postDate blue\"\n        value=\"\"\n      />\n      &nbsp;-&nbsp;\n      <input\n        type=\"datetime-local\"\n        name=\"postDateEnd\"\n        placeholder=\"yyyy-MM-dd HH:mm\"\n        class=\"setinput_style1 postDate blue\"\n        value=\"\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"59\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_图片尺寸的提示\">\n      <span data-xztext=\"_图片尺寸\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n\n    <input\n      type=\"radio\"\n      name=\"imageSize\"\n      id=\"imageSize1\"\n      class=\"need_beautify radio\"\n      value=\"original\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"imageSize1\" data-xztext=\"_原图\"></label>\n    <input\n      type=\"radio\"\n      name=\"imageSize\"\n      id=\"imageSize2\"\n      class=\"need_beautify radio\"\n      value=\"thumbnail\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"imageSize2\" data-xztext=\"_缩略图\"></label>\n    <label for=\"imageSize2\" class=\"gray1\">(1200px)</label>\n  </p>\n\n  <p class=\"option\" data-no=\"22\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的封面图片\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"savePostCover\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"20\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的文字\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveText\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"saveText\">\n      <span class=\"mr4\" data-xztext=\"_格式\"></span>\n      <input\n        type=\"radio\"\n        name=\"textFormat\"\n        id=\"textFormat1\"\n        class=\"need_beautify radio\"\n        value=\"txt\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"textFormat1\">TXT</label>\n      <input\n        type=\"radio\"\n        name=\"textFormat\"\n        id=\"textFormat2\"\n        class=\"need_beautify radio\"\n        value=\"html\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"textFormat2\" data-xztext=\"_HTML\"></label>\n      <button\n        type=\"button\"\n        class=\"gray textButton showMsgBtn\"\n        data-title=\"_保存投稿中的文字\"\n        data-msg=\"_保存投稿中的文字的说明\"\n        data-xztext=\"_帮助\"\n      ></button>\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"19\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的外部链接\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveLink\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"61\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的评论\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveComment\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"23\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_多条文字用逗号分割\">\n      <span data-xztext=\"_投稿标题必须含有文字\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"titleMustTextSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"titleMustTextSwitch\">\n      <input\n        type=\"text\"\n        name=\"titleMustText\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"24\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_多条文字用逗号分割\">\n      <span data-xztext=\"_投稿标题不能含有文字\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"titleCannotTextSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"titleCannotTextSwitch\">\n      <input\n        type=\"text\"\n        name=\"titleCannotText\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"54\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_文件指的是附件\">\n      <span data-xztext=\"_文件名中必须含有文字\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"fileNameIncludeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"fileNameIncludeSwitch\">\n      <span data-xztext=\"_任一\"></span>\n      <input\n        type=\"text\"\n        name=\"fileNameInclude\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"55\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_文件指的是附件\">\n      <span data-xztext=\"_文件名中不能含有文字\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"fileNameExcludeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"fileNameExcludeSwitch\">\n      <span data-xztext=\"_任一\"></span>\n      <input\n        type=\"text\"\n        name=\"fileNameExclude\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <slot data-name=\"crawlBtns\" class=\"centerWrap_btns crawlBtns\"></slot>\n  <slot data-name=\"downloadArea\"></slot>\n  <slot data-name=\"progressBar\"></slot>\n\n  <p class=\"option\" data-no=\"13\">\n    <span class=\"settingNameStyle1\">\n      <span data-xztext=\"_图片的命名规则\"></span>\n    </span>\n    <input\n      type=\"text\"\n      name=\"userSetName\"\n      class=\"setinput_style1 blue fileNameRule\"\n      value=\"__defaultNameRule__\"\n    />\n    &nbsp;\n    <select name=\"fileNameSelect\" class=\"beautify_scrollbar\">\n      <option value=\"default\">…</option>\n      <option value=\"{user}\">{user}</option>\n      <option value=\"{creator_id}\">{creator_id}</option>\n      <option value=\"{user_id}\">{user_id}</option>\n      <option value=\"{title}\">{title}</option>\n      <option value=\"{post_id}\">{post_id}</option>\n      <option value=\"{date}\">{date}</option>\n      <option value=\"{task_date}\">{task_date}</option>\n      <option value=\"{index}\">{index}</option>\n      <option value=\"{name}\">{name}</option>\n      <option value=\"{ext}\">{ext}</option>\n      <option value=\"{fee}\">{fee}</option>\n      <option value=\"{tags}\">{tags}</option>\n    </select>\n    &nbsp;\n    <slot data-name=\"saveNamingRule\"></slot>\n    <button\n      class=\"showFileNameTip textButton\"\n      type=\"button\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n  <p class=\"tip tipWithBtn\" id=\"tipCreateFolder\">\n    <span class=\"left\">\n      <span data-xztext=\"_设置文件夹名的提示\"></span>\n      <strong>__defaultNameRule__</strong>\n    </span>\n    <span class=\"right\">\n      <button\n        type=\"button\"\n        class=\"textButton gray1\"\n        id=\"tipCreateFolderBtn\"\n        data-xztext=\"_我知道了\"\n      ></button>\n    </span>\n  </p>\n  <p class=\"fileNameTip tip\">\n    <span data-xztext=\"_设置文件夹名的提示\"></span>\n    <strong>__defaultNameRule__</strong>\n    <br />\n    <span data-xztext=\"_命名标记提醒\"></span>\n    <br />\n    <span class=\"blue\">{user}</span>\n    <span data-xztext=\"_命名标记user\"></span>\n    <br />\n    <span class=\"blue\">{user_id}</span>\n    <span data-xztext=\"_命名标记uid\"></span>\n    <br />\n    <span class=\"blue\">{creator_id}</span>\n    <span data-xztext=\"_命名标记creator_id\"></span>\n    <br />\n    <span class=\"blue\">{title}</span>\n    <span data-xztext=\"_命名标记title\"></span>\n    <br />\n    <span class=\"blue\">{post_id}</span>\n    <span data-xztext=\"_命名标记postid\"></span>\n    <br />\n    <span class=\"blue\">{date}</span>\n    <span data-xztext=\"_命名标记date\"></span>\n    <br />\n    <span class=\"blue\">{task_date}</span>\n    <span data-xztext=\"_命名标记taskDate\"></span>\n    <br />\n    <span class=\"blue\">{index}</span>\n    <span data-xztext=\"_命名标记index\"></span>\n    <br />\n    <span class=\"blue\">{name}</span>\n    <span data-xztext=\"_命名标记name\"></span>\n    <br />\n    <span class=\"blue\">{ext}</span>\n    <span data-xztext=\"_命名标记ext\"></span>\n    <br />\n    <span class=\"blue\">{fee}</span>\n    <span data-xztext=\"_命名标记fee\"></span>\n    <br />\n    <span class=\"blue\">{tags}</span>\n    <span data-xztext=\"_命名标记tags\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"33\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_非图片的命名规则\"></span>\n    <input\n      type=\"text\"\n      name=\"nameruleForNonImages\"\n      class=\"setinput_style1 blue nameruleForNonImages\"\n      style=\"width: 300px\"\n      value=\"{user}/{date}-{title}/{name}\"\n    />\n  </p>\n\n  <p class=\"option\" data-no=\"31\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_日期格式\"></span>\n    <input\n      type=\"text\"\n      name=\"dateFormat\"\n      class=\"setinput_style1 blue\"\n      style=\"width: 250px\"\n      value=\"YYYY-MM-DD\"\n    />\n    <button\n      type=\"button\"\n      class=\"gray1 textButton showDateTip\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n  <p class=\"dateFormatTip tip\" style=\"display: none\">\n    <span data-xztext=\"_日期格式提示\"></span>\n    <br />\n    <span class=\"blue\">YYYY</span> <span>2021</span>\n    <br />\n    <span class=\"blue\">YY</span> <span>21</span>\n    <br />\n    <span class=\"blue\">MM</span> <span>04</span>\n    <br />\n    <span class=\"blue\">MMM</span> <span>Apr</span>\n    <br />\n    <span class=\"blue\">MMMM</span> <span>April</span>\n    <br />\n    <span class=\"blue\">DD</span> <span>30</span>\n    <br />\n    <span class=\"blue\">hh</span> <span>06</span>\n    <br />\n    <span class=\"blue\">mm</span> <span>40</span>\n    <br />\n    <span class=\"blue\">ss</span> <span>08</span>\n    <br />\n  </p>\n\n  <p class=\"option\" data-no=\"46\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_在序号前面填充0的说明\">\n      <span data-xztext=\"_在序号前面填充0\"></span>\n      <span class=\"gray1\"> ? </span></span\n    >\n    <input\n      type=\"checkbox\"\n      name=\"zeroPadding\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n    <span class=\"subOptionWrap\" data-show=\"zeroPadding\">\n      <span data-xztext=\"_序号总长度\"></span>\n      <input\n        type=\"text\"\n        name=\"zeroPaddingLength\"\n        class=\"setinput_style1 blue\"\n        value=\"3\"\n        style=\"width: 30px; min-width: 30px\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"17\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_自动下载的提示\">\n      <span data-xztext=\"_自动开始下载\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"autoStartDownload\"\n      id=\"setQuietDownload\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"16\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_线程数字\">\n      <span data-xztext=\"_下载线程\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"text\"\n      name=\"downloadThread\"\n      class=\"has_tip setinput_style1 blue\"\n      data-xztip=\"_线程数字\"\n      value=\"3\"\n    />\n  </p>\n\n  <p class=\"option\" data-no=\"52\">\n    <span\n      class=\"has_tip settingNameStyle1\"\n      data-xztip=\"_下载完成后显示通知的说明\"\n    >\n      <span data-xztext=\"_下载完成后显示通知\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"showNotificationAfterDownloadComplete\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"57\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_抓取间隔的说明\">\n      <span data-xztext=\"_抓取间隔\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n\n    <span data-xztext=\"_间隔时间\"></span>\n    <input\n      type=\"text\"\n      name=\"crawlInterval\"\n      class=\"setinput_style1 blue\"\n      value=\"1\"\n    />\n    <span data-xztext=\"_秒\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"56\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_下载间隔的说明\">\n      <span data-xztext=\"_下载间隔\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n\n    <span data-xztext=\"_间隔时间\"></span>\n    <input\n      type=\"text\"\n      name=\"downloadInterval\"\n      class=\"setinput_style1 blue\"\n      value=\"1\"\n    />\n    <span data-xztext=\"_秒\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"58\">\n    <span\n      class=\"has_tip settingNameStyle1\"\n      data-xztip=\"_每天下载的文件大小限制的说明\"\n    >\n      <span data-xztext=\"_每天下载的文件大小限制\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"totalDownloadLimitSwitch\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n\n    <span class=\"subOptionWrap\" data-show=\"totalDownloadLimitSwitch\">\n      <input\n        type=\"text\"\n        name=\"totalDownloadLimit\"\n        class=\"setinput_style1 blue\"\n        value=\"10\"\n      />\n      <span>GiB</span>\n    </span>\n    <button\n      class=\"textButton gray1\"\n      type=\"button\"\n      id=\"totalDownloadHistory\"\n      data-xztext=\"_查看历史数据\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"28\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_不下载重复文件的提示\">\n      <span data-xztext=\"_不下载重复文件\"></span>\n      <span class=\"gray1\"> ? </span></span\n    >\n    <input\n      type=\"checkbox\"\n      name=\"deduplication\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n    <span class=\"subOptionWrap\" data-show=\"deduplication\">\n      <button\n        class=\"textButton gray1\"\n        type=\"button\"\n        id=\"exportDownloadRecord\"\n        data-xztext=\"_导出\"\n      ></button>\n      <button\n        class=\"textButton gray1\"\n        type=\"button\"\n        id=\"importDownloadRecord\"\n        data-xztext=\"_导入\"\n      ></button>\n      <button\n        class=\"textButton gray1\"\n        type=\"button\"\n        id=\"clearDownloadRecord\"\n        data-xztext=\"_清除\"\n      ></button>\n    </span>\n    <button\n      class=\"textButton gray1\"\n      type=\"button\"\n      id=\"deduplicationHelp\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"18\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_统一网址格式的说明\">\n      <span data-xztext=\"_统一网址格式\"></span>\n      <span class=\"gray1\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"unifiedURL\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"53\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_高亮显示关键字\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"boldKeywords\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"41\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_背景图片\"> </span>\n    <input\n      type=\"checkbox\"\n      name=\"bgDisplay\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n\n    <span class=\"subOptionWrap\" data-show=\"bgDisplay\">\n      <button\n        class=\"textButton gray1\"\n        type=\"button\"\n        id=\"selectBG\"\n        data-xztext=\"_选择文件\"\n      ></button>\n      <button\n        class=\"textButton gray1\"\n        type=\"button\"\n        id=\"clearBG\"\n        data-xztext=\"_清除\"\n      ></button>\n\n      &nbsp;\n      <span data-xztext=\"_对齐方式\"></span>&nbsp;\n      <input\n        type=\"radio\"\n        name=\"bgPositionY\"\n        id=\"bgPosition1\"\n        class=\"need_beautify radio\"\n        value=\"center\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"bgPosition1\" data-xztext=\"_居中\"></label>\n      <input\n        type=\"radio\"\n        name=\"bgPositionY\"\n        id=\"bgPosition2\"\n        class=\"need_beautify radio\"\n        value=\"top\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"bgPosition2\" data-xztext=\"_顶部\"></label>\n      <span data-xztext=\"_不透明度\"></span>&nbsp;\n      <input name=\"bgOpacity\" type=\"range\" />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"60\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_颜色主题\"></span>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme1\"\n      class=\"need_beautify radio\"\n      value=\"auto\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme1\" data-xztext=\"_自动检测\"></label>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme2\"\n      class=\"need_beautify radio\"\n      value=\"white\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme2\">White</label>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme3\"\n      class=\"need_beautify radio\"\n      value=\"dark\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme3\">Dark</label>\n  </p>\n\n  <p class=\"option\" data-no=\"32\">\n    <span class=\"settingNameStyle1\"><span class=\"key\">Language</span></span>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang1\"\n      class=\"need_beautify radio\"\n      value=\"auto\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang1\" data-xztext=\"_自动检测\"></label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang2\"\n      class=\"need_beautify radio\"\n      value=\"zh-cn\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang2\">简体中文</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang3\"\n      class=\"need_beautify radio\"\n      value=\"zh-tw\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang3\">繁體中文</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang4\"\n      class=\"need_beautify radio\"\n      value=\"ja\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang4\">日本語</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang5\"\n      class=\"need_beautify radio\"\n      value=\"en\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang5\">English</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang6\"\n      class=\"need_beautify radio\"\n      value=\"ko\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang6\">한국어</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang7\"\n      class=\"need_beautify radio\"\n      value=\"ru\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang7\">Русский</label>\n  </p>\n\n  <p class=\"option\" data-no=\"37\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_管理设置\"></span>\n    <button\n      class=\"textButton gray1\"\n      type=\"button\"\n      id=\"exportSettings\"\n      data-xztext=\"_导出设置\"\n    ></button>\n    <button\n      class=\"textButton gray1\"\n      type=\"button\"\n      id=\"importSettings\"\n      data-xztext=\"_导入设置\"\n    ></button>\n    <button\n      class=\"textButton gray1\"\n      type=\"button\"\n      id=\"resetSettings\"\n      data-xztext=\"_重置设置\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"51\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_显示高级设置说明\">\n      <span data-xztext=\"_显示高级设置\"></span>\n      <span class=\"gray1\"> ? </span></span\n    >\n    <input\n      type=\"checkbox\"\n      name=\"showAdvancedSettings\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n</form>\n";
-
-/***/ }),
-
-/***/ "./src/ts/FormHTML.ts":
-/*!****************************!*\
-  !*** ./src/ts/FormHTML.ts ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   formHtml: () => (/* binding */ formHtml)
-/* harmony export */ });
-/* harmony import */ var _FormHTML_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormHTML.html */ "./src/ts/FormHTML.html");
-/* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
-
-
-// 生成包含所有设置项的 HTML，动态值由模板占位标记替换。
-const createFormHtml = () => _FormHTML_html__WEBPACK_IMPORTED_MODULE_0__
-    .replace(/__fileType\.image__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.image.join())
-    .replace(/__fileType\.music__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.music.join())
-    .replace(/__fileType\.video__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.video.join())
-    .replace(/__fileType\.compressed__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.compressed.join())
-    .replace(/__fileType\.ps__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.ps.join())
-    .replace(/__fileType\.other__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.other.join())
-    .replaceAll(/__defaultNameRule__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.defaultNameRule);
-const formHtml = createFormHtml();
 
 
 /***/ }),
@@ -3938,29 +3890,29 @@ class ShowWhatIsNew {
             this.showMsg();
         });
     }
-    flag = '5.0.0';
-    textKey = '_更新说明5_0_0';
+    version = chrome.runtime.getManifest().version;
     show() {
         // 如果这个标记是初始值，说明用户是首次安装这个扩展，或者重置了设置，此时不显示更新说明
         // 这样做的目的：只有当用户是从以前的版本升级到新版本时，才会显示更新说明
         if (_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.whatIsNewFlag === _Config__WEBPACK_IMPORTED_MODULE_1__.Config.whatIsNewFlagDefault) {
-            (0,_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.setSetting)('whatIsNewFlag', this.flag);
+            (0,_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.setSetting)('whatIsNewFlag', this.version);
             return;
         }
-        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.whatIsNewFlag === this.flag) {
+        if (_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.settings.whatIsNewFlag === this.version) {
             return;
         }
         this.showMsg();
-        (0,_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.setSetting)('whatIsNewFlag', this.flag);
+        (0,_setting_Settings__WEBPACK_IMPORTED_MODULE_4__.setSetting)('whatIsNewFlag', this.version);
     }
+    /** 使用消息框显示最近更新说明 */
     showMsg() {
         const msg = `
-      <span>${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_扩展程序升到x版本', this.flag)}</span>
+      <span>${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_扩展程序升到x版本', this.version)}</span>
       <br>
       <span>${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_提示可以在release页面查看更新日志')}</span>
       <br>
       <br>
-      <div>${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl(this.textKey)}</div>
+      <div>${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_版本更新说明')}</div>
       <br>
       ${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_赞助方式提示')}`;
         _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.show(msg, {
@@ -5143,7 +5095,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
 /* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../States */ "./src/ts/States.ts");
 /* harmony import */ var _DownloadInterval__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DownloadInterval */ "./src/ts/download/DownloadInterval.ts");
-// 下载文件，并发送给浏览器下载
 
 
 
@@ -5249,7 +5200,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
 /* harmony import */ var _GetTotalDownload__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./GetTotalDownload */ "./src/ts/download/GetTotalDownload.ts");
 /* harmony import */ var _CreateHtmlDocument__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./CreateHtmlDocument */ "./src/ts/download/CreateHtmlDocument.ts");
+/* harmony import */ var _FileName__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../FileName */ "./src/ts/FileName.ts");
+/* harmony import */ var _utils_DateFormat__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../utils/DateFormat */ "./src/ts/utils/DateFormat.ts");
 // 下载控制
+
+
 
 
 
@@ -5277,6 +5232,11 @@ class DownloadControl {
     downloadThread = 2; // 同时下载的线程数
     taskBatch = 0; // 标记任务批次，每次重新下载时改变它的值，传递给后台使其知道这是一次新的下载
     taskList = {}; // 下载任务列表，使用下载的文件的 id 做 key，保存下载栏编号和它在下载状态列表中的索引
+    /**记录每个文件的累计失败次数。以文件的 fileID 为 key，避免不同文件（不同 URL）的失败次数互相混淆。
+     *
+     * 当一个文件的累计失败次数达到 Config.retryMax 时，不再重试
+     */
+    retryCount = new Map();
     downloaded = 0; // 已下载的任务数量
     reTryTimer = 0; // 重试下载的定时器
     wrapper = document.createElement('div');
@@ -5299,7 +5259,6 @@ class DownloadControl {
             });
         }
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.skipDownload, (ev) => {
-            // 跳过下载的文件不会触发 downloadSuccess 事件
             const data = ev.detail.data;
             this.downloadSuccess(data);
         });
@@ -5314,35 +5273,39 @@ class DownloadControl {
                 _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 1, false, 'filenameUUID');
                 _MsgBox__WEBPACK_IMPORTED_MODULE_11__.msgBox.once('uuidTip', _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 'show');
                 this.pauseDownload();
+                // 此时 return，这个文件的下载状态会保持为“下载中”，可以在之后再次下载。
+                return;
             }
-            // 文件下载成功
+            // 文件下载成功。
+            // 当一个文件满足以下条件时，才会触发 downloadSuccess 事件：
+            // 1. 它是通过 send_download 消息发送给后台下载的，这样前台才会收到 downloaded 消息
+            //    通过 save_file_no_replay 保存的文件（如错误记录 txt）不会写入后台的下载记录，
+            //    浏览器下载完成后后台不会向前台回传任何消息
+            // 2. 浏览器下载成功（状态变为 complete）且没有出错。
+            //    出错时后台回传的是 download_err 消息
+            // 3. 文件名正常。如果文件名异常（data.uuid 为 true，如实际文件名是 UUID 或与预期不符），就会在上面 return
+            // 4. 前台处于下载轮次中（taskBatch 不为 0）
             if (msg.msg === 'downloaded') {
                 _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadSuccess', msg.data);
+                // 文件下载成功，清除它的失败次数记录
+                this.retryCount.delete(msg.data.id);
                 this.downloadSuccess(msg.data);
             }
             else if (msg.msg === 'download_err') {
                 // 浏览器把文件保存到本地时出错
-                // 用户操作导致下载取消的情况，跳过这个文件，不再重试保存它。触发条件如：
-                // 用户在浏览器弹出“另存为”对话框时取消保存
-                // 用户让 IDM 转接这个下载时
                 if (msg.err === 'USER_CANCELED') {
-                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_user_canceled_tip', msg.data.url, msg.err || 'unknown'));
+                    // 用户操作导致下载取消的情况，跳过这个文件，不再重试保存它，也不会保存错误 txt 文件。
+                    // 触发条件如：
+                    // 用户在浏览器弹出“另存为”对话框时取消保存
+                    // 用户让 IDM 转接这个下载时
+                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_user_canceled_tip'));
+                    this.logErrorFileInfo(msg.data);
                     this.downloadSuccess(msg.data);
                     return;
                 }
-                else if (msg.err === 'SERVER_BAD_CONTENT') {
-                    // 404 错误不重试下载
-                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(`${msg.data.url} Download error! Code: ${msg.err}. 404: file does not exist.`);
-                }
-                else if (msg.err === 'SERVER_FAILED') {
-                    // 通常是 500 错误，尝试重试下载
-                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(`${msg.data.url} Download error! Code: ${msg.err}. This is a server-side error, not a downloader bug. The downloader will retry the download.`);
-                    this.downloadError(msg.data, msg.err);
-                }
                 else {
-                    // 其他错误
-                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(`${msg.data.url} Download error! Code: ${msg.err}. Will try again later.`);
-                    // 重新下载这个文件
+                    // 对于其他所有错误，走统一的重试流程：
+                    // 尝试重新下载这个文件数次；达到重试上限时，保存一个对应的 txt 文件，不再重试它。
                     this.downloadError(msg.data, msg.err);
                 }
                 _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadError');
@@ -5355,6 +5318,9 @@ class DownloadControl {
                 position: 'topCenter',
             });
         });
+    }
+    logErrorFileInfo(data) {
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载出错时显示文件名和网址', data.filename, data.url));
     }
     setDownloaded() {
         this.downloaded = _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.downloadedCount();
@@ -5478,6 +5444,9 @@ class DownloadControl {
             // 如果之前没有暂停任务，也没有进入恢复模式，则重新下载
             // 初始化下载状态列表
             _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.init();
+            // 开始新一轮下载，清除每个文件的失败次数记录，重新给予重试机会
+            // 注意：暂停后继续下载（上面的分支）不会清除记录，同一轮任务中的失败次数会继续累计
+            this.retryCount.clear();
         }
         // 重置一些条件
         this.reset();
@@ -5537,11 +5506,97 @@ class DownloadControl {
             return false;
         }
         const task = this.taskList[data.id];
-        // 复位这个任务的状态
-        _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.setState(task.index, -1);
-        // 建立下载任务，再次下载它
-        // 如果出现了服务端错误，可能是获取原图时出现错误，改为使用缩略图进行下载
-        this.createDownload(task.progressBarIndex, err === 'SERVER_FAILED');
+        if (!task) {
+            return false;
+        }
+        // 累计这个文件的失败次数。以 fileID 为 key，不同文件（不同 URL）的失败次数不会互相混淆
+        const count = (this.retryCount.get(data.id) || 0) + 1;
+        this.retryCount.set(data.id, count);
+        // 失败次数未达到上限，复位这个任务的状态，再次下载它
+        if (count < _Config__WEBPACK_IMPORTED_MODULE_14__.Config.retryMax) {
+            _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.setState(task.index, -1);
+            this.createDownload(task.progressBarIndex, err);
+            return;
+        }
+        // 失败次数达到上限
+        // 在日志里显示这个文件的错误信息
+        if (err === 'SERVER_BAD_CONTENT') {
+            // 404 错误。文件不存在
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载失败因为SERVER_BAD_CONTENT'));
+        }
+        else if (err === 'SERVER_FAILED') {
+            // 通常是 500 错误，尝试重试下载
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载失败因为SERVER_FAILED'));
+        }
+        else if (err === 'NETWORK_FAILED') {
+            // 网络错误。通常是文件下载了一部分，但最终无法完成下载
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载失败因为NETWORK_FAILED'));
+        }
+        else {
+            // 其他错误
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载失败并且错误代码是', err || ''));
+        }
+        this.logErrorFileInfo(data);
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载器会跳过这个错误文件的提示'));
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.log('');
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完成后重试出错的文件的提示'), 1, false, 'tipRetryDownloadError');
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.log('');
+        // 清除它的失败次数记录，以便下次重新下载时重新给予重试机会
+        this.retryCount.delete(data.id);
+        // 保存这个文件的错误记录
+        this.saveErrorRecord(data, err || '');
+        // 把它视为完成，以便开始下载下一个文件
+        this.downloadSuccess(data);
+    }
+    // 为一个多次下载失败的文件，生成一份错误记录 txt 并保存到本地。
+    // txt 与原文件在同一个文件夹里、使用相同的命名规则，只是后缀名改为 txt
+    saveErrorRecord(data, err) {
+        // 下载器自己生成的文本文件（正文 txt / HTML）不做错误记录。
+        // 它的 url 是 blob，而且它本身就是下载器生成的文件，失败后重新下载即可
+        if (data.url.startsWith('blob:')) {
+            return;
+        }
+        const task = this.taskList[data.id];
+        if (!task) {
+            return;
+        }
+        const result = _Store__WEBPACK_IMPORTED_MODULE_2__.store.result[task.index];
+        if (!result || 'text' in result) {
+            return;
+        }
+        // 原始文件名（包含完整路径）
+        const originalName = _FileName__WEBPACK_IMPORTED_MODULE_17__.fileName.getFileName(result);
+        // 错误记录 txt 的文件名：与原始文件同名，仅把末尾的扩展名替换为 txt
+        // 注意：不能把 ext 改成 txt 后重新走命名规则，因为命名规则会根据扩展名选用不同的模板
+        // （图片一套、非图片另一套），那样生成的记录名可能与原始文件不同名
+        const recordName = originalName.replace(/\.[^./]+$/, '') + '.txt';
+        const text = [
+            _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载失败下面是错误信息'),
+            '',
+            `URL:`,
+            data.url,
+            '',
+            `Error Code:`,
+            err,
+            '',
+            `File:`,
+            originalName,
+            '',
+            'Time:',
+            _utils_DateFormat__WEBPACK_IMPORTED_MODULE_18__.DateFormat.format(new Date(), 'YYYY-MM-DD hh:mm:ss'),
+        ].join('\r\n');
+        const blob = new Blob([text], {
+            type: 'text/plain;charset=utf-8',
+        });
+        const url = URL.createObjectURL(blob);
+        // 通过后台脚本把错误记录下载到本地。
+        // 使用 save_file_no_replay 消息，该下载不会返回下载状态，不会触发下载成功/失败流程，
+        // 也不会影响上述失败次数的统计
+        chrome.runtime.sendMessage({
+            msg: 'save_file_no_replay',
+            fileUrl: url,
+            fileName: recordName,
+        });
     }
     async downloadSuccess(data) {
         const task = this.taskList[data.id];
@@ -5591,8 +5646,9 @@ class DownloadControl {
         }
     }
     // 查找需要进行下载的作品，建立下载
-    // 可选第二个参数：使用缩略图 url 而不是原图 url 进行下载
-    async createDownload(progressBarIndex, useThumb = false) {
+    // 可选第二个参数：下载失败的错误代码。当错误是 SERVER_FAILED 时，会改用缩略图 url 重试；
+    // 如果没有缩略图 url 可用，则保存错误记录并跳过这个文件
+    async createDownload(progressBarIndex, errorCode) {
         const index = _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.getFirstDownloadItem();
         if (index === undefined) {
             throw new Error('There are no data to download');
@@ -5646,21 +5702,23 @@ class DownloadControl {
                     result.size = blob.size;
                 }
             }
-            // 对于需要使用缩略图来重试下载的情况，如果没有缩略图，则跳过下载此文件
-            if (useThumb) {
+            // 如果出现了服务端错误，可能是获取原图时出现错误，改为使用缩略图进行下载
+            if (errorCode === 'SERVER_FAILED') {
                 if (result.retryUrl) {
                     ;
                     [result.url, result.retryUrl] = [result.retryUrl, result.url];
                 }
                 else {
-                    _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(`${result.url} Unable to retry, this file has been skipped.`);
+                    // 如果没有缩略图 URL 可用，则保存对应的错误文件，然后把它视为下载成功，以便继续下载下一个文件
                     const data = {
                         url: result.url,
                         id: result.fileID,
+                        filename: _FileName__WEBPACK_IMPORTED_MODULE_17__.fileName.getFileName(result),
                         tabId: 0,
                         uuid: false,
                         size: -1,
                     };
+                    this.saveErrorRecord(data, errorCode);
                     return this.downloadSuccess(data);
                 }
             }
@@ -6060,15 +6118,42 @@ class GetTotalDownload {
         this.bindEvents();
     }
     bindEvents() {
-        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.totalDownloadHistory, (ev) => {
+        window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.totalDownloadHistory, () => {
             this.getHistory30Day();
         });
     }
+    /**
+     * 向后台脚本发送消息，并等待其返回响应。
+     *
+     * 后台脚本是 MV3 的 Service Worker，可能已经被浏览器回收。当它被回收后，
+     * 第一次发送消息时它需要重新启动，此时可能拿不到响应（response 为 undefined
+     * 或 null，同时会设置 chrome.runtime.lastError）。等待片刻后重试即可成功，
+     * 所以这里在拿到响应之前会按指定次数自动重试。
+     */
+    sendMessageWithRetry(msg, maxRetry, callback) {
+        chrome.runtime.sendMessage({ msg }, (response) => {
+            // 后台脚本未就绪时，response 可能是 undefined 或 null，并且 lastError 会被设置
+            if (chrome.runtime.lastError ||
+                response === undefined ||
+                response === null) {
+                if (maxRetry > 0) {
+                    // 等待后台脚本完成启动，然后再次发送消息
+                    window.setTimeout(() => {
+                        this.sendMessageWithRetry(msg, maxRetry - 1, callback);
+                    }, 500);
+                }
+                else {
+                    // 重试次数已用尽，此时以 undefined 告知调用方
+                    callback(undefined);
+                }
+                return;
+            }
+            callback(response);
+        });
+    }
     async getToday() {
-        return new Promise((resolve, reject) => {
-            chrome.runtime.sendMessage({
-                msg: 'getTotalDownload',
-            }, (response) => {
+        return new Promise((resolve) => {
+            this.sendMessageWithRetry('getTotalDownload', 2, (response) => {
                 // response: { total: number }
                 const total = response?.total || -1;
                 return resolve(total);
@@ -6076,9 +6161,12 @@ class GetTotalDownload {
         });
     }
     getHistory30Day() {
-        chrome.runtime.sendMessage({
-            msg: 'getTotalDownloadHistory30',
-        }, (response) => {
+        this.sendMessageWithRetry('getTotalDownloadHistory30', 2, (response) => {
+            // 多次重试后仍然没有获取到数据，此时不再提示，以免误导用户
+            if (!response) {
+                console.warn('获取最近 30 天的下载记录失败，请稍后重试');
+                return;
+            }
             // response.history 例如：
             // [{date: '2025-08-03', bytes: 18431824}]
             if (response.history.length === 0) {
@@ -6925,10 +7013,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   langText: () => (/* binding */ langText)
 /* harmony export */ });
-// 储存下载器使用的多语言文本
-// 在属性名前面加上下划线，和文本内容做出区别
-// {} 是占位符
-// <br> 和 \n 是换行
 const langText = {
     _开始抓取: [
         '开始抓取',
@@ -8405,37 +8489,89 @@ So the file name set by the downloader is lost, and the file name becomes the la
         '브라우저에서 이 확장 프로그램을 제대로 사용할 수 없습니다. 주된 이유는 브라우저 커널 버전이 너무 낮거나 호환성 문제가 있기 때문일 수 있습니다. <br>최신 버전의 Chrome 또는 Edge로 전환하는 것이 좋습니다.',
         'Ваш браузер не может корректно использовать это расширение. Основная причина может заключаться в слишком низкой версии ядра браузера или в проблемах совместимости.<br>Рекомендуется перейти на последнюю версию браузера Chrome или Edge.',
     ],
-    _新增设置项: [
-        '新增设置项',
-        '新增設定項目',
-        'Added setting items',
-        '新たな機能を追加されました',
-        '새로운 설정 항목 추가',
-        'Добавлены новые элементы настроек',
-    ],
-    _新增功能: [
-        '新增功能',
-        '新增功能',
-        'New feature',
-        '新機能',
-        '새로운 기능',
-        'Новая функция',
-    ],
-    _增加了一些提示: [
-        '增加了一些提示',
-        '增加了一些提示',
-        'Added some tips',
-        'いくつかのヒントを追加しました',
-        '몇 가지 팁을 추가했습니다.',
-        'Добавлены некоторые подсказки',
-    ],
     _user_canceled_tip: [
-        `{} 未保存，code：{}。`,
-        `{} 未儲存，code：{}。`,
-        `{} not saved, code: {}.`,
-        `{} 保存されていません。code：{}。`,
-        `{} 저장되지 않음, 코드: {}.`,
-        `{} не сохранено, код: {}.`,
+        '未保存该文件，错误代码：USER_CANCELED。原因：用户取消下载，或者被其他软件接管了下载。下载器不会重试下载它。',
+        '未儲存該檔案，錯誤代碼：USER_CANCELED。原因：使用者取消下載，或者被其他軟體接管了下載。下載器不會重試下載它。',
+        'The file was not saved, error code: USER_CANCELED. Reason: the download was canceled by the user, or it was taken over by other software. The downloader will not retry downloading it.',
+        'ファイルは保存されませんでした。エラーコード：USER_CANCELED。原因：ユーザーによるダウンロードのキャンセル、または他のソフトウェアによるダウンロードの引き継ぎ。ダウンローダーはこのファイルの再試行を行いません。',
+        '파일이 저장되지 않았습니다. 오류 코드: USER_CANCELED. 원인: 사용자가 다운로드를 취소했거나 다른 소프트웨어가 다운로드를 가로챘습니다. 다운로더는 이 파일을 다시 시도하지 않습니다.',
+        'Файл не был сохранен, код ошибки: USER_CANCELED. Причина: загрузка отменена пользователем или перехвачена другим программным обеспечением. Загрузчик не будет повторять попытку загрузки этого файла.',
+    ],
+    _文件下载失败因为SERVER_BAD_CONTENT: [
+        '文件下载失败，错误代码：SERVER_BAD_CONTENT。原因：文件可能已经不存在（404）。',
+        '檔案下載失敗，錯誤代碼：SERVER_BAD_CONTENT。原因：檔案可能已經不存在（404）。',
+        'File download failed, error code: SERVER_BAD_CONTENT. Reason: the file may no longer exist (404).',
+        'ファイルのダウンロードに失敗しました。エラーコード：SERVER_BAD_CONTENT。原因：ファイルが存在しない可能性があります（404）。',
+        '파일 다운로드에 실패했습니다. 오류 코드: SERVER_BAD_CONTENT. 원인: 파일이 더 이상 존재하지 않을 수 있습니다(404).',
+        'Не удалось загрузить файл, код ошибки: SERVER_BAD_CONTENT. Причина: файл, возможно, больше не существует (404).',
+    ],
+    _文件下载失败因为SERVER_FAILED: [
+        '文件下载失败，错误代码：SERVER_FAILED。原因：服务器端的错误（500）。',
+        '檔案下載失敗，錯誤代碼：SERVER_FAILED。原因：伺服器端的錯誤（500）。',
+        'File download failed, error code: SERVER_FAILED. Reason: a server-side error (500).',
+        'ファイルのダウンロードに失敗しました。エラーコード：SERVER_FAILED。原因：サーバー側のエラー（500）。',
+        '파일 다운로드에 실패했습니다. 오류 코드: SERVER_FAILED. 원인: 서버 측 오류(500).',
+        'Не удалось загрузить файл, код ошибки: SERVER_FAILED. Причина: ошибка на стороне сервера (500).',
+    ],
+    _文件下载失败因为NETWORK_FAILED: [
+        '文件下载失败，错误代码：NETWORK_FAILED。原因：网络错误，浏览器下载这个文件失败。',
+        '檔案下載失敗，錯誤代碼：NETWORK_FAILED。原因：網路錯誤，瀏覽器下載這個檔案失敗。',
+        'File download failed, error code: NETWORK_FAILED. Reason: a network error occurred and the browser failed to download this file.',
+        'ファイルのダウンロードに失敗しました。エラーコード：NETWORK_FAILED。原因：ネットワークエラーにより、ブラウザでのファイルのダウンロードに失敗しました。',
+        '파일 다운로드에 실패했습니다. 오류 코드: NETWORK_FAILED. 원인: 네트워크 오류로 브라우저가 이 파일을 다운로드하지 못했습니다.',
+        'Не удалось загрузить файл, код ошибки: NETWORK_FAILED. Причина: сетевая ошибка, браузеру не удалось загрузить этот файл.',
+    ],
+    _文件下载失败并且错误代码是: [
+        '文件下载失败，错误代码：{}',
+        '檔案下載失敗，錯誤代碼：{}',
+        'File download failed, error code: {}',
+        'ファイルのダウンロードに失敗しました。エラーコード：{}',
+        '파일 다운로드에 실패했습니다. 오류 코드: {}',
+        'Не удалось загрузить файл, код ошибки: {}',
+    ],
+    _文件下载出错时显示文件名和网址: [
+        '文件名：{}<br>网址：{}',
+        '檔案名稱：{}<br>網址：{}',
+        'File name: {}<br>URL: {}',
+        'ファイル名：{}<br>URL：{}',
+        '파일 이름: {}<br>URL: {}',
+        'Имя файла: {}<br>URL: {}',
+    ],
+    _下载器会跳过这个错误文件的提示: [
+        '该文件已经达到重试次数上限，下载器会保存一个同名的 txt 文件，然后跳过它。',
+        '該檔案已達到重試次數上限，下載器會儲存一個同名的 txt 檔案，然後跳過它。',
+        'This file has reached the retry limit. The downloader will save a txt file with the same name and then skip this file.',
+        'このファイルは再試行回数の上限に達しました。ダウンローダーは同名の txt ファイルを保存し、このファイルをスキップします。',
+        '이 파일이 재시도 횟수 상한에 도달했습니다. 다운로더는 같은 이름의 txt 파일을 저장한 후 이 파일을 건너뜁니다.',
+        'Этот файл достиг предела количества повторных попыток. Загрузчик сохранит txt-файл с тем же именем и пропустит этот файл.',
+    ],
+    _下载完成后重试出错的文件的提示: [
+        `如果你想重试下载出错的文件，可以这样做：<br>
+    如果出错的文件较少，你可以选择错误提示里的网址，然后右键，选择“转到”以在新标签页中打开它。如果这个文件能成功加载的话，你可以手动保存它。<br>
+    如果出错的文件较多，你可以在所有文件都下载完毕后，再次点击“开始下载”按钮进行重试。建议启用“不下载重复文件”功能以提高效率。`,
+        `如果你想重試下載出錯的檔案，可以這樣做：<br>
+    如果出錯的檔案較少，你可以選擇錯誤提示裡的網址，然後按右鍵，選擇「在新分頁中開啟連結」。如果這個檔案能成功載入的話，你可以手動儲存它。<br>
+    如果出錯的檔案較多，你可以在所有檔案都下載完畢後，再次點擊「開始下載」按鈕進行重試。建議啟用「不下載重複檔案」功能以提高效率。`,
+        `If you want to retry the files that failed to download, you can do the following:<br>
+    If only a few files failed, you can select the URL in the error message, right-click it, and choose "Open link in new tab". If the file loads successfully, you can save it manually.<br>
+    If many files failed, you can wait until all the other files have finished downloading, then click the "Start download" button again to retry. It is recommended to enable the "Do not download duplicate files" option to improve efficiency.`,
+        `ダウンロードに失敗したファイルを再試行したい場合は、次のようにしてください：<br>
+    失敗したファイルが少ない場合は、エラー情報内の URL を選択して右クリックし、「新しいタブでリンクを開く」を選択してください。ファイルが正常に読み込まれた場合は、手動で保存できます。<br>
+    失敗したファイルが多い場合は、すべてのファイルのダウンロードが完了した後、再度「開始」ボタンをクリックして再試行してください。効率を上げるには「重複するファイルをダウンロードしない」機能を有効にすることをお勧めします。`,
+        `다운로드에 실패한 파일을 다시 시도하려면 다음과 같이 하세요：<br>
+    실패한 파일이 적다면 오류 정보에 있는 URL을 선택한 후 마우스 오른쪽 버튼을 클릭하고 "이동"을 선택하면 새 탭에서 열립니다. 파일이 정상적으로 로드되면 수동으로 저장할 수 있습니다.<br>
+    실패한 파일이 많다면 모든 파일의 다운로드가 완료된 후 "다운로드 시작" 버튼을 다시 클릭하여 재시도하세요. 효율을 높이려면 "중복파일 다운로드하지 않기" 기능을 활성화하는 것이 좋습니다.`,
+        `Если вы хотите повторить загрузку файлов, которые не удалось загрузить, сделайте следующее：<br>
+    Если таких файлов немного, выделите URL в сообщении об ошибке, нажмите на него правой кнопкой мыши и выберите «Перейти», чтобы открыть его в новой вкладке. Если файл успешно загрузится, вы можете сохранить его вручную.<br>
+    Если таких файлов много, дождитесь завершения загрузки всех остальных файлов и снова нажмите кнопку «Начать загрузку». Для повышения эффективности рекомендуется включить функцию «Не загружать повторяющиеся файлы».`,
+    ],
+    _文件下载失败下面是错误信息: [
+        '文件下载失败，下面是错误信息：',
+        '檔案下載失敗，下面是錯誤資訊：',
+        'File download failed, here is the error information:',
+        'ファイルのダウンロードに失敗しました。以下はエラー情報です：',
+        '파일 다운로드에 실패했습니다. 아래는 오류 정보입니다:',
+        'Не удалось загрузить файл, ниже приведена информация об ошибке:',
     ],
     _yandex浏览器的警告: [
         `如果你在 Yandex 浏览器（Android）上使用 Pixiv Fanbox Downloader，请换成 Kiwi 浏览器。<br>
@@ -8638,12 +8774,12 @@ So the file name set by the downloader is lost, and the file name becomes the la
     Если вам нужно загрузить много файлов, рекомендуется установить более длинный интервал загрузки.<br>`,
     ],
     _移动端浏览器可能不会建立文件夹的说明: [
-        `如果你使用的是移动端的浏览器，它可能不会建立文件夹。这不是下载器的问题。<br>如果你遇到了这种情况，需要修改命名规则以避免文件名重复。一个简单的方法是把默认命名规则里的 '/' 修改成 '-'。`,
-        `如果你使用的是移動端的瀏覽器，它可能不會建立資料夾。這不是下載器的問題。<br>如果你遇到了這種情況，需要修改命名規則以避免檔名重複。一個簡單的方法是把預設命名規則裡的 '/' 修改成 '-'。`,
-        `If you are using a mobile browser, it may not create a folder. This is not a problem with the downloader. If this happens, you need to modify the naming rules to avoid duplicate file names. A simple way to do this is to change the '/' in the default naming rules to '-'.`,
-        `モバイルブラウザをご利用の場合、フォルダが作成されない場合があります。これはダウンローダーの問題ではありません。このような場合は、ファイル名の重複を避けるために命名規則を変更する必要があります。簡単な方法としては、デフォルトの命名規則の「/」を「-」に変更することです。`,
-        `모바일 브라우저를 사용하는 경우 폴더가 생성되지 않을 수 있습니다. 이는 다운로더 문제가 아닙니다. 이 경우 파일 이름 중복을 방지하기 위해 파일 이름 지정 규칙을 수정해야 합니다. 간단한 방법은 기본 파일 이름 지정 규칙에서 '/'를 '-'로 변경하는 것입니다.`,
-        `Если вы используете мобильный браузер, он может не создавать папки. Это не проблема загрузчика.<br>В таком случае вам нужно изменить правила именования, чтобы избежать дублирования имен файлов. Простой способ — заменить '/' в правилах именования по умолчанию на '-'.`,
+        `⚠️如果你使用的是移动端的浏览器，它可能不会建立文件夹。这不是下载器的问题。<br>如果你遇到了这种情况，需要修改命名规则以避免文件名重复。一个简单的方法是把默认命名规则里的 '/' 修改成 '-'。`,
+        `⚠️如果你使用的是移動端的瀏覽器，它可能不會建立資料夾。這不是下載器的問題。<br>如果你遇到了這種情況，需要修改命名規則以避免檔名重複。一個簡單的方法是把預設命名規則裡的 '/' 修改成 '-'。`,
+        `⚠️If you are using a mobile browser, it may not create a folder. This is not a problem with the downloader. If this happens, you need to modify the naming rules to avoid duplicate file names. A simple way to do this is to change the '/' in the default naming rules to '-'.`,
+        `⚠️モバイルブラウザをご利用の場合、フォルダが作成されない場合があります。これはダウンローダーの問題ではありません。このような場合は、ファイル名の重複を避けるために命名規則を変更する必要があります。簡単な方法としては、デフォルトの命名規則の「/」を「-」に変更することです。`,
+        `⚠️모바일 브라우저를 사용하는 경우 폴더가 생성되지 않을 수 있습니다. 이는 다운로더 문제가 아닙니다. 이 경우 파일 이름 중복을 방지하기 위해 파일 이름 지정 규칙을 수정해야 합니다. 간단한 방법은 기본 파일 이름 지정 규칙에서 '/'를 '-'로 변경하는 것입니다.`,
+        `⚠️Если вы используете мобильный браузер, он может не создавать папки. Это не проблема загрузчика.<br>В таком случае вам нужно изменить правила именования, чтобы избежать дублирования имен файлов. Простой способ — заменить '/' в правилах именования по умолчанию на '-'.`,
     ],
     _请求失败下载器会重试这个请求: [
         `请求失败。下载器会重试这个请求，无须手动处理。`,
@@ -8900,7 +9036,7 @@ Firefox 브라우저는 Firefox Add-ons에서 설치할 수 있습니다.<br><a 
 Браузеры на базе Chromium, например Chrome и Edge, можно установить из Chrome Web Store:<br><a href="https://chromewebstore.google.com/detail/powerful-pixiv-downloader/dkndmhgdcmjdmkdonmbgjpijejdcilfh" target="_blank">Powerful Pixiv Downloader</a><br><br>
 Для Firefox его можно установить из Firefox Add-ons:<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
     ],
-    _更新说明5_0_0: [
+    _版本更新说明: [
         `<strong>✨在保存投稿中的文字时，新增了 HTML 格式</strong><br>
 之前该设置只有 TXT 格式，查看时不会显示投稿里的图片、视频等内容。新增的 HTML 格式可以显示这些内容，阅读体验接近 Fanbox 的网页浏览效果。<br>
 感谢 <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> 提交了该功能。<br>
@@ -8953,7 +9089,6 @@ Thanks to <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> f
 };
 
 
-
 /***/ }),
 
 /***/ "./src/ts/setting/Form.ts":
@@ -8965,7 +9100,7 @@ Thanks to <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> f
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Tools */ "./src/ts/Tools.ts");
-/* harmony import */ var _FormHTML__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../FormHTML */ "./src/ts/FormHTML.ts");
+/* harmony import */ var _FormHTML__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormHTML */ "./src/ts/setting/FormHTML.ts");
 /* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../setting/Settings */ "./src/ts/setting/Settings.ts");
 /* harmony import */ var _SaveNamingRule__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SaveNamingRule */ "./src/ts/setting/SaveNamingRule.ts");
 /* harmony import */ var _FormSettings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./FormSettings */ "./src/ts/setting/FormSettings.ts");
@@ -9203,6 +9338,44 @@ class Form {
     }
 }
 new Form();
+
+
+/***/ }),
+
+/***/ "./src/ts/setting/FormHTML.html":
+/*!**************************************!*\
+  !*** ./src/ts/setting/FormHTML.html ***!
+  \**************************************/
+/***/ ((module) => {
+
+module.exports = "<form class=\"settingForm\">\n  <p class=\"option\" data-no=\"2\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_文件类型\"></span>\n\n    <input\n      type=\"checkbox\"\n      name=\"image\"\n      id=\"fileType1\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType1\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.image__\"\n      data-xztext=\"_图片\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"music\"\n      id=\"fileType2\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType2\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.music__\"\n      data-xztext=\"_音乐\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"video\"\n      id=\"fileType3\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType3\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.video__\"\n      data-xztext=\"_视频\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"compressed\"\n      id=\"fileType4\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType4\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.compressed__\"\n      data-xztext=\"_压缩文件\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"ps\"\n      id=\"fileType5\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType5\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.ps__\"\n      data-xztext=\"_PS文件\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"other\"\n      id=\"fileType6\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType6\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.other__\"\n      data-xztext=\"_其他\"\n    ></label>\n  </p>\n\n  <p class=\"option\" data-no=\"21\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_费用类型\"></span>\n\n    <input\n      type=\"checkbox\"\n      name=\"free\"\n      id=\"postType1\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label for=\"postType1\" data-xztext=\"_免费投稿\"></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"pay\"\n      id=\"postType2\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label for=\"postType2\" data-xztext=\"_付费投稿\"></label>\n  </p>\n\n  <p class=\"option\" data-no=\"9\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_价格范围\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"feeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"feeSwitch\">\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange0\"\n        class=\"need_beautify radio\"\n        value=\"<=\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange0\">&lt;=</label>\n\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange2\"\n        class=\"need_beautify radio\"\n        value=\"=\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange2\">=</label>\n\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange1\"\n        class=\"need_beautify radio\"\n        value=\">=\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange1\">&gt;=</label>\n\n      <input type=\"text\" name=\"fee\" class=\"setinput_style1 blue\" value=\"500\" />\n      ¥\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"7\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_设置id范围提示\">\n      <span data-xztext=\"_id范围\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"idRangeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"idRangeSwitch\">\n      <input\n        type=\"radio\"\n        name=\"idRange\"\n        id=\"idRange2\"\n        class=\"need_beautify radio\"\n        value=\"<\"\n        checked\n      />\n      <span class=\"beautify_radio\"></span>\n      <label for=\"idRange2\" data-xztext=\"_小于\"></label>\n      <input\n        type=\"radio\"\n        name=\"idRange\"\n        id=\"idRange1\"\n        class=\"need_beautify radio\"\n        value=\">\"\n      />\n      <span class=\"beautify_radio\"></span>\n      <label for=\"idRange1\" data-xztext=\"_大于\"></label>\n      <input\n        type=\"text\"\n        name=\"idRangeInput\"\n        class=\"setinput_style1 w100 blue\"\n        value=\"0\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"10\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_设置投稿时间提示\">\n      <span data-xztext=\"_投稿时间\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n\n    <input\n      type=\"checkbox\"\n      name=\"postDate\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"postDate\">\n      <input\n        type=\"datetime-local\"\n        name=\"postDateStart\"\n        placeholder=\"yyyy-MM-dd HH:mm\"\n        class=\"setinput_style1 postDate blue\"\n        value=\"\"\n      />\n      &nbsp;-&nbsp;\n      <input\n        type=\"datetime-local\"\n        name=\"postDateEnd\"\n        placeholder=\"yyyy-MM-dd HH:mm\"\n        class=\"setinput_style1 postDate blue\"\n        value=\"\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"59\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_图片尺寸的提示\">\n      <span data-xztext=\"_图片尺寸\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n\n    <input\n      type=\"radio\"\n      name=\"imageSize\"\n      id=\"imageSize1\"\n      class=\"need_beautify radio\"\n      value=\"original\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"imageSize1\" data-xztext=\"_原图\"></label>\n    <input\n      type=\"radio\"\n      name=\"imageSize\"\n      id=\"imageSize2\"\n      class=\"need_beautify radio\"\n      value=\"thumbnail\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"imageSize2\" data-xztext=\"_缩略图\"></label>\n    <label for=\"imageSize2\" class=\"gray\">(1200px)</label>\n  </p>\n\n  <p class=\"option\" data-no=\"22\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的封面图片\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"savePostCover\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"20\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的文字\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveText\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"saveText\">\n      <span class=\"mr4\" data-xztext=\"_格式\"></span>\n      <input\n        type=\"radio\"\n        name=\"textFormat\"\n        id=\"textFormat1\"\n        class=\"need_beautify radio\"\n        value=\"txt\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"textFormat1\">TXT</label>\n      <input\n        type=\"radio\"\n        name=\"textFormat\"\n        id=\"textFormat2\"\n        class=\"need_beautify radio\"\n        value=\"html\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"textFormat2\" data-xztext=\"_HTML\"></label>\n      <button\n        type=\"button\"\n        class=\"gray textButton showMsgBtn\"\n        data-title=\"_保存投稿中的文字\"\n        data-msg=\"_保存投稿中的文字的说明\"\n        data-xztext=\"_帮助\"\n      ></button>\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"19\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的外部链接\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveLink\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"61\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的评论\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveComment\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"23\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_多条文字用逗号分割\">\n      <span data-xztext=\"_投稿标题必须含有文字\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"titleMustTextSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"titleMustTextSwitch\">\n      <input\n        type=\"text\"\n        name=\"titleMustText\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"24\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_多条文字用逗号分割\">\n      <span data-xztext=\"_投稿标题不能含有文字\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"titleCannotTextSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"titleCannotTextSwitch\">\n      <input\n        type=\"text\"\n        name=\"titleCannotText\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"54\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_文件指的是附件\">\n      <span data-xztext=\"_文件名中必须含有文字\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"fileNameIncludeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"fileNameIncludeSwitch\">\n      <span data-xztext=\"_任一\"></span>\n      <input\n        type=\"text\"\n        name=\"fileNameInclude\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"55\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_文件指的是附件\">\n      <span data-xztext=\"_文件名中不能含有文字\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"fileNameExcludeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"fileNameExcludeSwitch\">\n      <span data-xztext=\"_任一\"></span>\n      <input\n        type=\"text\"\n        name=\"fileNameExclude\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <slot data-name=\"crawlBtns\" class=\"centerWrap_btns crawlBtns\"></slot>\n  <slot data-name=\"downloadArea\"></slot>\n  <slot data-name=\"progressBar\"></slot>\n\n  <p class=\"option\" data-no=\"13\">\n    <span class=\"settingNameStyle1\">\n      <span data-xztext=\"_图片的命名规则\"></span>\n    </span>\n    <input\n      type=\"text\"\n      name=\"userSetName\"\n      class=\"setinput_style1 blue fileNameRule\"\n      value=\"__defaultNameRule__\"\n    />\n    &nbsp;\n    <select name=\"fileNameSelect\" class=\"beautify_scrollbar\">\n      <option value=\"default\">…</option>\n      <option value=\"{user}\">{user}</option>\n      <option value=\"{creator_id}\">{creator_id}</option>\n      <option value=\"{user_id}\">{user_id}</option>\n      <option value=\"{title}\">{title}</option>\n      <option value=\"{post_id}\">{post_id}</option>\n      <option value=\"{date}\">{date}</option>\n      <option value=\"{task_date}\">{task_date}</option>\n      <option value=\"{index}\">{index}</option>\n      <option value=\"{name}\">{name}</option>\n      <option value=\"{ext}\">{ext}</option>\n      <option value=\"{fee}\">{fee}</option>\n      <option value=\"{tags}\">{tags}</option>\n    </select>\n    &nbsp;\n    <slot data-name=\"saveNamingRule\"></slot>\n    <button\n      class=\"showFileNameTip textButton\"\n      type=\"button\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n  <p class=\"tip tipWithBtn\" id=\"tipCreateFolder\">\n    <span class=\"left\">\n      <span data-xztext=\"_设置文件夹名的提示\"></span>\n      <strong>__defaultNameRule__</strong>\n    </span>\n    <span class=\"right\">\n      <button\n        type=\"button\"\n        class=\"textButton gray\"\n        id=\"tipCreateFolderBtn\"\n        data-xztext=\"_我知道了\"\n      ></button>\n    </span>\n  </p>\n  <p class=\"fileNameTip tip\">\n    <span data-xztext=\"_设置文件夹名的提示\"></span>\n    <strong>__defaultNameRule__</strong>\n    <br />\n    <span data-xztext=\"_命名标记提醒\"></span>\n    <br />\n    <span class=\"blue\">{user}</span>\n    <span data-xztext=\"_命名标记user\"></span>\n    <br />\n    <span class=\"blue\">{user_id}</span>\n    <span data-xztext=\"_命名标记uid\"></span>\n    <br />\n    <span class=\"blue\">{creator_id}</span>\n    <span data-xztext=\"_命名标记creator_id\"></span>\n    <br />\n    <span class=\"blue\">{title}</span>\n    <span data-xztext=\"_命名标记title\"></span>\n    <br />\n    <span class=\"blue\">{post_id}</span>\n    <span data-xztext=\"_命名标记postid\"></span>\n    <br />\n    <span class=\"blue\">{date}</span>\n    <span data-xztext=\"_命名标记date\"></span>\n    <br />\n    <span class=\"blue\">{task_date}</span>\n    <span data-xztext=\"_命名标记taskDate\"></span>\n    <br />\n    <span class=\"blue\">{index}</span>\n    <span data-xztext=\"_命名标记index\"></span>\n    <br />\n    <span class=\"blue\">{name}</span>\n    <span data-xztext=\"_命名标记name\"></span>\n    <br />\n    <span class=\"blue\">{ext}</span>\n    <span data-xztext=\"_命名标记ext\"></span>\n    <br />\n    <span class=\"blue\">{fee}</span>\n    <span data-xztext=\"_命名标记fee\"></span>\n    <br />\n    <span class=\"blue\">{tags}</span>\n    <span data-xztext=\"_命名标记tags\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"33\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_非图片的命名规则\"></span>\n    <input\n      type=\"text\"\n      name=\"nameruleForNonImages\"\n      class=\"setinput_style1 blue nameruleForNonImages\"\n      style=\"width: 300px\"\n      value=\"{user}/{date}-{title}/{name}\"\n    />\n  </p>\n\n  <p class=\"option\" data-no=\"31\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_日期格式\"></span>\n    <input\n      type=\"text\"\n      name=\"dateFormat\"\n      class=\"setinput_style1 blue\"\n      style=\"width: 250px\"\n      value=\"YYYY-MM-DD\"\n    />\n    <button\n      type=\"button\"\n      class=\"gray textButton showDateTip\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n  <p class=\"dateFormatTip tip\" style=\"display: none\">\n    <span data-xztext=\"_日期格式提示\"></span>\n    <br />\n    <span class=\"blue\">YYYY</span> <span>2021</span>\n    <br />\n    <span class=\"blue\">YY</span> <span>21</span>\n    <br />\n    <span class=\"blue\">MM</span> <span>04</span>\n    <br />\n    <span class=\"blue\">MMM</span> <span>Apr</span>\n    <br />\n    <span class=\"blue\">MMMM</span> <span>April</span>\n    <br />\n    <span class=\"blue\">DD</span> <span>30</span>\n    <br />\n    <span class=\"blue\">hh</span> <span>06</span>\n    <br />\n    <span class=\"blue\">mm</span> <span>40</span>\n    <br />\n    <span class=\"blue\">ss</span> <span>08</span>\n    <br />\n  </p>\n\n  <p class=\"option\" data-no=\"46\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_在序号前面填充0的说明\">\n      <span data-xztext=\"_在序号前面填充0\"></span>\n      <span class=\"gray\"> ? </span></span\n    >\n    <input\n      type=\"checkbox\"\n      name=\"zeroPadding\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n    <span class=\"subOptionWrap\" data-show=\"zeroPadding\">\n      <span data-xztext=\"_序号总长度\"></span>\n      <input\n        type=\"text\"\n        name=\"zeroPaddingLength\"\n        class=\"setinput_style1 blue\"\n        value=\"3\"\n        style=\"width: 30px; min-width: 30px\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"17\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_自动下载的提示\">\n      <span data-xztext=\"_自动开始下载\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"autoStartDownload\"\n      id=\"setQuietDownload\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"16\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_线程数字\">\n      <span data-xztext=\"_下载线程\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"text\"\n      name=\"downloadThread\"\n      class=\"has_tip setinput_style1 blue\"\n      data-xztip=\"_线程数字\"\n      value=\"3\"\n    />\n  </p>\n\n  <p class=\"option\" data-no=\"52\">\n    <span\n      class=\"has_tip settingNameStyle1\"\n      data-xztip=\"_下载完成后显示通知的说明\"\n    >\n      <span data-xztext=\"_下载完成后显示通知\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"showNotificationAfterDownloadComplete\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"57\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_抓取间隔的说明\">\n      <span data-xztext=\"_抓取间隔\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n\n    <span data-xztext=\"_间隔时间\"></span>\n    <input\n      type=\"text\"\n      name=\"crawlInterval\"\n      class=\"setinput_style1 blue\"\n      value=\"1\"\n    />\n    <span data-xztext=\"_秒\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"56\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_下载间隔的说明\">\n      <span data-xztext=\"_下载间隔\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n\n    <span data-xztext=\"_间隔时间\"></span>\n    <input\n      type=\"text\"\n      name=\"downloadInterval\"\n      class=\"setinput_style1 blue\"\n      value=\"1\"\n    />\n    <span data-xztext=\"_秒\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"58\">\n    <span\n      class=\"has_tip settingNameStyle1\"\n      data-xztip=\"_每天下载的文件大小限制的说明\"\n    >\n      <span data-xztext=\"_每天下载的文件大小限制\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"totalDownloadLimitSwitch\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n\n    <span class=\"subOptionWrap\" data-show=\"totalDownloadLimitSwitch\">\n      <input\n        type=\"text\"\n        name=\"totalDownloadLimit\"\n        class=\"setinput_style1 blue\"\n        value=\"10\"\n      />\n      <span>GiB</span>\n    </span>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"totalDownloadHistory\"\n      data-xztext=\"_查看历史数据\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"28\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_不下载重复文件的提示\">\n      <span data-xztext=\"_不下载重复文件\"></span>\n      <span class=\"gray\"> ? </span></span\n    >\n    <input\n      type=\"checkbox\"\n      name=\"deduplication\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n    <span class=\"subOptionWrap\" data-show=\"deduplication\">\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"exportDownloadRecord\"\n        data-xztext=\"_导出\"\n      ></button>\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"importDownloadRecord\"\n        data-xztext=\"_导入\"\n      ></button>\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"clearDownloadRecord\"\n        data-xztext=\"_清除\"\n      ></button>\n    </span>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"deduplicationHelp\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"18\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_统一网址格式的说明\">\n      <span data-xztext=\"_统一网址格式\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"unifiedURL\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"53\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_高亮显示关键字\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"boldKeywords\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"41\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_背景图片\"> </span>\n    <input\n      type=\"checkbox\"\n      name=\"bgDisplay\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n\n    <span class=\"subOptionWrap\" data-show=\"bgDisplay\">\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"selectBG\"\n        data-xztext=\"_选择文件\"\n      ></button>\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"clearBG\"\n        data-xztext=\"_清除\"\n      ></button>\n\n      &nbsp;\n      <span data-xztext=\"_对齐方式\"></span>&nbsp;\n      <input\n        type=\"radio\"\n        name=\"bgPositionY\"\n        id=\"bgPosition1\"\n        class=\"need_beautify radio\"\n        value=\"center\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"bgPosition1\" data-xztext=\"_居中\"></label>\n      <input\n        type=\"radio\"\n        name=\"bgPositionY\"\n        id=\"bgPosition2\"\n        class=\"need_beautify radio\"\n        value=\"top\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"bgPosition2\" data-xztext=\"_顶部\"></label>\n      <span data-xztext=\"_不透明度\"></span>&nbsp;\n      <input name=\"bgOpacity\" type=\"range\" />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"60\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_颜色主题\"></span>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme1\"\n      class=\"need_beautify radio\"\n      value=\"auto\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme1\" data-xztext=\"_自动检测\"></label>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme2\"\n      class=\"need_beautify radio\"\n      value=\"white\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme2\">White</label>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme3\"\n      class=\"need_beautify radio\"\n      value=\"dark\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme3\">Dark</label>\n  </p>\n\n  <p class=\"option\" data-no=\"32\">\n    <span class=\"settingNameStyle1\"><span class=\"key\">Language</span></span>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang1\"\n      class=\"need_beautify radio\"\n      value=\"auto\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang1\" data-xztext=\"_自动检测\"></label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang2\"\n      class=\"need_beautify radio\"\n      value=\"zh-cn\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang2\">简体中文</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang3\"\n      class=\"need_beautify radio\"\n      value=\"zh-tw\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang3\">繁體中文</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang4\"\n      class=\"need_beautify radio\"\n      value=\"ja\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang4\">日本語</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang5\"\n      class=\"need_beautify radio\"\n      value=\"en\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang5\">English</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang6\"\n      class=\"need_beautify radio\"\n      value=\"ko\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang6\">한국어</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang7\"\n      class=\"need_beautify radio\"\n      value=\"ru\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang7\">Русский</label>\n  </p>\n\n  <p class=\"option\" data-no=\"37\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_管理设置\"></span>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"exportSettings\"\n      data-xztext=\"_导出设置\"\n    ></button>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"importSettings\"\n      data-xztext=\"_导入设置\"\n    ></button>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"resetSettings\"\n      data-xztext=\"_重置设置\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"51\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_显示高级设置说明\">\n      <span data-xztext=\"_显示高级设置\"></span>\n      <span class=\"gray\"> ? </span></span\n    >\n    <input\n      type=\"checkbox\"\n      name=\"showAdvancedSettings\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n</form>\n";
+
+/***/ }),
+
+/***/ "./src/ts/setting/FormHTML.ts":
+/*!************************************!*\
+  !*** ./src/ts/setting/FormHTML.ts ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formHtml: () => (/* binding */ formHtml)
+/* harmony export */ });
+/* harmony import */ var _FormHTML_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormHTML.html */ "./src/ts/setting/FormHTML.html");
+/* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
+
+
+// 生成包含所有设置项的 HTML，动态值由模板占位标记替换。
+const createFormHtml = () => _FormHTML_html__WEBPACK_IMPORTED_MODULE_0__
+    .replace(/__fileType\.image__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.image.join())
+    .replace(/__fileType\.music__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.music.join())
+    .replace(/__fileType\.video__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.video.join())
+    .replace(/__fileType\.compressed__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.compressed.join())
+    .replace(/__fileType\.ps__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.ps.join())
+    .replace(/__fileType\.other__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.fileType.other.join())
+    .replaceAll(/__defaultNameRule__/g, _Config__WEBPACK_IMPORTED_MODULE_1__.Config.defaultNameRule);
+const formHtml = createFormHtml();
 
 
 /***/ }),
@@ -10470,29 +10643,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 class Utils {
     // 不安全的字符，这里多数是控制字符，需要替换掉
-    static unsafeStr = new RegExp(/[\u0000\u0001-\u001f\u007f-\u009f\u00ad\u0600-\u0605\u061c\u06dd\u070f\u08e2\u180e\u2000-\u200f\u202a-\u202f\u205f\u2060-\u2064\u2066-\u206f\ufdd0-\ufdef\ufeff\ufff9-\ufffb\ufffe\uffff]/g);
+    static unsafeStr = new RegExp(/[\u0000\u0001-\u001f\u007f-\u009f\u00A0\u00ad\u0600-\u0605\u061c\u06dd\u070f\u08e2\u180e\u2000-\u200f\u202a-\u202f\u205f\u2060-\u2064\u2066-\u206f\ufdd0-\ufdef\ufeff\ufff9-\ufffb\ufffe\uffff]/g);
     // 一些需要替换成全角字符的符号，左边是正则表达式的字符
-    static fullWidthDict = [
-        ['\\\\', '＼'],
+    static fullWidthDict = new Map([
+        ['\\', '＼'],
         ['/', '／'],
         [':', '：'],
-        ['\\?', '？'],
+        ['?', '？'],
         ['"', '＂'],
         ['<', '＜'],
         ['>', '＞'],
-        ['\\*', '＊'],
-        ['\\|', '｜'],
+        ['*', '＊'],
+        ['|', '｜'],
         ['~', '～'],
-    ];
-    // reg 预先创建，而不是运行时创建，因为运行时重复创建太多次了
-    // 用正则去掉不安全的字符
-    static replaceUnsafeStr(str) {
+    ]);
+    /**
+     * 移除控制字符，并把一些半角字符替换成全角版本。
+     * @param keepPathSeparator 是否保留路径分隔符 /。默认是 false，会把 / 替换成全角版本 ／。如果为 true，则会保留 /，适用于文件夹路径的命名。
+     */
+    static replaceUnsafeStr(str, keepPathSeparator = false) {
         str = str.replace(this.unsafeStr, '');
-        // 把一些特殊字符替换成全角字符
-        for (let index = 0; index < this.fullWidthDict.length; index++) {
-            const rule = this.fullWidthDict[index];
-            const reg = new RegExp(rule[0], 'g');
-            str = str.replace(reg, rule[1]);
+        for (const [halfWidth, fullWidth] of this.fullWidthDict) {
+            if (keepPathSeparator && halfWidth === '/') {
+                continue;
+            }
+            str = str.replaceAll(halfWidth, fullWidth);
         }
         return str;
     }

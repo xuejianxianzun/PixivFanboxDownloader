@@ -1,5 +1,5 @@
 import formHtmlTemplate from './FormHTML.html'
-import { Config } from './Config'
+import { Config } from '../Config'
 
 // 生成包含所有设置项的 HTML，动态值由模板占位标记替换。
 const createFormHtml = () =>
