@@ -6162,9 +6162,12 @@ class GetTotalDownload {
     }
     getHistory30Day() {
         this.sendMessageWithRetry('getTotalDownloadHistory30', 2, (response) => {
-            // 多次重试后仍然没有获取到数据，此时不再提示，以免误导用户
+            // 多次重试后仍然没有获取到数据。此时有可能是后台脚本尚未被唤醒，但还有一种情况：
+            // 用户在安装这个扩展后从来没有下载过文件，没有记录，所以
+            console.log('getTotalDownloadHistory30 response:', response);
             if (!response) {
-                console.warn('获取最近 30 天的下载记录失败，请稍后重试');
+                console.log('获取最近 30 天的下载记录失败');
+                _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_没有数据可供使用'));
                 return;
             }
             // response.history 例如：

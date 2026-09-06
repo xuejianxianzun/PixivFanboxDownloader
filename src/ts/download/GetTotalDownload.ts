@@ -69,9 +69,12 @@ class GetTotalDownload {
       'getTotalDownloadHistory30',
       2,
       (response) => {
-        // 多次重试后仍然没有获取到数据，此时不再提示，以免误导用户
+        // 多次重试后仍然没有获取到数据。可能的情况：
+        // - 后台脚本之前被回收了，现在重试数次之后仍然没能获取到数据
+        // - 用户在安装这个扩展后从来没有下载过文件，没有记录，此时 response 是 undefined
         if (!response) {
-          console.warn('获取最近 30 天的下载记录失败，请稍后重试')
+          console.log('getTotalDownloadHistory30 response:', response)
+          msgBox.warning(lang.transl('_没有数据可供使用'))
           return
         }
 
