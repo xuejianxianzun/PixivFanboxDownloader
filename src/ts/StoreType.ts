@@ -81,15 +81,13 @@ const exampleTextResult: Result = {
   uid: '9460149',
   createID: 'xuejianxianzun',
   tags: '',
-  fileID: '17887197260200b898f1fdf06128',
+  fileID: '178872637182607ce9fca441e568',
   name: '12560223',
   ext: 'html',
-  size: 1598,
+  size: null,
   index: 0,
-  text: [
-    '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; img-src \'self\' https: http: data:; media-src \'self\' https: http: file: blob: data:; style-src \'unsafe-inline\'; script-src \'none\'; frame-src \'none\'; object-src \'none\'; form-action \'none\';">\n<title>封面图片</title>\n<style>body{max-width:800px;margin:0 auto;padding:24px;font-family:Arial,sans-serif;line-height:1.7;color:#222;overflow-wrap:anywhere}img,video{max-width:100%;height:auto}video,audio{display:block;margin:0 auto}audio{width:80%;max-width:100%}.media{margin:1.5em 0;text-align:center}.media-name{margin:0 0 .5em}a{color:#06c}figure{margin:1.5em 0;text-align: center;}h1{line-height:1.3}.meta{color:#666;font-size:.9em}.comments{margin-top:2em;border-top:1px solid #ddd;padding-top:1em}.comment{display:flex;gap:.6em;margin:1em 0}.comment-icon{width:32px;height:32px;border-radius:50%;flex-shrink:0}.comment-main{flex:1;min-width:0}.comment-meta{color:#666;font-size:.85em;margin:0 0 .3em}.comment-body{white-space:pre-line}.comment-replies{margin-left:1.5em}</style>\n</head>\n<body>\n<header><h1>封面图片</h1><p class="meta"><a href="https://www.fanbox.cc/@xuejianxianzun/posts/12560223" rel="noopener noreferrer">https://www.fanbox.cc/@xuejianxianzun/posts/12560223</a></p></header>\n<main><figure><img src="000.jpeg" alt="dQIrrFxP2S1juAyU5nT8pEgb"></figure><figure><img src="001.jpeg" alt="AqJzctJrx7O3JMW5eoD0ilgv"></figure><p>吃白饭的大肥鱼</p></main>\n</body>\n</html>',
-  ],
-  url: 'blob:https://www.fanbox.cc/22495039-e66b-439c-821d-7bd78ebb93f1',
+  text: ['吃白饭的大肥鱼'],
+  url: '',
   retryUrl: null,
   htmlData: {
     id: '12560223',
@@ -101,7 +99,7 @@ const exampleTextResult: Result = {
     isLiked: false,
     likeCount: 0,
     isCommentingRestricted: false,
-    commentCount: 0,
+    commentCount: 1,
     isRestricted: false,
     user: {
       userId: '9460149',
@@ -139,6 +137,28 @@ const exampleTextResult: Result = {
     imageForShare:
       'https://pixiv.pximg.net/c/1200x630_90_a2_g5/fanbox/public/images/post/12560223/cover/dQIrrFxP2S1juAyU5nT8pEgb.jpeg',
     isPinned: false,
+    commentList: {
+      items: [
+        {
+          id: '12724683',
+          parentCommentId: '0',
+          rootCommentId: '0',
+          body: '评论',
+          createdDatetime: '2026-09-07T03:52:24+09:00',
+          likeCount: 0,
+          isLiked: false,
+          isOwn: true,
+          user: {
+            userId: '9460149',
+            name: '雪见仙尊',
+            iconUrl:
+              'https://pixiv.pximg.net/c/160x160_90_a2_g5/fanbox/public/images/user/9460149/icon/fm6mHUOwxOIpNFFvoY6rzl6l.jpeg',
+          },
+          replies: [],
+        },
+      ],
+      nextUrl: null,
+    },
   },
 }
 

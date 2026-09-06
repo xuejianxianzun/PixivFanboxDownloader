@@ -3414,21 +3414,27 @@ class SaveData {
     extractTextReg = new RegExp(/<[^<>]+>/g);
     receive(data) {
         // console.log(data)
-        this.parsePost(data);
+        const result = this.parsePost(data);
+        if (result) {
+            _Store__WEBPACK_IMPORTED_MODULE_1__.store.addResult(result);
+        }
     }
-    parsePost(data) {
+    parsePost(data, useFilter = true) {
         // 针对投稿进行检查，决定是否保留它
         const id = data.id;
         const creatorId = data.creatorId;
         const fee = data.feeRequired;
         const date = data.publishedDatetime;
         const title = data.title;
-        const check = _Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({ id, creatorId, fee, date, title });
+        // useFilter 为 false 时跳过投稿级别的过滤，以便获取该投稿的完整文件列表
+        const check = !useFilter || _Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({ id, creatorId, fee, date, title });
         if (!check) {
-            return;
+            return null;
         }
         // 如果投稿检查通过，保存投稿信息
-        const result = {
+        // 这里的 result 类型是 ResultMeta，它包含了这个投稿里所有的资源和文本信息。
+        // 经过 store.addResult 处理之后，可能会生成多个 result，每个 result 里只包含一个文件或者一份文本。
+        const meta = {
             postId: data.id,
             type: data.type,
             title: data.title,
@@ -3444,6 +3450,7 @@ class SaveData {
                 name: data.id,
                 ext: 'txt',
                 size: null,
+                // 文本资源的序号总是 0
                 index: 0,
                 // text 里的内容有两个来源：外链和正文文本。
                 // 在这个模块里，text 里保存的内容不会受“保存投稿中的文字”设置的影响。虽然这个设置可以选择纯文本或者 HTML，但是这个模块里的 text 的内容总是值为“纯文本”时的内容。
@@ -3472,7 +3479,7 @@ class SaveData {
                     url: cover,
                     retryUrl: null,
                 };
-                result.files.push(r);
+                meta.files.push(r);
             }
         }
         // 对于因为价格限制不能抓取文章，在此时返回，但是会保存封面图
@@ -3482,11 +3489,11 @@ class SaveData {
                 _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_价格限制') +
                 ` ${fee}`);
             // 评论是投稿级别的数据，不依赖正文，也可以保存
-            _RenderCommentsText__WEBPACK_IMPORTED_MODULE_7__.renderCommentsText.render(result, data);
-            if (result.files.length > 0) {
-                _Store__WEBPACK_IMPORTED_MODULE_1__.store.addResult(result);
+            _RenderCommentsText__WEBPACK_IMPORTED_MODULE_7__.renderCommentsText.render(meta, data);
+            if (meta.files.length > 0) {
+                return meta;
             }
-            return;
+            return null;
         }
         // 非 article 投稿都有 text 字段，这这里统一提取里面的链接
         // 但是因为正则没有分组，所以非 article 投稿中如果有多个链接，可能会有遗漏，待考
@@ -3501,11 +3508,11 @@ class SaveData {
             }
             if (text) {
                 const links = this.getTextLinks(text);
-                result.textContent.text = result.textContent.text.concat(links);
-                result.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
+                meta.textContent.text = meta.textContent.text.concat(links);
+                meta.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
                 // 保存文章正文里的文字
                 if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveText) {
-                    result.textContent.text.push(text);
+                    meta.textContent.text.push(text);
                 }
             }
         }
@@ -3543,16 +3550,16 @@ class SaveData {
             }
             for (const link of linkTexts) {
                 const links = this.getTextLinks(link);
-                result.textContent.text = result.textContent.text.concat(links);
-                result.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
+                meta.textContent.text = meta.textContent.text.concat(links);
+                meta.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
             }
             // 如果有链接，则添加一个空字符串，使其占据一行
             // 这样可以让链接和下面的正文部分之间有一个空行
-            if (result.textContent.text.length > 0) {
-                result.textContent.text.push('');
+            if (meta.textContent.text.length > 0) {
+                meta.textContent.text.push('');
             }
             if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveText && text) {
-                result.textContent.text.push(text);
+                meta.textContent.text.push(text);
             }
             // 保存图片资源
             for (const block of data.body.blocks) {
@@ -3562,8 +3569,8 @@ class SaveData {
                         continue;
                     }
                     index++;
-                    const resource = this.getImageData(imageData, index);
-                    resource !== null && result.files.push(resource);
+                    const resource = this.getImageData(imageData, index, useFilter);
+                    resource !== null && meta.files.push(resource);
                 }
             }
             // 保存 file 资源
@@ -3574,8 +3581,8 @@ class SaveData {
                         continue;
                     }
                     index++;
-                    const resource = this.getFileData(fileData, index);
-                    resource !== null && result.files.push(resource);
+                    const resource = this.getFileData(fileData, index, useFilter);
+                    resource !== null && meta.files.push(resource);
                 }
             }
             // 保存嵌入的资源，只能保存到文本
@@ -3584,8 +3591,8 @@ class SaveData {
                 embedDataArr.push([embedData.serviceProvider, embedData.contentId]);
             }
             const embedLinks = this.getEmbedLinks(embedDataArr, data.id);
-            result.textContent.text = result.textContent.text.concat(embedLinks);
-            result.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
+            meta.textContent.text = meta.textContent.text.concat(embedLinks);
+            meta.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
             // 保存嵌入的 URL，只能保存到文本
             if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveLink) {
                 const urlArr = [];
@@ -3615,8 +3622,8 @@ class SaveData {
                     }
                 }
                 if (urlArr.length > 0) {
-                    result.textContent.text = result.textContent.text.concat(urlArr.join('\n\n'));
-                    result.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
+                    meta.textContent.text = meta.textContent.text.concat(urlArr.join('\n\n'));
+                    meta.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
                 }
             }
         }
@@ -3628,8 +3635,8 @@ class SaveData {
                     continue;
                 }
                 index++;
-                const resource = this.getImageData(imageData, index);
-                resource !== null && result.files.push(resource);
+                const resource = this.getImageData(imageData, index, useFilter);
+                resource !== null && meta.files.push(resource);
             }
         }
         // 提取 entry 投稿的图片资源
@@ -3664,8 +3671,8 @@ class SaveData {
                         width: width,
                         height: height,
                     };
-                    const resource = this.getImageData(imageData, index);
-                    resource !== null && result.files.push(resource);
+                    const resource = this.getImageData(imageData, index, useFilter);
+                    resource !== null && meta.files.push(resource);
                 }
             }
         }
@@ -3677,8 +3684,8 @@ class SaveData {
                     continue;
                 }
                 index++;
-                const resource = this.getFileData(fileData, index);
-                resource !== null && result.files.push(resource);
+                const resource = this.getFileData(fileData, index, useFilter);
+                resource !== null && meta.files.push(resource);
             }
         }
         // 提取 video 投稿的资源，注意这里的 video 是引用的外部网站的链接，不是作者上传的附件
@@ -3689,63 +3696,63 @@ class SaveData {
                 [video.serviceProvider, video.videoId],
             ];
             const embedLinks = this.getEmbedLinks(embedDataArr, data.id);
-            result.textContent.text = result.textContent.text.concat(embedLinks);
-            result.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
+            meta.textContent.text = meta.textContent.text.concat(embedLinks);
+            meta.textContent.fileID = _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
         }
         // 保存投稿中的评论
         // 评论不依赖投稿正文，正文之外的信息（链接等）可能包含在评论里
-        _RenderCommentsText__WEBPACK_IMPORTED_MODULE_7__.renderCommentsText.render(result, data);
+        _RenderCommentsText__WEBPACK_IMPORTED_MODULE_7__.renderCommentsText.render(meta, data);
         if (_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.saveText && _setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.textFormat === 'html') {
-            result.textContent.ext = 'html';
-            result.textContent.htmlData = data;
-            result.textContent.fileID ||= _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
+            meta.textContent.ext = 'html';
+            meta.textContent.htmlData = data;
+            meta.textContent.fileID ||= _Tools__WEBPACK_IMPORTED_MODULE_6__.Tools.createFileId();
         }
         // 检查文本里是否含有网址
-        let findURL = result.textContent.text.some((text) => /https?:\/\//.test(text));
+        let findURL = meta.textContent.text.some((text) => /https?:\/\//.test(text));
         if (findURL) {
             // 如果有外链，则在文件名前面添加 links-
-            result.textContent.name = 'links-' + result.textContent.name;
+            meta.textContent.name = 'links-' + meta.textContent.name;
             _MsgBox__WEBPACK_IMPORTED_MODULE_5__.msgBox.once('tipLinktext', _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_提示会把外链保存到文件'));
         }
-        if (result.textContent.ext === 'txt' &&
-            result.textContent.text.length > 0) {
+        if (meta.textContent.ext === 'txt' && meta.textContent.text.length > 0) {
             // 对于 TXT 文件，在内容的开头添加文章标题
-            result.textContent.text.unshift(data.title + '\r\n');
+            meta.textContent.text.unshift(data.title + '\r\n');
         }
-        _Store__WEBPACK_IMPORTED_MODULE_1__.store.addResult(result);
+        return meta;
     }
-    getImageData(imageData, index) {
-        if (_Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({
+    getImageData(imageData, index, useFilter = true) {
+        // useFilter 为 false 时跳过对单个资源的过滤，保留该资源
+        if (useFilter && !_Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({ ext: imageData.extension })) {
+            return null;
+        }
+        return {
+            fileID: imageData.id,
+            name: imageData.id,
             ext: imageData.extension,
-        })) {
-            return {
-                fileID: imageData.id,
-                name: imageData.id,
-                ext: imageData.extension,
-                size: null,
-                index,
-                url: imageData[_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.imageSize === 'original' ? 'originalUrl' : 'thumbnailUrl'],
-                retryUrl: imageData.thumbnailUrl,
-            };
-        }
-        return null;
+            size: null,
+            index,
+            url: imageData[_setting_Settings__WEBPACK_IMPORTED_MODULE_2__.settings.imageSize === 'original' ? 'originalUrl' : 'thumbnailUrl'],
+            retryUrl: imageData.thumbnailUrl,
+        };
     }
-    getFileData(fileData, index) {
-        if (_Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({
-            ext: fileData.extension,
-            name: fileData.name,
-        })) {
-            return {
-                fileID: fileData.id,
-                name: fileData.name,
+    getFileData(fileData, index, useFilter = true) {
+        // useFilter 为 false 时跳过对单个资源的过滤，保留该资源
+        if (useFilter &&
+            !_Filter__WEBPACK_IMPORTED_MODULE_0__.filter.check({
                 ext: fileData.extension,
-                size: fileData.size,
-                index,
-                url: fileData.url,
-                retryUrl: null,
-            };
+                name: fileData.name,
+            })) {
+            return null;
         }
-        return null;
+        return {
+            fileID: fileData.id,
+            name: fileData.name,
+            ext: fileData.extension,
+            size: fileData.size,
+            index,
+            url: fileData.url,
+            retryUrl: null,
+        };
     }
     // 从文本里提取链接
     getTextLinks(text) {
@@ -4139,7 +4146,7 @@ class Store {
             }
         }
         this.pvaMap.set(data.postId, pva);
-        console.log(this.result);
+        // console.log(this.result)
     }
     resetResult() {
         this.postIdList = [];
@@ -5296,7 +5303,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateHtmlDocument__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./CreateHtmlDocument */ "./src/ts/download/CreateHtmlDocument.ts");
 /* harmony import */ var _FileName__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../FileName */ "./src/ts/FileName.ts");
 /* harmony import */ var _utils_DateFormat__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../utils/DateFormat */ "./src/ts/utils/DateFormat.ts");
+/* harmony import */ var _SaveData__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../SaveData */ "./src/ts/SaveData.ts");
 // 下载控制
+
 
 
 
@@ -5763,8 +5772,21 @@ class DownloadControl {
                 // HTML 模式即使正文为空（text 数组为空）也要生成文件，以便保存只有资源的投稿
                 if (isHtml || result.text.length > 0) {
                     if (isHtml) {
-                        console.log(result);
                         // HTML 需要在下载时生成，才能使用当前任务的本地资源路径
+                        // HTML 会尽量引用本地文件（相对路径），而不是远程 URL（远程 URL 无法显示付费内容）。
+                        // 如果只使用本次抓取到的文件，就会遗漏被过滤条件排除的文件。例如用户以前下载过某个
+                        // 投稿的全部文件，这次为了提高速度而在抓取时排除了某些文件类型，那么本次抓取结果里
+                        // 只有一部分文件，但用户本地其实已有完整的文件。所以这里重新解析该投稿，
+                        // 不使用任何过滤条件，以获得该投稿的完整文件列表
+                        // 注意：重新解析只是为了获得完整的文件列表（用于匹配已下载的文件并生成相对路径），
+                        // 并不会改动 store 里的数据。文件命名（包括 {PVA} 标记）仍然以 store 中的数据为准，
+                        // 这样 HTML 文件会与本次下载的文件保存在相同的文件夹里，相对路径才能正常工作
+                        // 也就是说，{PVA} 标记以本次下载为准；以下载新投稿的情况为优先，而不是为了匹配旧文件优先。
+                        let files = [];
+                        const fullMeta = _SaveData__WEBPACK_IMPORTED_MODULE_19__.saveData.parsePost(result.htmlData, false);
+                        if (fullMeta) {
+                            files = fullMeta.files;
+                        }
                         const resultMeta = {
                             postId: result.postId,
                             type: result.type,
@@ -5775,7 +5797,7 @@ class DownloadControl {
                             uid: result.uid,
                             createID: result.createID,
                             tags: result.tags,
-                            files: _Store__WEBPACK_IMPORTED_MODULE_2__.store.result.filter((item) => item.postId === result.postId && !('text' in item)),
+                            files,
                             textContent: result,
                         };
                         result.text = [

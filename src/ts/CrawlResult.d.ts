@@ -44,6 +44,12 @@ interface CommonAllData {
 
 // 所有投稿详情里都存在的数据。列表里没有
 interface CommonPostData {
+  // 评论列表。注意：现在 FANBOX 的 post 数据里没有 commentList 属性（以前也许有），保留 commentList 属性是因为下载器要使用。
+  // 下载器在抓取时会调用评论接口 API.getPostComments 获取评论，并写入 commentList 属性
+  commentList: {
+    items: CommentData[]
+    nextUrl: string | null
+  }
   nextPost: {
     id: string
     title: string

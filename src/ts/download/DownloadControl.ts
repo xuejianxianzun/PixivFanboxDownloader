@@ -24,6 +24,7 @@ import { createHtmlDocument } from './CreateHtmlDocument'
 import { fileName } from '../FileName'
 import { FileResult, ResultMeta } from '../StoreType'
 import { DateFormat } from '../utils/DateFormat'
+import { saveData } from '../SaveData'
 
 interface TaskList {
   [id: string]: {
@@ -572,7 +573,22 @@ class DownloadControl {
         // HTML 模式即使正文为空（text 数组为空）也要生成文件，以便保存只有资源的投稿
         if (isHtml || result.text.length > 0) {
           if (isHtml) {
-            // HTML 需要在下载时生成，才能使用当前任务的本地资源路径
+            // HTML 需要在下载时生成，才能获取其他文件的文件名，从而使用相对路径引用它们。
+            // HTML 会尽量引用本地文件，而不是远程 URL（远程 URL 无法显示付费内容）。
+            // 如果只使用本次抓取到的文件，就会遗漏被过滤条件排除的文件。例如用户以前下载过某个
+            // 投稿的全部文件，这次为了提高速度而在抓取时排除了某些文件类型，那么本次抓取结果里
+            // 只有一部分文件，但用户本地其实已有完整的文件。所以这里重新解析该投稿，
+            // 不使用任何过滤条件，以获得该投稿的完整文件列表
+            // 注意：重新解析只是为了获得完整的文件列表（用于匹配已下载的文件并生成相对路径），
+            // 并不会改动 store 里的数据。文件命名（包括 {PVA} 标记）仍然以 store 中的数据为准，
+            // 这样 HTML 文件会与本次下载的文件保存在相同的文件夹里，相对路径才能正常工作
+            // 也就是说，{PVA} 标记以本次下载为准；以下载新投稿的情况为优先，而不是为了匹配旧文件优先。
+            let files: FileResult[] = []
+            const fullMeta = saveData.parsePost(result.htmlData!, false)
+            if (fullMeta) {
+              files = fullMeta.files
+            }
+
             const resultMeta: ResultMeta = {
               postId: result.postId,
               type: result.type,
@@ -583,9 +599,7 @@ class DownloadControl {
               uid: result.uid,
               createID: result.createID,
               tags: result.tags,
-              files: store.result.filter(
-                (item) => item.postId === result.postId && !('text' in item),
-              ) as FileResult[],
+              files,
               textContent: result,
             }
             result.text = [

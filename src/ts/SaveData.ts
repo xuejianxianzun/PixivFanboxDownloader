@@ -22,23 +22,30 @@ class SaveData {
 
   public receive(data: PostBody) {
     // console.log(data)
-    this.parsePost(data)
+    const result = this.parsePost(data)
+    if (result) {
+      store.addResult(result)
+    }
   }
 
-  private parsePost(data: PostBody) {
+  public parsePost(data: PostBody, useFilter = true): ResultMeta | null {
     // 针对投稿进行检查，决定是否保留它
     const id = data.id
     const creatorId = data.creatorId
     const fee = data.feeRequired
     const date = data.publishedDatetime
     const title = data.title
-    const check = filter.check({ id, creatorId, fee, date, title })
+    // useFilter 为 false 时跳过投稿级别的过滤，以便获取该投稿的完整文件列表
+    const check =
+      !useFilter || filter.check({ id, creatorId, fee, date, title })
     if (!check) {
-      return
+      return null
     }
 
     // 如果投稿检查通过，保存投稿信息
-    const result: ResultMeta = {
+    // 这里的 result 类型是 ResultMeta，它包含了这个投稿里所有的资源和文本信息。
+    // 经过 store.addResult 处理之后，可能会生成多个 result，每个 result 里只包含一个文件或者一份文本。
+    const meta: ResultMeta = {
       postId: data.id,
       type: data.type,
       title: data.title,
@@ -86,7 +93,7 @@ class SaveData {
           url: cover,
           retryUrl: null,
         }
-        result.files.push(r)
+        meta.files.push(r)
       }
     }
 
@@ -102,11 +109,11 @@ class SaveData {
           ` ${fee}`,
       )
       // 评论是投稿级别的数据，不依赖正文，也可以保存
-      renderCommentsText.render(result, data)
-      if (result.files.length > 0) {
-        store.addResult(result)
+      renderCommentsText.render(meta, data)
+      if (meta.files.length > 0) {
+        return meta
       }
-      return
+      return null
     }
 
     // 非 article 投稿都有 text 字段，这这里统一提取里面的链接
@@ -121,12 +128,12 @@ class SaveData {
       }
       if (text) {
         const links = this.getTextLinks(text)
-        result.textContent.text = result.textContent.text.concat(links)
-        result.textContent.fileID = Tools.createFileId()
+        meta.textContent.text = meta.textContent.text.concat(links)
+        meta.textContent.fileID = Tools.createFileId()
 
         // 保存文章正文里的文字
         if (settings.saveText) {
-          result.textContent.text.push(text)
+          meta.textContent.text.push(text)
         }
       }
     }
@@ -167,18 +174,18 @@ class SaveData {
 
       for (const link of linkTexts) {
         const links = this.getTextLinks(link)
-        result.textContent.text = result.textContent.text.concat(links)
-        result.textContent.fileID = Tools.createFileId()
+        meta.textContent.text = meta.textContent.text.concat(links)
+        meta.textContent.fileID = Tools.createFileId()
       }
 
       // 如果有链接，则添加一个空字符串，使其占据一行
       // 这样可以让链接和下面的正文部分之间有一个空行
-      if (result.textContent.text.length > 0) {
-        result.textContent.text.push('')
+      if (meta.textContent.text.length > 0) {
+        meta.textContent.text.push('')
       }
 
       if (settings.saveText && text) {
-        result.textContent.text.push(text)
+        meta.textContent.text.push(text)
       }
 
       // 保存图片资源
@@ -189,8 +196,8 @@ class SaveData {
             continue
           }
           index++
-          const resource = this.getImageData(imageData, index)
-          resource !== null && result.files.push(resource)
+          const resource = this.getImageData(imageData, index, useFilter)
+          resource !== null && meta.files.push(resource)
         }
       }
 
@@ -202,8 +209,8 @@ class SaveData {
             continue
           }
           index++
-          const resource = this.getFileData(fileData, index)
-          resource !== null && result.files.push(resource)
+          const resource = this.getFileData(fileData, index, useFilter)
+          resource !== null && meta.files.push(resource)
         }
       }
 
@@ -213,8 +220,8 @@ class SaveData {
         embedDataArr.push([embedData.serviceProvider, embedData.contentId])
       }
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
-      result.textContent.text = result.textContent.text.concat(embedLinks)
-      result.textContent.fileID = Tools.createFileId()
+      meta.textContent.text = meta.textContent.text.concat(embedLinks)
+      meta.textContent.fileID = Tools.createFileId()
 
       // 保存嵌入的 URL，只能保存到文本
       if (settings.saveLink) {
@@ -246,10 +253,10 @@ class SaveData {
           }
         }
         if (urlArr.length > 0) {
-          result.textContent.text = result.textContent.text.concat(
+          meta.textContent.text = meta.textContent.text.concat(
             urlArr.join('\n\n'),
           )
-          result.textContent.fileID = Tools.createFileId()
+          meta.textContent.fileID = Tools.createFileId()
         }
       }
     }
@@ -262,8 +269,8 @@ class SaveData {
           continue
         }
         index++
-        const resource = this.getImageData(imageData, index)
-        resource !== null && result.files.push(resource)
+        const resource = this.getImageData(imageData, index, useFilter)
+        resource !== null && meta.files.push(resource)
       }
     }
 
@@ -303,8 +310,8 @@ class SaveData {
             height: height,
           }
 
-          const resource = this.getImageData(imageData, index)
-          resource !== null && result.files.push(resource)
+          const resource = this.getImageData(imageData, index, useFilter)
+          resource !== null && meta.files.push(resource)
         }
       }
     }
@@ -317,8 +324,8 @@ class SaveData {
           continue
         }
         index++
-        const resource = this.getFileData(fileData, index)
-        resource !== null && result.files.push(resource)
+        const resource = this.getFileData(fileData, index, useFilter)
+        resource !== null && meta.files.push(resource)
       }
     }
 
@@ -330,84 +337,82 @@ class SaveData {
         [video.serviceProvider, video.videoId],
       ]
       const embedLinks = this.getEmbedLinks(embedDataArr, data.id)
-      result.textContent.text = result.textContent.text.concat(embedLinks)
-      result.textContent.fileID = Tools.createFileId()
+      meta.textContent.text = meta.textContent.text.concat(embedLinks)
+      meta.textContent.fileID = Tools.createFileId()
     }
 
     // 保存投稿中的评论
     // 评论不依赖投稿正文，正文之外的信息（链接等）可能包含在评论里
-    renderCommentsText.render(result, data)
+    renderCommentsText.render(meta, data)
 
     if (settings.saveText && settings.textFormat === 'html') {
-      result.textContent.ext = 'html'
-      result.textContent.htmlData = data
-      result.textContent.fileID ||= Tools.createFileId()
+      meta.textContent.ext = 'html'
+      meta.textContent.htmlData = data
+      meta.textContent.fileID ||= Tools.createFileId()
     }
 
     // 检查文本里是否含有网址
-    let findURL = result.textContent.text.some((text) =>
-      /https?:\/\//.test(text),
-    )
+    let findURL = meta.textContent.text.some((text) => /https?:\/\//.test(text))
     if (findURL) {
       // 如果有外链，则在文件名前面添加 links-
-      result.textContent.name = 'links-' + result.textContent.name
+      meta.textContent.name = 'links-' + meta.textContent.name
       msgBox.once('tipLinktext', lang.transl('_提示会把外链保存到文件'))
     }
 
-    if (
-      result.textContent.ext === 'txt' &&
-      result.textContent.text.length > 0
-    ) {
+    if (meta.textContent.ext === 'txt' && meta.textContent.text.length > 0) {
       // 对于 TXT 文件，在内容的开头添加文章标题
-      result.textContent.text.unshift(data.title + '\r\n')
+      meta.textContent.text.unshift(data.title + '\r\n')
     }
 
-    // 这里的 result 类型是 ResultMeta，它包含了这个投稿里所有的资源和文本信息。
-    // 经过 store.addResult 处理之后，可能会生成多个 result，每个 result 里只包含一个文件或者一份文本。
-    store.addResult(result)
+    return meta
   }
 
-  private getImageData(imageData: ImageData, index: number): FileResult | null {
-    if (
-      filter.check({
-        ext: imageData.extension,
-      })
-    ) {
-      return {
-        fileID: imageData.id,
-        name: imageData.id,
-        ext: imageData.extension,
-        size: null,
-        index,
-        url: imageData[
-          settings.imageSize === 'original' ? 'originalUrl' : 'thumbnailUrl'
-        ],
-        retryUrl: imageData.thumbnailUrl,
-      }
+  private getImageData(
+    imageData: ImageData,
+    index: number,
+    useFilter = true,
+  ): FileResult | null {
+    // useFilter 为 false 时跳过对单个资源的过滤，保留该资源
+    if (useFilter && !filter.check({ ext: imageData.extension })) {
+      return null
     }
-
-    return null
+    return {
+      fileID: imageData.id,
+      name: imageData.id,
+      ext: imageData.extension,
+      size: null,
+      index,
+      url: imageData[
+        settings.imageSize === 'original' ? 'originalUrl' : 'thumbnailUrl'
+      ],
+      retryUrl: imageData.thumbnailUrl,
+    }
   }
 
-  private getFileData(fileData: FileData, index: number): FileResult | null {
+  private getFileData(
+    fileData: FileData,
+    index: number,
+    useFilter = true,
+  ): FileResult | null {
+    // useFilter 为 false 时跳过对单个资源的过滤，保留该资源
     if (
-      filter.check({
+      useFilter &&
+      !filter.check({
         ext: fileData.extension,
         name: fileData.name,
       })
     ) {
-      return {
-        fileID: fileData.id,
-        name: fileData.name,
-        ext: fileData.extension,
-        size: fileData.size,
-        index,
-        url: fileData.url,
-        retryUrl: null,
-      }
+      return null
     }
-
-    return null
+    return {
+      fileID: fileData.id,
+      name: fileData.name,
+      ext: fileData.extension,
+      size: fileData.size,
+      index,
+      url: fileData.url,
+      retryUrl: null,
+    }
   }
 
   // 从文本里提取链接
