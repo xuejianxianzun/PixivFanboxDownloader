@@ -75,6 +75,7 @@ class Store {
       }
     }
     this.pvaMap.set(data.postId, pva)
+    // console.log(this.result)
   }
 
   public resetResult() {

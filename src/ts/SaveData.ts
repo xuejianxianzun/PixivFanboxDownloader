@@ -54,6 +54,7 @@ class SaveData {
         name: data.id,
         ext: 'txt',
         size: null,
+        // 文本资源的序号总是 0
         index: 0,
         // text 里的内容有两个来源：外链和正文文本。
         // 在这个模块里，text 里保存的内容不会受“保存投稿中的文字”设置的影响。虽然这个设置可以选择纯文本或者 HTML，但是这个模块里的 text 的内容总是值为“纯文本”时的内容。
@@ -361,6 +362,8 @@ class SaveData {
       result.textContent.text.unshift(data.title + '\r\n')
     }
 
+    // 这里的 result 类型是 ResultMeta，它包含了这个投稿里所有的资源和文本信息。
+    // 经过 store.addResult 处理之后，可能会生成多个 result，每个 result 里只包含一个文件或者一份文本。
     store.addResult(result)
   }
 

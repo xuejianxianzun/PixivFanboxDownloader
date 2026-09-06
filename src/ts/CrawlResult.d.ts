@@ -25,13 +25,14 @@ interface CommonAllData {
   feeRequired: number
   publishedDatetime: string
   updatedDatetime: string
-  cover: string | null
   tags: string[]
   excerpt: string | null
   isLiked: boolean
   likeCount: number
   commentCount: number
   isRestricted: boolean
+  isCommentingRestricted: boolean
+  isPinned: boolean
   user: {
     userId: string
     name: string
@@ -43,22 +44,17 @@ interface CommonAllData {
 
 // 所有投稿详情里都存在的数据。列表里没有
 interface CommonPostData {
-  commentList: {
-    items: CommentData[]
-    nextUrl: string | null
-  }
   nextPost: {
     id: string
     title: string
     publishedDatetime: string
-  }
+  } | null
   prevPost: {
     id: string
     title: string
     publishedDatetime: string
-  }
+  } | null
   imageForShare: string
-  restrictedFor: number | null
 }
 
 // 通用的图片文件数据
@@ -270,6 +266,8 @@ type PostBody =
   | PostDataOfVideo
   | PostDataOfEntry
 
+// 一个 type 为 image 的文章的数据：
+// docs/post.12560223.json
 interface Post {
   body: {
     post: PostBody
@@ -451,7 +449,6 @@ export {
   EmbedData,
   VideoData,
   CreatorData,
-  Creator,
   AllSupportingPlan,
   SupportInfo,
   Plan,

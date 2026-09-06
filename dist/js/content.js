@@ -4139,6 +4139,7 @@ class Store {
             }
         }
         this.pvaMap.set(data.postId, pva);
+        console.log(this.result);
     }
     resetResult() {
         this.postIdList = [];
@@ -4955,6 +4956,7 @@ class CreateHtmlDocument {
             tags: result.tags,
         };
     }
+    /** 把文章里的图片渲染为 img 标签。注意：如果图片已经下载，会使用本地路径；否则使用原始 URL */
     renderPostImage(image, result, commonResult, htmlPath) {
         const downloadedImage = result.files.find((file) => file.fileID === image.id);
         if (downloadedImage) {
@@ -5761,6 +5763,7 @@ class DownloadControl {
                 // HTML 模式即使正文为空（text 数组为空）也要生成文件，以便保存只有资源的投稿
                 if (isHtml || result.text.length > 0) {
                     if (isHtml) {
+                        console.log(result);
                         // HTML 需要在下载时生成，才能使用当前任务的本地资源路径
                         const resultMeta = {
                             postId: result.postId,

@@ -248,6 +248,7 @@ class CreateHtmlDocument {
     }
   }
 
+  /** 把文章里的图片渲染为 img 标签。注意：如果图片已经下载，会使用本地路径；否则使用原始 URL */
   private renderPostImage(
     image: ImageData,
     result: ResultMeta,

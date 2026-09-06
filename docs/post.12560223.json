@@ -1,0 +1,48 @@
+{
+  "body": {
+    "post": {
+      "id": "12560223",
+      "title": "封面图片",
+      "feeRequired": 0,
+      "publishedDatetime": "2026-09-07T03:35:08+09:00",
+      "updatedDatetime": "2026-09-07T03:35:08+09:00",
+      "tags": [],
+      "isLiked": false,
+      "likeCount": 0,
+      "isCommentingRestricted": false,
+      "commentCount": 0,
+      "isRestricted": false,
+      "user": {
+        "userId": "9460149",
+        "name": "雪见仙尊",
+        "iconUrl": "https://pixiv.pximg.net/c/160x160_90_a2_g5/fanbox/public/images/user/9460149/icon/fm6mHUOwxOIpNFFvoY6rzl6l.jpeg"
+      },
+      "creatorId": "xuejianxianzun",
+      "hasAdultContent": true,
+      "type": "image",
+      "coverImageUrl": "https://pixiv.pximg.net/c/1200x630_90_a2_g5/fanbox/public/images/post/12560223/cover/dQIrrFxP2S1juAyU5nT8pEgb.jpeg",
+      "body": {
+        "text": "吃白饭的大肥鱼",
+        "images": [
+          {
+            "id": "AqJzctJrx7O3JMW5eoD0ilgv",
+            "extension": "jpeg",
+            "width": 1143,
+            "height": 2048,
+            "originalUrl": "https://downloads.fanbox.cc/images/post/12560223/AqJzctJrx7O3JMW5eoD0ilgv.jpeg",
+            "thumbnailUrl": "https://downloads.fanbox.cc/images/post/12560223/w/1200/AqJzctJrx7O3JMW5eoD0ilgv.jpeg"
+          }
+        ]
+      },
+      "excerpt": "吃白饭的大肥鱼",
+      "nextPost": null,
+      "prevPost": {
+        "id": "11131562",
+        "title": "测试大画幅图片",
+        "publishedDatetime": "2025-12-27T01:35:09+09:00"
+      },
+      "imageForShare": "https://pixiv.pximg.net/c/1200x630_90_a2_g5/fanbox/public/images/post/12560223/cover/dQIrrFxP2S1juAyU5nT8pEgb.jpeg",
+      "isPinned": false
+    }
+  }
+}

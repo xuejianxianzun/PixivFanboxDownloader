@@ -95,6 +95,8 @@ fetch('https://fanbox.pixiv.net/api/post.listCreator?userId=457541&limit=10', {
 })
 ```
 
+注意：本文档里的一些内容已经过期，因为 Fanbox 修改过 API 返回的数据。有些属性在本文里还存在，但实际上已经没有了。需要使用某个具体属性时，应该以 `src\ts\CrawlResult.d.ts` 里的类型声明作为依据。
+
 ## 获取任意投稿列表时的通用规则
 
 #### 查询字符串的可用字段
