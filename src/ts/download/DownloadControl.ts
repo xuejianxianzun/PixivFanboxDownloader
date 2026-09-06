@@ -511,7 +511,7 @@ class DownloadControl {
         const msg =
           lang.transl('_下载已暂停原因') +
           '<br>' +
-          lang.transl('_每天下载的文件大小限制')
+          lang.transl('_达到每天下载的文件大小限制的说明')
         log.warning(msg, 1, false, 'totalDownloadLimit')
         msgBox.once('totalDownloadLimit', msg, 'warning', {
           title: lang.transl('_已暂停'),
