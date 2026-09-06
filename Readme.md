@@ -1,77 +1,57 @@
 <!-- TOC -->
 
-- [简介](#简介)
-- [安装](#安装)
-  - [在线安装](#在线安装)
-  - [离线安装](#离线安装)
-  - [在 Android 上使用](#在-android-上使用)
-- [如何使用](#如何使用)
-- [支持和捐助](#支持和捐助)
+- [Introduction](#introduction)
+- [Installation](#installation)
+  - [Online Installation](#online-installation)
+  - [Offline Installation](#offline-installation)
+  - [Using on Android](#using-on-android)
+- [How to Use](#how-to-use)
+- [Patreon](#patreon)
 
 <!-- /TOC -->
 
-[View English introduction](Readme-EN.md)
+[Discord](https://discord.gg/RpcG8WCBQq)
 
-[查看繁体中文介绍](Readme-ZH-TW.md)
+# Introduction
 
-[日本語の紹介を見る](Readme-JA.md)
+This is a Chrome browser extension for batch downloading files on Pixiv Fanbox.
 
-[한국어 소개 보기](Readme-KO.md)
+Supports filtering file types, custom file names, and multiple languages.
 
-[Discord](https://discord.gg/u4wVMy7xJM)
+**Note:** This program cannot directly unlock paid content on Fanbox. If you want to download paid content, you must first purchase it.
 
-# 简介
+![screenshot](screenshot/ui-3.png)
 
-这是一个 Chrome 浏览器扩展程序，用于批量下载 Pixiv Fanbox 上的文件。
+# Installation
 
-支持过滤文件类型、自定义文件名，支持多种语言。
+We recommend using Chrome or Edge browsers.
 
-**注意：** 本程序并不能直接解锁 Fanbox 上的付费内容。如果你想要下载付费内容，必须先购买它。
+## Online Installation
 
-![screenshot](screenshot/ui-1.png)
-
-# 安装
-
-推荐使用 Chrome 或者 Edge 浏览器。
-
-## 在线安装
-
-您可以从 Chrome Web Store 安装本扩展程序：
+You can install this extension from the Chrome Web Store:
 
 [Pixiv Fanbox Downloader](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
 
-## 离线安装
+## Offline Installation
 
-你可以参考 Pixiv 下载器的离线安装教程：
-[离线安装](https://xuejianxianzun.github.io/PBDWiki/#/zh-cn/%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85)
+You can refer to the offline installation tutorial for the Pixiv Downloader:
+[Offline Installation](https://xuejianxianzun.github.io/PBDWiki/#/en/OfflineInstallation)
 
-只有一点不同：上面的教程里会让你下载 Pixiv 下载器的 zip 文件，改为 Fanbox 下载器的 zip 文件即可。你可以本仓库的 [releases 页面](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) 里下载 pixivfanboxDownloader.zip。
+There is only one difference: the tutorial above will ask you to download the zip file for the Pixiv Downloader. Instead, download the zip file for the Fanbox Downloader. You can download pixivfanboxDownloader.zip from the [releases page](https://github.com/xuejianxianzun/PixivFanboxDownloader/releases) of this repository.
 
-## 在 Android 上使用
+## Using on Android
 
-如果你想在 Android 上的浏览器里安装这个扩展，推荐使用 Quetta 浏览器。它是一个 Chromium 内核的移动端浏览器，可以从 Chrome Web Store 在线安装扩展程序，非常方便。
+If you want to install this extension in a browser on Android, we recommend using the Quetta browser. It is a mobile browser with the Chromium core, and you can install extensions online from the Chrome Web Store — very convenient.
 
-# 如何使用
+# How to Use
 
-- 安装这个扩展程序之后，刷新 fanbox 页面，在页面右侧可以看到蓝色的下载按钮，点击这个按钮开始使用。
-- 下载的文件会保存在浏览器的下载目录里。如果你想保存到其他位置，需要修改浏览器的下载目录。
-- 请关闭浏览器设置中的“下载前询问每个文件的保存位置”选项，以免在下载时出现另存为窗口。
-- 如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。
-- 保存投稿为 HTML 时，HTML 及其中使用的图片会覆盖下载目录中的同名文件，以保持 HTML 的本地图片路径；普通 TXT、附件和图片下载仍自动改名。
-- 如有其他问题或建议，欢迎加 QQ 群 853021998 进行交流。
+- After installing this extension, refresh the fanbox page. You will see a blue download button on the right side of the page. Click this button to start using it.
+- Downloaded files will be saved in the browser's download directory. If you want to save them to a different location, you need to change the browser's download directory.
+- Please disable the browser setting "Ask where to save each file before downloading" to avoid the save-as dialog during downloads.
+- If the filename of the downloaded file is abnormal, please disable other browser extensions with download functions.
 
-# 支持和捐助
+# Patreon
 
-如果您感觉本脚本帮到了您，您可以对我进行支持和捐助，不胜感激 (*╹▽╹*)
+You can support me on patreon. Thank you!
 
-1. 爱发电：
-
-[https://afdian.com/a/xuejianxianzun](https://afdian.com/a/xuejianxianzun)
-
-2. Patreon：
-
-[https://www.patreon.com/xuejianxianzun](https://www.patreon.com/xuejianxianzun)
-
-3. 你可以通过微信或支付宝扫码转账：
-
-![微信](https://xuejianxianzun.github.io/PBDWiki/zh-cn/images/weixin.png) ![支付宝](https://xuejianxianzun.github.io/PBDWiki/zh-cn/images/alipay.png)
+<a href='https://www.patreon.com/xuejianxianzun'><img src='https://c5.patreon.com/external/logo/become_a_patron_button.png' alt='Become a patron' width='140px' /></a>

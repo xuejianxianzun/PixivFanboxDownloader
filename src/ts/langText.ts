@@ -68,12 +68,12 @@ export const langText = {
   ],
   _其他: [`其他`, `其他`, `Other`, `その他`, `기타`, `Другое`],
   _设置文件夹名的提示: [
-    `可以使用 '<span class="key">/</span>' 建立文件夹。示例：`,
-    `可以使用 '<span class="key">/</span>' 建立資料夾。範例：`,
-    `You can use '<span class="key">/</span>' to create folders. Example:`,
-    `'<span class="key">/</span>' を使ってフォルダーを作成できます。例：`,
-    `'<span class="key">/</span>'을 사용하여 폴더를 만들 수 있습니다. 예:`,
-    `Для создания папок можно использовать '<span class="key">/</span>'. Пример:`,
+    `可以使用 <span class="key">/</span> 建立文件夹。示例：`,
+    `可以使用 <span class="key">/</span> 建立資料夾。範例：`,
+    `You can use <span class="key">/</span> to create folders. Example:`,
+    `<span class="key">/</span> を使ってフォルダーを作成できます。例：`,
+    `<span class="key">/</span>을 사용하여 폴더를 만들 수 있습니다. 예:`,
+    `Для создания папок можно использовать <span class="key">/</span>. Пример:`,
   ],
   _命名标记user: [
     `创作者的名字`,
