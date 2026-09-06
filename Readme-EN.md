@@ -1,3 +1,9 @@
+English |
+[简体中文](/README-ZH-CN.md) | 
+[繁體中文](/README-ZH-TW.md) |
+[日本語](/README-JA.md) |
+[韩国语](/README-KO.md)
+
 <!-- TOC -->
 
 - [Introduction](#introduction)
@@ -9,8 +15,6 @@
 - [Patreon](#patreon)
 
 <!-- /TOC -->
-
-[Discord](https://discord.gg/RpcG8WCBQq)
 
 # Introduction
 
@@ -41,7 +45,7 @@ There is only one difference: the tutorial above will ask you to download the zi
 
 ## Using on Android
 
-If you want to install this extension in a browser on Android, we recommend using the Quetta browser. It is a mobile browser with the Chromium core, and you can install extensions online from the Chrome Web Store — very convenient.
+On Android, you can install this extension using the Quetta browser. Quetta is a mobile browser with the Chromium core, and you can install extensions online from the Chrome Web Store — very convenient. However, because the downloader's interface is not optimized for mobile devices, and browsers on Android do not create subfolders, I do not recommend using it on Android.
 
 # How to Use
 

@@ -1,3 +1,9 @@
+[English](/README.md) |
+[简体中文](/README-ZH-CN.md) | 
+[繁體中文](/README-ZH-TW.md) |
+[日本語](/README-JA.md) |
+韩国语
+
 <!-- TOC -->
 
 - [소개](#소개)
@@ -9,8 +15,6 @@
 - [Patreon](#patreon)
 
 <!-- /TOC -->
-
-[Discord](https://discord.gg/u4wVMy7xJM)
 
 # 소개
 
@@ -41,7 +45,7 @@ Pixiv 다운로더의 오프라인 설치 튜토리얼을 참고할 수 있습�
 
 ## 안드로이드에서 사용
 
-Android 브라우저에 이 확장 프로그램을 설치하려면 Quetta 브라우저를 권장합니다. Chromium 코어 기반의 모바일 브라우저로, Chrome Web Store에서 온라인으로 확장 프로그램을 설치할 수 있어 매우 편리합니다.
+Android에서는 Quetta 브라우저를 사용하여 이 확장 프로그램을 설치할 수 있습니다. Quetta는 Chromium 코어 기반의 모바일 브라우저로, Chrome Web Store에서 온라인으로 확장 프로그램을 설치할 수 있어 매우 편리합니다. 다만 이 다운로더의 인터페이스는 모바일에 최적화되어 있지 않고, Android 브라우저는 하위 폴더를 만들지 않으므로 Android에서의 사용은 권장하지 않습니다.
 
 # 사용 방법
 

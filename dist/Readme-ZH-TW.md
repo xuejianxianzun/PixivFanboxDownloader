@@ -1,3 +1,9 @@
+[English](/README.md) |
+[简体中文](/README-ZH-CN.md) | 
+繁體中文 |
+[日本語](/README-JA.md) |
+[韩国语](/README-KO.md)
+
 <!-- TOC -->
 
 - [簡介](#簡介)
@@ -9,8 +15,6 @@
 - [支持和贊助](#支持和贊助)
 
 <!-- /TOC -->
-
-[Discord](https://discord.gg/u4wVMy7xJM)
 
 # 簡介
 
@@ -41,7 +45,7 @@
 
 ## 在 Android 上使用
 
-如果你想在 Android 上的瀏覽器裡安裝這個擴充功能，推薦使用 Quetta 瀏覽器。它是一個 Chromium 內核的行動端瀏覽器，可以從 Chrome Web Store 線上安裝擴充功能，非常方便。
+在 Android 系統上，你可以使用 Quetta 瀏覽器安裝這個擴充功能。Quetta 是一個 Chromium 內核的行動端瀏覽器，可以從 Chrome Web Store 線上安裝擴充功能，非常方便。但是由於這個下載器的介面沒有為行動端最佳化，而且 Android 上的瀏覽器不會建立子資料夾，所以我不推薦在 Android 上使用。
 
 # 如何使用
 
