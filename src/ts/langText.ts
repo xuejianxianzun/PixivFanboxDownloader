@@ -541,6 +541,14 @@ As a result, the file name set by the downloader is lost and the file name becom
     `게시물의 태그 목록 (비어있을 수 있음)`,
     `Список тегов публикации (может быть пустым)`,
   ],
+  _命名标记PVA: [
+    `输出每篇投稿的资源标记。P、V、A 分别表示图片、视频、音频。完整输出如【15P1V1A】或[15P+1V+1A]（这取决于下载器的语言），每个投稿独立计算。根据投稿的实际情况，可能只会输出部分标记，或者不输出任何内容。它适合放在最后一层文件夹的末尾，例如：fanbox/{user}/{date}-{title}{PVA}/{name}`,
+    `輸出每篇投稿的資源標記。P、V、A 分別表示圖片、影片、音訊。完整輸出如【15P1V1A】或[15P+1V+1A]（取決於下載器的語言），每個投稿獨立計算。根據投稿的實際情況，可能只會輸出部分標記，或者不輸出任何內容。它適合放在最後一層資料夾的末尾，例如：fanbox/{user}/{date}-{title}{PVA}/{name}`,
+    `Outputs the resource tag for each post. P, V, and A stand for image, video, and audio respectively. A complete output looks like [15P+1V+1A] or 【15P1V1A】 (depending on the downloader's language), and is calculated independently for each post. Depending on the actual content of the post, only some of the tags may be output, or nothing at all. It is suitable for placing at the end of the last folder level, for example: fanbox/{user}/{date}-{title}{PVA}/{name}`,
+    `各投稿のリソースタグを出力します。P、V、A はそれぞれ画像、動画、音声を表します。完全な出力は【15P1V1A】または[15P+1V+1A]のようになります（ダウンローダーの言語によって異なります）。各投稿ごとに独立して計算されます。投稿の実際の内容に応じて、一部のタグだけが出力されたり、何も出力されなかったりします。最後のフォルダの末尾に置くのに適しています。例：fanbox/{user}/{date}-{title}{PVA}/{name}`,
+    `각 게시물의 리소스 태그를 출력합니다. P, V, A는 각각 이미지, 동영상, 오디오를 나타냅니다. 완전한 출력은 [15P+1V+1A] 또는 【15P1V1A】와 같습니다(다운로더의 언어에 따라 다릅니다). 각 게시물마다 독립적으로 계산됩니다. 게시물의 실제 내용에 따라 일부 태그만 출력되거나 아무것도 출력되지 않을 수 있습니다. 마지막 폴더의 끝에 배치하기에 적합합니다. 예: fanbox/{user}/{date}-{title}{PVA}/{name}`,
+    `Выводит метку ресурсов для каждой публикации. P, V и A означают изображение, видео и аудио соответственно. Полный вывод выглядит как [15P+1V+1A] или 【15P1V1A】 (в зависимости от языка загрузчика) и рассчитывается независимо для каждой публикации. В зависимости от фактического содержания публикации могут выводиться только некоторые метки или ничего. Её удобно размещать в конце последней папки, например: fanbox/{user}/{date}-{title}{PVA}/{name}`,
+  ],
   _命名标记date: [
     `投稿的发布日期，如 2019-08-29`,
     `投稿的發布日期，如 2019-08-29`,

@@ -1,3 +1,4 @@
+import { Config } from './Config'
 import { EVT } from './EVT'
 import { CommonResult, ResultMeta, Result } from './StoreType'
 
@@ -20,6 +21,9 @@ class Store {
 
   /**因为价格限制而不能抓取的文章 */
   public skipDueToFee = 0
+
+  /**缓存每个投稿里的图片/视频/音频文件数量，用于生成 {PVA} 标记。key 是 postId */
+  private pvaMap: Map<string, { P: number; V: number; A: number }> = new Map()
 
   private bindEvents() {
     window.addEventListener(EVT.list.crawlStart, () => {
@@ -54,10 +58,23 @@ class Store {
     }
     // 为投稿里的每个 files 生成一份数据
     const files = data.files
+    // 统计并缓存本投稿里的图片/视频/音频文件数量，供生成 {PVA} 标记使用
+    // 在把本投稿的所有文件都加入 result 之后再设置缓存，确保数值是完整的
+    const pva = { P: 0, V: 0, A: 0 }
     for (const fileData of files) {
       const result = Object.assign(this.getCommonData(data), fileData)
       this.result.push(result)
+
+      const ext = fileData.ext.toLowerCase()
+      if (Config.fileType.image.includes(ext)) {
+        pva.P++
+      } else if (Config.fileType.video.includes(ext)) {
+        pva.V++
+      } else if (Config.fileType.music.includes(ext)) {
+        pva.A++
+      }
     }
+    this.pvaMap.set(data.postId, pva)
   }
 
   public resetResult() {
@@ -65,6 +82,37 @@ class Store {
     this.resultMeta = []
     this.result = []
     this.skipDueToFee = 0
+    // 清空缓存。因为重新抓取时 result 会被重置并重新生成，旧的缓存已经失效
+    this.pvaMap.clear()
+  }
+
+  /**
+   * 获取一个投稿里的图片/视频/音频文件数量，用于生成 {PVA} 标记。
+   * 正常情况下数量在 addResult 时已经缓存；如果缓存中没有（例如从存档恢复任务时直接整体赋值了 result），
+   * 则在这里遍历 result 现场统计一次，并把结果缓存起来。
+   */
+  public getPva(postId: string) {
+    const cached = this.pvaMap.get(postId)
+    if (cached) {
+      return cached
+    }
+
+    const pva = { P: 0, V: 0, A: 0 }
+    for (const item of this.result) {
+      if (item.postId !== postId) {
+        continue
+      }
+      const ext = item.ext.toLowerCase()
+      if (Config.fileType.image.includes(ext)) {
+        pva.P++
+      } else if (Config.fileType.video.includes(ext)) {
+        pva.V++
+      } else if (Config.fileType.music.includes(ext)) {
+        pva.A++
+      }
+    }
+    this.pvaMap.set(postId, pva)
+    return pva
   }
 }
 
