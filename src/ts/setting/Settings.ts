@@ -119,6 +119,8 @@ interface XzSetting {
   /** 保存图片的缩略图还是原图 */
   imageSize: 'original' | 'thumbnail'
   theme: 'auto' | 'white' | 'dark'
+  /** 文件名重复时的处理方式 */
+  conflictAction: 'uniquify' | 'overwrite' | 'prompt'
 }
 // chrome storage 里不能使用 Map，因为保存时，Map 会被转换为 Object {}
 
@@ -191,6 +193,7 @@ class Settings {
     totalDownloadLimitByte: 10737418240,
     imageSize: 'original',
     theme: 'auto',
+    conflictAction: 'uniquify',
   }
 
   private allSettingKeys = Object.keys(this.defaultSettings)

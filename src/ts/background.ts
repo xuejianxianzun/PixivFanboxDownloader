@@ -173,7 +173,8 @@ async function saveFileNoReplay(msg: any) {
     await browser.downloads.download({
       url: downloadUrl,
       filename: msg.fileName,
-      conflictAction: 'overwrite',
+      // 冲突处理方式由前台消息指定（即用户设置的 conflictAction）。
+      conflictAction: msg.conflictAction || 'uniquify',
       saveAs: false,
     })
     // 说明：如果 downloadUrl 是这里根据 blob 生成的（Firefox 场景），不会吊销它。
@@ -209,14 +210,12 @@ if (!Config.downloadsAPIDisabled) {
       // 判断当前文件名是否正常。下载时必定会有一次 detail.filename.current 有值
       if (detail.filename && detail.filename.current) {
         const changedName = detail.filename.current
-        // 文件名是 UUID
+        // 检查文件名是否是 UUID 格式
         if (changedName.match(UUIDRegexp) !== null) {
           data.uuid = true
         }
 
-        // 检查文件名是 URL 里最后一段的情况
-
-        // Fanbox 下载器的多数文件是直接把原 URL 发送给浏览器下载的，因此很多时候即使受到其他扩展程序的影响，也不会是 UUID，而是原文件名，例如：
+        // 另一种情况：Fanbox 下载器的多数文件是直接把原 URL 发送给浏览器下载的，因此很多时候即使受到其他扩展程序的影响，也不会是 UUID，而是原文件名，例如：
         // https://pixiv.pximg.net/c/1200x630_90_a2_g5/fanbox/public/images/post/10264356/cover/cvfFotXy5Cbc2I0uakDXHG0s.jpeg
         // 受到影响时，上面的图片保存后是原文件名：
         // cvfFotXy5Cbc2I0uakDXHG0s.jpeg
@@ -233,26 +232,30 @@ if (!Config.downloadsAPIDisabled) {
         //   "id": 1347
         // }
 
+        // 注意：以前的版本里，会判断实际文件名是否符合预期（即是否与下载器生成的文件名保持一致）。但现在不判断了，原因是：
+        // 现在当文件名冲突时，用户可以选择手动处理。在这种情况下，用户可能手动修改文件名，导致实际文件名与预期不一致，但这并不意味着文件名异常，所以不再判断实际文件名是否符合预期
+        // 下面是以前的判断逻辑，保留在这里作为注释
+
         // fileNameList 里储存的预期的文件名示例：
         // fanbox/omutatsu／おむたつ/2025-07-22-🔞7月22日🔞/0.jpeg
-        const expectedName = fileNameList.get(data.url)
-        if (expectedName) {
-          // 取出预期的文件名的最后一部分，上面的文件名的结果是 "0"
-          const name = expectedName.split('/').pop()?.split('.')[0] || ''
+        // const expectedName = fileNameList.get(data.url)
+        // if (expectedName) {
+        //   // 取出预期的文件名的最后一部分，上面的文件名的结果是 "0"
+        //   const name = expectedName.split('/').pop()?.split('.')[0] || ''
 
-          // 取出实际的文件名的最后一部分（注意，即使是与预期一致的文件名，实际上也可能有序号）
-          let name2 = ''
-          if (changedName.includes('\\')) {
-            name2 = changedName.split('\\').pop()?.split('.')[0] || ''
-          } else {
-            name2 = changedName.split('/').pop()?.split('.')[0] || ''
-          }
+        //   // 取出实际的文件名的最后一部分（注意，即使是与预期一致的文件名，实际上也可能有序号）
+        //   let name2 = ''
+        //   if (changedName.includes('\\')) {
+        //     name2 = changedName.split('\\').pop()?.split('.')[0] || ''
+        //   } else {
+        //     name2 = changedName.split('/').pop()?.split('.')[0] || ''
+        //   }
 
-          // 如果实际文件名不是以预期的文件名开头，则说明文件名异常
-          if (name2 && name2.startsWith(name) === false) {
-            data.uuid = true
-          }
-        }
+        //   // 如果实际文件名不是以预期的文件名开头，则说明文件名异常
+        //   if (name2 && name2.startsWith(name) === false) {
+        //     data.uuid = true
+        //   }
+        // }
       }
 
       if (detail.state && detail.state.current === 'complete') {

@@ -54,4 +54,5 @@ export interface SettingsForm extends HTMLFormElement {
   totalDownloadLimit: HTMLInputElement
   imageSize: RadioNodeList
   theme: RadioNodeList
+  conflictAction: RadioNodeList
 }

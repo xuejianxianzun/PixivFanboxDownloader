@@ -1,3 +1,4 @@
+<!-- 每个设置项都有唯一的编号。现在最大的编号是 62 -->
 <form class="settingForm">
   <p class="option" data-no="2">
     <span class="settingNameStyle1" data-xztext="_文件类型"></span>
@@ -671,13 +672,51 @@
     <span data-xztext="_秒"></span>
   </p>
 
-  <p class="option" data-no="58">
+  <p class="option" data-no="62">
     <span
-      class="has_tip settingNameStyle1"
-      data-xztip="_每天下载的文件大小限制的说明"
-    >
+      class="settingNameStyle1"
+      data-xztext="_文件名重复时的处理方式"
+    ></span>
+    <input
+      type="radio"
+      name="conflictAction"
+      id="conflictAction1"
+      class="need_beautify radio"
+      value="uniquify"
+      checked
+    />
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="conflictAction1" data-xztext="_添加序号"></label>
+    <input
+      type="radio"
+      name="conflictAction"
+      id="conflictAction2"
+      class="need_beautify radio"
+      value="overwrite"
+    />
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="conflictAction2" data-xztext="_覆盖已有文件"></label>
+    <input
+      type="radio"
+      name="conflictAction"
+      id="conflictAction3"
+      class="need_beautify radio"
+      value="prompt"
+    />
+    <span class="beautify_radio" tabindex="0"></span>
+    <label for="conflictAction3" data-xztext="_手动处理"></label>
+    <button
+      type="button"
+      class="gray textButton showMsgBtn"
+      data-title="_文件名重复时的处理方式"
+      data-msg="_文件名重复时的处理方式的说明"
+      data-xztext="_帮助"
+    ></button>
+  </p>
+
+  <p class="option" data-no="58">
+    <span class="settingNameStyle1">
       <span data-xztext="_每天下载的文件大小限制"></span>
-      <span class="gray"> ? </span>
     </span>
     <input
       type="checkbox"
@@ -696,6 +735,13 @@
       />
       <span>GiB</span>
     </span>
+    <button
+      type="button"
+      class="gray textButton showMsgBtn"
+      data-title="_每天下载的文件大小限制"
+      data-msg="_每天下载的文件大小限制的说明"
+      data-xztext="_帮助"
+    ></button>
     <button
       class="textButton gray"
       type="button"
@@ -735,10 +781,11 @@
       ></button>
     </span>
     <button
-      class="textButton gray"
       type="button"
-      id="deduplicationHelp"
-      data-xztext="_提示"
+      class="gray textButton showMsgBtn"
+      data-title="_不下载重复文件"
+      data-msg="_不下载重复文件的提示"
+      data-xztext="_帮助"
     ></button>
   </p>
 

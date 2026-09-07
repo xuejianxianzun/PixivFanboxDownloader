@@ -503,6 +503,8 @@ class DownloadControl {
       msg: 'save_file_no_replay',
       fileUrl: URL.createObjectURL(blob),
       fileName: recordName,
+      // 同名文件冲突时的处理方式由用户设置决定
+      conflictAction: settings.conflictAction,
     }
 
     // 在 Firefox / Chrome 的隐私窗口里下载 blob 文件时，需要携带文件数据，
@@ -680,9 +682,6 @@ class DownloadControl {
         index: index,
         progressBarIndex: progressBarIndex,
         taskBatch: this.taskBatch,
-        // 仅 HTML 文本需要覆盖，避免附件和图片被同名文件覆盖
-        conflictAction:
-          'text' in result && result.ext === 'html' ? 'overwrite' : undefined,
         // 动态生成的文件（url 是 blob URL）携带文件数据，用于在 Firefox /
         // Chrome 隐私窗口里下载。其他文件（原始 URL）没有 blob，值为 undefined
         blob: fileBlob || undefined,

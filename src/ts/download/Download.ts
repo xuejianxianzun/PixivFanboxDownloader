@@ -15,6 +15,7 @@ import { downloadInterval } from './DownloadInterval'
 import browser from 'webextension-polyfill'
 import { Utils } from '../utils/Utils'
 import { Config } from '../Config'
+import { settings } from '../setting/Settings'
 
 class Download {
   constructor(progressBarIndex: number, data: downloadArgument) {
@@ -126,7 +127,8 @@ class Download {
       fileName: fileName,
       id,
       taskBatch,
-      conflictAction: this.arg.conflictAction,
+      // 同名文件冲突时的处理方式由用户设置决定
+      conflictAction: settings.conflictAction,
     }
 
     // 下载器动态生成的文件（url 是 blob URL）在 Firefox 和 Chrome 的隐私窗口里

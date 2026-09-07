@@ -6,6 +6,7 @@ import { msgBox } from '../MsgBox'
 import { Utils } from '../utils/Utils'
 import { SendToBackEndData } from './DownloadType'
 import { Config } from '../Config'
+import { settings } from '../setting/Settings'
 import browser from 'webextension-polyfill'
 
 // 绘制粉丝卡时使用的配置
@@ -503,6 +504,8 @@ class SaveFanCard {
       msg: 'save_file_no_replay',
       fileUrl: URL.createObjectURL(blob),
       fileName,
+      // 同名文件冲突时的处理方式由用户设置决定
+      conflictAction: settings.conflictAction,
     }
 
     // 在 Firefox / Chrome 的隐私窗口里下载 blob 文件时，需要携带文件数据，

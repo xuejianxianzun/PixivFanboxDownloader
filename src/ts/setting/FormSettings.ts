@@ -87,6 +87,7 @@ class FormSettings {
       'imageSize',
       'textFormat',
       'theme',
+      'conflictAction',
     ],
     textarea: [],
     datetime: ['postDateStart', 'postDateEnd'],

@@ -6,7 +6,6 @@ export interface downloadArgument {
   index: number
   progressBarIndex: number
   taskBatch: number
-  conflictAction?: 'uniquify' | 'overwrite' | 'prompt'
   /**文件的 Blob 数据。仅当下载下载器动态生成的文件（data.url 是 blob URL）时提供。
    *
    * 在 Firefox 里，前台生成的 blob URL 无法在后台使用，需要把 Blob 发送给后台，由后台生成 blob URL；
