@@ -8094,8 +8094,8 @@ class SaveFanCard {
         let createIds = [];
         if (scope === 'all') {
             const allPlan = await _API__WEBPACK_IMPORTED_MODULE_0__.API.getAllSupportingPlan();
-            if (Array.isArray(allPlan.body) && allPlan.body.length > 0) {
-                createIds = allPlan.body.map((plan) => plan.creatorId);
+            if (Array.isArray(allPlan.body.plans) && allPlan.body.plans.length > 0) {
+                createIds = allPlan.body.plans.map((plan) => plan.creatorId);
             }
             else {
                 const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_你没有赞助任何创作者所以无法生成粉丝卡');

@@ -51,8 +51,8 @@ class SaveFanCard {
 
     if (scope === 'all') {
       const allPlan = await API.getAllSupportingPlan()
-      if (Array.isArray(allPlan.body) && allPlan.body.length > 0) {
-        createIds = allPlan.body.map((plan) => plan.creatorId)
+      if (Array.isArray(allPlan.body.plans) && allPlan.body.plans.length > 0) {
+        createIds = allPlan.body.plans.map((plan) => plan.creatorId)
       } else {
         const msg = lang.transl('_你没有赞助任何创作者所以无法生成粉丝卡')
         log.error(msg)

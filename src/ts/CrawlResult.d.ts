@@ -378,7 +378,9 @@ interface Plan {
 
 /** 你当前生效的所有赞助方案 */
 interface AllSupportingPlan {
-  body: Plan[]
+  body: {
+    plans: Plan[]
+  }
 }
 
 interface SupportInfo {
