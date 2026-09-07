@@ -1995,7 +1995,7 @@ class CrawlInterval {
                 const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_抓取间隔') +
                     `: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.crawlInterval} ` +
                     _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_秒');
-                _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(msg, 1, false, 'crawlInterval');
+                _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(msg, 'crawlInterval');
             }
         });
     }
@@ -3139,7 +3139,7 @@ class InitPageBase {
     }
     afterFetchPost(data) {
         _SaveData__WEBPACK_IMPORTED_MODULE_6__.saveData.receive(data.body.post || data.body);
-        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log(`${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_待处理')} ${_Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.length}`, 1, false);
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log(`${_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_待处理')} ${_Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.length}`, 'showFetchPostProgress');
         // 当抓取完一个文章之后，如果还有等待抓取的文章就继续抓取
         // 否则当前抓取线程结束。等待所有抓取线程完成之后，文章数据就全部获取了
         const postId = _Store__WEBPACK_IMPORTED_MODULE_3__.store.postIdList.shift();
@@ -3165,7 +3165,8 @@ class InitPageBase {
         _Store__WEBPACK_IMPORTED_MODULE_3__.store.result.sort(_utils_Utils__WEBPACK_IMPORTED_MODULE_11__.Utils.sortByProperty('postId', 'asc'));
         _Store__WEBPACK_IMPORTED_MODULE_3__.store.date = new Date();
         _Log__WEBPACK_IMPORTED_MODULE_4__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取文件数量', _Store__WEBPACK_IMPORTED_MODULE_3__.store.result.length.toString()));
-        _Log__WEBPACK_IMPORTED_MODULE_4__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取完毕'), 2);
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取完毕'));
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log('');
         _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('crawlFinish');
         // console.log(store.result)
     }
@@ -3239,7 +3240,8 @@ class InitPageBase {
     noResult() {
         _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('crawlFinish');
         _EVT__WEBPACK_IMPORTED_MODULE_5__.EVT.fire('crawlEmpty');
-        _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取结果为零'), 2);
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取结果为零'));
+        _Log__WEBPACK_IMPORTED_MODULE_4__.log.log('');
         _MsgBox__WEBPACK_IMPORTED_MODULE_9__.msgBox.error(_Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_抓取结果为零'));
     }
 }
@@ -3691,11 +3693,11 @@ class Log {
     logContentClassName = 'logContent'; // 日志主体区域的类名
     logWrapClassName = 'logWrap'; // 日志容器的类名，只负责样式
     logWrapFlag = 'logWrapFlag'; // 日志容器的标志，当需要查找日志区域时，使用这个类名而不是 logWrap，因为其他元素可能也具有 logWrap 类名，以应用其样式。
-    /**储存会刷新的日志所使用的元素，可以传入 flag 来区分多个刷新区域 */
+    /**储存会刷新的日志所使用的元素（插槽），可以传入 key 来区分多个刷新区域 */
     // 每个刷新区域使用一个 span 元素，里面的文本会变化
     // 通常用于显示进度，例如 0/10, 1/10, 2/10... 10/10
-    // 如果不传入 flag，那么所有的刷新内容会共用 default 的 span 元素
-    refresh = {
+    // 如果不传入 key，那么所有的刷新内容会共用 default 插槽
+    slots = {
         default: document.createElement('span'),
     };
     toBottom = false; // 指示是否需要把日志滚动到底部。当有日志被添加或刷新，则为 true。滚动到底部之后复位到 false，避免一直滚动到底部。
@@ -3706,28 +3708,26 @@ class Log {
         _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.textWarning,
         _Colors__WEBPACK_IMPORTED_MODULE_1__.Colors.textError,
     ];
-    // 添加日志
-    /*
-    str 日志文本
-    level 日志等级
-    br 换行标签的个数
-    keepShow 是否为持久日志。默认为 true，把这一条日志添加后不再修改。false 则会刷新显示这条日志。
+    /**
+    添加一条日志
+    @param str 日志文本，可以是 HTML
+    @param level 日志等级。0: normal, 1: success, 2: warning, 3: error
+    @param key 每个 key 对应一条专用的日志插槽（一个 span 元素）。
   
-    level 日志等级：
-    0 normal
-    1 success
-    2 warning
-    3 error
+    不传入 key 时，每次调用都会新增一条日志。
+    传入 key 时，不会新增日志，而是把这条日志输出到 key 对应的插槽里，替换掉该插槽之前的内容。通常用于刷新进度，例如 0/10, 1/10 ... 10/10。如果插槽还不存在，会创建它。
+    注意：传入 key 的日志不计入日志条数，也不会触发"日志条数达到上限后创建新日志区域"的逻辑。
     */
-    add(str, level, br, keepShow, refreshFlag = 'default') {
+    add(str, level, key = '') {
         this.createLogArea();
         let span = document.createElement('span');
-        if (!keepShow) {
-            if (this.refresh[refreshFlag] === undefined) {
-                this.refresh[refreshFlag] = span;
+        if (key) {
+            // 为需要刷新的日志使用插槽
+            if (this.slots[key] === undefined) {
+                this.slots[key] = span;
             }
             else {
-                span = this.refresh[refreshFlag];
+                span = this.slots[key];
             }
         }
         else {
@@ -3744,31 +3744,34 @@ class Log {
         }
         span.innerHTML = str;
         span.style.color = this.levelColor[level];
-        while (br > 0) {
-            span.appendChild(document.createElement('br'));
-            br--;
-        }
+        span.appendChild(document.createElement('br'));
         this.logContent.appendChild(span);
         this.toBottom = true; // 需要把日志滚动到底部
     }
-    log(str, br = 1, keepShow = true, refreshFlag = 'default') {
-        this.add(str, 0, br, keepShow, refreshFlag);
+    /** 输出普通日志 */
+    log(str, key = '') {
+        this.add(str, 0, key);
     }
-    success(str, br = 1, keepShow = true, refreshFlag = 'default') {
-        this.add(str, 1, br, keepShow, refreshFlag);
+    /** 输出绿色日志，常用于任务开始、任务完成的提示 */
+    success(str, key = '') {
+        this.add(str, 1, key);
     }
-    warning(str, br = 1, keepShow = true, refreshFlag = 'default') {
-        this.add(str, 2, br, keepShow, refreshFlag);
+    /** 输出黄色日志，常用于重要提醒、警告信息 */
+    warning(str, key = '') {
+        this.add(str, 2, key);
     }
-    error(str, br = 1, keepShow = true, refreshFlag = 'default') {
-        this.add(str, 3, br, keepShow, refreshFlag);
+    /** 输出红色日志，用于错误信息 */
+    error(str, key = '') {
+        this.add(str, 3, key);
     }
-    /**将一条刷新的日志元素持久化 */
+    /**将一条刷新的日志持久化 */
     // 例如当某个进度显示到 10/10 的时候，就不会再变化了，此时应该将其持久化
     // 其实就是下载器解除了对它的引用，这样它的内容就不会再变化了
-    // 并且下载器会为这个 flag 生成一个新的 span 元素待用
-    persistentRefresh(refreshFlag = 'default') {
-        this.refresh[refreshFlag] = document.createElement('span');
+    // 并且下载器会为这个 key 生成一个新的 span 元素待用
+    persistentRefresh(key) {
+        if (key) {
+            this.slots[key] = document.createElement('span');
+        }
     }
     /**创建新的日志区域 */
     createLogArea() {
@@ -6732,7 +6735,7 @@ class DownloadControl {
             // 丢失文件名的情况。对于下载器动态创建的 Blob URL，文件名会是 UUID
             // 对于 Fanbox 原有的 URL，文件名会是 URL 最后一段路径（浏览器会把这段作为默认的文件名）
             if (msg.data?.uuid) {
-                _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 1, false, 'filenameUUID');
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 'filenameUUID');
                 _MsgBox__WEBPACK_IMPORTED_MODULE_11__.msgBox.once('uuidTip', _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_uuid'), 'show');
                 this.pauseDownload();
                 // 此时 return，这个文件的下载状态会保持为“下载中”，可以在之后再次下载。
@@ -6775,7 +6778,8 @@ class DownloadControl {
         });
         window.addEventListener(_EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.list.downloadComplete, () => {
             this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕2'), _Colors__WEBPACK_IMPORTED_MODULE_5__.Colors.textSuccess);
-            _Log__WEBPACK_IMPORTED_MODULE_3__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕'), 2);
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕'));
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.log('');
             _Toast__WEBPACK_IMPORTED_MODULE_13__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完毕2'), {
                 position: 'topCenter',
             });
@@ -6787,7 +6791,7 @@ class DownloadControl {
     setDownloaded() {
         this.downloaded = _DownloadStates__WEBPACK_IMPORTED_MODULE_12__.downloadStates.downloadedCount();
         const text = `${this.downloaded} / ${_Store__WEBPACK_IMPORTED_MODULE_2__.store.result.length}`;
-        _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(text, 2, false);
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(text, 'showDownloadProgress');
         // 设置总下载进度条
         _ProgressBar__WEBPACK_IMPORTED_MODULE_7__.progressBar.setTotalProgress(this.downloaded);
         // 所有文件正常下载完毕（跳过下载的文件也算正常下载）
@@ -6946,7 +6950,8 @@ class DownloadControl {
                 this.pause = true; // 发出暂停信号
                 _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadPause');
                 this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已暂停'), '#f00');
-                _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已暂停'), 2);
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已暂停'));
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.log('');
             }
             else {
                 // 不在下载中的话不允许启用暂停功能
@@ -6963,7 +6968,8 @@ class DownloadControl {
         this.stop = true;
         _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('downloadStop');
         this.setDownStateText(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已停止'), '#f00');
-        _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已停止'), 2);
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已停止'));
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.log('');
         this.pause = false;
     }
     downloadError(data, err) {
@@ -7004,7 +7010,7 @@ class DownloadControl {
         this.logErrorFileInfo(data);
         _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载器会跳过这个错误文件的提示'));
         _Log__WEBPACK_IMPORTED_MODULE_3__.log.log('');
-        _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完成后重试出错的文件的提示'), 1, false, 'tipRetryDownloadError');
+        _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载完成后重试出错的文件的提示'), 'tipRetryDownloadError');
         _Log__WEBPACK_IMPORTED_MODULE_3__.log.log('');
         // 清除它的失败次数记录，以便下次重新下载时重新给予重试机会
         this.retryCount.delete(data.id);
@@ -7092,7 +7098,7 @@ class DownloadControl {
                 const msg = _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_下载已暂停原因') +
                     '<br>' +
                     _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_达到每天下载的文件大小限制的说明');
-                _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(msg, 1, false, 'totalDownloadLimit');
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(msg, 'totalDownloadLimit');
                 _MsgBox__WEBPACK_IMPORTED_MODULE_11__.msgBox.once('totalDownloadLimit', msg, 'warning', {
                     title: _Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_已暂停'),
                 });
@@ -7305,7 +7311,7 @@ class DownloadInterval {
                 const msg = _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_下载间隔') +
                     `: ${_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.downloadInterval} ` +
                     _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_秒');
-                _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(msg, 1, false, 'downloadInterval');
+                _Log__WEBPACK_IMPORTED_MODULE_2__.log.warning(msg, 'downloadInterval');
             }
         });
     }
@@ -7815,7 +7821,8 @@ class Resume {
             _DownloadStates__WEBPACK_IMPORTED_MODULE_5__.downloadStates.replace(taskStates.states);
         }
         // 恢复完成
-        _Log__WEBPACK_IMPORTED_MODULE_1__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_已恢复抓取结果'), 2);
+        _Log__WEBPACK_IMPORTED_MODULE_1__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_已恢复抓取结果'));
+        _Log__WEBPACK_IMPORTED_MODULE_1__.log.log('');
         _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('resume');
     }
     bindEvents() {
@@ -7891,7 +7898,8 @@ class Resume {
             states: _DownloadStates__WEBPACK_IMPORTED_MODULE_5__.downloadStates.states,
         };
         this.IDB.add(this.statesName, statesData);
-        _Log__WEBPACK_IMPORTED_MODULE_1__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_已保存抓取结果'), 2);
+        _Log__WEBPACK_IMPORTED_MODULE_1__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_2__.lang.transl('_已保存抓取结果'));
+        _Log__WEBPACK_IMPORTED_MODULE_1__.log.log('');
     }
     // 定时 put 下载状态
     async regularPutStates() {
@@ -8034,7 +8042,7 @@ class SaveFanCard {
         const total = createIds.length;
         let no = 0;
         _Log__WEBPACK_IMPORTED_MODULE_2__.log.success(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_开始保存粉丝卡'));
-        _Log__WEBPACK_IMPORTED_MODULE_2__.log.log(`${no} / ${total}`, 1, false, 'saveFanCard');
+        _Log__WEBPACK_IMPORTED_MODULE_2__.log.log(`${no} / ${total}`, 'saveFanCard');
         for (const createId of createIds) {
             const data = await this.getFanCardData(createId);
             if (data) {
@@ -8045,7 +8053,7 @@ class SaveFanCard {
                 _Log__WEBPACK_IMPORTED_MODULE_2__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_已保存该创作者的粉丝卡') + ': ' + data.creatorName);
             }
             no++;
-            _Log__WEBPACK_IMPORTED_MODULE_2__.log.log(`${no} / ${total}`, 1, false, 'saveFanCard');
+            _Log__WEBPACK_IMPORTED_MODULE_2__.log.log(`${no} / ${total}`, 'saveFanCard');
             if (no < total) {
                 await _utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.sleep(1000);
             }

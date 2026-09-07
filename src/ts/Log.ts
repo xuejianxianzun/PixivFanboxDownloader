@@ -33,11 +33,11 @@ class Log {
   private logWrapClassName = 'logWrap' // 日志容器的类名，只负责样式
   private logWrapFlag = 'logWrapFlag' // 日志容器的标志，当需要查找日志区域时，使用这个类名而不是 logWrap，因为其他元素可能也具有 logWrap 类名，以应用其样式。
 
-  /**储存会刷新的日志所使用的元素，可以传入 flag 来区分多个刷新区域 */
+  /**储存会刷新的日志所使用的元素（插槽），可以传入 key 来区分多个刷新区域 */
   // 每个刷新区域使用一个 span 元素，里面的文本会变化
   // 通常用于显示进度，例如 0/10, 1/10, 2/10... 10/10
-  // 如果不传入 flag，那么所有的刷新内容会共用 default 的 span 元素
-  private refresh: { [key: string]: HTMLElement } = {
+  // 如果不传入 key，那么所有的刷新内容会共用 default 插槽
+  private slots: { [key: string]: HTMLElement } = {
     default: document.createElement('span'),
   }
 
@@ -51,33 +51,25 @@ class Log {
     Colors.textError,
   ]
 
-  // 添加日志
-  /*
-  str 日志文本
-  level 日志等级
-  br 换行标签的个数
-  keepShow 是否为持久日志。默认为 true，把这一条日志添加后不再修改。false 则会刷新显示这条日志。
+  /**
+  添加一条日志
+  @param str 日志文本，可以是 HTML
+  @param level 日志等级。0: normal, 1: success, 2: warning, 3: error
+  @param key 每个 key 对应一条专用的日志插槽（一个 span 元素）。
 
-  level 日志等级：
-  0 normal
-  1 success
-  2 warning
-  3 error
+  不传入 key 时，每次调用都会新增一条日志。
+  传入 key 时，不会新增日志，而是把这条日志输出到 key 对应的插槽里，替换掉该插槽之前的内容。通常用于刷新进度，例如 0/10, 1/10 ... 10/10。如果插槽还不存在，会创建它。
+  注意：传入 key 的日志不计入日志条数，也不会触发"日志条数达到上限后创建新日志区域"的逻辑。
   */
-  private add(
-    str: string,
-    level: number,
-    br: number,
-    keepShow: boolean,
-    refreshFlag: string = 'default',
-  ) {
+  private add(str: string, level: number, key = '') {
     this.createLogArea()
     let span = document.createElement('span')
-    if (!keepShow) {
-      if (this.refresh[refreshFlag] === undefined) {
-        this.refresh[refreshFlag] = span
+    if (key) {
+      // 为需要刷新的日志使用插槽
+      if (this.slots[key] === undefined) {
+        this.slots[key] = span
       } else {
-        span = this.refresh[refreshFlag]
+        span = this.slots[key]
       }
     } else {
       this.count++
@@ -97,57 +89,40 @@ class Log {
 
     span.style.color = this.levelColor[level]
 
-    while (br > 0) {
-      span.appendChild(document.createElement('br'))
-      br--
-    }
+    span.appendChild(document.createElement('br'))
 
     this.logContent.appendChild(span)
     this.toBottom = true // 需要把日志滚动到底部
   }
 
-  public log(
-    str: string,
-    br: number = 1,
-    keepShow: boolean = true,
-    refreshFlag = 'default',
-  ) {
-    this.add(str, 0, br, keepShow, refreshFlag)
+  /** 输出普通日志 */
+  public log(str: string, key = '') {
+    this.add(str, 0, key)
   }
 
-  public success(
-    str: string,
-    br: number = 1,
-    keepShow: boolean = true,
-    refreshFlag = 'default',
-  ) {
-    this.add(str, 1, br, keepShow, refreshFlag)
+  /** 输出绿色日志，常用于任务开始、任务完成的提示 */
+  public success(str: string, key = '') {
+    this.add(str, 1, key)
   }
 
-  public warning(
-    str: string,
-    br: number = 1,
-    keepShow: boolean = true,
-    refreshFlag = 'default',
-  ) {
-    this.add(str, 2, br, keepShow, refreshFlag)
+  /** 输出黄色日志，常用于重要提醒、警告信息 */
+  public warning(str: string, key = '') {
+    this.add(str, 2, key)
   }
 
-  public error(
-    str: string,
-    br: number = 1,
-    keepShow: boolean = true,
-    refreshFlag = 'default',
-  ) {
-    this.add(str, 3, br, keepShow, refreshFlag)
+  /** 输出红色日志，用于错误信息 */
+  public error(str: string, key = '') {
+    this.add(str, 3, key)
   }
 
-  /**将一条刷新的日志元素持久化 */
+  /**将一条刷新的日志持久化 */
   // 例如当某个进度显示到 10/10 的时候，就不会再变化了，此时应该将其持久化
   // 其实就是下载器解除了对它的引用，这样它的内容就不会再变化了
-  // 并且下载器会为这个 flag 生成一个新的 span 元素待用
-  public persistentRefresh(refreshFlag: string = 'default') {
-    this.refresh[refreshFlag] = document.createElement('span')
+  // 并且下载器会为这个 key 生成一个新的 span 元素待用
+  public persistentRefresh(key: string) {
+    if (key) {
+      this.slots[key] = document.createElement('span')
+    }
   }
 
   /**创建新的日志区域 */

@@ -67,7 +67,7 @@ class SaveFanCard {
     const total = createIds.length
     let no = 0
     log.success(lang.transl('_开始保存粉丝卡'))
-    log.log(`${no} / ${total}`, 1, false, 'saveFanCard')
+    log.log(`${no} / ${total}`, 'saveFanCard')
 
     for (const createId of createIds) {
       const data: FanCardData | null = await this.getFanCardData(createId)
@@ -88,7 +88,7 @@ class SaveFanCard {
         )
       }
       no++
-      log.log(`${no} / ${total}`, 1, false, 'saveFanCard')
+      log.log(`${no} / ${total}`, 'saveFanCard')
 
       if (no < total) {
         await Utils.sleep(1000)

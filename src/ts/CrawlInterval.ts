@@ -16,7 +16,7 @@ class CrawlInterval {
           lang.transl('_抓取间隔') +
           `: ${settings.crawlInterval} ` +
           lang.transl('_秒')
-        log.warning(msg, 1, false, 'crawlInterval')
+        log.warning(msg, 'crawlInterval')
       }
     })
   }

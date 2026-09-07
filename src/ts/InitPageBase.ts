@@ -303,7 +303,10 @@ abstract class InitPageBase {
 
   protected afterFetchPost(data: Post) {
     saveData.receive(data.body.post || data.body)
-    log.log(`${lang.transl('_待处理')} ${store.postIdList.length}`, 1, false)
+    log.log(
+      `${lang.transl('_待处理')} ${store.postIdList.length}`,
+      'showFetchPostProgress',
+    )
     // 当抓取完一个文章之后，如果还有等待抓取的文章就继续抓取
     // 否则当前抓取线程结束。等待所有抓取线程完成之后，文章数据就全部获取了
     const postId = store.postIdList.shift()
@@ -335,7 +338,8 @@ abstract class InitPageBase {
 
     log.log(lang.transl('_抓取文件数量', store.result.length.toString()))
 
-    log.success(lang.transl('_抓取完毕'), 2)
+    log.success(lang.transl('_抓取完毕'))
+    log.log('')
 
     EVT.fire('crawlFinish')
     // console.log(store.result)
@@ -414,7 +418,8 @@ abstract class InitPageBase {
   protected noResult() {
     EVT.fire('crawlFinish')
     EVT.fire('crawlEmpty')
-    log.error(lang.transl('_抓取结果为零'), 2)
+    log.error(lang.transl('_抓取结果为零'))
+    log.log('')
     msgBox.error(lang.transl('_抓取结果为零'))
   }
 }

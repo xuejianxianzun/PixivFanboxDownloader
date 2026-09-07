@@ -114,7 +114,8 @@ class Resume {
     }
 
     // 恢复完成
-    log.success(lang.transl('_已恢复抓取结果'), 2)
+    log.success(lang.transl('_已恢复抓取结果'))
+    log.log('')
     EVT.fire('resume')
   }
 
@@ -209,7 +210,8 @@ class Resume {
 
     this.IDB.add(this.statesName, statesData)
 
-    log.success(lang.transl('_已保存抓取结果'), 2)
+    log.success(lang.transl('_已保存抓取结果'))
+    log.log('')
   }
 
   // 定时 put 下载状态

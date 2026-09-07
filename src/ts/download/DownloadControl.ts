@@ -102,7 +102,7 @@ class DownloadControl {
       // 丢失文件名的情况。对于下载器动态创建的 Blob URL，文件名会是 UUID
       // 对于 Fanbox 原有的 URL，文件名会是 URL 最后一段路径（浏览器会把这段作为默认的文件名）
       if (msg.data?.uuid) {
-        log.log(lang.transl('_uuid'), 1, false, 'filenameUUID')
+        log.log(lang.transl('_uuid'), 'filenameUUID')
         msgBox.once('uuidTip', lang.transl('_uuid'), 'show')
         this.pauseDownload()
         // 此时 return，这个文件的下载状态会保持为“下载中”，可以在之后再次下载。
@@ -147,7 +147,8 @@ class DownloadControl {
 
     window.addEventListener(EVT.list.downloadComplete, () => {
       this.setDownStateText(lang.transl('_下载完毕2'), Colors.textSuccess)
-      log.success(lang.transl('_下载完毕'), 2)
+      log.success(lang.transl('_下载完毕'))
+      log.log('')
       toast.success(lang.transl('_下载完毕2'), {
         position: 'topCenter',
       })
@@ -164,7 +165,7 @@ class DownloadControl {
     this.downloaded = downloadStates.downloadedCount()
 
     const text = `${this.downloaded} / ${store.result.length}`
-    log.log(text, 2, false)
+    log.log(text, 'showDownloadProgress')
 
     // 设置总下载进度条
     progressBar.setTotalProgress(this.downloaded)
@@ -359,7 +360,8 @@ class DownloadControl {
         EVT.fire('downloadPause')
 
         this.setDownStateText(lang.transl('_已暂停'), '#f00')
-        log.warning(lang.transl('_已暂停'), 2)
+        log.warning(lang.transl('_已暂停'))
+        log.log('')
       } else {
         // 不在下载中的话不允许启用暂停功能
         return
@@ -379,7 +381,8 @@ class DownloadControl {
     EVT.fire('downloadStop')
 
     this.setDownStateText(lang.transl('_已停止'), '#f00')
-    log.error(lang.transl('_已停止'), 2)
+    log.error(lang.transl('_已停止'))
+    log.log('')
     this.pause = false
   }
 
@@ -425,8 +428,6 @@ class DownloadControl {
     log.log('')
     log.error(
       lang.transl('_下载完成后重试出错的文件的提示'),
-      1,
-      false,
       'tipRetryDownloadError',
     )
     log.log('')
@@ -538,7 +539,7 @@ class DownloadControl {
           lang.transl('_下载已暂停原因') +
           '<br>' +
           lang.transl('_达到每天下载的文件大小限制的说明')
-        log.warning(msg, 1, false, 'totalDownloadLimit')
+        log.warning(msg, 'totalDownloadLimit')
         msgBox.once('totalDownloadLimit', msg, 'warning', {
           title: lang.transl('_已暂停'),
         })
