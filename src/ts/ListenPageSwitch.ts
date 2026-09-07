@@ -1,4 +1,5 @@
 import { EVT } from './EVT'
+import browser from 'webextension-polyfill'
 
 // 监听页面的无刷新切换
 class ListenPageSwitch {
@@ -10,7 +11,7 @@ class ListenPageSwitch {
   // 为监听 url 变化的事件提供支持
   private supportListenHistory() {
     const s = document.createElement('script')
-    const url = chrome.runtime.getURL('lib/listen_history_change.js')
+    const url = browser.runtime.getURL('lib/listen_history_change.js')
     s.src = url
     document.head.appendChild(s)
   }

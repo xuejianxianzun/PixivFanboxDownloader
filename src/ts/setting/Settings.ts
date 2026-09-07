@@ -33,6 +33,7 @@ import { msgBox } from '../MsgBox'
 import { Config } from '../Config'
 import { toast } from '../Toast'
 import { lang } from '../Lang'
+import browser from 'webextension-polyfill'
 
 export interface BlockTagsForSpecificUserItem {
   uid: number
@@ -238,10 +239,11 @@ class Settings {
   }
 
   // 读取恢复设置
-  private restore() {
+  private async restore() {
     let restoreData = this.defaultSettings
-    // 首先从 chrome.storage 获取配置
-    chrome.storage.local.get(Config.settingStoreName, (result) => {
+    // 首先从 browser.storage 获取配置
+    try {
+      const result = await browser.storage.local.get(Config.settingStoreName)
       if (result[Config.settingStoreName]) {
         restoreData = result[Config.settingStoreName] as XzSetting
       } else {
@@ -251,14 +253,17 @@ class Settings {
           restoreData = JSON.parse(savedSettings) as XzSetting
         }
       }
-      this.assignSettings(restoreData)
-      EVT.fire('settingInitialized')
-    })
+    } catch (error) {
+      // 读取失败时使用默认设置
+      console.error('读取设置失败:', error)
+    }
+    this.assignSettings(restoreData)
+    EVT.fire('settingInitialized')
   }
 
   private store = Utils.debounce(() => {
-    // chrome.storage.local 的储存上限是 5 MiB（5242880 Byte）
-    chrome.storage.local.set({
+    // browser.storage.local 的储存上限是 5 MiB（5242880 Byte）
+    browser.storage.local.set({
       [Config.settingStoreName]: this.settings,
     })
   }, 50)

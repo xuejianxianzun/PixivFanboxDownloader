@@ -5,8 +5,8 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "sourceMap": true,
     "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "types": ["chrome"]
+    "types": ["webextension-polyfill"],
+    "allowSyntheticDefaultImports": true
   },
   "include": ["./src/ts/*"],
   "exclude": ["node_modules"]

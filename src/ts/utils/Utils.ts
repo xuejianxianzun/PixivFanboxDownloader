@@ -140,6 +140,14 @@ class Utils {
     a.href = url
     a.download = fileName
     a.click()
+
+    // 如果下载的是 blob URL，在下载开始后吊销它，释放内存。
+    // a 标签点击后浏览器会立即读取 blob 数据并开始下载，所以这里延迟一小段时间再吊销
+    if (url.startsWith('blob')) {
+      setTimeout(() => {
+        URL.revokeObjectURL(url)
+      }, 200)
+    }
   }
 
   // 从 url 中获取指定的查询字段的值
@@ -278,6 +286,20 @@ class Utils {
 
   static async sleep(time: number) {
     return new Promise((res) => window.setTimeout(res, time))
+  }
+
+  /**把 blob 对象转换为 dataURL（base64 编码的字符串） */
+  static blobToDataURL(blob: Blob) {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = function () {
+        resolve(this.result as string)
+      }
+      reader.onerror = function () {
+        reject(new Error('Failed to convert blob to DataURL'))
+      }
+      reader.readAsDataURL(blob)
+    })
   }
 }
 

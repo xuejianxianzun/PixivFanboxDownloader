@@ -4,7 +4,7 @@ import { Tools } from '../Tools'
 import {
   downloadArgument,
   DownloadSuccessData,
-  DownloadedMsg,
+  SendToBackEndData,
 } from './DownloadType'
 import { store } from '../Store'
 import { log } from '../Log'
@@ -24,7 +24,9 @@ import { createHtmlDocument } from './CreateHtmlDocument'
 import { fileName } from '../FileName'
 import { FileResult, ResultMeta } from '../StoreType'
 import { DateFormat } from '../utils/DateFormat'
+import { Utils } from '../utils/Utils'
 import { saveData } from '../SaveData'
+import browser from 'webextension-polyfill'
 
 interface TaskList {
   [id: string]: {
@@ -92,7 +94,7 @@ class DownloadControl {
     })
 
     // 监听浏览器下载文件后，返回的消息
-    chrome.runtime.onMessage.addListener((msg: DownloadedMsg) => {
+    browser.runtime.onMessage.addListener((msg: any) => {
       if (!this.taskBatch) {
         return
       }
@@ -331,6 +333,9 @@ class DownloadControl {
 
     if (Config.mobile) {
       log.warning(lang.transl('_移动端浏览器可能不会建立文件夹的说明'))
+      if (Config.isFirefox) {
+        log.warning(lang.transl('_在移动版Firefox上提示无法可靠的批量下载'))
+      }
     }
   }
 
@@ -438,7 +443,7 @@ class DownloadControl {
 
   // 为一个多次下载失败的文件，生成一份错误记录 txt 并保存到本地。
   // txt 与原文件在同一个文件夹里、使用相同的命名规则，只是后缀名改为 txt
-  private saveErrorRecord(data: DownloadSuccessData, err: string) {
+  private async saveErrorRecord(data: DownloadSuccessData, err: string) {
     // 下载器自己生成的文本文件（正文 txt / HTML）不做错误记录。
     // 它的 url 是 blob，而且它本身就是下载器生成的文件，失败后重新下载即可
     if (data.url.startsWith('blob:')) {
@@ -482,16 +487,36 @@ class DownloadControl {
     const blob = new Blob([text], {
       type: 'text/plain;charset=utf-8',
     })
-    const url = URL.createObjectURL(blob)
+
+    // Firefox Android 不支持 downloads API，使用 a 标签下载错误记录。
+    // a 标签不能建立文件夹，所以只保留文件名部分
+    if (Config.downloadsAPIDisabled) {
+      Utils.downloadFile(
+        URL.createObjectURL(blob),
+        recordName.split('/').pop() || recordName,
+      )
+      return
+    }
+
+    const sendData: SendToBackEndData = {
+      msg: 'save_file_no_replay',
+      fileUrl: URL.createObjectURL(blob),
+      fileName: recordName,
+    }
+
+    // 在 Firefox / Chrome 的隐私窗口里下载 blob 文件时，需要携带文件数据，
+    // 详见 Config.sendBlob / sendDataURL 的注释
+    if (Config.sendDataURL) {
+      sendData.dataURL = await Utils.blobToDataURL(blob)
+    }
+    if (Config.sendBlob) {
+      sendData.blob = blob
+    }
 
     // 通过后台脚本把错误记录下载到本地。
     // 使用 save_file_no_replay 消息，该下载不会返回下载状态，不会触发下载成功/失败流程，
     // 也不会影响上述失败次数的统计
-    chrome.runtime.sendMessage({
-      msg: 'save_file_no_replay',
-      fileUrl: url,
-      fileName: recordName,
-    })
+    browser.runtime.sendMessage(sendData).catch(() => {})
   }
 
   private async downloadSuccess(data: DownloadSuccessData) {
@@ -557,6 +582,12 @@ class DownloadControl {
     } else {
       let result = store.result[index]
 
+      // 下载器动态生成的文件内容（Blob）。目前只有文本数据（保存的正文 txt / HTML）会有。
+      // 它需要在发送下载消息时一并传给后台：在 Firefox 和 Chrome 的隐私窗口里，
+      // 前台生成的 blob URL 无法在后台使用，需要发送文件数据（Blob 或 dataURL），
+      // 详见 Config.sendBlob / sendDataURL 的注释
+      let fileBlob: Blob | null = null
+
       // 对于文本数据，此时创建其 URL
       // 空正文的 HTML 也需要生成文件，否则无法保存只有资源的投稿
       if ('text' in result) {
@@ -612,13 +643,13 @@ class DownloadControl {
           }
 
           const text = result.text.join('\r\n')
-          const blob = new Blob([text], {
+          fileBlob = new Blob([text], {
             type: isHtml
               ? 'text/html;charset=utf-8'
               : 'text/plain;charset=utf-8',
           })
-          result.url = URL.createObjectURL(blob)
-          result.size = blob.size
+          result.url = URL.createObjectURL(fileBlob)
+          result.size = fileBlob.size
         }
       }
 
@@ -651,6 +682,9 @@ class DownloadControl {
         // 仅 HTML 文本需要覆盖，避免附件和图片被同名文件覆盖
         conflictAction:
           'text' in result && result.ext === 'html' ? 'overwrite' : undefined,
+        // 动态生成的文件（url 是 blob URL）携带文件数据，用于在 Firefox /
+        // Chrome 隐私窗口里下载。其他文件（原始 URL）没有 blob，值为 undefined
+        blob: fileBlob || undefined,
       }
 
       // 保存任务信息

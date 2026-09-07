@@ -6,7 +6,7 @@
 
 ## 项目概览
 
-**Pixiv Fanbox Downloader** 是一个 Chrome 浏览器扩展（Manifest V3），用于批量下载 [Pixiv Fanbox](https://www.fanbox.cc/) 上的投稿文件。
+**Pixiv Fanbox Downloader** 是一个浏览器扩展（Manifest V3），用于批量下载 [Pixiv Fanbox](https://www.fanbox.cc/) 上的投稿文件。
 
 - 作者：xuejianxianzun / 雪见仙尊
 - 仓库：https://github.com/xuejianxianzun/PixivFanboxDownloader
@@ -36,9 +36,7 @@
 - **样式**：LESS（编译为 CSS）
 - **格式化**：Prettier
 - **打包**：archiver + recursive-copy（`pack.js`）
-- **扩展规范**：Chrome MV3（Service Worker）
-
-**不要添加** 任何 React/Vue/jQuery 等前端框架——项目刻意保持零依赖 UI。
+- **扩展规范**：Chrome MV3（Service Worker），并兼容 Firefox
 
 ---
 

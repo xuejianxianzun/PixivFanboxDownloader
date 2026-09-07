@@ -3,6 +3,7 @@ import { Config } from './Config'
 import { msgBox } from './MsgBox'
 import { EVT } from './EVT'
 import { setSetting, settings } from './setting/Settings'
+import browser from 'webextension-polyfill'
 
 // 显示版本更新说明
 class ShowWhatIsNew {
@@ -18,7 +19,7 @@ class ShowWhatIsNew {
     })
   }
 
-  private version = chrome.runtime.getManifest().version
+  private version = browser.runtime.getManifest().version
 
   private show() {
     // 如果这个标记是初始值，说明用户是首次安装这个扩展，或者重置了设置，此时不显示更新说明

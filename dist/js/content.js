@@ -1,6 +1,1236 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
+
+/***/ "./node_modules/webextension-polyfill/dist/browser-polyfill.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/webextension-polyfill/dist/browser-polyfill.js ***!
+  \*********************************************************************/
+/***/ (function(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else // removed by dead control flow
+{ var mod; }
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (module) {
+  /* webextension-polyfill - v0.12.0 - Tue May 14 2024 18:01:29 */
+  /* -*- Mode: indent-tabs-mode: nil; js-indent-level: 2 -*- */
+  /* vim: set sts=2 sw=2 et tw=80: */
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+  "use strict";
+
+  if (!(globalThis.chrome && globalThis.chrome.runtime && globalThis.chrome.runtime.id)) {
+    throw new Error("This script should only be loaded in a browser extension.");
+  }
+  if (!(globalThis.browser && globalThis.browser.runtime && globalThis.browser.runtime.id)) {
+    const CHROME_SEND_MESSAGE_CALLBACK_NO_RESPONSE_MESSAGE = "The message port closed before a response was received.";
+
+    // Wrapping the bulk of this polyfill in a one-time-use function is a minor
+    // optimization for Firefox. Since Spidermonkey does not fully parse the
+    // contents of a function until the first time it's called, and since it will
+    // never actually need to be called, this allows the polyfill to be included
+    // in Firefox nearly for free.
+    const wrapAPIs = extensionAPIs => {
+      // NOTE: apiMetadata is associated to the content of the api-metadata.json file
+      // at build time by replacing the following "include" with the content of the
+      // JSON file.
+      const apiMetadata = {
+        "alarms": {
+          "clear": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "clearAll": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "get": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "getAll": {
+            "minArgs": 0,
+            "maxArgs": 0
+          }
+        },
+        "bookmarks": {
+          "create": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "get": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getChildren": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getRecent": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getSubTree": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getTree": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "move": {
+            "minArgs": 2,
+            "maxArgs": 2
+          },
+          "remove": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeTree": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "search": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "update": {
+            "minArgs": 2,
+            "maxArgs": 2
+          }
+        },
+        "browserAction": {
+          "disable": {
+            "minArgs": 0,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "enable": {
+            "minArgs": 0,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "getBadgeBackgroundColor": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getBadgeText": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getPopup": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getTitle": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "openPopup": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "setBadgeBackgroundColor": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "setBadgeText": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "setIcon": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "setPopup": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "setTitle": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          }
+        },
+        "browsingData": {
+          "remove": {
+            "minArgs": 2,
+            "maxArgs": 2
+          },
+          "removeCache": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeCookies": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeDownloads": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeFormData": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeHistory": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeLocalStorage": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removePasswords": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removePluginData": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "settings": {
+            "minArgs": 0,
+            "maxArgs": 0
+          }
+        },
+        "commands": {
+          "getAll": {
+            "minArgs": 0,
+            "maxArgs": 0
+          }
+        },
+        "contextMenus": {
+          "remove": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeAll": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "update": {
+            "minArgs": 2,
+            "maxArgs": 2
+          }
+        },
+        "cookies": {
+          "get": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getAll": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getAllCookieStores": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "remove": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "set": {
+            "minArgs": 1,
+            "maxArgs": 1
+          }
+        },
+        "devtools": {
+          "inspectedWindow": {
+            "eval": {
+              "minArgs": 1,
+              "maxArgs": 2,
+              "singleCallbackArg": false
+            }
+          },
+          "panels": {
+            "create": {
+              "minArgs": 3,
+              "maxArgs": 3,
+              "singleCallbackArg": true
+            },
+            "elements": {
+              "createSidebarPane": {
+                "minArgs": 1,
+                "maxArgs": 1
+              }
+            }
+          }
+        },
+        "downloads": {
+          "cancel": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "download": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "erase": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getFileIcon": {
+            "minArgs": 1,
+            "maxArgs": 2
+          },
+          "open": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "pause": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeFile": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "resume": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "search": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "show": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          }
+        },
+        "extension": {
+          "isAllowedFileSchemeAccess": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "isAllowedIncognitoAccess": {
+            "minArgs": 0,
+            "maxArgs": 0
+          }
+        },
+        "history": {
+          "addUrl": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "deleteAll": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "deleteRange": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "deleteUrl": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getVisits": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "search": {
+            "minArgs": 1,
+            "maxArgs": 1
+          }
+        },
+        "i18n": {
+          "detectLanguage": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getAcceptLanguages": {
+            "minArgs": 0,
+            "maxArgs": 0
+          }
+        },
+        "identity": {
+          "launchWebAuthFlow": {
+            "minArgs": 1,
+            "maxArgs": 1
+          }
+        },
+        "idle": {
+          "queryState": {
+            "minArgs": 1,
+            "maxArgs": 1
+          }
+        },
+        "management": {
+          "get": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getAll": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "getSelf": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "setEnabled": {
+            "minArgs": 2,
+            "maxArgs": 2
+          },
+          "uninstallSelf": {
+            "minArgs": 0,
+            "maxArgs": 1
+          }
+        },
+        "notifications": {
+          "clear": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "create": {
+            "minArgs": 1,
+            "maxArgs": 2
+          },
+          "getAll": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "getPermissionLevel": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "update": {
+            "minArgs": 2,
+            "maxArgs": 2
+          }
+        },
+        "pageAction": {
+          "getPopup": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getTitle": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "hide": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "setIcon": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "setPopup": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "setTitle": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          },
+          "show": {
+            "minArgs": 1,
+            "maxArgs": 1,
+            "fallbackToNoCallback": true
+          }
+        },
+        "permissions": {
+          "contains": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getAll": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "remove": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "request": {
+            "minArgs": 1,
+            "maxArgs": 1
+          }
+        },
+        "runtime": {
+          "getBackgroundPage": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "getPlatformInfo": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "openOptionsPage": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "requestUpdateCheck": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "sendMessage": {
+            "minArgs": 1,
+            "maxArgs": 3
+          },
+          "sendNativeMessage": {
+            "minArgs": 2,
+            "maxArgs": 2
+          },
+          "setUninstallURL": {
+            "minArgs": 1,
+            "maxArgs": 1
+          }
+        },
+        "sessions": {
+          "getDevices": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "getRecentlyClosed": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "restore": {
+            "minArgs": 0,
+            "maxArgs": 1
+          }
+        },
+        "storage": {
+          "local": {
+            "clear": {
+              "minArgs": 0,
+              "maxArgs": 0
+            },
+            "get": {
+              "minArgs": 0,
+              "maxArgs": 1
+            },
+            "getBytesInUse": {
+              "minArgs": 0,
+              "maxArgs": 1
+            },
+            "remove": {
+              "minArgs": 1,
+              "maxArgs": 1
+            },
+            "set": {
+              "minArgs": 1,
+              "maxArgs": 1
+            }
+          },
+          "managed": {
+            "get": {
+              "minArgs": 0,
+              "maxArgs": 1
+            },
+            "getBytesInUse": {
+              "minArgs": 0,
+              "maxArgs": 1
+            }
+          },
+          "sync": {
+            "clear": {
+              "minArgs": 0,
+              "maxArgs": 0
+            },
+            "get": {
+              "minArgs": 0,
+              "maxArgs": 1
+            },
+            "getBytesInUse": {
+              "minArgs": 0,
+              "maxArgs": 1
+            },
+            "remove": {
+              "minArgs": 1,
+              "maxArgs": 1
+            },
+            "set": {
+              "minArgs": 1,
+              "maxArgs": 1
+            }
+          }
+        },
+        "tabs": {
+          "captureVisibleTab": {
+            "minArgs": 0,
+            "maxArgs": 2
+          },
+          "create": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "detectLanguage": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "discard": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "duplicate": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "executeScript": {
+            "minArgs": 1,
+            "maxArgs": 2
+          },
+          "get": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getCurrent": {
+            "minArgs": 0,
+            "maxArgs": 0
+          },
+          "getZoom": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "getZoomSettings": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "goBack": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "goForward": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "highlight": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "insertCSS": {
+            "minArgs": 1,
+            "maxArgs": 2
+          },
+          "move": {
+            "minArgs": 2,
+            "maxArgs": 2
+          },
+          "query": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "reload": {
+            "minArgs": 0,
+            "maxArgs": 2
+          },
+          "remove": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "removeCSS": {
+            "minArgs": 1,
+            "maxArgs": 2
+          },
+          "sendMessage": {
+            "minArgs": 2,
+            "maxArgs": 3
+          },
+          "setZoom": {
+            "minArgs": 1,
+            "maxArgs": 2
+          },
+          "setZoomSettings": {
+            "minArgs": 1,
+            "maxArgs": 2
+          },
+          "update": {
+            "minArgs": 1,
+            "maxArgs": 2
+          }
+        },
+        "topSites": {
+          "get": {
+            "minArgs": 0,
+            "maxArgs": 0
+          }
+        },
+        "webNavigation": {
+          "getAllFrames": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "getFrame": {
+            "minArgs": 1,
+            "maxArgs": 1
+          }
+        },
+        "webRequest": {
+          "handlerBehaviorChanged": {
+            "minArgs": 0,
+            "maxArgs": 0
+          }
+        },
+        "windows": {
+          "create": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "get": {
+            "minArgs": 1,
+            "maxArgs": 2
+          },
+          "getAll": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "getCurrent": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "getLastFocused": {
+            "minArgs": 0,
+            "maxArgs": 1
+          },
+          "remove": {
+            "minArgs": 1,
+            "maxArgs": 1
+          },
+          "update": {
+            "minArgs": 2,
+            "maxArgs": 2
+          }
+        }
+      };
+      if (Object.keys(apiMetadata).length === 0) {
+        throw new Error("api-metadata.json has not been included in browser-polyfill");
+      }
+
+      /**
+       * A WeakMap subclass which creates and stores a value for any key which does
+       * not exist when accessed, but behaves exactly as an ordinary WeakMap
+       * otherwise.
+       *
+       * @param {function} createItem
+       *        A function which will be called in order to create the value for any
+       *        key which does not exist, the first time it is accessed. The
+       *        function receives, as its only argument, the key being created.
+       */
+      class DefaultWeakMap extends WeakMap {
+        constructor(createItem, items = undefined) {
+          super(items);
+          this.createItem = createItem;
+        }
+        get(key) {
+          if (!this.has(key)) {
+            this.set(key, this.createItem(key));
+          }
+          return super.get(key);
+        }
+      }
+
+      /**
+       * Returns true if the given object is an object with a `then` method, and can
+       * therefore be assumed to behave as a Promise.
+       *
+       * @param {*} value The value to test.
+       * @returns {boolean} True if the value is thenable.
+       */
+      const isThenable = value => {
+        return value && typeof value === "object" && typeof value.then === "function";
+      };
+
+      /**
+       * Creates and returns a function which, when called, will resolve or reject
+       * the given promise based on how it is called:
+       *
+       * - If, when called, `chrome.runtime.lastError` contains a non-null object,
+       *   the promise is rejected with that value.
+       * - If the function is called with exactly one argument, the promise is
+       *   resolved to that value.
+       * - Otherwise, the promise is resolved to an array containing all of the
+       *   function's arguments.
+       *
+       * @param {object} promise
+       *        An object containing the resolution and rejection functions of a
+       *        promise.
+       * @param {function} promise.resolve
+       *        The promise's resolution function.
+       * @param {function} promise.reject
+       *        The promise's rejection function.
+       * @param {object} metadata
+       *        Metadata about the wrapped method which has created the callback.
+       * @param {boolean} metadata.singleCallbackArg
+       *        Whether or not the promise is resolved with only the first
+       *        argument of the callback, alternatively an array of all the
+       *        callback arguments is resolved. By default, if the callback
+       *        function is invoked with only a single argument, that will be
+       *        resolved to the promise, while all arguments will be resolved as
+       *        an array if multiple are given.
+       *
+       * @returns {function}
+       *        The generated callback function.
+       */
+      const makeCallback = (promise, metadata) => {
+        return (...callbackArgs) => {
+          if (extensionAPIs.runtime.lastError) {
+            promise.reject(new Error(extensionAPIs.runtime.lastError.message));
+          } else if (metadata.singleCallbackArg || callbackArgs.length <= 1 && metadata.singleCallbackArg !== false) {
+            promise.resolve(callbackArgs[0]);
+          } else {
+            promise.resolve(callbackArgs);
+          }
+        };
+      };
+      const pluralizeArguments = numArgs => numArgs == 1 ? "argument" : "arguments";
+
+      /**
+       * Creates a wrapper function for a method with the given name and metadata.
+       *
+       * @param {string} name
+       *        The name of the method which is being wrapped.
+       * @param {object} metadata
+       *        Metadata about the method being wrapped.
+       * @param {integer} metadata.minArgs
+       *        The minimum number of arguments which must be passed to the
+       *        function. If called with fewer than this number of arguments, the
+       *        wrapper will raise an exception.
+       * @param {integer} metadata.maxArgs
+       *        The maximum number of arguments which may be passed to the
+       *        function. If called with more than this number of arguments, the
+       *        wrapper will raise an exception.
+       * @param {boolean} metadata.singleCallbackArg
+       *        Whether or not the promise is resolved with only the first
+       *        argument of the callback, alternatively an array of all the
+       *        callback arguments is resolved. By default, if the callback
+       *        function is invoked with only a single argument, that will be
+       *        resolved to the promise, while all arguments will be resolved as
+       *        an array if multiple are given.
+       *
+       * @returns {function(object, ...*)}
+       *       The generated wrapper function.
+       */
+      const wrapAsyncFunction = (name, metadata) => {
+        return function asyncFunctionWrapper(target, ...args) {
+          if (args.length < metadata.minArgs) {
+            throw new Error(`Expected at least ${metadata.minArgs} ${pluralizeArguments(metadata.minArgs)} for ${name}(), got ${args.length}`);
+          }
+          if (args.length > metadata.maxArgs) {
+            throw new Error(`Expected at most ${metadata.maxArgs} ${pluralizeArguments(metadata.maxArgs)} for ${name}(), got ${args.length}`);
+          }
+          return new Promise((resolve, reject) => {
+            if (metadata.fallbackToNoCallback) {
+              // This API method has currently no callback on Chrome, but it return a promise on Firefox,
+              // and so the polyfill will try to call it with a callback first, and it will fallback
+              // to not passing the callback if the first call fails.
+              try {
+                target[name](...args, makeCallback({
+                  resolve,
+                  reject
+                }, metadata));
+              } catch (cbError) {
+                console.warn(`${name} API method doesn't seem to support the callback parameter, ` + "falling back to call it without a callback: ", cbError);
+                target[name](...args);
+
+                // Update the API method metadata, so that the next API calls will not try to
+                // use the unsupported callback anymore.
+                metadata.fallbackToNoCallback = false;
+                metadata.noCallback = true;
+                resolve();
+              }
+            } else if (metadata.noCallback) {
+              target[name](...args);
+              resolve();
+            } else {
+              target[name](...args, makeCallback({
+                resolve,
+                reject
+              }, metadata));
+            }
+          });
+        };
+      };
+
+      /**
+       * Wraps an existing method of the target object, so that calls to it are
+       * intercepted by the given wrapper function. The wrapper function receives,
+       * as its first argument, the original `target` object, followed by each of
+       * the arguments passed to the original method.
+       *
+       * @param {object} target
+       *        The original target object that the wrapped method belongs to.
+       * @param {function} method
+       *        The method being wrapped. This is used as the target of the Proxy
+       *        object which is created to wrap the method.
+       * @param {function} wrapper
+       *        The wrapper function which is called in place of a direct invocation
+       *        of the wrapped method.
+       *
+       * @returns {Proxy<function>}
+       *        A Proxy object for the given method, which invokes the given wrapper
+       *        method in its place.
+       */
+      const wrapMethod = (target, method, wrapper) => {
+        return new Proxy(method, {
+          apply(targetMethod, thisObj, args) {
+            return wrapper.call(thisObj, target, ...args);
+          }
+        });
+      };
+      let hasOwnProperty = Function.call.bind(Object.prototype.hasOwnProperty);
+
+      /**
+       * Wraps an object in a Proxy which intercepts and wraps certain methods
+       * based on the given `wrappers` and `metadata` objects.
+       *
+       * @param {object} target
+       *        The target object to wrap.
+       *
+       * @param {object} [wrappers = {}]
+       *        An object tree containing wrapper functions for special cases. Any
+       *        function present in this object tree is called in place of the
+       *        method in the same location in the `target` object tree. These
+       *        wrapper methods are invoked as described in {@see wrapMethod}.
+       *
+       * @param {object} [metadata = {}]
+       *        An object tree containing metadata used to automatically generate
+       *        Promise-based wrapper functions for asynchronous. Any function in
+       *        the `target` object tree which has a corresponding metadata object
+       *        in the same location in the `metadata` tree is replaced with an
+       *        automatically-generated wrapper function, as described in
+       *        {@see wrapAsyncFunction}
+       *
+       * @returns {Proxy<object>}
+       */
+      const wrapObject = (target, wrappers = {}, metadata = {}) => {
+        let cache = Object.create(null);
+        let handlers = {
+          has(proxyTarget, prop) {
+            return prop in target || prop in cache;
+          },
+          get(proxyTarget, prop, receiver) {
+            if (prop in cache) {
+              return cache[prop];
+            }
+            if (!(prop in target)) {
+              return undefined;
+            }
+            let value = target[prop];
+            if (typeof value === "function") {
+              // This is a method on the underlying object. Check if we need to do
+              // any wrapping.
+
+              if (typeof wrappers[prop] === "function") {
+                // We have a special-case wrapper for this method.
+                value = wrapMethod(target, target[prop], wrappers[prop]);
+              } else if (hasOwnProperty(metadata, prop)) {
+                // This is an async method that we have metadata for. Create a
+                // Promise wrapper for it.
+                let wrapper = wrapAsyncFunction(prop, metadata[prop]);
+                value = wrapMethod(target, target[prop], wrapper);
+              } else {
+                // This is a method that we don't know or care about. Return the
+                // original method, bound to the underlying object.
+                value = value.bind(target);
+              }
+            } else if (typeof value === "object" && value !== null && (hasOwnProperty(wrappers, prop) || hasOwnProperty(metadata, prop))) {
+              // This is an object that we need to do some wrapping for the children
+              // of. Create a sub-object wrapper for it with the appropriate child
+              // metadata.
+              value = wrapObject(value, wrappers[prop], metadata[prop]);
+            } else if (hasOwnProperty(metadata, "*")) {
+              // Wrap all properties in * namespace.
+              value = wrapObject(value, wrappers[prop], metadata["*"]);
+            } else {
+              // We don't need to do any wrapping for this property,
+              // so just forward all access to the underlying object.
+              Object.defineProperty(cache, prop, {
+                configurable: true,
+                enumerable: true,
+                get() {
+                  return target[prop];
+                },
+                set(value) {
+                  target[prop] = value;
+                }
+              });
+              return value;
+            }
+            cache[prop] = value;
+            return value;
+          },
+          set(proxyTarget, prop, value, receiver) {
+            if (prop in cache) {
+              cache[prop] = value;
+            } else {
+              target[prop] = value;
+            }
+            return true;
+          },
+          defineProperty(proxyTarget, prop, desc) {
+            return Reflect.defineProperty(cache, prop, desc);
+          },
+          deleteProperty(proxyTarget, prop) {
+            return Reflect.deleteProperty(cache, prop);
+          }
+        };
+
+        // Per contract of the Proxy API, the "get" proxy handler must return the
+        // original value of the target if that value is declared read-only and
+        // non-configurable. For this reason, we create an object with the
+        // prototype set to `target` instead of using `target` directly.
+        // Otherwise we cannot return a custom object for APIs that
+        // are declared read-only and non-configurable, such as `chrome.devtools`.
+        //
+        // The proxy handlers themselves will still use the original `target`
+        // instead of the `proxyTarget`, so that the methods and properties are
+        // dereferenced via the original targets.
+        let proxyTarget = Object.create(target);
+        return new Proxy(proxyTarget, handlers);
+      };
+
+      /**
+       * Creates a set of wrapper functions for an event object, which handles
+       * wrapping of listener functions that those messages are passed.
+       *
+       * A single wrapper is created for each listener function, and stored in a
+       * map. Subsequent calls to `addListener`, `hasListener`, or `removeListener`
+       * retrieve the original wrapper, so that  attempts to remove a
+       * previously-added listener work as expected.
+       *
+       * @param {DefaultWeakMap<function, function>} wrapperMap
+       *        A DefaultWeakMap object which will create the appropriate wrapper
+       *        for a given listener function when one does not exist, and retrieve
+       *        an existing one when it does.
+       *
+       * @returns {object}
+       */
+      const wrapEvent = wrapperMap => ({
+        addListener(target, listener, ...args) {
+          target.addListener(wrapperMap.get(listener), ...args);
+        },
+        hasListener(target, listener) {
+          return target.hasListener(wrapperMap.get(listener));
+        },
+        removeListener(target, listener) {
+          target.removeListener(wrapperMap.get(listener));
+        }
+      });
+      const onRequestFinishedWrappers = new DefaultWeakMap(listener => {
+        if (typeof listener !== "function") {
+          return listener;
+        }
+
+        /**
+         * Wraps an onRequestFinished listener function so that it will return a
+         * `getContent()` property which returns a `Promise` rather than using a
+         * callback API.
+         *
+         * @param {object} req
+         *        The HAR entry object representing the network request.
+         */
+        return function onRequestFinished(req) {
+          const wrappedReq = wrapObject(req, {} /* wrappers */, {
+            getContent: {
+              minArgs: 0,
+              maxArgs: 0
+            }
+          });
+          listener(wrappedReq);
+        };
+      });
+      const onMessageWrappers = new DefaultWeakMap(listener => {
+        if (typeof listener !== "function") {
+          return listener;
+        }
+
+        /**
+         * Wraps a message listener function so that it may send responses based on
+         * its return value, rather than by returning a sentinel value and calling a
+         * callback. If the listener function returns a Promise, the response is
+         * sent when the promise either resolves or rejects.
+         *
+         * @param {*} message
+         *        The message sent by the other end of the channel.
+         * @param {object} sender
+         *        Details about the sender of the message.
+         * @param {function(*)} sendResponse
+         *        A callback which, when called with an arbitrary argument, sends
+         *        that value as a response.
+         * @returns {boolean}
+         *        True if the wrapped listener returned a Promise, which will later
+         *        yield a response. False otherwise.
+         */
+        return function onMessage(message, sender, sendResponse) {
+          let didCallSendResponse = false;
+          let wrappedSendResponse;
+          let sendResponsePromise = new Promise(resolve => {
+            wrappedSendResponse = function (response) {
+              didCallSendResponse = true;
+              resolve(response);
+            };
+          });
+          let result;
+          try {
+            result = listener(message, sender, wrappedSendResponse);
+          } catch (err) {
+            result = Promise.reject(err);
+          }
+          const isResultThenable = result !== true && isThenable(result);
+
+          // If the listener didn't returned true or a Promise, or called
+          // wrappedSendResponse synchronously, we can exit earlier
+          // because there will be no response sent from this listener.
+          if (result !== true && !isResultThenable && !didCallSendResponse) {
+            return false;
+          }
+
+          // A small helper to send the message if the promise resolves
+          // and an error if the promise rejects (a wrapped sendMessage has
+          // to translate the message into a resolved promise or a rejected
+          // promise).
+          const sendPromisedResult = promise => {
+            promise.then(msg => {
+              // send the message value.
+              sendResponse(msg);
+            }, error => {
+              // Send a JSON representation of the error if the rejected value
+              // is an instance of error, or the object itself otherwise.
+              let message;
+              if (error && (error instanceof Error || typeof error.message === "string")) {
+                message = error.message;
+              } else {
+                message = "An unexpected error occurred";
+              }
+              sendResponse({
+                __mozWebExtensionPolyfillReject__: true,
+                message
+              });
+            }).catch(err => {
+              // Print an error on the console if unable to send the response.
+              console.error("Failed to send onMessage rejected reply", err);
+            });
+          };
+
+          // If the listener returned a Promise, send the resolved value as a
+          // result, otherwise wait the promise related to the wrappedSendResponse
+          // callback to resolve and send it as a response.
+          if (isResultThenable) {
+            sendPromisedResult(result);
+          } else {
+            sendPromisedResult(sendResponsePromise);
+          }
+
+          // Let Chrome know that the listener is replying.
+          return true;
+        };
+      });
+      const wrappedSendMessageCallback = ({
+        reject,
+        resolve
+      }, reply) => {
+        if (extensionAPIs.runtime.lastError) {
+          // Detect when none of the listeners replied to the sendMessage call and resolve
+          // the promise to undefined as in Firefox.
+          // See https://github.com/mozilla/webextension-polyfill/issues/130
+          if (extensionAPIs.runtime.lastError.message === CHROME_SEND_MESSAGE_CALLBACK_NO_RESPONSE_MESSAGE) {
+            resolve();
+          } else {
+            reject(new Error(extensionAPIs.runtime.lastError.message));
+          }
+        } else if (reply && reply.__mozWebExtensionPolyfillReject__) {
+          // Convert back the JSON representation of the error into
+          // an Error instance.
+          reject(new Error(reply.message));
+        } else {
+          resolve(reply);
+        }
+      };
+      const wrappedSendMessage = (name, metadata, apiNamespaceObj, ...args) => {
+        if (args.length < metadata.minArgs) {
+          throw new Error(`Expected at least ${metadata.minArgs} ${pluralizeArguments(metadata.minArgs)} for ${name}(), got ${args.length}`);
+        }
+        if (args.length > metadata.maxArgs) {
+          throw new Error(`Expected at most ${metadata.maxArgs} ${pluralizeArguments(metadata.maxArgs)} for ${name}(), got ${args.length}`);
+        }
+        return new Promise((resolve, reject) => {
+          const wrappedCb = wrappedSendMessageCallback.bind(null, {
+            resolve,
+            reject
+          });
+          args.push(wrappedCb);
+          apiNamespaceObj.sendMessage(...args);
+        });
+      };
+      const staticWrappers = {
+        devtools: {
+          network: {
+            onRequestFinished: wrapEvent(onRequestFinishedWrappers)
+          }
+        },
+        runtime: {
+          onMessage: wrapEvent(onMessageWrappers),
+          onMessageExternal: wrapEvent(onMessageWrappers),
+          sendMessage: wrappedSendMessage.bind(null, "sendMessage", {
+            minArgs: 1,
+            maxArgs: 3
+          })
+        },
+        tabs: {
+          sendMessage: wrappedSendMessage.bind(null, "sendMessage", {
+            minArgs: 2,
+            maxArgs: 3
+          })
+        }
+      };
+      const settingMetadata = {
+        clear: {
+          minArgs: 1,
+          maxArgs: 1
+        },
+        get: {
+          minArgs: 1,
+          maxArgs: 1
+        },
+        set: {
+          minArgs: 1,
+          maxArgs: 1
+        }
+      };
+      apiMetadata.privacy = {
+        network: {
+          "*": settingMetadata
+        },
+        services: {
+          "*": settingMetadata
+        },
+        websites: {
+          "*": settingMetadata
+        }
+      };
+      return wrapObject(extensionAPIs, staticWrappers, apiMetadata);
+    };
+
+    // The build process adds a UMD wrapper around this file, which makes the
+    // `module` variable available.
+    module.exports = wrapAPIs(chrome);
+  } else {
+    module.exports = globalThis.browser;
+  }
+});
+//# sourceMappingURL=browser-polyfill.js.map
+
+
+/***/ }),
 
 /***/ "./src/ts/API.ts":
 /*!***********************!*\
@@ -8,6 +1238,7 @@
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   API: () => (/* binding */ API)
@@ -141,6 +1372,7 @@ class API {
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   bg: () => (/* binding */ bg)
@@ -320,6 +1552,7 @@ const bg = new BG();
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BoldKeywords: () => (/* binding */ BoldKeywords)
@@ -359,6 +1592,7 @@ class BoldKeywords {
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
@@ -369,7 +1603,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./MsgBox */ "./src/ts/MsgBox.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 /* harmony import */ var _Theme__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Theme */ "./src/ts/Theme.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_9__);
 // 用户界面
+
 
 
 
@@ -446,7 +1683,7 @@ class CenterPanel {
     // 绑定中间面板上的事件
     bindEvents() {
         // 监听点击扩展图标的消息，开关中间面板
-        chrome.runtime.onMessage.addListener((msg) => {
+        webextension_polyfill__WEBPACK_IMPORTED_MODULE_9___default().runtime.onMessage.addListener((msg) => {
             if (msg.msg === 'click_icon') {
                 this.toggle();
             }
@@ -554,6 +1791,7 @@ new CenterPanel();
   \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -624,6 +1862,7 @@ new CheckUnsupportBrowser();
   \**************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Colors: () => (/* binding */ Colors)
@@ -663,10 +1902,14 @@ var Colors;
   \**************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Config: () => (/* binding */ Config)
 /* harmony export */ });
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_0__);
+
 // 储存一些配置
 // 用户不可以修改这里的配置
 class Config {
@@ -694,6 +1937,24 @@ class Config {
     static defaultNameRuleForNonImages = '{user}/{date}-{title}/{name}';
     /**浏览器是否处于移动端模式 */
     static mobile = navigator.userAgent.includes('Mobile');
+    /**检测 Firefox 浏览器 */
+    static isFirefox = navigator.userAgent.includes('Firefox');
+    /** Firefox Android 上不支持 downloads API（调用 downloads.download 等方法会抛出 "Not implemented" 错误），此时需要使用 a 标签来下载文件 */
+    static downloadsAPIDisabled = this.isFirefox && this.mobile;
+    /** 下载下载器动态生成的文件（如保存的正文文件、HTML 文件等）时，Firefox 里无法在后台使用前台生成的 blob URL。
+     * 所以发送消息时需要携带 Blob 对象，由后台脚本生成 blob URL 来下载 */
+    static sendBlob = this.isFirefox;
+    /** 在 Chrome 的隐私窗口里下载下载器动态生成的文件时，需要把 blob 对象转换为 dataURL 发送给后台。
+     * 不能直接传递 blob，因为隐私窗口里前台传递给后台的数据会被 Chrome 做 JSON 序列化处理，
+     * 而 Blob 无法被序列化，后台接收到的 blob 会变成空对象，无法使用。
+     * 前台生成的 blob URL 也无法使用，因为后台脚本（spanning 模式）与隐私窗口位于不同的环境里。
+     * dataURL 是纯字符串，在所有情况下都可以传递。由于转换为 dataURL 有额外的性能消耗，
+     * 所以只有在其他方式都不可用时才使用它
+     */
+    static sendDataURL = !this.isFirefox &&
+        // 这个检测只在页面（content script）里有效；在后台脚本里 browser.extension
+        // 可能不存在（例如 Chrome MV3 的 Service Worker），此时为 undefined，不影响使用
+        (webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default().extension)?.inIncognitoContext;
     static whatIsNewFlagDefault = 'xuejian&saber';
 }
 
@@ -707,6 +1968,7 @@ class Config {
   \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   crawlInterval: () => (/* binding */ crawlInterval)
@@ -782,6 +2044,7 @@ const crawlInterval = new CrawlInterval();
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   EVT: () => (/* binding */ EVT)
@@ -878,6 +2141,7 @@ const EVT = new EVENT();
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   fileName: () => (/* binding */ fileName)
@@ -1129,6 +2393,7 @@ const fileName = new FileName();
   \**************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   filter: () => (/* binding */ filter)
@@ -1422,6 +2687,7 @@ const filter = new Filter();
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   InitHomePage: () => (/* binding */ InitHomePage)
@@ -1549,6 +2815,7 @@ class InitHomePage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPageBa
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PageType */ "./src/ts/PageType.ts");
@@ -1602,6 +2869,7 @@ new InitPage();
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   InitPageBase: () => (/* binding */ InitPageBase)
@@ -1983,6 +3251,7 @@ class InitPageBase {
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   InitPostListPage: () => (/* binding */ InitPostListPage)
@@ -2044,6 +3313,7 @@ class InitPostListPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPa
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   InitPostPage: () => (/* binding */ InitPostPage)
@@ -2123,6 +3393,7 @@ class InitPostPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPageBa
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   InitTagPage: () => (/* binding */ InitTagPage)
@@ -2175,6 +3446,7 @@ class InitTagPage extends _InitPageBase__WEBPACK_IMPORTED_MODULE_3__.InitPageBas
   \************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   lang: () => (/* binding */ lang)
@@ -2335,8 +3607,12 @@ const lang = new Lang();
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_1__);
+
 
 // 监听页面的无刷新切换
 class ListenPageSwitch {
@@ -2347,7 +3623,7 @@ class ListenPageSwitch {
     // 为监听 url 变化的事件提供支持
     supportListenHistory() {
         const s = document.createElement('script');
-        const url = chrome.runtime.getURL('lib/listen_history_change.js');
+        const url = webextension_polyfill__WEBPACK_IMPORTED_MODULE_1___default().runtime.getURL('lib/listen_history_change.js');
         s.src = url;
         document.head.appendChild(s);
     }
@@ -2375,6 +3651,7 @@ new ListenPageSwitch();
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   log: () => (/* binding */ log)
@@ -2543,6 +3820,7 @@ const log = new Log();
   \**************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   msgBox: () => (/* binding */ msgBox)
@@ -2670,6 +3948,7 @@ const msgBox = new MsgBox();
   \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -2726,6 +4005,7 @@ new OpenCenterPanel();
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -2844,6 +4124,7 @@ new OutputPanel();
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   pageType: () => (/* binding */ pageType)
@@ -2959,6 +4240,7 @@ const pageType = new PageType();
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   progressBar: () => (/* binding */ progressBar)
@@ -3079,6 +4361,7 @@ const progressBar = new ProgressBar();
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
@@ -3147,6 +4430,7 @@ new QuickCrawl();
   \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderCommentsHtml: () => (/* binding */ renderCommentsHtml)
@@ -3272,6 +4556,7 @@ const renderCommentsHtml = new RenderCommentsHtml();
   \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderCommentsText: () => (/* binding */ renderCommentsText)
@@ -3390,6 +4675,7 @@ const renderCommentsText = new RenderCommentsText();
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   saveData: () => (/* binding */ saveData)
@@ -3810,6 +5096,7 @@ const saveData = new SaveData();
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
@@ -3856,18 +5143,22 @@ new ShowHowToUse();
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./setting/Settings */ "./src/ts/setting/Settings.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Tools */ "./src/ts/Tools.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 
 
 class ShowNotification {
     constructor() {
-        this.iconURL = chrome.runtime.getURL('icon/logo128.png');
+        this.iconURL = webextension_polyfill__WEBPACK_IMPORTED_MODULE_4___default().runtime.getURL('icon/logo128.png');
         this.bindEvents();
     }
     iconURL = '';
@@ -3917,12 +5208,16 @@ new ShowNotification();
   \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Config */ "./src/ts/Config.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MsgBox */ "./src/ts/MsgBox.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./setting/Settings */ "./src/ts/setting/Settings.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_5__);
+
 
 
 
@@ -3940,7 +5235,7 @@ class ShowWhatIsNew {
             this.showMsg();
         });
     }
-    version = chrome.runtime.getManifest().version;
+    version = webextension_polyfill__WEBPACK_IMPORTED_MODULE_5___default().runtime.getManifest().version;
     show() {
         // 如果这个标记是初始值，说明用户是首次安装这个扩展，或者重置了设置，此时不显示更新说明
         // 这样做的目的：只有当用户是从以前的版本升级到新版本时，才会显示更新说明
@@ -3982,6 +5277,7 @@ new ShowWhatIsNew();
   \**************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   states: () => (/* binding */ states)
@@ -4074,6 +5370,7 @@ const states = new States();
   \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   store: () => (/* binding */ store)
@@ -4198,6 +5495,7 @@ const store = new Store();
   \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   theme: () => (/* binding */ theme)
@@ -4327,6 +5625,7 @@ const theme = new Theme();
   \***********************/
 /***/ (() => {
 
+"use strict";
 
 // 显示自定义的提示
 class Tip {
@@ -4384,6 +5683,7 @@ new Tip();
   \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   toast: () => (/* binding */ toast)
@@ -4583,6 +5883,7 @@ const toast = new Toast();
   \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Tools: () => (/* binding */ Tools)
@@ -4708,6 +6009,7 @@ class Tools {
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 
@@ -4774,6 +6076,7 @@ new UnifiedURL();
   \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   createHtmlDocument: () => (/* binding */ createHtmlDocument)
@@ -5184,6 +6487,7 @@ const createHtmlDocument = new CreateHtmlDocument();
   \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Download: () => (/* binding */ Download)
@@ -5196,6 +6500,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
 /* harmony import */ var _States__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../States */ "./src/ts/States.ts");
 /* harmony import */ var _DownloadInterval__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DownloadInterval */ "./src/ts/download/DownloadInterval.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
+
+
+
 
 
 
@@ -5260,7 +6571,28 @@ class Download {
         this.browserDownload(url, this.fileName, arg.id, arg.taskBatch);
     }
     // 向浏览器发送下载任务
-    browserDownload(url, fileName, id, taskBatch) {
+    async browserDownload(url, fileName, id, taskBatch) {
+        // Firefox Android 不支持 downloads API，改为使用 a 标签下载文件
+        if (_Config__WEBPACK_IMPORTED_MODULE_10__.Config.downloadsAPIDisabled) {
+            // a 标签不能建立文件夹，所以移除路径部分，只保留文件名
+            const lastName = fileName.split('/').pop() || fileName;
+            _utils_Utils__WEBPACK_IMPORTED_MODULE_9__.Utils.downloadFile(url, lastName);
+            // 向后台发送消息，使其模拟返回一个下载成功的消息，让下载流程得以继续。
+            // 注意：这个分支不携带文件数据，只传递任务信息即可
+            webextension_polyfill__WEBPACK_IMPORTED_MODULE_8___default().runtime
+                .sendMessage({
+                msg: 'save_work_file_a_download',
+                fileUrl: url,
+                fileName: fileName,
+                id,
+                taskBatch,
+            })
+                .catch((error) => {
+                // 消息发送失败时打印错误，避免下载任务卡住却没有提示
+                console.error('发送 save_work_file_a_download 消息失败', error);
+            });
+            return;
+        }
         const sendData = {
             msg: 'send_download',
             fileUrl: url,
@@ -5269,7 +6601,21 @@ class Download {
             taskBatch,
             conflictAction: this.arg.conflictAction,
         };
-        chrome.runtime.sendMessage(sendData);
+        // 下载器动态生成的文件（url 是 blob URL）在 Firefox 和 Chrome 的隐私窗口里
+        // 不能直接使用前台生成的 blob URL 下载，需要同时携带文件数据。
+        // 详见 Config.sendBlob / sendDataURL 的注释
+        if (url.startsWith('blob:') && this.arg.blob) {
+            if (_Config__WEBPACK_IMPORTED_MODULE_10__.Config.sendDataURL) {
+                sendData.dataURL = await _utils_Utils__WEBPACK_IMPORTED_MODULE_9__.Utils.blobToDataURL(this.arg.blob);
+            }
+            if (_Config__WEBPACK_IMPORTED_MODULE_10__.Config.sendBlob) {
+                sendData.blob = this.arg.blob;
+            }
+        }
+        webextension_polyfill__WEBPACK_IMPORTED_MODULE_8___default().runtime.sendMessage(sendData).catch((error) => {
+            // 消息发送失败时打印错误（例如扩展被更新后 context invalidated）
+            console.error('发送下载消息失败', error);
+        });
     }
 }
 
@@ -5283,6 +6629,7 @@ class Download {
   \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Tools */ "./src/ts/Tools.ts");
@@ -5303,8 +6650,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateHtmlDocument__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./CreateHtmlDocument */ "./src/ts/download/CreateHtmlDocument.ts");
 /* harmony import */ var _FileName__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../FileName */ "./src/ts/FileName.ts");
 /* harmony import */ var _utils_DateFormat__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../utils/DateFormat */ "./src/ts/utils/DateFormat.ts");
-/* harmony import */ var _SaveData__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../SaveData */ "./src/ts/SaveData.ts");
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _SaveData__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../SaveData */ "./src/ts/SaveData.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_21__);
 // 下载控制
+
+
 
 
 
@@ -5366,7 +6718,7 @@ class DownloadControl {
             this.downloadSuccess(data);
         });
         // 监听浏览器下载文件后，返回的消息
-        chrome.runtime.onMessage.addListener((msg) => {
+        webextension_polyfill__WEBPACK_IMPORTED_MODULE_21___default().runtime.onMessage.addListener((msg) => {
             if (!this.taskBatch) {
                 return;
             }
@@ -5566,6 +6918,9 @@ class DownloadControl {
         _Log__WEBPACK_IMPORTED_MODULE_3__.log.log(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_正在下载中'));
         if (_Config__WEBPACK_IMPORTED_MODULE_14__.Config.mobile) {
             _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_移动端浏览器可能不会建立文件夹的说明'));
+            if (_Config__WEBPACK_IMPORTED_MODULE_14__.Config.isFirefox) {
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.warning(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_在移动版Firefox上提示无法可靠的批量下载'));
+            }
         }
     }
     // 暂停下载
@@ -5653,7 +7008,7 @@ class DownloadControl {
     }
     // 为一个多次下载失败的文件，生成一份错误记录 txt 并保存到本地。
     // txt 与原文件在同一个文件夹里、使用相同的命名规则，只是后缀名改为 txt
-    saveErrorRecord(data, err) {
+    async saveErrorRecord(data, err) {
         // 下载器自己生成的文本文件（正文 txt / HTML）不做错误记录。
         // 它的 url 是 blob，而且它本身就是下载器生成的文件，失败后重新下载即可
         if (data.url.startsWith('blob:')) {
@@ -5691,15 +7046,29 @@ class DownloadControl {
         const blob = new Blob([text], {
             type: 'text/plain;charset=utf-8',
         });
-        const url = URL.createObjectURL(blob);
+        // Firefox Android 不支持 downloads API，使用 a 标签下载错误记录。
+        // a 标签不能建立文件夹，所以只保留文件名部分
+        if (_Config__WEBPACK_IMPORTED_MODULE_14__.Config.downloadsAPIDisabled) {
+            _utils_Utils__WEBPACK_IMPORTED_MODULE_19__.Utils.downloadFile(URL.createObjectURL(blob), recordName.split('/').pop() || recordName);
+            return;
+        }
+        const sendData = {
+            msg: 'save_file_no_replay',
+            fileUrl: URL.createObjectURL(blob),
+            fileName: recordName,
+        };
+        // 在 Firefox / Chrome 的隐私窗口里下载 blob 文件时，需要携带文件数据，
+        // 详见 Config.sendBlob / sendDataURL 的注释
+        if (_Config__WEBPACK_IMPORTED_MODULE_14__.Config.sendDataURL) {
+            sendData.dataURL = await _utils_Utils__WEBPACK_IMPORTED_MODULE_19__.Utils.blobToDataURL(blob);
+        }
+        if (_Config__WEBPACK_IMPORTED_MODULE_14__.Config.sendBlob) {
+            sendData.blob = blob;
+        }
         // 通过后台脚本把错误记录下载到本地。
         // 使用 save_file_no_replay 消息，该下载不会返回下载状态，不会触发下载成功/失败流程，
         // 也不会影响上述失败次数的统计
-        chrome.runtime.sendMessage({
-            msg: 'save_file_no_replay',
-            fileUrl: url,
-            fileName: recordName,
-        });
+        webextension_polyfill__WEBPACK_IMPORTED_MODULE_21___default().runtime.sendMessage(sendData).catch(() => { });
     }
     async downloadSuccess(data) {
         const task = this.taskList[data.id];
@@ -5758,6 +7127,11 @@ class DownloadControl {
         }
         else {
             let result = _Store__WEBPACK_IMPORTED_MODULE_2__.store.result[index];
+            // 下载器动态生成的文件内容（Blob）。目前只有文本数据（保存的正文 txt / HTML）会有。
+            // 它需要在发送下载消息时一并传给后台：在 Firefox 和 Chrome 的隐私窗口里，
+            // 前台生成的 blob URL 无法在后台使用，需要发送文件数据（Blob 或 dataURL），
+            // 详见 Config.sendBlob / sendDataURL 的注释
+            let fileBlob = null;
             // 对于文本数据，此时创建其 URL
             // 空正文的 HTML 也需要生成文件，否则无法保存只有资源的投稿
             if ('text' in result) {
@@ -5772,8 +7146,8 @@ class DownloadControl {
                 // HTML 模式即使正文为空（text 数组为空）也要生成文件，以便保存只有资源的投稿
                 if (isHtml || result.text.length > 0) {
                     if (isHtml) {
-                        // HTML 需要在下载时生成，才能使用当前任务的本地资源路径
-                        // HTML 会尽量引用本地文件（相对路径），而不是远程 URL（远程 URL 无法显示付费内容）。
+                        // HTML 需要在下载时生成，才能获取其他文件的文件名，从而使用相对路径引用它们。
+                        // HTML 会尽量引用本地文件，而不是远程 URL（远程 URL 无法显示付费内容）。
                         // 如果只使用本次抓取到的文件，就会遗漏被过滤条件排除的文件。例如用户以前下载过某个
                         // 投稿的全部文件，这次为了提高速度而在抓取时排除了某些文件类型，那么本次抓取结果里
                         // 只有一部分文件，但用户本地其实已有完整的文件。所以这里重新解析该投稿，
@@ -5783,7 +7157,7 @@ class DownloadControl {
                         // 这样 HTML 文件会与本次下载的文件保存在相同的文件夹里，相对路径才能正常工作
                         // 也就是说，{PVA} 标记以本次下载为准；以下载新投稿的情况为优先，而不是为了匹配旧文件优先。
                         let files = [];
-                        const fullMeta = _SaveData__WEBPACK_IMPORTED_MODULE_19__.saveData.parsePost(result.htmlData, false);
+                        const fullMeta = _SaveData__WEBPACK_IMPORTED_MODULE_20__.saveData.parsePost(result.htmlData, false);
                         if (fullMeta) {
                             files = fullMeta.files;
                         }
@@ -5810,13 +7184,13 @@ class DownloadControl {
                         result.ext = 'txt';
                     }
                     const text = result.text.join('\r\n');
-                    const blob = new Blob([text], {
+                    fileBlob = new Blob([text], {
                         type: isHtml
                             ? 'text/html;charset=utf-8'
                             : 'text/plain;charset=utf-8',
                     });
-                    result.url = URL.createObjectURL(blob);
-                    result.size = blob.size;
+                    result.url = URL.createObjectURL(fileBlob);
+                    result.size = fileBlob.size;
                 }
             }
             // 如果出现了服务端错误，可能是获取原图时出现错误，改为使用缩略图进行下载
@@ -5847,6 +7221,9 @@ class DownloadControl {
                 taskBatch: this.taskBatch,
                 // 仅 HTML 文本需要覆盖，避免附件和图片被同名文件覆盖
                 conflictAction: 'text' in result && result.ext === 'html' ? 'overwrite' : undefined,
+                // 动态生成的文件（url 是 blob URL）携带文件数据，用于在 Firefox /
+                // Chrome 隐私窗口里下载。其他文件（原始 URL）没有 blob，值为 undefined
+                blob: fileBlob || undefined,
             };
             // 保存任务信息
             this.taskList[data.data.fileID] = {
@@ -5869,6 +7246,7 @@ new DownloadControl();
   \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   downloadInterval: () => (/* binding */ downloadInterval)
@@ -5877,6 +7255,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
 /* harmony import */ var _setting_Settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../setting/Settings */ "./src/ts/setting/Settings.ts");
+/* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/Utils */ "./src/ts/utils/Utils.ts");
+
+
 
 
 
@@ -5933,6 +7315,12 @@ class DownloadInterval {
         return new Promise(async (resolve) => {
             // 首先检查此设置不应该生效的情况，立即放行
             if (_setting_Settings__WEBPACK_IMPORTED_MODULE_3__.settings.downloadInterval === 0) {
+                // 在 Firefox Android 上会使用 a 标签下载文件（见 Config.downloadsAPIDisabled）。
+                // 如果不添加延迟时间，极端情况下 1 秒内可能会下载几十个文件，浏览器实际上
+                // 可能不会下载部分文件，所以强制添加 200 ms 的延迟
+                if (_Config__WEBPACK_IMPORTED_MODULE_4__.Config.downloadsAPIDisabled) {
+                    await _utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.sleep(200);
+                }
                 return resolve(true);
             }
             // 可以立即开始下载
@@ -5963,6 +7351,7 @@ const downloadInterval = new DownloadInterval();
   \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   downloadRecord: () => (/* binding */ downloadRecord)
@@ -6139,6 +7528,7 @@ const downloadRecord = new DownloadRecord();
   \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   downloadStates: () => (/* binding */ downloadStates)
@@ -6220,6 +7610,7 @@ const downloadStates = new DownloadStates();
   \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getTotalDownload: () => (/* binding */ getTotalDownload)
@@ -6227,6 +7618,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../MsgBox */ "./src/ts/MsgBox.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -6243,80 +7637,74 @@ class GetTotalDownload {
      * 向后台脚本发送消息，并等待其返回响应。
      *
      * 后台脚本是 MV3 的 Service Worker，可能已经被浏览器回收。当它被回收后，
-     * 第一次发送消息时它需要重新启动，此时可能拿不到响应（response 为 undefined
-     * 或 null，同时会设置 chrome.runtime.lastError）。等待片刻后重试即可成功，
+     * 第一次发送消息时它需要重新启动，此时可能拿不到响应（响应为 undefined/null，
+     * 或者 sendMessage 抛出错误）。等待片刻后重试即可成功，
      * 所以这里在拿到响应之前会按指定次数自动重试。
      */
-    sendMessageWithRetry(msg, maxRetry, callback) {
-        chrome.runtime.sendMessage({ msg }, (response) => {
-            // 后台脚本未就绪时，response 可能是 undefined 或 null，并且 lastError 会被设置
-            if (chrome.runtime.lastError ||
-                response === undefined ||
-                response === null) {
-                if (maxRetry > 0) {
-                    // 等待后台脚本完成启动，然后再次发送消息
-                    window.setTimeout(() => {
-                        this.sendMessageWithRetry(msg, maxRetry - 1, callback);
-                    }, 500);
-                }
-                else {
-                    // 重试次数已用尽，此时以 undefined 告知调用方
-                    callback(undefined);
-                }
-                return;
+    async sendMessageWithRetry(msg, maxRetry) {
+        try {
+            const response = (await webextension_polyfill__WEBPACK_IMPORTED_MODULE_3___default().runtime.sendMessage({
+                msg,
+            }));
+            // 后台脚本未就绪时，响应可能是 undefined 或 null
+            if (response !== undefined && response !== null) {
+                return response;
             }
-            callback(response);
-        });
+        }
+        catch (error) {
+            // 后台脚本未就绪时 sendMessage 可能会抛出错误（例如没有接收端），等待片刻后重试
+        }
+        if (maxRetry > 0) {
+            // 等待后台脚本完成启动，然后再次发送消息
+            await new Promise((resolve) => window.setTimeout(resolve, 500));
+            return this.sendMessageWithRetry(msg, maxRetry - 1);
+        }
+        // 重试次数已用尽，以 undefined 告知调用方
+        return undefined;
     }
     async getToday() {
-        return new Promise((resolve) => {
-            this.sendMessageWithRetry('getTotalDownload', 2, (response) => {
-                // response: { total: number }
-                const total = response?.total || -1;
-                return resolve(total);
-            });
-        });
+        const response = await this.sendMessageWithRetry('getTotalDownload', 2);
+        return response?.total || -1;
     }
-    getHistory30Day() {
-        this.sendMessageWithRetry('getTotalDownloadHistory30', 2, (response) => {
-            // 多次重试后仍然没有获取到数据。可能的情况：
-            // - 后台脚本之前被回收了，现在重试数次之后仍然没能获取到数据
-            // - 用户在安装这个扩展后从来没有下载过文件，没有记录，此时 response 是 undefined
-            if (!response) {
-                console.log('getTotalDownloadHistory30 response:', response);
-                _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_没有数据可供使用'));
-                return;
+    async getHistory30Day() {
+        const response = await this.sendMessageWithRetry('getTotalDownloadHistory30', 2);
+        // 多次重试后仍然没有获取到数据。可能的情况：
+        // - 后台脚本之前被回收了，现在重试数次之后仍然没能获取到数据
+        // - 用户在安装这个扩展后从来没有下载过文件，没有记录，此时 response 是 undefined
+        if (!response) {
+            console.log('getTotalDownloadHistory30 response:', response);
+            _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_没有数据可供使用'));
+            return;
+        }
+        // response.history 例如：
+        // [{date: '2025-08-03', bytes: 18431824}]
+        if (response.history.length === 0) {
+            _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_没有数据可供使用'));
+            return;
+        }
+        const array = [];
+        response.history.forEach(({ date, bytes }) => {
+            // 选择显示单位
+            let size = '';
+            const MiB = bytes / 1024 / 1024;
+            const GiB = MiB / 1024;
+            if (GiB < 1) {
+                size = `${MiB.toFixed(2)} MiB`;
             }
-            // response.history 例如：
-            // [{date: '2025-08-03', bytes: 18431824}]
-            if (response.history.length === 0) {
-                _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.warning(_Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_没有数据可供使用'));
-                return;
+            else {
+                size = `${GiB.toFixed(2)} GiB`;
             }
-            const array = [];
-            response.history.forEach(({ date, bytes }) => {
-                // 选择显示单位
-                let size = '';
-                const MiB = bytes / 1024 / 1024;
-                const GiB = MiB / 1024;
-                if (GiB < 1) {
-                    size = `${MiB.toFixed(2)} MiB`;
-                }
-                else {
-                    size = `${GiB.toFixed(2)} GiB`;
-                }
-                array.push(`<p><span>${date}</span> <span>${size}</span></p>`);
-            });
-            // 显示历史记录
-            const html = `<div id="downloadTotal30Day">
-        <style>
-          #downloadTotal30Day span{width:30%;display: inline-block;}
-        </style>
-        ${array.join('')}
-        </div>`;
-            _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.show(html, {
-                title: _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_最近30天内的下载记录'),
-            });
+            array.push(`<p><span>${date}</span> <span>${size}</span></p>`);
+        });
+        // 显示历史记录
+        const html = `<div id="downloadTotal30Day">
+    <style>
+      #downloadTotal30Day span{width:30%;display: inline-block;}
+    </style>
+    ${array.join('')}
+    </div>`;
+        _MsgBox__WEBPACK_IMPORTED_MODULE_2__.msgBox.show(html, {
+            title: _Lang__WEBPACK_IMPORTED_MODULE_1__.lang.transl('_最近30天内的下载记录'),
         });
     }
 }
@@ -6332,6 +7720,7 @@ const getTotalDownload = new GetTotalDownload();
   \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
@@ -6583,6 +7972,7 @@ new Resume();
   \****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   saveFanCard: () => (/* binding */ saveFanCard)
@@ -6592,6 +7982,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Log */ "./src/ts/Log.ts");
 /* harmony import */ var _MsgBox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../MsgBox */ "./src/ts/MsgBox.ts");
 /* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_6__);
+
+
 
 
 
@@ -6689,7 +8084,7 @@ class SaveFanCard {
     // 在需要时加载遮罩图片（蒙版）
     loadMaskURL() {
         if (!this.config.assets.cardMask) {
-            this.config.assets.cardMask = chrome.runtime.getURL('images/cardMask.png');
+            this.config.assets.cardMask = webextension_polyfill__WEBPACK_IMPORTED_MODULE_6___default().runtime.getURL('images/cardMask.png');
         }
     }
     config = {
@@ -6861,17 +8256,16 @@ class SaveFanCard {
         // 将所有内容绘制到 canvas 上
         this.drawCanvasContent(canvas, cardMask, logoLight, logoDark, background, planTitle, fee, yourName, since);
         // 保存粉丝卡
-        const blobUrl = await this.canvasToBlobUrl(canvas);
+        const blob = await this.canvasToBlob(canvas);
         const creator = _utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.replaceUnsafeStr(creatorName);
         const fileName = `fanbox/${creator}/fancard-${creator}.png`;
-        this.download(blobUrl, fileName);
+        this.download(blob, fileName);
     }
-    async canvasToBlobUrl(canvas) {
+    async canvasToBlob(canvas) {
         return new Promise((resolve, reject) => {
             canvas.toBlob((blob) => {
                 if (blob) {
-                    const blobUrl = URL.createObjectURL(blob);
-                    resolve(blobUrl);
+                    resolve(blob);
                 }
                 else {
                     reject(new Error('Failed to convert canvas to Blob'));
@@ -6879,15 +8273,27 @@ class SaveFanCard {
             }, 'image/png');
         });
     }
-    download(blobUrl, fileName) {
+    async download(blob, fileName) {
+        // Firefox Android 不支持 downloads API，使用 a 标签下载。
+        // a 标签不能建立文件夹，所以只保留文件名部分
+        if (_Config__WEBPACK_IMPORTED_MODULE_5__.Config.downloadsAPIDisabled) {
+            _utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.downloadFile(URL.createObjectURL(blob), fileName.split('/').pop() || fileName);
+            return;
+        }
         const sendData = {
             msg: 'save_file_no_replay',
-            fileUrl: blobUrl,
+            fileUrl: URL.createObjectURL(blob),
             fileName,
-            id: 'fake',
-            taskBatch: 0,
         };
-        chrome.runtime.sendMessage(sendData);
+        // 在 Firefox / Chrome 的隐私窗口里下载 blob 文件时，需要携带文件数据，
+        // 详见 Config.sendBlob / sendDataURL 的注释
+        if (_Config__WEBPACK_IMPORTED_MODULE_5__.Config.sendDataURL) {
+            sendData.dataURL = await _utils_Utils__WEBPACK_IMPORTED_MODULE_4__.Utils.blobToDataURL(blob);
+        }
+        if (_Config__WEBPACK_IMPORTED_MODULE_5__.Config.sendBlob) {
+            sendData.blob = blob;
+        }
+        webextension_polyfill__WEBPACK_IMPORTED_MODULE_6___default().runtime.sendMessage(sendData).catch(() => { });
     }
 }
 const saveFanCard = new SaveFanCard();
@@ -6902,6 +8308,7 @@ const saveFanCard = new SaveFanCard();
   \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ShowSkipCount: () => (/* binding */ ShowSkipCount)
@@ -6960,6 +8367,7 @@ class ShowSkipCount {
   \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PageType__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../PageType */ "./src/ts/PageType.ts");
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
@@ -7129,6 +8537,7 @@ new ShowStatusOnTitle();
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   langText: () => (/* binding */ langText)
@@ -8761,6 +10170,14 @@ Because the downloader will be upgraded to Manifest version 3 in the near future
         `⚠️모바일 브라우저를 사용하는 경우 폴더가 생성되지 않을 수 있습니다. 이는 다운로더 문제가 아닙니다. 이 경우 파일 이름 중복을 방지하기 위해 파일 이름 지정 규칙을 수정해야 합니다. 간단한 방법은 기본 파일 이름 지정 규칙에서 '/'를 '-'로 변경하는 것입니다.`,
         `⚠️Если вы используете мобильный браузер, он может не создавать папки. Это не проблема загрузчика.<br>В таком случае вам нужно изменить правила именования, чтобы избежать дублирования имен файлов. Простой способ — заменить '/' в правилах именования по умолчанию на '-'.`,
     ],
+    _在移动版Firefox上提示无法可靠的批量下载: [
+        `⚠️在移动版 Firefox 上，下载器无法可靠地批量下载文件（即连续下载多个文件）。这是移动版 Firefox 的限制，不是下载器的问题。`,
+        `⚠️在移動版 Firefox 上，下載器無法可靠地批量下載檔案（即連續下載多個檔案）。這是移動版 Firefox 的限制，不是下載器的問題。`,
+        `⚠️On Firefox for Android, the downloader cannot reliably download files in batches (i.e., download multiple files in succession). This is a limitation of Firefox for Android, not a problem with the downloader.`,
+        `⚠️モバイル版 Firefox では、ダウンローダーはファイルを確実に一括ダウンロードできません（つまり、複数のファイルを連続してダウンロードすること）。これはモバイル版 Firefox の制限であり、ダウンローダーの問題ではありません。`,
+        `⚠️모바일 Firefox에서는 다운로더가 파일을 안정적으로 일괄 다운로드할 수 없습니다(즉, 여러 파일을 연속으로 다운로드하는 것). 이는 모바일 Firefox의 제한이며 다운로더의 문제가 아닙니다.`,
+        `⚠️В мобильном Firefox загрузчик не может надёжно выполнять пакетную загрузку файлов (то есть последовательную загрузку нескольких файлов). Это ограничение мобильного Firefox, а не проблема загрузчика.`,
+    ],
     _请求失败下载器会重试这个请求: [
         `请求失败。下载器会重试这个请求，无须手动处理。`,
         `請求失敗。下載器會重試這個請求，無須手動處理。`,
@@ -9076,6 +10493,7 @@ Thanks to <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> f
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Tools */ "./src/ts/Tools.ts");
@@ -9327,6 +10745,7 @@ new Form();
   \**************************************/
 /***/ ((module) => {
 
+"use strict";
 module.exports = "<form class=\"settingForm\">\n  <p class=\"option\" data-no=\"2\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_文件类型\"></span>\n\n    <input\n      type=\"checkbox\"\n      name=\"image\"\n      id=\"fileType1\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType1\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.image__\"\n      data-xztext=\"_图片\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"music\"\n      id=\"fileType2\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType2\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.music__\"\n      data-xztext=\"_音乐\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"video\"\n      id=\"fileType3\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType3\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.video__\"\n      data-xztext=\"_视频\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"compressed\"\n      id=\"fileType4\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType4\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.compressed__\"\n      data-xztext=\"_压缩文件\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"ps\"\n      id=\"fileType5\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType5\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.ps__\"\n      data-xztext=\"_PS文件\"\n    ></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"other\"\n      id=\"fileType6\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label\n      for=\"fileType6\"\n      class=\"has_tip\"\n      data-tip=\"__fileType.other__\"\n      data-xztext=\"_其他\"\n    ></label>\n  </p>\n\n  <p class=\"option\" data-no=\"21\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_费用类型\"></span>\n\n    <input\n      type=\"checkbox\"\n      name=\"free\"\n      id=\"postType1\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label for=\"postType1\" data-xztext=\"_免费投稿\"></label>\n\n    <input\n      type=\"checkbox\"\n      name=\"pay\"\n      id=\"postType2\"\n      class=\"need_beautify checkbox_common\"\n      checked\n    />\n    <span class=\"beautify_checkbox\"></span>\n    <label for=\"postType2\" data-xztext=\"_付费投稿\"></label>\n  </p>\n\n  <p class=\"option\" data-no=\"9\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_价格范围\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"feeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"feeSwitch\">\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange0\"\n        class=\"need_beautify radio\"\n        value=\"<=\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange0\">&lt;=</label>\n\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange2\"\n        class=\"need_beautify radio\"\n        value=\"=\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange2\">=</label>\n\n      <input\n        type=\"radio\"\n        name=\"feeRange\"\n        id=\"feeRange1\"\n        class=\"need_beautify radio\"\n        value=\">=\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"feeRange1\">&gt;=</label>\n\n      <input type=\"text\" name=\"fee\" class=\"setinput_style1 blue\" value=\"500\" />\n      ¥\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"7\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_设置id范围提示\">\n      <span data-xztext=\"_id范围\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"idRangeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"idRangeSwitch\">\n      <input\n        type=\"radio\"\n        name=\"idRange\"\n        id=\"idRange2\"\n        class=\"need_beautify radio\"\n        value=\"<\"\n        checked\n      />\n      <span class=\"beautify_radio\"></span>\n      <label for=\"idRange2\" data-xztext=\"_小于\"></label>\n      <input\n        type=\"radio\"\n        name=\"idRange\"\n        id=\"idRange1\"\n        class=\"need_beautify radio\"\n        value=\">\"\n      />\n      <span class=\"beautify_radio\"></span>\n      <label for=\"idRange1\" data-xztext=\"_大于\"></label>\n      <input\n        type=\"text\"\n        name=\"idRangeInput\"\n        class=\"setinput_style1 w100 blue\"\n        value=\"0\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"10\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_设置投稿时间提示\">\n      <span data-xztext=\"_投稿时间\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n\n    <input\n      type=\"checkbox\"\n      name=\"postDate\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"postDate\">\n      <input\n        type=\"datetime-local\"\n        name=\"postDateStart\"\n        placeholder=\"yyyy-MM-dd HH:mm\"\n        class=\"setinput_style1 postDate blue\"\n        value=\"\"\n      />\n      &nbsp;-&nbsp;\n      <input\n        type=\"datetime-local\"\n        name=\"postDateEnd\"\n        placeholder=\"yyyy-MM-dd HH:mm\"\n        class=\"setinput_style1 postDate blue\"\n        value=\"\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"59\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_图片尺寸的提示\">\n      <span data-xztext=\"_图片尺寸\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n\n    <input\n      type=\"radio\"\n      name=\"imageSize\"\n      id=\"imageSize1\"\n      class=\"need_beautify radio\"\n      value=\"original\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"imageSize1\" data-xztext=\"_原图\"></label>\n    <input\n      type=\"radio\"\n      name=\"imageSize\"\n      id=\"imageSize2\"\n      class=\"need_beautify radio\"\n      value=\"thumbnail\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"imageSize2\" data-xztext=\"_缩略图\"></label>\n    <label for=\"imageSize2\" class=\"gray\">(1200px)</label>\n  </p>\n\n  <p class=\"option\" data-no=\"22\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的封面图片\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"savePostCover\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"20\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的文字\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveText\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"saveText\">\n      <span class=\"mr4\" data-xztext=\"_格式\"></span>\n      <input\n        type=\"radio\"\n        name=\"textFormat\"\n        id=\"textFormat1\"\n        class=\"need_beautify radio\"\n        value=\"txt\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"textFormat1\">TXT</label>\n      <input\n        type=\"radio\"\n        name=\"textFormat\"\n        id=\"textFormat2\"\n        class=\"need_beautify radio\"\n        value=\"html\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"textFormat2\" data-xztext=\"_HTML\"></label>\n      <button\n        type=\"button\"\n        class=\"gray textButton showMsgBtn\"\n        data-title=\"_保存投稿中的文字\"\n        data-msg=\"_保存投稿中的文字的说明\"\n        data-xztext=\"_帮助\"\n      ></button>\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"19\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的外部链接\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveLink\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"61\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_保存投稿中的评论\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"saveComment\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"23\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_多条文字用逗号分割\">\n      <span data-xztext=\"_投稿标题必须含有文字\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"titleMustTextSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"titleMustTextSwitch\">\n      <input\n        type=\"text\"\n        name=\"titleMustText\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"24\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_多条文字用逗号分割\">\n      <span data-xztext=\"_投稿标题不能含有文字\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"titleCannotTextSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"titleCannotTextSwitch\">\n      <input\n        type=\"text\"\n        name=\"titleCannotText\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"54\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_文件指的是附件\">\n      <span data-xztext=\"_文件名中必须含有文字\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"fileNameIncludeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"fileNameIncludeSwitch\">\n      <span data-xztext=\"_任一\"></span>\n      <input\n        type=\"text\"\n        name=\"fileNameInclude\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"55\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_文件指的是附件\">\n      <span data-xztext=\"_文件名中不能含有文字\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"fileNameExcludeSwitch\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\"></span>\n    <span class=\"subOptionWrap\" data-show=\"fileNameExcludeSwitch\">\n      <span data-xztext=\"_任一\"></span>\n      <input\n        type=\"text\"\n        name=\"fileNameExclude\"\n        class=\"setinput_style1 blue fileNameRule\"\n        value=\"\"\n        placeholder=\"text1,text2,text3\"\n      />\n    </span>\n  </p>\n\n  <slot data-name=\"crawlBtns\" class=\"centerWrap_btns crawlBtns\"></slot>\n  <slot data-name=\"downloadArea\"></slot>\n  <slot data-name=\"progressBar\"></slot>\n\n  <p class=\"option\" data-no=\"13\">\n    <span class=\"settingNameStyle1\">\n      <span data-xztext=\"_图片的命名规则\"></span>\n    </span>\n    <input\n      type=\"text\"\n      name=\"userSetName\"\n      class=\"setinput_style1 blue fileNameRule\"\n      value=\"__defaultNameRule__\"\n    />\n    &nbsp;\n    <select name=\"fileNameSelect\" class=\"beautify_scrollbar\">\n      <option value=\"default\">…</option>\n      <option value=\"{user}\">{user}</option>\n      <option value=\"{creator_id}\">{creator_id}</option>\n      <option value=\"{user_id}\">{user_id}</option>\n      <option value=\"{title}\">{title}</option>\n      <option value=\"{post_id}\">{post_id}</option>\n      <option value=\"{date}\">{date}</option>\n      <option value=\"{task_date}\">{task_date}</option>\n      <option value=\"{index}\">{index}</option>\n      <option value=\"{name}\">{name}</option>\n      <option value=\"{ext}\">{ext}</option>\n      <option value=\"{fee}\">{fee}</option>\n      <option value=\"{tags}\">{tags}</option>\n      <option value=\"{PVA}\">{PVA}</option>\n    </select>\n    &nbsp;\n    <slot data-name=\"saveNamingRule\"></slot>\n    <button\n      class=\"showFileNameTip textButton\"\n      type=\"button\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n  <p class=\"tip tipWithBtn\" id=\"tipCreateFolder\">\n    <span class=\"left\">\n      <span data-xztext=\"_设置文件夹名的提示\"></span>\n      <strong>__defaultNameRule__</strong>\n    </span>\n    <span class=\"right\">\n      <button\n        type=\"button\"\n        class=\"textButton gray\"\n        id=\"tipCreateFolderBtn\"\n        data-xztext=\"_我知道了\"\n      ></button>\n    </span>\n  </p>\n  <p class=\"fileNameTip tip\">\n    <span data-xztext=\"_设置文件夹名的提示\"></span>\n    <strong>__defaultNameRule__</strong>\n    <br />\n    <span data-xztext=\"_命名标记提醒\"></span>\n    <br />\n    <span class=\"blue\">{user}</span>\n    <span data-xztext=\"_命名标记user\"></span>\n    <br />\n    <span class=\"blue\">{user_id}</span>\n    <span data-xztext=\"_命名标记uid\"></span>\n    <br />\n    <span class=\"blue\">{creator_id}</span>\n    <span data-xztext=\"_命名标记creator_id\"></span>\n    <br />\n    <span class=\"blue\">{title}</span>\n    <span data-xztext=\"_命名标记title\"></span>\n    <br />\n    <span class=\"blue\">{post_id}</span>\n    <span data-xztext=\"_命名标记postid\"></span>\n    <br />\n    <span class=\"blue\">{date}</span>\n    <span data-xztext=\"_命名标记date\"></span>\n    <br />\n    <span class=\"blue\">{task_date}</span>\n    <span data-xztext=\"_命名标记taskDate\"></span>\n    <br />\n    <span class=\"blue\">{index}</span>\n    <span data-xztext=\"_命名标记index\"></span>\n    <br />\n    <span class=\"blue\">{name}</span>\n    <span data-xztext=\"_命名标记name\"></span>\n    <br />\n    <span class=\"blue\">{ext}</span>\n    <span data-xztext=\"_命名标记ext\"></span>\n    <br />\n    <span class=\"blue\">{fee}</span>\n    <span data-xztext=\"_命名标记fee\"></span>\n    <br />\n    <span class=\"blue\">{tags}</span>\n    <span data-xztext=\"_命名标记tags\"></span>\n    <br />\n    <span class=\"blue\">{PVA}</span>\n    <span data-xztext=\"_命名标记PVA\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"33\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_非图片的命名规则\"></span>\n    <input\n      type=\"text\"\n      name=\"nameruleForNonImages\"\n      class=\"setinput_style1 blue nameruleForNonImages\"\n      style=\"width: 300px\"\n      value=\"{user}/{date}-{title}/{name}\"\n    />\n  </p>\n\n  <p class=\"option\" data-no=\"31\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_日期格式\"></span>\n    <input\n      type=\"text\"\n      name=\"dateFormat\"\n      class=\"setinput_style1 blue\"\n      style=\"width: 250px\"\n      value=\"YYYY-MM-DD\"\n    />\n    <button\n      type=\"button\"\n      class=\"gray textButton showDateTip\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n  <p class=\"dateFormatTip tip\" style=\"display: none\">\n    <span data-xztext=\"_日期格式提示\"></span>\n    <br />\n    <span class=\"blue\">YYYY</span> <span>2021</span>\n    <br />\n    <span class=\"blue\">YY</span> <span>21</span>\n    <br />\n    <span class=\"blue\">MM</span> <span>04</span>\n    <br />\n    <span class=\"blue\">MMM</span> <span>Apr</span>\n    <br />\n    <span class=\"blue\">MMMM</span> <span>April</span>\n    <br />\n    <span class=\"blue\">DD</span> <span>30</span>\n    <br />\n    <span class=\"blue\">hh</span> <span>06</span>\n    <br />\n    <span class=\"blue\">mm</span> <span>40</span>\n    <br />\n    <span class=\"blue\">ss</span> <span>08</span>\n    <br />\n  </p>\n\n  <p class=\"option\" data-no=\"46\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_在序号前面填充0的说明\">\n      <span data-xztext=\"_在序号前面填充0\"></span>\n      <span class=\"gray\"> ? </span></span\n    >\n    <input\n      type=\"checkbox\"\n      name=\"zeroPadding\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n    <span class=\"subOptionWrap\" data-show=\"zeroPadding\">\n      <span data-xztext=\"_序号总长度\"></span>\n      <input\n        type=\"text\"\n        name=\"zeroPaddingLength\"\n        class=\"setinput_style1 blue\"\n        value=\"3\"\n        style=\"width: 30px; min-width: 30px\"\n      />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"17\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_自动下载的提示\">\n      <span data-xztext=\"_自动开始下载\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"autoStartDownload\"\n      id=\"setQuietDownload\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"16\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_线程数字\">\n      <span data-xztext=\"_下载线程\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"text\"\n      name=\"downloadThread\"\n      class=\"has_tip setinput_style1 blue\"\n      data-xztip=\"_线程数字\"\n      value=\"3\"\n    />\n  </p>\n\n  <p class=\"option\" data-no=\"52\">\n    <span\n      class=\"has_tip settingNameStyle1\"\n      data-xztip=\"_下载完成后显示通知的说明\"\n    >\n      <span data-xztext=\"_下载完成后显示通知\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"showNotificationAfterDownloadComplete\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"57\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_抓取间隔的说明\">\n      <span data-xztext=\"_抓取间隔\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n\n    <span data-xztext=\"_间隔时间\"></span>\n    <input\n      type=\"text\"\n      name=\"crawlInterval\"\n      class=\"setinput_style1 blue\"\n      value=\"1\"\n    />\n    <span data-xztext=\"_秒\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"56\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_下载间隔的说明\">\n      <span data-xztext=\"_下载间隔\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n\n    <span data-xztext=\"_间隔时间\"></span>\n    <input\n      type=\"text\"\n      name=\"downloadInterval\"\n      class=\"setinput_style1 blue\"\n      value=\"1\"\n    />\n    <span data-xztext=\"_秒\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"58\">\n    <span\n      class=\"has_tip settingNameStyle1\"\n      data-xztip=\"_每天下载的文件大小限制的说明\"\n    >\n      <span data-xztext=\"_每天下载的文件大小限制\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"totalDownloadLimitSwitch\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n\n    <span class=\"subOptionWrap\" data-show=\"totalDownloadLimitSwitch\">\n      <input\n        type=\"text\"\n        name=\"totalDownloadLimit\"\n        class=\"setinput_style1 blue\"\n        value=\"10\"\n      />\n      <span>GiB</span>\n    </span>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"totalDownloadHistory\"\n      data-xztext=\"_查看历史数据\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"28\">\n    <span class=\"settingNameStyle1\">\n      <span data-xztext=\"_不下载重复文件\"></span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"deduplication\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n    <span class=\"subOptionWrap\" data-show=\"deduplication\">\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"exportDownloadRecord\"\n        data-xztext=\"_导出\"\n      ></button>\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"importDownloadRecord\"\n        data-xztext=\"_导入\"\n      ></button>\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"clearDownloadRecord\"\n        data-xztext=\"_清除\"\n      ></button>\n    </span>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"deduplicationHelp\"\n      data-xztext=\"_提示\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"18\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_统一网址格式的说明\">\n      <span data-xztext=\"_统一网址格式\"></span>\n      <span class=\"gray\"> ? </span>\n    </span>\n    <input\n      type=\"checkbox\"\n      name=\"unifiedURL\"\n      class=\"need_beautify checkbox_switch\"\n      checked\n    />\n    <span class=\"beautify_switch\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"53\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_高亮显示关键字\"></span>\n    <input\n      type=\"checkbox\"\n      name=\"boldKeywords\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n\n  <p class=\"option\" data-no=\"41\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_背景图片\"> </span>\n    <input\n      type=\"checkbox\"\n      name=\"bgDisplay\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n\n    <span class=\"subOptionWrap\" data-show=\"bgDisplay\">\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"selectBG\"\n        data-xztext=\"_选择文件\"\n      ></button>\n      <button\n        class=\"textButton gray\"\n        type=\"button\"\n        id=\"clearBG\"\n        data-xztext=\"_清除\"\n      ></button>\n\n      &nbsp;\n      <span data-xztext=\"_对齐方式\"></span>&nbsp;\n      <input\n        type=\"radio\"\n        name=\"bgPositionY\"\n        id=\"bgPosition1\"\n        class=\"need_beautify radio\"\n        value=\"center\"\n        checked\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"bgPosition1\" data-xztext=\"_居中\"></label>\n      <input\n        type=\"radio\"\n        name=\"bgPositionY\"\n        id=\"bgPosition2\"\n        class=\"need_beautify radio\"\n        value=\"top\"\n      />\n      <span class=\"beautify_radio\" tabindex=\"0\"></span>\n      <label for=\"bgPosition2\" data-xztext=\"_顶部\"></label>\n      <span data-xztext=\"_不透明度\"></span>&nbsp;\n      <input name=\"bgOpacity\" type=\"range\" />\n    </span>\n  </p>\n\n  <p class=\"option\" data-no=\"60\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_颜色主题\"></span>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme1\"\n      class=\"need_beautify radio\"\n      value=\"auto\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme1\" data-xztext=\"_自动检测\"></label>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme2\"\n      class=\"need_beautify radio\"\n      value=\"white\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme2\">White</label>\n    <input\n      type=\"radio\"\n      name=\"theme\"\n      id=\"theme3\"\n      class=\"need_beautify radio\"\n      value=\"dark\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"theme3\">Dark</label>\n  </p>\n\n  <p class=\"option\" data-no=\"32\">\n    <span class=\"settingNameStyle1\"><span class=\"key\">Language</span></span>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang1\"\n      class=\"need_beautify radio\"\n      value=\"auto\"\n      checked\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang1\" data-xztext=\"_自动检测\"></label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang2\"\n      class=\"need_beautify radio\"\n      value=\"zh-cn\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang2\">简体中文</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang3\"\n      class=\"need_beautify radio\"\n      value=\"zh-tw\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang3\">繁體中文</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang4\"\n      class=\"need_beautify radio\"\n      value=\"ja\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang4\">日本語</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang5\"\n      class=\"need_beautify radio\"\n      value=\"en\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang5\">English</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang6\"\n      class=\"need_beautify radio\"\n      value=\"ko\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang6\">한국어</label>\n    <input\n      type=\"radio\"\n      name=\"userSetLang\"\n      id=\"userSetLang7\"\n      class=\"need_beautify radio\"\n      value=\"ru\"\n    />\n    <span class=\"beautify_radio\" tabindex=\"0\"></span>\n    <label for=\"userSetLang7\">Русский</label>\n  </p>\n\n  <p class=\"option\" data-no=\"37\">\n    <span class=\"settingNameStyle1\" data-xztext=\"_管理设置\"></span>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"exportSettings\"\n      data-xztext=\"_导出设置\"\n    ></button>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"importSettings\"\n      data-xztext=\"_导入设置\"\n    ></button>\n    <button\n      class=\"textButton gray\"\n      type=\"button\"\n      id=\"resetSettings\"\n      data-xztext=\"_重置设置\"\n    ></button>\n  </p>\n\n  <p class=\"option\" data-no=\"51\">\n    <span class=\"has_tip settingNameStyle1\" data-xztip=\"_显示高级设置说明\">\n      <span data-xztext=\"_显示高级设置\"></span>\n      <span class=\"gray\"> ? </span></span\n    >\n    <input\n      type=\"checkbox\"\n      name=\"showAdvancedSettings\"\n      class=\"need_beautify checkbox_switch\"\n    />\n    <span class=\"beautify_switch\" tabindex=\"0\"></span>\n  </p>\n</form>\n";
 
 /***/ }),
@@ -9337,6 +10756,7 @@ module.exports = "<form class=\"settingForm\">\n  <p class=\"option\" data-no=\"
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   formHtml: () => (/* binding */ formHtml)
@@ -9365,6 +10785,7 @@ const formHtml = createFormHtml();
   \****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FormSettings: () => (/* binding */ FormSettings)
@@ -9548,6 +10969,7 @@ class FormSettings {
   \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   nameRuleManager: () => (/* binding */ nameRuleManager)
@@ -9659,6 +11081,7 @@ const nameRuleManager = new NameRuleManager();
   \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   options: () => (/* binding */ options)
@@ -9814,6 +11237,7 @@ const options = new Options();
   \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   SaveNamingRule: () => (/* binding */ SaveNamingRule)
@@ -9950,6 +11374,7 @@ class SaveNamingRule {
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   setSetting: () => (/* binding */ setSetting),
@@ -9961,6 +11386,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Config */ "./src/ts/Config.ts");
 /* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Toast */ "./src/ts/Toast.ts");
 /* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_6__);
 // settings 保存了下载器的所有设置项
 // 获取设置项的值：
 // settings[name]
@@ -9982,6 +11409,7 @@ __webpack_require__.r(__webpack_exports__);
 // 过程中，每个设置项都会触发一次 settingChange 事件
 // 如果打开了多个标签页，每个页面的 settings 数据是互相独立的，在一个页面里修改设置不会影响另一个页面里的设置。
 // 但是持久化保存的数据只有一份：最后一次设置变更是在哪个页面发生的，就保存哪个页面的 settings 数据。
+
 
 
 
@@ -10091,10 +11519,11 @@ class Settings {
         });
     }
     // 读取恢复设置
-    restore() {
+    async restore() {
         let restoreData = this.defaultSettings;
-        // 首先从 chrome.storage 获取配置
-        chrome.storage.local.get(_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName, (result) => {
+        // 首先从 browser.storage 获取配置
+        try {
+            const result = await webextension_polyfill__WEBPACK_IMPORTED_MODULE_6___default().storage.local.get(_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName);
             if (result[_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName]) {
                 restoreData = result[_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName];
             }
@@ -10105,13 +11534,17 @@ class Settings {
                     restoreData = JSON.parse(savedSettings);
                 }
             }
-            this.assignSettings(restoreData);
-            _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('settingInitialized');
-        });
+        }
+        catch (error) {
+            // 读取失败时使用默认设置
+            console.error('读取设置失败:', error);
+        }
+        this.assignSettings(restoreData);
+        _EVT__WEBPACK_IMPORTED_MODULE_0__.EVT.fire('settingInitialized');
     }
     store = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.Utils.debounce(() => {
-        // chrome.storage.local 的储存上限是 5 MiB（5242880 Byte）
-        chrome.storage.local.set({
+        // browser.storage.local 的储存上限是 5 MiB（5242880 Byte）
+        webextension_polyfill__WEBPACK_IMPORTED_MODULE_6___default().storage.local.set({
             [_Config__WEBPACK_IMPORTED_MODULE_3__.Config.settingStoreName]: this.settings,
         });
     }, 50);
@@ -10274,6 +11707,7 @@ const setSetting = self.setSetting.bind(self);
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   DateFormat: () => (/* binding */ DateFormat)
@@ -10361,6 +11795,7 @@ class DateFormat {
   \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   IndexedDB: () => (/* binding */ IndexedDB)
@@ -10616,6 +12051,7 @@ class IndexedDB {
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Utils: () => (/* binding */ Utils)
@@ -10750,6 +12186,13 @@ class Utils {
         a.href = url;
         a.download = fileName;
         a.click();
+        // 如果下载的是 blob URL，在下载开始后吊销它，释放内存。
+        // a 标签点击后浏览器会立即读取 blob 数据并开始下载，所以这里延迟一小段时间再吊销
+        if (url.startsWith('blob')) {
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 200);
+        }
     }
     // 从 url 中获取指定的查询字段的值
     // 注意：返回值经过 encodeURIComponent 编码！
@@ -10872,6 +12315,19 @@ class Utils {
     static async sleep(time) {
         return new Promise((res) => window.setTimeout(res, time));
     }
+    /**把 blob 对象转换为 dataURL（base64 编码的字符串） */
+    static blobToDataURL(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function () {
+                resolve(this.result);
+            };
+            reader.onerror = function () {
+                reject(new Error('Failed to convert blob to DataURL'));
+            };
+            reader.readAsDataURL(blob);
+        });
+    }
 }
 
 
@@ -10898,7 +12354,7 @@ class Utils {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -10947,8 +12403,9 @@ class Utils {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
+"use strict";
 /*!***************************!*\
   !*** ./src/ts/content.ts ***!
   \***************************/

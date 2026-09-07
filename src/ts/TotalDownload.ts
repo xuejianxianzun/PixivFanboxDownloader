@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill'
+
 class TotalDownload {
   /** 记录每天的下载总体积。key 是当天的 date，value 是当天的下载总量（字节数） */
   private data: { [key: string]: number } = {}
@@ -8,33 +10,28 @@ class TotalDownload {
 
   private init() {
     // 初始化存储
-    chrome.runtime.onInstalled.addListener((details) => {
+    browser.runtime.onInstalled.addListener(async (details) => {
       if (details.reason === 'install') {
-        chrome.storage.local.set({ totalDownload: {} }, () => {
-          if (chrome.runtime.lastError) {
-            console.error('初始化存储失败:', chrome.runtime.lastError.message)
-          } else {
-            console.log('totalDownload 初始化成功')
-          }
-        })
+        try {
+          await browser.storage.local.set({ totalDownload: {} })
+          console.log('totalDownload 初始化成功')
+        } catch (error) {
+          console.error('初始化存储失败:', error)
+        }
       }
     })
 
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    // 监听消息，返回数据。
+    // 注意：监听器本身不能是 async 函数。因为 async 函数总是返回 Promise，
+    // 会被当作对消息的异步响应。如果监听器对与本模块无关的消息也返回 Promise，
+    // 就会抢先返回一个 undefined 响应，导致真正处理该消息的其他监听器无法返回数据。
+    // 所以这里在监听器里同步判断消息类型，只对本模块处理的消息返回异步处理结果。
+    // 对于其他消息，监听器同步结束（返回 undefined），不会产生响应。
+    browser.runtime.onMessage.addListener((request: any) => {
       if (request.msg === 'getTotalDownload') {
-        // 返回今天的数据
-        sendResponse({ total: this.data[this.getDate()] })
+        return this.getTodayData()
       } else if (request.msg === 'getTotalDownloadHistory30') {
-        // 返回最近 30 天的数据（虽然可以返回所有数据，但是天数太多的话，前台不好展示）
-        this.getLast30DaysData().then((history) => {
-          sendResponse({ history })
-        })
-        // 由于这个 sendResponse 是异步，所以需要返回 true 让消息端口不要关闭
-        // Return true to keep the message port open for async response
-        return true
-      } else {
-        // Return false for unhandled messages
-        return false
+        return this.getHistory30Day()
       }
     })
 
@@ -45,8 +42,20 @@ class TotalDownload {
   }
 
   private async restore() {
-    const result = await chrome.storage.local.get(['totalDownload'])
+    const result = await browser.storage.local.get(['totalDownload'])
     this.data = (result.totalDownload as { [key: string]: number }) || {}
+  }
+
+  // 返回今天的数据（供消息监听器使用）
+  private async getTodayData() {
+    return { total: this.data[this.getDate()] }
+  }
+
+  // 返回最近 30 天的数据（供消息监听器使用）。虽然可以返回所有数据，
+  // 但是天数太多的话，前台不好展示
+  private async getHistory30Day() {
+    const history = await this.getLast30DaysData()
+    return { history }
   }
 
   /** 生成 YYYY-MM-DD 格式的当前日期 */
@@ -62,9 +71,8 @@ class TotalDownload {
   public addDownload(bytes: number) {
     const date = this.getDate()
     this.data[date] = (this.data[date] || 0) + bytes
-    chrome.storage.local.set({ totalDownload: this.data }, () => {
-      // console.log(`更新 ${date} 的下载量: ${this.data[date]} 字节`)
-    })
+    // 写入存储失败不影响内存中的数据，忽略错误
+    browser.storage.local.set({ totalDownload: this.data }).catch(() => {})
   }
 
   /**

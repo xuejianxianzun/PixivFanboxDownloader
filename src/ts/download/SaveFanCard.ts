@@ -5,8 +5,11 @@ import { log } from '../Log'
 import { msgBox } from '../MsgBox'
 import { Utils } from '../utils/Utils'
 import { SendToBackEndData } from './DownloadType'
+import { Config } from '../Config'
+import browser from 'webextension-polyfill'
 
-interface Config {
+// 绘制粉丝卡时使用的配置
+interface CanvasConfig {
   canvasWidth: number
   canvasHeight: number
   fontFamily: string
@@ -138,11 +141,13 @@ class SaveFanCard {
   // 在需要时加载遮罩图片（蒙版）
   private loadMaskURL() {
     if (!this.config.assets.cardMask) {
-      this.config.assets.cardMask = chrome.runtime.getURL('images/cardMask.png')
+      this.config.assets.cardMask = browser.runtime.getURL(
+        'images/cardMask.png',
+      )
     }
   }
 
-  private config: Config = {
+  private config: CanvasConfig = {
     canvasWidth: 1280,
     canvasHeight: 800,
     fontFamily:
@@ -465,18 +470,17 @@ class SaveFanCard {
     )
 
     // 保存粉丝卡
-    const blobUrl = await this.canvasToBlobUrl(canvas)
+    const blob = await this.canvasToBlob(canvas)
     const creator = Utils.replaceUnsafeStr(creatorName)
     const fileName = `fanbox/${creator}/fancard-${creator}.png`
-    this.download(blobUrl, fileName)
+    this.download(blob, fileName)
   }
 
-  private async canvasToBlobUrl(canvas: HTMLCanvasElement): Promise<string> {
+  private async canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (blob) {
-          const blobUrl = URL.createObjectURL(blob)
-          resolve(blobUrl)
+          resolve(blob)
         } else {
           reject(new Error('Failed to convert canvas to Blob'))
         }
@@ -484,16 +488,33 @@ class SaveFanCard {
     })
   }
 
-  private download(blobUrl: string, fileName: string) {
-    const sendData: SendToBackEndData = {
-      msg: 'save_file_no_replay',
-      fileUrl: blobUrl,
-      fileName,
-      id: 'fake',
-      taskBatch: 0,
+  private async download(blob: Blob, fileName: string) {
+    // Firefox Android 不支持 downloads API，使用 a 标签下载。
+    // a 标签不能建立文件夹，所以只保留文件名部分
+    if (Config.downloadsAPIDisabled) {
+      Utils.downloadFile(
+        URL.createObjectURL(blob),
+        fileName.split('/').pop() || fileName,
+      )
+      return
     }
 
-    chrome.runtime.sendMessage(sendData)
+    const sendData: SendToBackEndData = {
+      msg: 'save_file_no_replay',
+      fileUrl: URL.createObjectURL(blob),
+      fileName,
+    }
+
+    // 在 Firefox / Chrome 的隐私窗口里下载 blob 文件时，需要携带文件数据，
+    // 详见 Config.sendBlob / sendDataURL 的注释
+    if (Config.sendDataURL) {
+      sendData.dataURL = await Utils.blobToDataURL(blob)
+    }
+    if (Config.sendBlob) {
+      sendData.blob = blob
+    }
+
+    browser.runtime.sendMessage(sendData).catch(() => {})
   }
 }
 

@@ -27,7 +27,9 @@
     }
   ],
   "background": {
-    "service_worker": "js/background.js"
+    "preferred_environment": ["service_worker"],
+    "service_worker": "js/background.js",
+    "scripts": ["js/background.js"]
   },
   "permissions": [
     "downloads",
@@ -46,6 +48,10 @@
       "matches": ["*://*.fanbox.cc/*"]
     }
   ],
-  "incognito": "split",
-  "homepage_url": "https://github.com/xuejianxianzun/PixivFanboxDownloader"
+  "homepage_url": "https://github.com/xuejianxianzun/PixivFanboxDownloader",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "pixiv-fanbox-downloader@xuejianxianzun"
+    }
+  }
 }

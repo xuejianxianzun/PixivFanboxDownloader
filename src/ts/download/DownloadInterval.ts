@@ -2,6 +2,8 @@ import { EVT } from '../EVT'
 import { lang } from '../Lang'
 import { log } from '../Log'
 import { settings } from '../setting/Settings'
+import { Config } from '../Config'
+import { Utils } from '../utils/Utils'
 
 class DownloadInterval {
   constructor() {
@@ -63,6 +65,12 @@ class DownloadInterval {
     return new Promise(async (resolve) => {
       // 首先检查此设置不应该生效的情况，立即放行
       if (settings.downloadInterval === 0) {
+        // 在 Firefox Android 上会使用 a 标签下载文件（见 Config.downloadsAPIDisabled）。
+        // 如果不添加延迟时间，极端情况下 1 秒内可能会下载几十个文件，浏览器实际上
+        // 可能不会下载部分文件，所以强制添加 200 ms 的延迟
+        if (Config.downloadsAPIDisabled) {
+          await Utils.sleep(200)
+        }
         return resolve(true)
       }
 

@@ -2,10 +2,11 @@ import { EVT } from './EVT'
 import { lang } from './Lang'
 import { settings } from './setting/Settings'
 import { Tools } from './Tools'
+import browser from 'webextension-polyfill'
 
 class ShowNotification {
   constructor() {
-    this.iconURL = chrome.runtime.getURL('icon/logo128.png')
+    this.iconURL = browser.runtime.getURL('icon/logo128.png')
     this.bindEvents()
   }
 

@@ -8,6 +8,7 @@ import { states } from './States'
 import { msgBox } from './MsgBox'
 import { Config } from './Config'
 import { theme } from './Theme'
+import browser from 'webextension-polyfill'
 
 // 中间面板
 class CenterPanel {
@@ -84,7 +85,7 @@ class CenterPanel {
   // 绑定中间面板上的事件
   private bindEvents() {
     // 监听点击扩展图标的消息，开关中间面板
-    chrome.runtime.onMessage.addListener((msg) => {
+    browser.runtime.onMessage.addListener((msg: any) => {
       if (msg.msg === 'click_icon') {
         this.toggle()
       }

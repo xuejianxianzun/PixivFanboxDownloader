@@ -12,6 +12,9 @@ import { lang } from '../Lang'
 import { log } from '../Log'
 import { states } from '../States'
 import { downloadInterval } from './DownloadInterval'
+import browser from 'webextension-polyfill'
+import { Utils } from '../utils/Utils'
+import { Config } from '../Config'
 
 class Download {
   constructor(progressBarIndex: number, data: downloadArgument) {
@@ -89,12 +92,34 @@ class Download {
   }
 
   // 向浏览器发送下载任务
-  private browserDownload(
+  private async browserDownload(
     url: string,
     fileName: string,
     id: string,
     taskBatch: number,
   ) {
+    // Firefox Android 不支持 downloads API，改为使用 a 标签下载文件
+    if (Config.downloadsAPIDisabled) {
+      // a 标签不能建立文件夹，所以移除路径部分，只保留文件名
+      const lastName = fileName.split('/').pop() || fileName
+      Utils.downloadFile(url, lastName)
+      // 向后台发送消息，使其模拟返回一个下载成功的消息，让下载流程得以继续。
+      // 注意：这个分支不携带文件数据，只传递任务信息即可
+      browser.runtime
+        .sendMessage({
+          msg: 'save_work_file_a_download',
+          fileUrl: url,
+          fileName: fileName,
+          id,
+          taskBatch,
+        })
+        .catch((error) => {
+          // 消息发送失败时打印错误，避免下载任务卡住却没有提示
+          console.error('发送 save_work_file_a_download 消息失败', error)
+        })
+      return
+    }
+
     const sendData: SendToBackEndData = {
       msg: 'send_download',
       fileUrl: url,
@@ -104,7 +129,22 @@ class Download {
       conflictAction: this.arg.conflictAction,
     }
 
-    chrome.runtime.sendMessage(sendData)
+    // 下载器动态生成的文件（url 是 blob URL）在 Firefox 和 Chrome 的隐私窗口里
+    // 不能直接使用前台生成的 blob URL 下载，需要同时携带文件数据。
+    // 详见 Config.sendBlob / sendDataURL 的注释
+    if (url.startsWith('blob:') && this.arg.blob) {
+      if (Config.sendDataURL) {
+        sendData.dataURL = await Utils.blobToDataURL(this.arg.blob)
+      }
+      if (Config.sendBlob) {
+        sendData.blob = this.arg.blob
+      }
+    }
+
+    browser.runtime.sendMessage(sendData).catch((error) => {
+      // 消息发送失败时打印错误（例如扩展被更新后 context invalidated）
+      console.error('发送下载消息失败', error)
+    })
   }
 }
 
