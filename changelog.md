@@ -30,6 +30,8 @@ https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/80
 
 在移动设备里可以正常使用下载器了。
 
+### ✨在日志区域底部添加了“导出日志”按钮
+
 ### 😊优化文件下载失败时的处理
 
 现在的处理方式如下：

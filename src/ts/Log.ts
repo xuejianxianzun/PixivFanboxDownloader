@@ -1,6 +1,10 @@
 import { EVT } from './EVT'
 import { Colors } from './Colors'
 import { theme } from './Theme'
+import { lang } from './Lang'
+import { toast } from './Toast'
+import { Utils } from './utils/Utils'
+import { DateFormat } from './utils/DateFormat'
 
 // 日志
 class Log {
@@ -32,6 +36,7 @@ class Log {
   private logContentClassName = 'logContent' // 日志主体区域的类名
   private logWrapClassName = 'logWrap' // 日志容器的类名，只负责样式
   private logWrapFlag = 'logWrapFlag' // 日志容器的标志，当需要查找日志区域时，使用这个类名而不是 logWrap，因为其他元素可能也具有 logWrap 类名，以应用其样式。
+  private logButtonsClassName = 'logButtons' // 日志操作按钮容器的类名（目前只有一个"导出日志"按钮）
 
   /**储存会刷新的日志所使用的元素（插槽），可以传入 key 来区分多个刷新区域 */
   // 每个刷新区域使用一个 span 元素，里面的文本会变化
@@ -146,12 +151,91 @@ class Log {
       theme.register(this.logWrap)
       this.logContent = logContent
       document.body.insertAdjacentElement('beforebegin', this.logWrap)
+
+      // 日志操作按钮要放在日志区域后面，所以新日志区域创建后，把按钮移到它的后面
+      this.ensureLogButtons()
     }
+  }
+
+  /**日志操作按钮的容器。目前只有"导出日志"按钮 */
+  private logButtons: HTMLDivElement | null = null
+
+  /**把日志操作按钮放到最新的日志区域里、日志内容的下方 */
+  // 按钮只创建一次。当它随着旧日志区域被移除后，再次输出日志时会创建新的区域，并把按钮放入新区域
+  private ensureLogButtons() {
+    if (this.logButtons === null) {
+      this.logButtons = document.createElement('div')
+      this.logButtons.classList.add(this.logButtonsClassName)
+
+      const exportLogBtn = document.createElement('button')
+      exportLogBtn.type = 'button'
+      exportLogBtn.classList.add('logActionBtn')
+      exportLogBtn.dataset.xztext = '_导出日志'
+      exportLogBtn.addEventListener('click', () => {
+        this.exportLogs()
+      })
+
+      this.logButtons.append(exportLogBtn)
+      lang.register(this.logButtons)
+    }
+
+    // 把按钮放到当前（最新）日志区域里、日志内容的下方。
+    // 如果按钮已经在旧区域里，append 会把按钮移动到新区域
+    this.logWrap.append(this.logButtons)
+  }
+
+  /**把当前日志区域里的日志导出为 html 文件 */
+  private exportLogs() {
+    const allLogWrap = document.querySelectorAll(
+      `.${this.logWrapFlag}`,
+    ) as NodeListOf<HTMLDivElement>
+    const logs: string[] = []
+    for (const wrap of allLogWrap) {
+      const content = wrap.querySelector(
+        `.${this.logContentClassName}`,
+      ) as HTMLDivElement
+      if (content) {
+        logs.push(content.innerHTML)
+      }
+    }
+
+    // 没有日志时不导出
+    if (logs.length === 0) {
+      return
+    }
+
+    const fileName = `log-${Utils.replaceUnsafeStr(
+      document.title || 'fanbox',
+    )}-${DateFormat.format(new Date(), 'YYYY-MM-DD hh-mm-ss')}.html`
+
+    const html = `<!DOCTYPE html>
+        <html>
+        <body>
+        <div id="logWrap">
+        ${logs.join('\n')}
+        </div>
+        </body>
+        </html>`
+
+    const blob = new Blob([html], {
+      type: 'text/html',
+    })
+    const url = URL.createObjectURL(blob)
+    Utils.downloadFile(url, fileName)
+
+    toast.success(lang.transl('_导出日志成功'), {
+      position: 'center',
+    })
   }
 
   public removeAll() {
     const allLogWrap = document.querySelectorAll(`.${this.logWrapFlag}`)
     allLogWrap.forEach((wrap) => wrap.remove())
+
+    // 日志操作按钮不属于日志区域，需要单独移除
+    if (this.logButtons) {
+      this.logButtons.remove()
+    }
 
     this.count = 0
   }

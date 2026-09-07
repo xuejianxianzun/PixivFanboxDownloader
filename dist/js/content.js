@@ -3664,6 +3664,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EVT__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EVT */ "./src/ts/EVT.ts");
 /* harmony import */ var _Colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Colors */ "./src/ts/Colors.ts");
 /* harmony import */ var _Theme__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Theme */ "./src/ts/Theme.ts");
+/* harmony import */ var _Lang__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Lang */ "./src/ts/Lang.ts");
+/* harmony import */ var _Toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Toast */ "./src/ts/Toast.ts");
+/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/Utils */ "./src/ts/utils/Utils.ts");
+/* harmony import */ var _utils_DateFormat__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/DateFormat */ "./src/ts/utils/DateFormat.ts");
+
+
+
+
 
 
 
@@ -3693,6 +3701,7 @@ class Log {
     logContentClassName = 'logContent'; // 日志主体区域的类名
     logWrapClassName = 'logWrap'; // 日志容器的类名，只负责样式
     logWrapFlag = 'logWrapFlag'; // 日志容器的标志，当需要查找日志区域时，使用这个类名而不是 logWrap，因为其他元素可能也具有 logWrap 类名，以应用其样式。
+    logButtonsClassName = 'logButtons'; // 日志操作按钮容器的类名（目前只有一个"导出日志"按钮）
     /**储存会刷新的日志所使用的元素（插槽），可以传入 key 来区分多个刷新区域 */
     // 每个刷新区域使用一个 span 元素，里面的文本会变化
     // 通常用于显示进度，例如 0/10, 1/10, 2/10... 10/10
@@ -3791,11 +3800,71 @@ class Log {
             _Theme__WEBPACK_IMPORTED_MODULE_2__.theme.register(this.logWrap);
             this.logContent = logContent;
             document.body.insertAdjacentElement('beforebegin', this.logWrap);
+            // 日志操作按钮要放在日志区域后面，所以新日志区域创建后，把按钮移到它的后面
+            this.ensureLogButtons();
         }
+    }
+    /**日志操作按钮的容器。目前只有"导出日志"按钮 */
+    logButtons = null;
+    /**把日志操作按钮放到最新的日志区域里、日志内容的下方 */
+    // 按钮只创建一次。当它随着旧日志区域被移除后，再次输出日志时会创建新的区域，并把按钮放入新区域
+    ensureLogButtons() {
+        if (this.logButtons === null) {
+            this.logButtons = document.createElement('div');
+            this.logButtons.classList.add(this.logButtonsClassName);
+            const exportLogBtn = document.createElement('button');
+            exportLogBtn.type = 'button';
+            exportLogBtn.classList.add('logActionBtn');
+            exportLogBtn.dataset.xztext = '_导出日志';
+            exportLogBtn.addEventListener('click', () => {
+                this.exportLogs();
+            });
+            this.logButtons.append(exportLogBtn);
+            _Lang__WEBPACK_IMPORTED_MODULE_3__.lang.register(this.logButtons);
+        }
+        // 把按钮放到当前（最新）日志区域里、日志内容的下方。
+        // 如果按钮已经在旧区域里，append 会把按钮移动到新区域
+        this.logWrap.append(this.logButtons);
+    }
+    /**把当前日志区域里的日志导出为 html 文件 */
+    exportLogs() {
+        const allLogWrap = document.querySelectorAll(`.${this.logWrapFlag}`);
+        const logs = [];
+        for (const wrap of allLogWrap) {
+            const content = wrap.querySelector(`.${this.logContentClassName}`);
+            if (content) {
+                logs.push(content.innerHTML);
+            }
+        }
+        // 没有日志时不导出
+        if (logs.length === 0) {
+            return;
+        }
+        const fileName = `log-${_utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.replaceUnsafeStr(document.title || 'fanbox')}-${_utils_DateFormat__WEBPACK_IMPORTED_MODULE_6__.DateFormat.format(new Date(), 'YYYY-MM-DD hh-mm-ss')}.html`;
+        const html = `<!DOCTYPE html>
+        <html>
+        <body>
+        <div id="logWrap">
+        ${logs.join('\n')}
+        </div>
+        </body>
+        </html>`;
+        const blob = new Blob([html], {
+            type: 'text/html',
+        });
+        const url = URL.createObjectURL(blob);
+        _utils_Utils__WEBPACK_IMPORTED_MODULE_5__.Utils.downloadFile(url, fileName);
+        _Toast__WEBPACK_IMPORTED_MODULE_4__.toast.success(_Lang__WEBPACK_IMPORTED_MODULE_3__.lang.transl('_导出日志成功'), {
+            position: 'center',
+        });
     }
     removeAll() {
         const allLogWrap = document.querySelectorAll(`.${this.logWrapFlag}`);
         allLogWrap.forEach((wrap) => wrap.remove());
+        // 日志操作按钮不属于日志区域，需要单独移除
+        if (this.logButtons) {
+            this.logButtons.remove();
+        }
         this.count = 0;
     }
     showAll() {
@@ -9251,6 +9320,22 @@ As a result, the file name set by the downloader is lost and the file name becom
         `エクスポート成功`,
         `내보내기 성공`,
         `Успешный экспорт`,
+    ],
+    _导出日志: [
+        `导出日志`,
+        `匯出日誌`,
+        `Export log`,
+        `ログのエクスポート`,
+        `로그 내보내기`,
+        `Экспорт журнала`,
+    ],
+    _导出日志成功: [
+        `导出日志成功`,
+        `匯出日誌成功`,
+        `Log exported successfully`,
+        `ログのエクスポートに成功しました`,
+        `로그 내보내기 성공`,
+        `Журнал успешно экспортирован`,
     ],
     _确定: [`确定`, `確定`, `Confirm`, `確定`, `확인`, `Подтвердить`],
     _时间范围: [
