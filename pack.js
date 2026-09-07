@@ -58,8 +58,7 @@ function pack() {
   // pipe archive data to the file
   archive.pipe(output)
 
-  // 添加文件夹
-  archive.directory('dist', packName)
+  archive.directory('dist', '')
 
   archive.finalize()
 }

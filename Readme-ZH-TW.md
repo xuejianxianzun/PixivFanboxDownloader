@@ -12,6 +12,7 @@
   - [離線安裝](#離線安裝)
   - [在 Android 上使用](#在-android-上使用)
 - [如何使用](#如何使用)
+- [開發](#開發)
 - [支持和贊助](#支持和贊助)
 
 <!-- /TOC -->
@@ -32,9 +33,9 @@
 
 ## 在線安裝
 
-您可以從 Chrome Web Store 安裝本擴展程式：
+Chrome、Edge 等 Chromium 核心的瀏覽器可以從 **[Chrome Web Store](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)** 安裝本擴充功能。
 
-[Pixiv Fanbox Downloader](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
+Firefox 瀏覽器可以從 **[Add-Ons](https://addons.mozilla.org/firefox/addon/pixivfanboxdownloader/)** 安裝本擴充功能（即將發布）。
 
 ## 離線安裝
 
@@ -53,6 +54,29 @@
 - 下載的文件將保存在瀏覽器的下載目錄中。如果您想保存到其他位置，需要修改瀏覽器的下載目錄。
 - 請關閉瀏覽器設置中的「下載前詢問每個文件的保存位置」選項，以免在下載時出現另存為窗口。
 - 若下載後的文件名異常，請禁用其他具有下載功能的瀏覽器擴展。
+
+# 開發
+
+技術棧：本專案使用 TypeScript、LESS、Webpack 5。
+
+開發與建置命令：
+
+```bash
+npm install            # 安裝依賴
+npm run ts            # webpack 打包 TS → dist/js/
+npm run less          # lessc 編譯 src/style/style.less → dist/style/style.css
+npm run fmt           # prettier 格式化
+npm run pre-build     # ts + less + fmt
+npm run build         # pre-build + pack.js，這會更新 /dist 裡的內容，並打包為 zip 檔案
+```
+
+你可以根據修改的內容執行對應的命令：
+- 只修改了 ts 檔案時：`npm run ts`
+- 只修改了 less 檔案時：`npm run less`
+- 修改了其他檔案時（如 `manifest.json`）：執行 `node pack` 將檔案複製到 `/dist` 目錄裡
+- 完整建置：`npm run build` 會執行所有命令
+
+在瀏覽器的擴充功能管理頁面裡，載入 `/dist` 目錄即可在本機安裝這個擴充功能，並進行除錯。當你修改原始碼，並編譯到 `/dist` 裡之後，需要重新整理本擴充功能，然後重新整理網頁，以套用更改。
 
 # 支持和贊助
 

@@ -12,6 +12,7 @@ English |
   - [Offline Installation](#offline-installation)
   - [Using on Android](#using-on-android)
 - [How to Use](#how-to-use)
+- [Development](#development)
 - [Patreon](#patreon)
 
 <!-- /TOC -->
@@ -32,9 +33,9 @@ We recommend using Chrome or Edge browsers.
 
 ## Online Installation
 
-You can install this extension from the Chrome Web Store:
+Chromium-based browsers such as Chrome and Edge can install this extension from the **[Chrome Web Store](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)**.
 
-[Pixiv Fanbox Downloader](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)
+Firefox users can install this extension from the **[Add-Ons](https://addons.mozilla.org/firefox/addon/pixivfanboxdownloader/)** store (it will be available soon).
 
 ## Offline Installation
 
@@ -53,6 +54,29 @@ On Android, you can install this extension using the Quetta browser. Quetta is a
 - Downloaded files will be saved in the browser's download directory. If you want to save them to a different location, you need to change the browser's download directory.
 - Please disable the browser setting "Ask where to save each file before downloading" to avoid the save-as dialog during downloads.
 - If the filename of the downloaded file is abnormal, please disable other browser extensions with download functions.
+
+# Development
+
+Tech stack: This project uses TypeScript, LESS, and Webpack 5.
+
+Development and build commands:
+
+```bash
+npm install            # Install dependencies
+npm run ts            # Bundle TypeScript with webpack → dist/js/
+npm run less          # Compile src/style/style.less to dist/style/style.css with lessc
+npm run fmt           # Format with prettier
+npm run pre-build     # ts + less + fmt
+npm run build         # pre-build + pack.js: updates the contents of /dist and packs them into a zip file
+```
+
+You can run the corresponding command depending on what you modified:
+- If you only modified ts files: `npm run ts`
+- If you only modified less files: `npm run less`
+- If you modified other files (e.g. `manifest.json`): run `node pack` to copy the files into the `/dist` directory
+- Full build: `npm run build` runs all the commands
+
+In the browser's extension management page, load the `/dist` directory to install this extension locally and debug it. After you modify the source code and compile it into `/dist`, you need to refresh the extension, and then refresh the web page, to apply the changes.
 
 # Patreon
 

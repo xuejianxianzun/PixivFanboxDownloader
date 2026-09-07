@@ -52,7 +52,10 @@
   "homepage_url": "https://github.com/xuejianxianzun/PixivFanboxDownloader",
   "browser_specific_settings": {
     "gecko": {
-      "id": "pixiv-fanbox-downloader@xuejianxianzun"
+      "id": "pixiv-fanbox-downloader@xuejianxianzun",
+      "data_collection_permissions": {
+      "required": ["none"]
+    }
     }
   }
 }
