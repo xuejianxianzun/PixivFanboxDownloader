@@ -1915,36 +1915,126 @@ Firefox 브라우저는 Firefox Add-ons에서 설치할 수 있습니다.<br><a 
 Для Firefox его можно установить из Firefox Add-ons:<br><a href="https://addons.mozilla.org/en-US/firefox/addon/powerfulpixivdownloader/" target="_blank">Powerful Pixiv Downloader</a><br>`,
   ],
   _版本更新说明: [
-    `<strong>✨在保存投稿中的文字时，新增了 HTML 格式</strong><br>
-之前该设置只有 TXT 格式，查看时不会显示投稿里的图片、视频等内容。新增的 HTML 格式可以显示这些内容，阅读体验接近 Fanbox 的网页浏览效果。<br>
-感谢 <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> 提交了该功能。<br>
-<strong>✨新增设置：保存投稿中的评论</strong><br>
-感谢 <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> 提交了该功能。`,
-    `<strong>✨儲存投稿中的文字時，新增了 HTML 格式</strong><br>
-之前此設定只有 TXT 格式，查看時不會顯示投稿中的圖片、影片等內容。新增的 HTML 格式可以顯示這些內容，閱讀體驗接近 Fanbox 的網頁瀏覽效果。<br>
-感謝 <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> 提交了此功能。<br>
-<strong>✨新增設定：儲存投稿中的評論</strong><br>
-感謝 <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> 提交了此功能。`,
-    `<strong>✨ Added HTML format when saving text in posts</strong><br>
-Previously, this setting only supported TXT format, which did not display images, videos, and other content from posts when viewed. The new HTML format displays this content, offering a reading experience close to browsing Fanbox on the web.<br>
-Thanks to <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> for contributing this feature.<br>
-<strong>✨ New setting: Save comments in posts</strong><br>
-Thanks to <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> for contributing this feature.`,
-    `<strong>✨投稿内のテキスト保存に HTML 形式を追加</strong><br>
-以前はこの設定で TXT 形式しか選択できず、閲覧時に投稿内の画像、動画などは表示されませんでした。新しい HTML 形式ではこれらの内容を表示でき、Fanbox のウェブページに近い閲覧体験を得られます。<br>
-この機能を提供してくださった <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> に感謝します。<br>
-<strong>✨新しい設定：投稿内のコメントを保存</strong><br>
-この機能を提供してくださった <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> に感謝します。`,
-    `<strong>✨게시물의 텍스트를 저장할 때 HTML 형식 추가</strong><br>
-이전에는 이 설정에서 TXT 형식만 지원했으며, 볼 때 게시물의 이미지, 동영상 등의 내용이 표시되지 않았습니다. 새 HTML 형식은 이러한 내용을 표시할 수 있어 Fanbox 웹페이지를 보는 것과 가까운 읽기 경험을 제공합니다.<br>
-이 기능을 기여해 주신 <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a>님께 감사드립니다.<br>
-<strong>✨새 설정: 게시물의 댓글 저장</strong><br>
-이 기능을 기여해 주신 <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a>님께 감사드립니다.`,
-    `<strong>✨ Добавлен формат HTML при сохранении текста публикаций</strong><br>
-Ранее в этой настройке был доступен только формат TXT, при просмотре которого изображения, видео и другое содержимое публикаций не отображались. Новый формат HTML позволяет отображать это содержимое и делает чтение ближе к просмотру страницы Fanbox в браузере.<br>
-Спасибо <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> за добавление этой функции.<br>
-<strong>✨ Новая настройка: сохранять комментарии к публикациям</strong><br>
-Спасибо <a href="https://github.com/Eganchiyu" target="_blank">Eganchiyu</a> за добавление этой функции.`,
+    `<strong>✨新增设置：文件名重复时的处理方式</strong><br>
+当你重复下载一个投稿里的文件时，经常会产生同名文件。之前下载器总是会添加序号，现在你可以选择不同的处理方式：“覆盖已有文件”或者“手动处理”。<br>
+<strong>✨在日志区域底部添加了“导出日志”按钮</strong><br>
+<strong>✨新增命名标记 {PVA}</strong><br>
+{PVA} 用来输出每篇投稿的资源标记。P、V、A 分别表示图片、视频、音频。完整输出如<span class="blue">【15P1V1A】</span>或<span class="blue">[15P+1V+1A]</span>（这取决于下载器的语言），每个投稿独立计算。根据投稿的实际情况，可能只会输出部分标记，或者不输出任何内容。它适合放在最后一层文件夹的末尾，例如：<span class="blue">fanbox/{user}/{date}-{title}{PVA}/{name}</span>。<br>
+<strong>🔧保存投稿中的文字为 HTML 格式时，它里面的文件总是使用相对路径</strong><br>
+之前如果用户排除了投稿里的一些文件（不下载它们），那么在 HTML 文件里，它们的路径会使用 fanbox 上的原 URL。这经常会导致内容无法加载。<br>
+现在 HTML 里总是会使用相对路径，即优先使用本地文件，而不是原 URL。<br>
+<strong>🦊支持在 PC 版 Firefox 浏览器上使用</strong><br>
+该扩展近期将会上架 Add-ons 扩展商店，可以在 PC 端 Firefox 浏览器上安装使用。<br>
+PS：该扩展无法在移动端 Firefox 上使用，因为移动端 Firefox 浏览器的下载功能是残废的。<br>
+<strong>📱优化了移动端界面</strong><br>
+在移动设备里可以正常使用下载器了。<br>
+<strong>🐞修复问题：在主页里保存所有粉丝卡时，会提示没有赞助的用户</strong><br>
+这是因为 Fanbox API 返回的数据结构变化导致的，现在修复。<br>
+<strong>😊优化文件下载失败时的处理</strong><br>
+- 每个文件最多重试 3 次<br>
+- 重试达到上限时，保存同名 txt 文件，记录错误信息<br>
+- 在日志里显示更详细的错误提示和重试指引<br>
+<strong>😊优化了一些文本的翻译</strong>`,
+    `<strong>✨新增設定：檔案名稱重複時的處理方式</strong><br>
+當你重複下載一個投稿裡的檔案時，經常會產生同名檔案。之前下載器總是會新增序號，現在你可以選擇不同的處理方式：「覆寫已有檔案」或「手動處理」。<br>
+<strong>✨在日誌區域底部新增了「匯出日誌」按鈕</strong><br>
+<strong>✨新增命名標記 {PVA}</strong><br>
+{PVA} 用來輸出每篇投稿的資源標記。P、V、A 分別表示圖片、影片、音訊。完整輸出如<span class="blue">【15P1V1A】</span>或<span class="blue">[15P+1V+1A]</span>（取決於下載器的語言），每個投稿獨立計算。根據投稿的實際情況，可能只會輸出部分標記，或者不輸出任何內容。它適合放在最後一層資料夾的末尾，例如：<span class="blue">fanbox/{user}/{date}-{title}{PVA}/{name}</span>。<br>
+<strong>🔧將投稿中的文字儲存為 HTML 格式時，裡面的檔案一律使用相對路徑</strong><br>
+之前如果使用者排除了投稿裡的一些檔案（不下載它們），那麼在 HTML 檔案裡，它們的路徑會使用 fanbox 上的原始 URL。這經常會導致內容無法載入。<br>
+現在 HTML 裡一律使用相對路徑，也就是優先使用本機檔案，而不是原始 URL。<br>
+<strong>🦊支援在 PC 版 Firefox 瀏覽器上使用</strong><br>
+該擴充功能近期將會上架 Add-ons 擴充功能商店，可以在 PC 端 Firefox 瀏覽器上安裝使用。<br>
+PS：該擴充功能無法在行動版 Firefox 上使用，因為行動版 Firefox 瀏覽器的下載功能是不完整的。<br>
+<strong>📱最佳化了行動版介面</strong><br>
+在行動裝置上也可以正常使用下載器了。<br>
+<strong>🐞修復問題：在首頁儲存所有粉絲卡時，會提示沒有贊助的使用者</strong><br>
+這是因為 Fanbox API 回傳的資料結構改變導致的，現在已修復。<br>
+<strong>😊最佳化檔案下載失敗時的處理</strong><br>
+- 每個檔案最多重試 3 次<br>
+- 重試達到上限時，儲存同名 txt 檔案並記錄錯誤資訊<br>
+- 在日誌裡顯示更詳細的錯誤提示與重試指引<br>
+<strong>😊最佳化了一些文字的翻譯</strong>`,
+    `<strong>✨ New setting: what to do when file names are duplicated</strong><br>
+When you download the files of a post again, duplicate file names often occur. Previously the downloader always added a serial number; now you can choose a different handling method: "Overwrite existing file" or "Handle manually".<br>
+<strong>✨ Added an "Export log" button at the bottom of the log area</strong><br>
+<strong>✨ New naming marker: {PVA}</strong><br>
+{PVA} outputs the resource tag of each post. P, V, and A stand for image, video, and audio respectively. A complete output looks like <span class="blue">[15P+1V+1A]</span> or <span class="blue">【15P1V1A】</span> (depending on the downloader's language), and is calculated independently for each post. Depending on the actual content of the post, only some of the tags may be output, or nothing at all. It is suitable for placing at the end of the last folder level, for example: <span class="blue">fanbox/{user}/{date}-{title}{PVA}/{name}</span>.<br>
+<strong>🔧 When saving post text as HTML, the files inside it always use relative paths</strong><br>
+Previously, if you excluded some files of a post (not downloading them), their paths in the HTML file would use the original URLs on fanbox. This often caused the content to fail to load.<br>
+Now the HTML always uses relative paths, preferring local files over original URLs.<br>
+<strong>🦊 Firefox (desktop) is now supported</strong><br>
+This extension will soon be listed on the Add-ons store, and can be installed and used in desktop Firefox.<br>
+PS: It cannot be used in mobile Firefox, because the download feature of mobile Firefox is broken.<br>
+<strong>📱 Improved the mobile interface</strong><br>
+The downloader can now be used normally on mobile devices.<br>
+<strong>🐞 Fixed a bug: saving all fan cards on the home page showed a message about having no sponsored users</strong><br>
+This was caused by a change in the data structure returned by the Fanbox API, and is now fixed.<br>
+<strong>😊 Improved the handling of file download failures</strong><br>
+- Each file is retried up to 3 times<br>
+- When the retry limit is reached, a txt file with the same name is saved to record the error message<br>
+- More detailed error messages and retry guidance are shown in the log<br>
+<strong>😊 Improved the translation of some texts</strong>`,
+    `<strong>✨新しい設定：ファイル名が重複したときの処理方法</strong><br>
+同じ投稿のファイルを繰り返しダウンロードすると、ファイル名の重複がよく発生します。以前はダウンローダーが常に連番を付けていましたが、今回は「既存のファイルを上書き」または「手動で処理」など、異なる処理方法を選択できます。<br>
+<strong>✨ログ領域の下部に「ログのエクスポート」ボタンを追加</strong><br>
+<strong>✨新しい命名マーカー {PVA}</strong><br>
+{PVA} は各投稿のリソースタグを出力します。P、V、A はそれぞれ画像、動画、音声を表します。完全な出力は<span class="blue">【15P1V1A】</span>または<span class="blue">[15P+1V+1A]</span>のようになります（ダウンローダーの言語によって異なります）。各投稿ごとに独立して計算されます。投稿の実際の内容に応じて、一部のタグだけが出力されたり、何も出力されなかったりします。最後のフォルダの末尾に置くのに適しています。例：<span class="blue">fanbox/{user}/{date}-{title}{PVA}/{name}</span>。<br>
+<strong>🔧投稿のテキストを HTML 形式で保存するとき、内部のファイルは常に相対パスを使用します</strong><br>
+以前は投稿の一部のファイルを除外（ダウンロードしない）した場合、HTML ファイル内のそれらのパスは fanbox 上の元の URL を使用していました。そのため、コンテンツが読み込めないことがよくありました。<br>
+現在は HTML 内で常に相対パスを使用します。つまり、元の URL ではなくローカルのファイルが優先されます。<br>
+<strong>🦊PC 版 Firefox ブラウザーに対応</strong><br>
+この拡張機能はまもなく Add-ons ストアに掲載され、PC 版 Firefox ブラウザーでインストールして使用できるようになります。<br>
+PS：モバイル版 Firefox では使用できません。モバイル版 Firefox のダウンロード機能は不完全だからです。<br>
+<strong>📱モバイル版のインターフェースを改善</strong><br>
+モバイル端末でもダウンローダーを正常に使用できるようになりました。<br>
+<strong>🐞不具合を修正：ホームページで全ファンカードを保存すると、スポンサーがいないと表示される問題</strong><br>
+これは Fanbox API が返すデータ構造の変更によるもので、修正しました。<br>
+<strong>😊ファイルのダウンロード失敗時の処理を改善</strong><br>
+- 各ファイルは最大 3 回再試行されます<br>
+- 再試行回数の上限に達すると、同名の txt ファイルを保存してエラー情報を記録します<br>
+- ログに、より詳細なエラー通知と再試行の手順が表示されます<br>
+<strong>😊一部のテキストの翻訳を改善</strong>`,
+    `<strong>✨새 설정: 파일 이름이 중복될 때의 처리 방법</strong><br>
+같은 게시물의 파일을 반복해서 다운로드하면 파일 이름 중복이 자주 발생합니다. 이전에는 다운로더가 항상 일련번호를 추가했지만, 이제는 "기존 파일 덮어쓰기" 또는 "수동으로 처리" 등 다른 처리 방법을 선택할 수 있습니다.<br>
+<strong>✨로그 영역 하단에 "로그 내보내기" 버튼 추가</strong><br>
+<strong>✨새로운 명명 태그 {PVA}</strong><br>
+{PVA}는 각 게시물의 리소스 태그를 출력합니다. P, V, A는 각각 이미지, 동영상, 오디오를 나타냅니다. 완전한 출력은 <span class="blue">[15P+1V+1A]</span> 또는 <span class="blue">【15P1V1A】</span>와 같습니다(다운로더의 언어에 따라 다릅니다). 각 게시물마다 독립적으로 계산됩니다. 게시물의 실제 내용에 따라 일부 태그만 출력되거나 아무것도 출력되지 않을 수 있습니다. 마지막 폴더의 끝에 배치하기에 적합합니다. 예: <span class="blue">fanbox/{user}/{date}-{title}{PVA}/{name}</span>.<br>
+<strong>🔧게시물의 텍스트를 HTML 형식으로 저장할 때 내부의 파일은 항상 상대 경로를 사용합니다</strong><br>
+이전에는 게시물의 일부 파일을 제외(다운로드하지 않음)하면 HTML 파일에서 해당 파일의 경로가 fanbox의 원본 URL을 사용했습니다. 이로 인해 내용이 로드되지 않는 경우가 자주 발생했습니다.<br>
+이제 HTML에서는 항상 상대 경로를 사용합니다. 즉, 원본 URL 대신 로컬 파일을 우선합니다.<br>
+<strong>🦊PC용 Firefox 브라우저 지원</strong><br>
+이 확장 프로그램은 곧 Add-ons 스토어에 등록되어 PC용 Firefox 브라우저에서 설치하여 사용할 수 있습니다.<br>
+PS: 모바일 Firefox에서는 사용할 수 없습니다. 모바일 Firefox 브라우저의 다운로드 기능이 제대로 작동하지 않기 때문입니다.<br>
+<strong>📱모바일 인터페이스 개선</strong><br>
+모바일 기기에서도 다운로더를 정상적으로 사용할 수 있습니다.<br>
+<strong>🐞버그 수정: 홈페이지에서 모든 팬카드를 저장할 때 스폰서가 없다는 메시지가 표시되는 문제</strong><br>
+이는 Fanbox API가 반환하는 데이터 구조가 변경되었기 때문이며, 수정되었습니다.<br>
+<strong>😊파일 다운로드 실패 시 처리를 개선</strong><br>
+- 각 파일은 최대 3회 재시도됩니다<br>
+- 재시도 횟수 상한에 도달하면 같은 이름의 txt 파일을 저장하여 오류 정보를 기록합니다<br>
+- 로그에 더 자세한 오류 메시지와 재시도 안내가 표시됩니다<br>
+<strong>😊일부 텍스트 번역을 개선</strong>`,
+    `<strong>✨ Новая настройка: что делать при дублировании имени файла</strong><br>
+При повторном скачивании файлов одной публикации часто возникают файлы с одинаковыми именами. Раньше загрузчик всегда добавлял номер, теперь вы можете выбрать другой способ обработки: «Перезаписать существующий файл» или «Обработать вручную».<br>
+<strong>✨ В нижней части области журнала добавлена кнопка «Экспорт журнала»</strong><br>
+<strong>✨ Новый маркер именования: {PVA}</strong><br>
+{PVA} выводит метку ресурсов для каждой публикации. P, V и A означают изображение, видео и аудио соответственно. Полный вывод выглядит как <span class="blue">[15P+1V+1A]</span> или <span class="blue">【15P1V1A】</span> (в зависимости от языка загрузчика) и рассчитывается независимо для каждой публикации. В зависимости от фактического содержания публикации могут выводиться только некоторые метки или ничего. Её удобно размещать в конце последней папки, например: <span class="blue">fanbox/{user}/{date}-{title}{PVA}/{name}</span>.<br>
+<strong>🔧 При сохранении текста публикации в формате HTML файлы внутри него всегда используют относительные пути</strong><br>
+Раньше, если вы исключали некоторые файлы публикации (не скачивали их), в HTML-файле для них использовались исходные URL-адреса на fanbox. Это часто приводило к тому, что содержимое не загружалось.<br>
+Теперь в HTML всегда используются относительные пути, то есть приоритет отдаётся локальным файлам, а не исходным URL-адресам.<br>
+<strong>🦊 Поддержка Firefox (ПК-версия)</strong><br>
+Это расширение скоро появится в магазине дополнений Add-ons, и его можно будет установить и использовать в Firefox на ПК.<br>
+PS: его нельзя использовать в мобильном Firefox, потому что функция загрузки в мобильном Firefox не работает должным образом.<br>
+<strong>📱 Улучшен интерфейс для мобильных устройств</strong><br>
+Теперь загрузчиком можно нормально пользоваться на мобильных устройствах.<br>
+<strong>🐞 Исправлена проблема: при сохранении всех фан-карт на главной странице появлялось сообщение об отсутствии спонсируемых пользователей</strong><br>
+Это было вызвано изменением структуры данных, возвращаемых API Fanbox, теперь исправлено.<br>
+<strong>😊 Улучшена обработка ошибок при скачивании файлов</strong><br>
+- Каждый файл повторяется не более 3 раз<br>
+- При достижении лимита повторных попыток сохраняется txt-файл с тем же именем, в который записывается информация об ошибке<br>
+- В журнале отображаются более подробные сообщения об ошибках и инструкции по повторным попыткам<br>
+<strong>😊 Улучшен перевод некоторых текстов</strong>`,
   ],
   _帮助: [`帮助`, `幫助`, `Help`, `ヘルプ`, `도움말`, `Справка`],
   _开始获取投稿列表: [

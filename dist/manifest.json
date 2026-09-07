@@ -1,6 +1,6 @@
 {
   "name": "Pixiv Fanbox Downloader",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "manifest_version": 3,
   "description": "__MSG_extDescription__",
   "default_locale": "zh_CN",
