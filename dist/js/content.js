@@ -1672,6 +1672,12 @@ class CenterPanel {
       `;
         document.body.insertAdjacentHTML('beforebegin', centerPanelHTML);
         this.centerPanel = document.querySelector('.centerWrap');
+        // 在移动端上为 body 和中间面板添加 mobile 标记。
+        // 面板的移动端样式以 .mobile 为限定，不会影响 PC 端界面
+        if (_Config__WEBPACK_IMPORTED_MODULE_7__.Config.mobile) {
+            document.body.classList.add('mobile');
+            this.centerPanel.classList.add('mobile');
+        }
     }
     allLangFlag = [];
     setLangFlag() {
@@ -1724,10 +1730,7 @@ class CenterPanel {
             .addEventListener('click', () => {
             let msg = _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_常见问题说明') + _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_账户可能被封禁的警告');
             if (_Config__WEBPACK_IMPORTED_MODULE_7__.Config.mobile) {
-                msg =
-                    msg +
-                        '<br><br>' +
-                        _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_移动端浏览器可能不会建立文件夹的说明');
+                msg += _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_移动端浏览器可能不会建立文件夹的说明');
             }
             _MsgBox__WEBPACK_IMPORTED_MODULE_6__.msgBox.show(msg, {
                 title: _Lang__WEBPACK_IMPORTED_MODULE_0__.lang.transl('_常见问题'),
@@ -3905,6 +3908,8 @@ class MsgBox {
     create(data) {
         const wrap = document.createElement('div');
         wrap.classList.add('xz_msg_box');
+        // 在移动端上为消息框添加 mobile 标记，以应用移动端样式
+        _Config__WEBPACK_IMPORTED_MODULE_4__.Config.mobile && wrap.classList.add('mobile');
         let colorStyle = '';
         if (data.color) {
             colorStyle = `style="color:${data.color}"`;
@@ -4078,6 +4083,8 @@ class OutputPanel {
     `;
         document.body.insertAdjacentHTML('beforebegin', html);
         this.outputPanel = document.querySelector('.outputWrap');
+        // 在移动端上为输出面板添加 mobile 标记，以应用移动端样式
+        _Config__WEBPACK_IMPORTED_MODULE_4__.Config.mobile && this.outputPanel.classList.add('mobile');
         this.outputTitle = this.outputPanel.querySelector('.outputTitle');
         this.outputContent = this.outputPanel.querySelector('.outputContent');
         this.copyBtn = this.outputPanel.querySelector('.outputCopy');

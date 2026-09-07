@@ -1,0 +1,1 @@
+web-ext run -t firefox-android --adb-device aea70c79 --firefox-apk org.mozilla.firefox --source-dir dist

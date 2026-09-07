@@ -83,6 +83,9 @@ class OutputPanel {
 
     this.outputPanel = document.querySelector('.outputWrap')! as HTMLDivElement
 
+    // 在移动端上为输出面板添加 mobile 标记，以应用移动端样式
+    Config.mobile && this.outputPanel.classList.add('mobile')
+
     this.outputTitle = this.outputPanel.querySelector(
       '.outputTitle',
     )! as HTMLDivElement

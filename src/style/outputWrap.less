@@ -113,3 +113,24 @@
     }
   }
 }
+
+// 移动端适配：输出面板在移动端页面上的样式
+.outputWrap.mobile {
+  box-sizing: border-box;
+  width: calc(100vw - 20px);
+  margin-left: 0;
+  transform: translateX(-50%);
+  top: 5vh;
+  // 小高度屏幕（如横屏）上内容可能超出屏幕，限制面板高度并允许整体滚动
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  padding: 14px 12px;
+
+  .outputClose {
+    right: 10px;
+  }
+
+  .outputContent {
+    max-height: 55vh;
+  }
+}

@@ -1027,3 +1027,83 @@
     word-break: keep-all;
   }
 }
+
+// ===== 移动端适配 =====
+// 移动端页面宽度较窄，以下规则让中间面板适应移动端页面。
+// 所有规则都以 .mobile 为限定，只会在移动端添加该标记的元素上生效，不影响 PC 端界面
+
+.centerWrap.mobile {
+  width: calc(100vw - 20px);
+  max-width: 720px;
+  top: 3vh;
+  left: 50%;
+  margin-left: 0;
+  transform: translateX(-50%);
+  padding: 10px 0 0;
+  font-size: 15px;
+
+  .centerWrap_head {
+    padding: 0 12px 6px;
+    .centerWrap_title {
+      font-size: 17px;
+    }
+  }
+
+  .centerWrap_con {
+    padding-left: 12px;
+    padding-right: 4px;
+    padding-bottom: 12px;
+    // 面板在移动端占据的高度：减去顶部偏移、头部、以及上下留白
+    max-height: calc(100vh - 130px);
+    // 触底时不要把滚动继续上抛给页面，避免和移动端浏览器的工具栏手势竞争
+    overscroll-behavior: contain;
+
+    .settingForm {
+      // 表单的最大宽度是给 PC 端设置的，移动端不需要限制
+      max-width: none;
+
+      // 较宽的行（如文件名规则输入框）在窄屏上让输入框换行占满宽度，
+      // 避免撑出横向滚动条
+      .fileNameRule,
+      .setinput_tag {
+        min-width: 0;
+        width: 90%;
+      }
+
+      // 移动端增加输入框和下拉框的触控高度
+      .setinput_style1 {
+        height: 24px;
+        min-height: 24px;
+        line-height: 24px;
+      }
+
+      select {
+        height: 26px;
+      }
+
+      // 操作按钮在窄屏上尽量占满一行、便于触控
+      .centerWrap_btns button {
+        flex: 1 1 140px;
+        width: auto;
+        max-width: 50%;
+        margin-right: 8px;
+      }
+    }
+
+    // 预设命名规则列表在窄屏上可能超出屏幕，限制其宽度并允许省略
+    .namingRuleList {
+      right: 0;
+      max-width: calc(100vw - 40px);
+
+      li {
+        min-width: 0;
+      }
+
+      .rule {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}

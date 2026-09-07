@@ -110,6 +110,8 @@ class MsgBox {
   private create(data: Msg) {
     const wrap = document.createElement('div')
     wrap.classList.add('xz_msg_box')
+    // 在移动端上为消息框添加 mobile 标记，以应用移动端样式
+    Config.mobile && wrap.classList.add('mobile')
 
     let colorStyle = ''
     if (data.color) {

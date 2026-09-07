@@ -45,7 +45,7 @@ There is only one difference: the tutorial above will ask you to download the zi
 
 ## Using on Android
 
-On Android, you can install this extension using the Quetta browser. Quetta is a mobile browser with the Chromium core, and you can install extensions online from the Chrome Web Store — very convenient. However, because the downloader's interface is not optimized for mobile devices, and browsers on Android do not create subfolders, I do not recommend using it on Android.
+On Android, you can install this extension using the Quetta browser. Quetta is a mobile browser with the Chromium core, and you can install extensions online from the Chrome Web Store — very convenient. However, browsers on Android do not create subfolders, so I do not recommend using it on Android.
 
 # How to Use
 

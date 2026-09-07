@@ -10,9 +10,17 @@
 
 现在 HTML 里总是会使用相对路径，即优先使用本地文件，而不是原 URL。
 
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/92
+
 ### 🦊支持了在PC版Firefox浏览器上使用
 
 近期将会上架 Add-ons 扩展商店。
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/80
+
+### 📱优化了移动端界面
+
+在移动设备里可以正常使用下载器了。
 
 ### 😊优化文件下载失败时的处理
 

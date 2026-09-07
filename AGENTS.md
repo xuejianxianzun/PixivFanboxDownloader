@@ -89,7 +89,7 @@
 ├── tsconfig.json
 ├── package.json
 ├── changelog.md                # 版本变更日志
-├── Readme.md / Readme-EN.md / Readme-JA.md / Readme-KO.md / Readme-ZH-TW.md
+├── Readme.md / Readme-EN.md / Readme-JA.md / Readme-KO.md / Readme-ZH-CN.md / Readme-ZH-TW.md
 └── LICENSE
 ```
 
