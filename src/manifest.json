@@ -2,7 +2,8 @@
   "name": "Pixiv Fanbox Downloader",
   "version": "5.0.0",
   "manifest_version": 3,
-  "description": "Pixiv Fanbox 批量下载器。Pixiv Fanbox batch downloader.",
+  "description": "__MSG_extDescription__",
+  "default_locale": "zh_CN",
   "icons": {
     "16": "icon/logo16.png",
     "32": "icon/logo32.png",

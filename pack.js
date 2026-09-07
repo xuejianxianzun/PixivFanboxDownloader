@@ -23,6 +23,11 @@ async function copys() {
       filter: ['manifest.json', 'declarative_net_request_rules.json'],
     })
 
+    // 复制多语言消息文件（扩展的 i18n 系统需要）
+    await copy('./src/_locales', './dist/_locales', {
+      overwrite: true,
+    })
+
     await copy('./', './dist', {
       overwrite: true,
       filter: ['Readme*.md', 'LICENSE'],

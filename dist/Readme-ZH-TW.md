@@ -45,7 +45,7 @@
 
 ## 在 Android 上使用
 
-在 Android 系統上，你可以使用 Quetta 瀏覽器安裝這個擴充功能。Quetta 是一個 Chromium 內核的行動端瀏覽器，可以從 Chrome Web Store 線上安裝擴充功能，非常方便。但是由於這個下載器的介面沒有為行動端最佳化，而且 Android 上的瀏覽器不會建立子資料夾，所以我不推薦在 Android 上使用。
+在 Android 系統上，你可以使用 Quetta 瀏覽器安裝這個擴充功能。Quetta 是一個 Chromium 內核的行動端瀏覽器，可以從 Chrome Web Store 線上安裝擴充功能，非常方便。但是 Android 上的瀏覽器不會建立子資料夾，所以我不推薦在 Android 上使用。
 
 # 如何使用
 

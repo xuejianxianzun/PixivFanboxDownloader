@@ -12,11 +12,19 @@
 
 https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/92
 
-### 🦊支持了在PC版Firefox浏览器上使用
+### 🦊支持了在 PC 版 Firefox 浏览器上使用
 
-近期将会上架 Add-ons 扩展商店。
+该扩展近期将会上架 Add-ons 扩展商店，可以在 PC 端 Firefox 浏览器上安装使用。
+
+PS：无法在移动端 Firefox 上使用，因为该浏览器的下载功能是残废的。
 
 https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/80
+
+**已知问题：**
+不支持在移动端 Firefox 上使用。这不是下载器的 Bug，而是因为移动端 Firefox 的下载功能是残废的，限制太多无法实现：
+- 没有扩展程序的 downloads API，无法让浏览器下载文件；
+- 使用 a 标签的 download 属性来下载文件时，由于文件域名 `downloads.fanbox.cc` 相对于网页域名 `www.fanbox.cc` 是跨域的，所以移动端 Firefox 会打开这个链接，而非下载文件。
+- 叠加该浏览器的[其他问题](https://github.com/xuejianxianzun/PixivBatchDownloader/issues/526)，所以我放弃了支持移动端 Firefox 的尝试。
 
 ### 📱优化了移动端界面
 

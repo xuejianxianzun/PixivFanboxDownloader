@@ -45,7 +45,7 @@
 
 ## 在 Android 上使用
 
-在 Android 系统上，你可以使用 Quetta 浏览器安装这个扩展。Quetta 是一个 Chromium 内核的移动端浏览器，可以从 Chrome Web Store 在线安装扩展程序，非常方便。但是由于这个下载器的界面没有为移动端优化，而且 Android 上的浏览器不会创建子文件夹，所以我不推荐在 Android 上使用。
+在 Android 系统上，你可以使用 Quetta 浏览器安装这个扩展。Quetta 是一个 Chromium 内核的移动端浏览器，可以从 Chrome Web Store 在线安装扩展程序，非常方便。但是 Android 上的浏览器不会创建子文件夹，所以我不推荐在 Android 上使用。
 
 # 如何使用
 

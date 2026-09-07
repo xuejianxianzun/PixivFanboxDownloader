@@ -1,0 +1,5 @@
+{
+  "extDescription": {
+    "message": "Batch download files in posts from Fanbox.cc. Supports filtering, custom file names, and saving files by category."
+  }
+}
