@@ -1,7 +1,7 @@
-[English](/README.md) |
-[简体中文](/README-ZH-CN.md) | 
-[繁體中文](/README-ZH-TW.md) |
-[日本語](/README-JA.md) |
+[English](/Readme.md) |
+[简体中文](/Readme-ZH-CN.md) | 
+[繁體中文](/Readme-ZH-TW.md) |
+[日本語](/Readme-JA.md) |
 韩国语
 
 <!-- TOC -->
