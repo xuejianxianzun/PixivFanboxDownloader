@@ -253,7 +253,7 @@ npm run build         # pre-build + pack.js（最终产出 zip）
 构建产物：
 
 - `dist/js/content.js` 与 `dist/js/background.js` 由 webpack 生成
-- `dist/manifest.json`、`dist/style/`、`dist/icon/` 等静态文件由 `pack.js` 拷贝
+- `dist/manifest.json`、`dist/style/`、`dist/icon/`、`dist/Readme*.md` 等静态文件由 `pack.js` 拷贝
 - `PixivFanboxDownloader.zip` 是最终离线安装包
 
 **注意**：构建链不包含 lint，但代码风格由 prettier 统一。提交前请运行 `npm run fmt`。

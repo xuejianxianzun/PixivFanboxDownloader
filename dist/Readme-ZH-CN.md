@@ -35,7 +35,7 @@
 
 Chrome、Edge 等 Chromium 内核的浏览器可以从 **[Chrome Web Store](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)** 安装本扩展。
 
-Firefox 浏览器可以从 **[Add-Ons](https://addons.mozilla.org/firefox/addon/pixivfanboxdownloader/)** 安装本扩展（将于近期发布）。
+Firefox 浏览器可以从 **[Add-Ons](https://addons.mozilla.org/firefox/addon/pixivfanboxdownloader/)** 安装本扩展。
 
 ## 离线安装
 
@@ -51,6 +51,11 @@ Firefox 浏览器可以从 **[Add-Ons](https://addons.mozilla.org/firefox/addon/
 # 如何使用
 
 - 安装这个扩展程序之后，刷新 fanbox 页面，在页面右侧可以看到蓝色的下载按钮，点击这个按钮开始使用。
+- 在首页里，你可以抓取所有赞助用户的投稿；
+- 在用户主页里，你可以抓取他的所有投稿；
+- 在投稿页面里，你可以单独抓取一个投稿。
+- 抓取完成后，下载器会自动开始下载。
+- 你可以使用多种过滤器来筛选要下载的投稿、文件，并且可以设置文件名规则。
 - 下载的文件会保存在浏览器的下载目录里。如果你想保存到其他位置，需要修改浏览器的下载目录。
 - 请关闭浏览器设置中的“下载前询问每个文件的保存位置”选项，以免在下载时出现另存为窗口。
 - 如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。

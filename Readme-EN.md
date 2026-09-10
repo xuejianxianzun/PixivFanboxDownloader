@@ -35,7 +35,7 @@ We recommend using Chrome or Edge browsers.
 
 Chromium-based browsers such as Chrome and Edge can install this extension from the **[Chrome Web Store](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)**.
 
-Firefox users can install this extension from the **[Add-Ons](https://addons.mozilla.org/firefox/addon/pixivfanboxdownloader/)** store (it will be available soon).
+Firefox users can install this extension from the **[Add-Ons](https://addons.mozilla.org/firefox/addon/pixivfanboxdownloader/)** store.
 
 ## Offline Installation
 
@@ -51,6 +51,11 @@ On Android, you can install this extension using the Quetta browser. Quetta is a
 # How to Use
 
 - After installing this extension, refresh the fanbox page. You will see a blue download button on the right side of the page. Click this button to start using it.
+- On the home page, you can crawl posts from all the sponsored users.
+- On a user's page, you can crawl all of their posts.
+- On a post page, you can crawl an individual post.
+- After crawling is complete, the downloader will automatically start downloading.
+- You can use a variety of filters to select the posts and files you want to download, and you can set file name rules.
 - Downloaded files will be saved in the browser's download directory. If you want to save them to a different location, you need to change the browser's download directory.
 - Please disable the browser setting "Ask where to save each file before downloading" to avoid the save-as dialog during downloads.
 - If the filename of the downloaded file is abnormal, please disable other browser extensions with download functions.

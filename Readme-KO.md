@@ -35,7 +35,7 @@ Chrome 또는 Edge 브라우저를 사용하는 것을 권장합니다.
 
 Chrome, Edge 등 Chromium 기반 브라우저에서는 **[Chrome Web Store](https://chrome.google.com/webstore/detail/pixiv-fanbox-downloader/ihnfpdchjnmlehnoeffgcbakfmdjcckn)** 에서 이 확장 프로그램을 설치할 수 있습니다.
 
-Firefox에서는 **[Add-Ons](https://addons.mozilla.org/firefox/addon/pixivfanboxdownloader/)** 에서 이 확장 프로그램을 설치할 수 있습니다 (곧 출시 예정).
+Firefox에서는 **[Add-Ons](https://addons.mozilla.org/firefox/addon/pixivfanboxdownloader/)** 에서 이 확장 프로그램을 설치할 수 있습니다.
 
 ## 오프라인 설치
 
@@ -51,6 +51,11 @@ Android에서는 Quetta 브라우저를 사용하여 이 확장 프로그램을 
 # 사용 방법
 
 - 이 확장 프로그램을 설치한 후 fanbox 페이지를 새로고침하면 페이지 오른쪽에 파란색 다운로드 버튼이 표시됩니다. 이 버튼을 클릭하여 사용을 시작하세요.
+- 홈페이지에서 후원 중인 모든 사용자의 게시물을 크롤링할 수 있습니다.
+- 사용자 페이지에서 해당 사용자의 모든 게시물을 크롤링할 수 있습니다.
+- 게시물 페이지에서 개별 게시물을 크롤링할 수 있습니다.
+- 크롤링이 완료되면 다운로더가 자동으로 다운로드를 시작합니다.
+- 다양한 필터를 사용하여 다운로드할 게시물과 파일을 선택할 수 있으며, 파일명 규칙도 설정할 수 있습니다.
 - 다운로드한 파일은 브라우저의 다운로드 디렉토리에 저장됩니다. 다른 위치에 저장하려면 브라우저의 다운로드 디렉토리를 변경해야 합니다.
 - 다운로드 시 "각 파일을 저장할 위치를 물어보기" 브라우저 설정을 비활성화하여 저장 위치를 묻는 창이 나타나지 않도록 하세요.
 - 다운로드한 파일 이름이 비정상적인 경우, 다운로드 기능을 가진 다른 브라우저 확장 프로그램을 비활성화하세요.
