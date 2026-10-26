@@ -419,6 +419,14 @@ class DownloadControl {
     } else if (err === 'NETWORK_FAILED') {
       // 网络错误。通常是文件下载了一部分，但最终无法完成下载
       log.error(lang.transl('_文件下载失败因为NETWORK_FAILED'))
+    } else if (err === 'SERVER_FORBIDDEN') {
+      // 403 错误。服务器拒绝了下载请求
+      log.error(lang.transl('_文件下载失败并且错误代码是', err))
+      // 下载器会把文件交给浏览器去下载，而在无痕（隐私）窗口里，
+      // 浏览器下载 fanbox 的付费资源时可能会失败，所以检测到这种情况时输出提示
+      if (Config.incognito) {
+        log.error(lang.transl('_无痕模式里下载失败的提示'), 'tipIncognitoDownloadFailed')
+      }
     } else {
       // 其他错误
       log.error(lang.transl('_文件下载失败并且错误代码是', err || ''))

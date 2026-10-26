@@ -1958,6 +1958,11 @@ class Config {
         // 这个检测只在页面（content script）里有效；在后台脚本里 browser.extension
         // 可能不存在（例如 Chrome MV3 的 Service Worker），此时为 undefined，不影响使用
         (webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default().extension)?.inIncognitoContext;
+    /** 是否运行在无痕（隐私）窗口里。
+     * 这个检测只在页面（content script）里有效；在后台脚本里 browser.extension
+     * 可能不存在（例如 Chrome MV3 的 Service Worker），此时为 false。
+     * 无痕窗口里浏览器可能无法下载 fanbox 的付费资源，所以下载失败时会用它给出提示 */
+    static incognito = (webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default().extension)?.inIncognitoContext === true;
     static whatIsNewFlagDefault = 'xuejian&saber';
 }
 
@@ -7075,6 +7080,15 @@ class DownloadControl {
             // 网络错误。通常是文件下载了一部分，但最终无法完成下载
             _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载失败因为NETWORK_FAILED'));
         }
+        else if (err === 'SERVER_FORBIDDEN') {
+            // 403 错误。服务器拒绝了下载请求
+            _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载失败并且错误代码是', err));
+            // 下载器会把文件交给浏览器去下载，而在无痕（隐私）窗口里，
+            // 浏览器下载 fanbox 的付费资源时可能会失败，所以检测到这种情况时输出提示
+            if (_Config__WEBPACK_IMPORTED_MODULE_14__.Config.incognito) {
+                _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_无痕模式里下载失败的提示'), 'tipIncognitoDownloadFailed');
+            }
+        }
         else {
             // 其他错误
             _Log__WEBPACK_IMPORTED_MODULE_3__.log.error(_Lang__WEBPACK_IMPORTED_MODULE_4__.lang.transl('_文件下载失败并且错误代码是', err || ''));
@@ -9396,6 +9410,8 @@ As a result, the file name set by the downloader is lost and the file name becom
     <br><br>
     如果下载后的文件名异常，请禁用其他有下载功能的浏览器扩展。
     <br><br>
+    请不要在浏览器的无痕（隐私）窗口里下载。这是因为在无痕（隐私）模式里，浏览器可能无法下载 Fanbox 的付费资源，会导致下载失败。
+    <br><br>
     如果你的浏览器在启动时停止响应，可能是因为浏览器的下载记录太多了导致的。你可以尝试清除浏览器的下载记录。
     <br><br>
     下载器 QQ 群：853021998
@@ -9416,6 +9432,8 @@ As a result, the file name set by the downloader is lost and the file name becom
 建議在瀏覽器的下載設定中關閉「下載前詢問每個檔案的儲存位置」。
 <br><br>
 如果下載後的檔案名稱異常，請停用其他有下載功能的瀏覽器擴充功能。
+<br><br>
+請不要在瀏覽器的無痕（隱私）視窗裡下載。這是因為在無痕（隱私）模式裡，瀏覽器可能無法下載 Fanbox 的付費資源，會導致下載失敗。
 <br><br>
 如果你的瀏覽器在啟動時停止響應，可能是因為瀏覽器的下載記錄太多了導致的。你可以嘗試清除瀏覽器的下載記錄。
 <br><br>
@@ -9438,6 +9456,8 @@ It is recommended to turn off "Ask where to save each file before downloading" i
 <br><br>
 If the file names appear incorrect after downloading, disable other browser extensions that have download features.
 <br><br>
+Please do not download in the browser's incognito (private) window. This is because in incognito (private) mode the browser may be unable to download paid content from Fanbox, and the download will fail.
+<br><br>
 If your browser stops responding when it starts up, it may be because the browser's download history is too large. You can try clearing the browser's download history.
 <br><br>
 Downloader QQ group: 853021998
@@ -9458,6 +9478,8 @@ My referral code: GYjQWDob
 ブラウザのダウンロード設定で「ダウンロード前に各ファイルの保存場所を確認する」をオフにすることをお勧めします。
 <br><br>
 ダウンロード後のファイル名がおかしい場合は、ダウンロード機能を持つ他のブラウザ拡張機能を無効にしてください。
+<br><br>
+ブラウザのシークレット（プライベート）ウィンドウでダウンロードしないでください。シークレット（プライベート）モードでは、ブラウザが Fanbox の有料コンテンツをダウンロードできない場合があり、ダウンロードが失敗します。
 <br><br>
 ブラウザを起動時に応答しなくなった場合は、ブラウザのダウンロード履歴が多すぎることが原因かもしれません。ブラウザのダウンロード履歴を削除してみてください。
 <br><br>
@@ -9480,6 +9502,8 @@ My referral code: GYjQWDob
 <br><br>
 다운로드 후 파일 이름이 이상하다면, 다운로드 기능이 있는 다른 브라우저 확장 프로그램을 비활성화하세요.
 <br><br>
+브라우저의 시크릿(비공개) 창에서 다운로드하지 마세요. 시크릿(비공개) 모드에서는 브라우저가 Fanbox의 유료 콘텐츠를 다운로드하지 못해 다운로드가 실패할 수 있습니다.
+<br><br>
 브라우저를 시작할 때 응답하지 않는다면, 브라우저의 다운로드 기록이 너무 많기 때문일 수 있습니다. 브라우저의 다운로드 기록을 삭제해 보세요.
 <br><br>
 다운로더 QQ 그룹: 853021998
@@ -9500,6 +9524,8 @@ My referral code: GYjQWDob
 Рекомендуется отключить в настройках загрузок браузера опцию «Спрашивать, куда сохранять каждый файл перед загрузкой».
 <br><br>
 Если после загрузки имена файлов отображаются некорректно, отключите другие расширения браузера с функциями загрузки.
+<br><br>
+Не скачивайте в окне инкогнито (приватном окне) браузера. Причина в том, что в режиме инкогнито браузер может не суметь скачать платные материалы Fanbox, и загрузка завершится ошибкой.
 <br><br>
 Если браузер перестает отвечать при запуске, возможно, причина в слишком большом количестве записей о загрузках. Попробуйте очистить историю загрузок браузера.
 <br><br>
@@ -10078,6 +10104,14 @@ QR 코드를 스캔할 수도 있습니다:<br>
         `ファイルのダウンロードに失敗しました。エラーコード：{}`,
         `파일 다운로드에 실패했습니다. 오류 코드: {}`,
         `Не удалось загрузить файл, код ошибки: {}`,
+    ],
+    _无痕模式里下载失败的提示: [
+        `可能的原因：当前页面处于无痕模式里，请在普通模式里下载。下载器会把文件交给浏览器下载，但在无痕模式里，浏览器可能无法下载 fanbox 的付费资源。在普通模式里可以下载。`,
+        `可能的原因：目前頁面處於無痕模式裡，請在一般模式裡下載。下載器會把檔案交給瀏覽器下載，但在無痕模式裡，瀏覽器可能無法下載 fanbox 的付費資源。在一般模式裡可以下載。`,
+        `Possible cause: this page is in incognito (private) mode. Please download in normal mode. The downloader hands files over to the browser to download them, but in incognito mode the browser may be unable to download paid content from fanbox. Downloading in normal mode works.`,
+        `考えられる原因：現在のページがシークレットモードになっています。通常モードでダウンロードしてください。ダウンローダーはファイルのダウンロードをブラウザに任せますが、シークレットモードではブラウザが fanbox の有料コンテンツをダウンロードできない場合があります。通常モードならダウンロードできます。`,
+        `가능한 원인: 현재 페이지가 시크릿 모드에 있습니다. 일반 모드에서 다운로드하세요. 다운로더는 파일 다운로드를 브라우저에 맡기지만, 시크릿 모드에서는 브라우저가 fanbox의 유료 콘텐츠를 다운로드하지 못할 수 있습니다. 일반 모드에서는 다운로드할 수 있습니다.`,
+        `Возможная причина: текущая страница открыта в режиме инкогнито (приватном режиме). Пожалуйста, скачивайте в обычном режиме. Загрузчик передаёт файлы браузеру для загрузки, но в режиме инкогнито браузер может не суметь скачать платные материалы fanbox. В обычном режиме скачивание работает.`,
     ],
     _文件下载出错时显示文件名和网址: [
         `文件名：{}<br>网址：{}`,

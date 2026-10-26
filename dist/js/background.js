@@ -1291,6 +1291,11 @@ class Config {
         // 这个检测只在页面（content script）里有效；在后台脚本里 browser.extension
         // 可能不存在（例如 Chrome MV3 的 Service Worker），此时为 undefined，不影响使用
         (webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default().extension)?.inIncognitoContext;
+    /** 是否运行在无痕（隐私）窗口里。
+     * 这个检测只在页面（content script）里有效；在后台脚本里 browser.extension
+     * 可能不存在（例如 Chrome MV3 的 Service Worker），此时为 false。
+     * 无痕窗口里浏览器可能无法下载 fanbox 的付费资源，所以下载失败时会用它给出提示 */
+    static incognito = (webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default().extension)?.inIncognitoContext === true;
     static whatIsNewFlagDefault = 'xuejian&saber';
 }
 
