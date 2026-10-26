@@ -8,6 +8,7 @@ import { Utils } from '../utils/Utils'
 import { toast } from '../Toast'
 import { msgBox } from '../MsgBox'
 import { Result } from '../StoreType'
+import { Tools } from '../Tools'
 
 // 使用文件的 url 作为 key。因为抓取结果里的其他字段不具有唯一性
 interface Record {
@@ -149,7 +150,7 @@ class DownloadRecord {
     const url = URL.createObjectURL(blob)
     Utils.downloadFile(
       url,
-      `record-${Utils.replaceUnsafeStr(new Date().toLocaleString())}.json`,
+      `record-fanbox-total ${record.length}-${Tools.formatDateTimeInFilename()}.json`,
     )
 
     toast.success(lang.transl('_导出成功'))

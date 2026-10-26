@@ -1,10 +1,30 @@
 # 5.1.1 2026-10-26
 
-### 🔧下载失败并提示 SERVER_FORBIDDEN 时，检测无痕模式并给出提示
+### 💡新增提示：在无痕（隐私）窗口里，浏览器无法下载 Fanbox 的付费资源，会导致下载失败
 
 下载器会把文件交给浏览器去下载。如果当前页面处于无痕（隐私）模式里，浏览器可能无法下载 fanbox 的付费资源，此时下载会失败，错误代码是 SERVER_FORBIDDEN。
 
 现在遇到这个错误时，下载器会检测自己是否运行在无痕窗口里。如果是，就会在日志里输出一条红色的提示，说明可能的原因，并建议在普通模式里下载。
+
+### 🐞修复问题：在 Firefox 上抓取投稿评论时，会导致抓取出错
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/94
+
+在 Firefox 上，如果启用了“保存评论”，抓取投稿时可能会出现这个错误，并且一直重试、无法继续抓取：
+
+```
+Not allowed to define cross-origin object as property on [Object] or [Array] XrayWrapper
+```
+
+原因：Firefox 的内容脚本通过 fetch 获取到的接口数据被 XrayWrapper 包装，属于页面的隔离环境。下载器获取评论后需要把评论写入投稿数据（`post.commentList`），这种修改跨隔离环境对象的操作会被 Firefox 阻止。
+
+修复方式：Firefox 里在 `API.request` 拿到数据后，先把它深拷贝为内容脚本自己的对象，之后再修改就不会触发这个限制。
+
+### 😊在导出下载记录时，文件名里包含 fanbox 标记
+
+https://github.com/xuejianxianzun/PixivFanboxDownloader/issues/93
+
+这样导出的文件可以与其他站点的文件（pixiv）区分开来。
 
 # 5.1.0 2026-09-08
 

@@ -425,7 +425,10 @@ class DownloadControl {
       // 下载器会把文件交给浏览器去下载，而在无痕（隐私）窗口里，
       // 浏览器下载 fanbox 的付费资源时可能会失败，所以检测到这种情况时输出提示
       if (Config.incognito) {
-        log.error(lang.transl('_无痕模式里下载失败的提示'), 'tipIncognitoDownloadFailed')
+        log.error(
+          lang.transl('_无痕模式里下载失败的提示'),
+          'tipIncognitoDownloadFailed',
+        )
       }
     } else {
       // 其他错误

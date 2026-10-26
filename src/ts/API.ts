@@ -1,5 +1,5 @@
 // api 类
-// 不依赖其他模块，可独立使用
+// 只依赖 Config（用于判断浏览器类型），可独立使用
 import {
   Post,
   PostList,
@@ -10,6 +10,7 @@ import {
   SupportInfo,
   CommentData,
 } from './CrawlResult.d'
+import { Config } from './Config'
 
 class API {
   // 组装 url 的查询参数。当该参数有值时，将其添加到 url 里
@@ -34,7 +35,10 @@ class API {
       })
         .then((response) => {
           if (response.ok) {
-            return response.json().then((data) => resolve(data))
+            return response.json().then((data) => {
+              // 拷贝成内容脚本自己的对象后再返回，见 cloneData 的说明
+              resolve(API.cloneData<T>(data))
+            })
           } else {
             // HTTP 状态码错误
             reject({
@@ -65,6 +69,20 @@ class API {
               at chrome-extension://mfkglccbgcbnbkdgekepcgnhobeopoji/js/content.js:112:13\n
               ...更多栈信息`,
     },
+  }
+
+  /**把接口返回的 json 数据复制为内容脚本自己的对象，然后返回。
+   *
+   * Firefox 里内容脚本的 fetch 返回的 Response.json() 数据被 XrayWrapper 包装，属于页面的隔离环境。
+   * 读取这种数据是正常的，但修改它（例如给投稿数据写入 commentList）会抛出异常：
+   * Not allowed to define cross-origin object as property on [Object] or [Array] XrayWrapper
+   * 所以这里统一做一次深拷贝，让后续代码只操作内容脚本自己的对象。
+   * 其他浏览器（如 Chrome）里 fetch 返回的就是内容脚本自己的对象，不需要拷贝 */
+  private static cloneData<T>(data: T): T {
+    if (!Config.isFirefox) {
+      return data
+    }
+    return JSON.parse(JSON.stringify(data)) as T
   }
 
   static getCreatorId(url: string) {

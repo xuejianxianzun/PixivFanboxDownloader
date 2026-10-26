@@ -411,6 +411,8 @@ abstract class InitPageBase {
     })
 
     // 把结果写入 post.commentList，供保存流程使用
+    // post 来自 API 返回的数据。Firefox 里 fetch 得到的数据属于页面的隔离环境（Xray），
+    // 直接给它添加属性会抛出异常，所以 API.request 已经把它拷贝成内容脚本自己的对象了
     post.commentList = { items, nextUrl: null }
   }
 

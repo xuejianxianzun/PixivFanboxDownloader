@@ -1,5 +1,6 @@
 import { ServiceProvider, VideoProvider } from './CrawlResult'
 import { lang } from './Lang'
+import { DateFormat } from './utils/DateFormat'
 
 type Dict = {
   [key in ServiceProvider]: string
@@ -135,6 +136,12 @@ class Tools {
       new Date().getTime().toString() +
       Math.random().toString(16).replace('.', '')
     )
+  }
+
+  /** 下载器导出的一些文件的名字里含有时间戳。这个方法用来格式化这种时间戳，格式固定为 2026-08-07 08-01-00 */
+  static formatDateTimeInFilename(date?: Date) {
+    const now = date || new Date()
+    return DateFormat.format(now, 'YYYY-MM-DD hh-mm-ss')
   }
 }
 
